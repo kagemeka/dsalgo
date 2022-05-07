@@ -18,6 +18,7 @@ jobs:
       - name: CI
         run: |
           cd src/rust
+          ./scripts/setup.sh
           ./scripts/ci.sh
       - name: Build
         run: |
