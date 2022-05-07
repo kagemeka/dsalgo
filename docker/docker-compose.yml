@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  main:
+    image: ubuntu:latest
+    restart: on-failure
+    privileged: true
+    tty: true
+    volumes:
+      - type: bind
+        source: $PROJECT_ROOT
+        target: /root/$PROJECT_NAME
+        volume:
+          nocopy: true
+        read_only: false
