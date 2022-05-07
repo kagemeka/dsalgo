@@ -18,5 +18,5 @@ func LongestCommonPrefixArrayKasai(a, sa []int) (lcp []int) {
 		for i + h < n && j + h < n && a[i + h] == a[j + h] { h++ }
 		lcp[r] = h
 	}
-	return 
+	return
 }

@@ -1,4 +1,4 @@
-package segment 
+package segment
 // query with segment tree
 
 
@@ -31,13 +31,13 @@ func (q *PointSetRangeGetXor) Get(l, r int) int {
 	return q.seg.Get(l, r).(int)
 }
 
-func (q *PointSetRangeGetXor) Set(i int, x int) { 
+func (q *PointSetRangeGetXor) Set(i int, x int) {
 	q.seg.Set(i, x)
 }
 
 
 type PointOperateXorRangeGetXor struct { PointSetRangeGetXor }
 
-func (q *PointOperateXorRangeGetXor) Set(i int, x int) { 
+func (q *PointOperateXorRangeGetXor) Set(i int, x int) {
 	q.seg.Set(i, q.op(q.Get(i, i + 1), x))
 }

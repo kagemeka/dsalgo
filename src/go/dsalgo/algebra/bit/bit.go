@@ -9,6 +9,4 @@ func BitLength(n int) int {
 
 
 
-func Popcount(n int) int 
-
-
+func Popcount(n int) int
