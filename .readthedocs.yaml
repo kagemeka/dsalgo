@@ -16,7 +16,7 @@ python:
     # - requirements: docs/requirements.txt
     # - requirements: requirements.txt
     - method: pip
-      path: .
+      path: ./src/python/
       extra_requirements:
         - docs
   system_packages: false
@@ -25,7 +25,7 @@ python:
 
 sphinx:
   builder: html
-  configuration: docs/api/conf.py
+  configuration: src/python/docs/api/conf.py
   fail_on_warning: false
 
 # mkdocs:
