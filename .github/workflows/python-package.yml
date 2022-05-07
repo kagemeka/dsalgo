@@ -29,9 +29,11 @@ jobs:
           cd src/python
       - name: Install dependencies
         run: |
+          cd src/python
           source $HOME/.poetry/env
           poetry install
       - name: format and lint and test
         run: |
+          cd src/python
           source $HOME/.poetry/env
           ./scripts/ci.sh
