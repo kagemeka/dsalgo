@@ -1,4 +1,4 @@
-package algebra 
+package algebra
 
 
 type Ord interface {

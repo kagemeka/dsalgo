@@ -21,7 +21,7 @@ func NewSegmentTree(m Monoid, a []interface{}) *SegmentTree {
 	for i := 0; i < n << 1; i++ { data[i] = m.E() }
 	for i := 0; i < size; i++ { data[n + i] = a[i] }
 	seg := &SegmentTree{m, size, n, data}
-	for i := n - 1; i > 0; i-- { seg.merge(i) } 
+	for i := n - 1; i > 0; i-- { seg.merge(i) }
 	return seg
 }
 
@@ -30,9 +30,9 @@ func (seg *SegmentTree) merge(i int) {
 }
 
 func (seg *SegmentTree) Set(i int, x interface{}) {
-	// 0 <= i < size  
+	// 0 <= i < size
 	i += seg.n
-	seg.data[i] = x	
+	seg.data[i] = x
 	for i > 1 { i >>= 1; seg.merge(i) }
 }
 
@@ -57,7 +57,7 @@ func (seg *SegmentTree) MaxRight(is_ok func(interface{}) bool, l int) int {
 			v = seg.m.Op(v, seg.data[i])
 			i++
 			if i & -i == i { return seg.size }
-			continue 
+			continue
 		}
 		for i < seg.n {
 			i <<= 1
@@ -66,7 +66,7 @@ func (seg *SegmentTree) MaxRight(is_ok func(interface{}) bool, l int) int {
 			v = seg.m.Op(v, seg.data[i])
 		}
 		return i - seg.n
-	}	
+	}
 }
 
 
@@ -82,7 +82,7 @@ type SegmentTreeLazy struct {
 }
 
 func NewSegmentTreeLazy(
-	c *SegmentTreeLazyConfig, 
+	c *SegmentTreeLazyConfig,
 	a []interface{},
 ) *SegmentTreeLazy {
 	size := len(a)
@@ -94,7 +94,7 @@ func NewSegmentTreeLazy(
 	lazy := make([]interface{}, n)
 	for i := 0; i < n; i++ { lazy[i] = c.F.E() }
 	seg := &SegmentTreeLazy{ c, size, n, h, data, lazy }
-	for i := n - 1; i > 0; i-- { seg.merge(i) } 
+	for i := n - 1; i > 0; i-- { seg.merge(i) }
 	return seg
 }
 
