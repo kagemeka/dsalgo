@@ -1,5 +1,10 @@
 #!/bin/bash
 
+
+cargo update --verbose
+cargo package --list --allow-dirty
+
 ./scripts/format.sh
-./scripts/update.sh
 ./scripts/test.sh
+
+cargo publish --dry-run --allow-dirty

@@ -254,8 +254,8 @@ where
         }
         if left <= current_left
             && current_right <= self.size
-            // && is_ok(&S::operate(current_value, &self.data[node_index]))
             && is_ok(&current_value.operate(self.data[node_index]))
+        // && is_ok(&S::operate(current_value, &self.data[node_index]))
         {
             // *current_value = S::operate(current_value,
             // &self.data[node_index]);

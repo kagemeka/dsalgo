@@ -1,0 +1,2 @@
+class PremiseContradictionError(Exception):
+    pass
