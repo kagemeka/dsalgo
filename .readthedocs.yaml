@@ -25,7 +25,7 @@ python:
 
 sphinx:
   builder: html
-  configuration: docs/api/conf.py
+  configuration: src/python/docs/api/conf.py
   fail_on_warning: false
 
 # mkdocs:

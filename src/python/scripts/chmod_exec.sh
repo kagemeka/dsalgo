@@ -9,3 +9,4 @@ get_current_file_directory() {
 root=$(dirname "$(get_current_file_directory)")
 
 chmod +x "$root"/scripts/*.sh
+
