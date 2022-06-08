@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source ~/.bashrc
+
+./scripts/update_toolchain.sh
 
 cargo update --verbose
 cargo package --list --allow-dirty
