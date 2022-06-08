@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source ~/.bashrc
 
 cargo update --verbose
 cargo package --list --allow-dirty

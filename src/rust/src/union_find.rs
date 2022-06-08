@@ -1,33 +1,29 @@
+#[derive(Debug)]
 pub struct UnionFind {
     data: Vec<isize>,
 }
 
 impl UnionFind {
-    pub fn new(size: usize) -> Self {
-        Self {
-            data: vec![-1; size],
-        }
-    }
+    pub fn new(size: usize) -> Self { Self { data: vec![-1; size] } }
 
     pub fn size(&self) -> usize { self.data.len() }
 
-    pub fn find_root(&mut self, node: usize) -> usize {
-        assert!(node < self.size());
-        if self.data[node] < 0 {
-            return node;
+    pub fn find_root(&mut self, u: usize) -> usize {
+        if self.data[u] < 0 {
+            return u;
         }
-        self.data[node] = self.find_root(self.data[node] as usize) as isize;
-        self.data[node] as usize
+        self.data[u] = self.find_root(self.data[u] as usize) as isize;
+        self.data[u] as usize
     }
 
-    pub fn unite(&mut self, left_node: usize, right_node: usize) {
-        assert!(left_node < self.size() && right_node < self.size());
-        let (mut u, mut v) = (self.find_root(left_node), self.find_root(right_node));
+    pub fn unite(&mut self, u: usize, v: usize) {
+        let mut u = self.find_root(u);
+        let mut v = self.find_root(v);
         if u == v {
             return;
         }
         if self.data[u] > self.data[v] {
-            (u, v) = (v, u);
+            std::mem::swap(&mut u, &mut v);
         }
         self.data[u] += self.data[v];
         self.data[v] = u as isize;
@@ -38,10 +34,6 @@ impl UnionFind {
         -self.data[u] as usize
     }
 }
-
-pub struct RollbackUnionFind {}
-
-pub struct PersistentUnionFind {}
 
 #[cfg(test)]
 mod tests {

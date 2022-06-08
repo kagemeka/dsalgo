@@ -8,8 +8,5 @@ apt install -y \
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 echo "export PATH=\"$HOME/.cargo/bin:$PATH\"" >>~/.bashrc
 
-rustup toolchain install nightly
-rustup default nightly
-rustup update
-
-rustup component add rustfmt
+source $HOME/.cargo/env
+source ~/.bashrc
