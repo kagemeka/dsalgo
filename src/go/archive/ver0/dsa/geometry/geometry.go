@@ -1,4 +1,4 @@
-package geometry 
+package geometry
 
 import (
 	. "kagemeka/general/types"

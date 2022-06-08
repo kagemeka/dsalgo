@@ -1,4 +1,4 @@
-package cp 
+package cp
 
 import (
 	. "kagemeka/general/types"
@@ -41,7 +41,7 @@ func (
 	bufSize int,
 ) {
 	io.Scanner.Buffer(
-		[]byte{}, 
+		[]byte{},
 		bufSize,
 	)
 }

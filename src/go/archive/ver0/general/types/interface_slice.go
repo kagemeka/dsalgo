@@ -1,4 +1,4 @@
-package types 
+package types
 
 
 import (
@@ -27,7 +27,7 @@ func SliceFormat(
 		f[i] = "%v"
 	}
 	format = strings.Join(
-		f, 
+		f,
 		sep,
 	)
 	return

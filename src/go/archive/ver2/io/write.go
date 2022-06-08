@@ -1,4 +1,4 @@
-package cp 
+package cp
 
 //
 import (
@@ -10,7 +10,7 @@ import (
 
 
 type Write struct {
-	writer *bufio.Writer 
+	writer *bufio.Writer
 }
 
 

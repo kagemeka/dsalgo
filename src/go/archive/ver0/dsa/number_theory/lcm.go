@@ -13,7 +13,7 @@ func (
 	lcm Int,
 ) {
 	gcd := i.GCD(j)
-	lcm = i / gcd * j 
+	lcm = i / gcd * j
 	lcm = lcm.Abs().(Int)
 	return
 }

@@ -10,7 +10,7 @@ class ReadStdinSync {
   String call() {
     List<int> bytes = [];
     while (true) {
-      var b = 
+      var b =
         stdin.readByteSync();
       if (ng.contains(b))
         break;

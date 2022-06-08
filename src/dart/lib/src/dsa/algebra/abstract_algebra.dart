@@ -4,7 +4,7 @@ library abstractAlgebra;
 /* cut below */
 
 
-abstract class AddSemiGroup<T> 
+abstract class AddSemiGroup<T>
 {
   T operator +(T other);
 }
@@ -36,7 +36,7 @@ mixin Subtraction<
 
 
 
-abstract class MulSemiGroup<T> 
+abstract class MulSemiGroup<T>
 {
   T operator *(T other);
 }
@@ -100,10 +100,10 @@ MulGroup<T> {
 
 
 
-extension 
+extension
 CumProd<
   T extends MulSemiGroup<T>
-> 
+>
 on List<T> {
   List<T> cumprod() {
     var a = List<T>.from(this);
@@ -119,10 +119,10 @@ on List<T> {
 
 
 
-extension 
+extension
 CumSum<
   T extends AddSemiGroup<T>
-> 
+>
 on List<T> {
   List<T> cumpsum() {
     var a = List<T>.from(this);

@@ -1,4 +1,4 @@
-package cp 
+package cp
 
 import (
 	"sort"
@@ -25,7 +25,7 @@ func (
 	n := len(a)
 	return sort.Search(n, f)
 }
-	
+
 
 
 func (
@@ -71,8 +71,8 @@ func (
 ) Sum() (
 	s int,
 ) {
-	for _, x := range a { 
+	for _, x := range a {
 		s += x
 	}
-	return s	
-}	
+	return s
+}

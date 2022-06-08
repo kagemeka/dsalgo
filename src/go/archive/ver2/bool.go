@@ -2,7 +2,7 @@ package cp
 
 //
 
-type Bool bool 
+type Bool bool
 
 
 func (

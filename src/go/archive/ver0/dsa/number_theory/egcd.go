@@ -16,7 +16,7 @@ func (
 		gcd = i.Abs().(Int)
 		x = 1
 		y = 0
-		return 
+		return
 	}
 	q, r := i.Divmod(j)
 	gcd, y, x = j.EGCD(r)

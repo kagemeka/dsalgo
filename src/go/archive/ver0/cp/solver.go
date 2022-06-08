@@ -8,7 +8,7 @@ package cp
 type Solver interface{
 	Init()
 	Prepare()
-	Solve()	
+	Solve()
 }
 
 

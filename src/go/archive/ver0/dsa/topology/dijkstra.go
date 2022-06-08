@@ -1,4 +1,4 @@
-package topology 
+package topology
 
 
 import (
@@ -11,7 +11,7 @@ import (
 
 
 type DijkstraItem struct {
-	Node Int 
+	Node Int
 	Dist Int
 }
 
@@ -61,7 +61,7 @@ func (
 	x interface{},
 ) {
 	*h = append(
-		*h, 
+		*h,
 		x.(DijkstraItem),
 	)
 }
@@ -90,7 +90,7 @@ type Dijkstra struct {
 	inf Int
 	mod Int
 	x DijkstraItem
-	e Edge 
+	e Edge
 }
 
 
@@ -110,9 +110,9 @@ func (
 	inf Int,
 	mod Int,
 ) {
-	di.src = src 
+	di.src = src
 	di.inf = inf
-	di.mod = mod 
+	di.mod = mod
 	di.InitDist()
 	di.InitHeap()
 	di.InitPaths()
@@ -139,8 +139,8 @@ func (
 func (
 	di *Dijkstra,
 ) InitDist() {
-	n := di.G.Size() 
-	src := di.src 
+	n := di.G.Size()
+	src := di.src
 	inf := di.inf
 	dist := di.Dist.Make(
 		n,
@@ -155,10 +155,10 @@ func (
 	di *Dijkstra,
 ) InitPaths() {
 	n := di.G.Size()
-	src := di.src 
-	mod := di.mod 
+	src := di.src
+	mod := di.mod
 	paths := di.Paths.Make(
-		n, 
+		n,
 		Modular{0, mod},
 	)
 	paths[src] = Modular{1, mod}
@@ -182,7 +182,7 @@ func (
 func (
 	di *Dijkstra,
 ) Search() {
-	h := &di.Heap 
+	h := &di.Heap
 	for h.Len() > 0 {
 		di.Open()
 		if di.Searched() {
@@ -209,7 +209,7 @@ func (
 ) Searched() (
 	Bool,
 ) {
-	x := di.x 
+	x := di.x
 	i, d := x.Node, x.Dist
 	return d > di.Dist[i]
 }
@@ -221,7 +221,7 @@ func (
 	u := di.x.Node
 	edges := di.G.Edges
 	for _, e := range edges[u] {
-		di.e = e 
+		di.e = e
 		di.exploreSupport()
 	}
 }
@@ -231,20 +231,20 @@ func (
 	di *Dijkstra,
 ) exploreSupport() {
 	x := di.x
-	u, d := x.Node, x.Dist 
-	e := di.e 
-	v := e.To 
+	u, d := x.Node, x.Dist
+	e := di.e
+	v := e.To
 	d += e.Weight
 	dist := di.Dist
-	paths := di.Paths 
+	paths := di.Paths
 	pred := di.Predecessor
 	if d > dist[v] {
-		return 
+		return
 	}
 	if d == dist[v] {
 		pred[v].Push(u)
 		paths[v].IAdd(paths[u])
-		return 
+		return
 	}
 	pred[v] = IntSlice{u}
 	paths[v] = paths[u]

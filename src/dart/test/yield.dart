@@ -16,7 +16,7 @@ class ReadStdinSync {
   String call() {
     List<int> bytes = [];
     while (true) {
-      var b = 
+      var b =
         stdin.readByteSync();
       if (ng.contains(b))
         break;
@@ -42,5 +42,3 @@ class ReadStdinSync {
   String line() =>
     stdin.readLineSync()!;
 }
-
-

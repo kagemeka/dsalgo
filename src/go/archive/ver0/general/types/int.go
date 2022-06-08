@@ -16,7 +16,7 @@ func (
 	s := strconv.Itoa(
 		int(x),
 	)
-	return Str(s) 
+	return Str(s)
 }
 
 
@@ -42,7 +42,7 @@ func (
 		cnt += n & 1
 		n >>= 1
 	}
-	return 
+	return
 }
 
 
@@ -84,7 +84,7 @@ func (
 	case Int:
 		return Int(res)
 	}
-	return res 
+	return res
 }
 
 
@@ -112,7 +112,7 @@ func (
 	case Int:
 		return Int(res)
 	}
-	return res 
+	return res
 }
 
 
@@ -149,7 +149,7 @@ func (
 	}
 	q--
 	r += other
-	return 
+	return
 }
 
 
@@ -178,7 +178,7 @@ func (
 ) LE(
 	other Comparable,
 ) Bool {
-	return x <= other.(Int) 
+	return x <= other.(Int)
 }
 
 

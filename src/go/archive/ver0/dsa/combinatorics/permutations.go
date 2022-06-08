@@ -9,7 +9,7 @@ type Permutations struct {
 	S Slice
 	Ch chan Slice
 	bufSize Int
-	r Int 
+	r Int
 	i int
 }
 
@@ -22,7 +22,7 @@ func (
 	p.S = s
 	const bufSize = 1 << 0
 	p.Ch = make(
-		chan Slice, 
+		chan Slice,
 		bufSize,
 	)
 }
@@ -49,7 +49,7 @@ func (
 	if Int(i) == r {
 		var ch chan<- Slice = p.Ch
 		ch <- s.Sub(0, r)
-		return 
+		return
 	}
 	n := s.Len()
 	for j := i; j < n; j++ {
@@ -86,7 +86,7 @@ func (
 ) {
 	p := Permute(a, r)
 	ch = a.ChTransPort(p)
-	return 
+	return
 }
 
 
@@ -103,5 +103,5 @@ func (
 		a[i] = i
 	}
 	ch = a.Perm(r)
-	return 
+	return
 }

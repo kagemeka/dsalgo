@@ -1,4 +1,4 @@
-package topology 
+package topology
 
 import (
 	. "kagemeka/general/types"

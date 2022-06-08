@@ -1,4 +1,4 @@
-package types 
+package types
 
 import (
 	"sort"
@@ -14,18 +14,18 @@ type CompSlice []Comparable
 func (
 	a CompSlice,
 ) Make(
-	n Int, 
+	n Int,
 	v Comparable,
 ) (
 	b CompSlice,
 ) {
 	b = make(CompSlice, n)
 	for i := Int(0); i < n; i++ {
-		b[i] = v 
+		b[i] = v
 	}
-	return 
+	return
 }
- 
+
 
 func (
 	a CompSlice,
@@ -37,7 +37,7 @@ func (
 	for i := 0; i < n; i++ {
 		b[i] = a[i].(Int)
 	}
-	return 
+	return
 }
 
 
@@ -51,7 +51,7 @@ func (
 	for i := 0; i < n; i++ {
 		b[i] = a[i].(Float)
 	}
-	return 
+	return
 }
 
 
@@ -65,7 +65,7 @@ func (
 	for i := 0; i < n; i++ {
 		b[i] = a[i].(Str)
 	}
-	return 
+	return
 }
 
 
@@ -79,7 +79,7 @@ func (
 	for i := 0; i < n; i++ {
 		b[i] = a[i].(Rune)
 	}
-	return 
+	return
 }
 
 
@@ -136,5 +136,5 @@ func (
 	}
 	i := BisectLeft(lis, inf)
 	lis = lis[:i]
-	return 
+	return
 }

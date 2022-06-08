@@ -1,8 +1,8 @@
-package types 
+package types
 
 
 /* cut below */
 
 
 
-type Byte byte 
+type Byte byte

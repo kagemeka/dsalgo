@@ -23,16 +23,16 @@ func (
 func (
 	a ModSlice,
 ) Make(
-	n Int, 
+	n Int,
 	v Modular,
 ) (
 	b ModSlice,
 ) {
 	b = make(ModSlice, n)
 	for i := Int(0); i < n; i++ {
-		b[i] = v 
+		b[i] = v
 	}
-	return 
+	return
 }
 
 
@@ -45,7 +45,7 @@ func (
 	s := make(ModSlice, n)
 	copy(s, a)
 	return s
-} 
+}
 
 
 func (
@@ -86,7 +86,7 @@ func (
 	a ModSlice,
 ) Reversed() (
 	s ModSlice,
-) { 
+) {
 	s = a.Clone().(ModSlice)
 	s.Reverse()
 	return
@@ -99,7 +99,7 @@ func (
 	x interface{},
 ) {
 	*a = append(
-		*a, 
+		*a,
 		x.(Modular),
 	)
 }
@@ -114,7 +114,7 @@ func (
 ) {
 	a = a.Clone().(ModSlice)
 	a.Push(x)
-	return a 
+	return a
 }
 
 
@@ -128,7 +128,7 @@ func (
 	for i := 0; i < n - 1; i++ {
 		b[i + 1].IAdd(b[i])
 	}
-	return 
+	return
 }
 
 
@@ -142,7 +142,7 @@ func (
 	for i := 0; i < n - 1; i++ {
 		b[i + 1].IMul(b[i])
 	}
-	return 
+	return
 }
 
 
@@ -154,7 +154,7 @@ func (
 	n := len(a)
 	b = make(ModMatrix, n)
 	for i := 0; i < n; i++ {
-		b[i] = ModSlice{a[i]}		
+		b[i] = ModSlice{a[i]}
 	}
 	return
 }

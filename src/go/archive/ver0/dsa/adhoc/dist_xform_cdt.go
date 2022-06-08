@@ -1,4 +1,4 @@
-package adhoc 
+package adhoc
 
 
 /* cut below */
@@ -8,7 +8,7 @@ package adhoc
 type DistXFormCDT struct {
 	A IntMatrix
 	B IntMatrix
-	i, j Int 
+	i, j Int
 }
 
 
@@ -26,7 +26,7 @@ func (
 ) Prepare(
 	inf Int,
 ) {
-	a := cdt.A 
+	a := cdt.A
 	n, m := a.Shape()
 	b := cdt.B.Make(n, m, inf)
 	cdt.B = b
@@ -41,7 +41,7 @@ func (
 	cdt *DistXFormCDT,
 ) prepareSupport() {
 	a := cdt.A
-	b := cdt.B 
+	b := cdt.B
 	i := cdt.i
 	_, m := b.Shape()
 	for j := Int(0); j < m; j++ {
@@ -64,17 +64,17 @@ func (
 	cdt.B.Reverse()
 	cdt.CumMin()
 	cdt.B.TransPose()
-} 
+}
 
 
 func (
 	cdt *DistXFormCDT,
 ) CumMin() {
-	b := cdt.B 
-	n, _ := b.Shape() 
-	for 
+	b := cdt.B
+	n, _ := b.Shape()
+	for
 	i := Int(0); i < n - 1; i++ {
-		cdt.i = i 
+		cdt.i = i
 		cdt.cumMinSupport()
 	}
 }
@@ -83,9 +83,9 @@ func (
 func (
 	cdt *DistXFormCDT,
 ) cumMinSupport() {
-	b := cdt.B 
-	i := cdt.i 
-	_, m := b.Shape() 
+	b := cdt.B
+	i := cdt.i
+	_, m := b.Shape()
 	for j := Int(0); j < m; j++ {
 		b[i + 1][j] = Min(
 			b[i + 1][j],

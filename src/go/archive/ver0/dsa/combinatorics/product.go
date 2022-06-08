@@ -8,7 +8,7 @@ package combinatorics
 type Product struct {
 	S Slice
 	Ch chan Slice
-	bufSize Int 
+	bufSize Int
 	r Int
 	a Slice
 }
@@ -22,7 +22,7 @@ func (
 	p.S = s
 	const bufSize = 1 << 0
 	p.Ch = make(
-		chan Slice, 
+		chan Slice,
 		bufSize,
 	)
 	p.a = s.Clone().Sub(0, 0)
@@ -70,7 +70,7 @@ func Prod(
 	p := new(Product)
 	p.Set(s)
 	go p.Gen(r)
-	ch = p.Ch 
+	ch = p.Ch
 	return
 }
 
@@ -85,7 +85,7 @@ func (
 ) {
 	p := Prod(a, r)
 	ch = a.ChTransPort(p)
-	return 
+	return
 }
 
 

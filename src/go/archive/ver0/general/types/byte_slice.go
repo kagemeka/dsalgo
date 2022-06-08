@@ -5,6 +5,4 @@ package type s
 
 
 
-type ByteSlice []Byte 
-
-
+type ByteSlice []Byte

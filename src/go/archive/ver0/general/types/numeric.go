@@ -17,7 +17,7 @@ type Numeric interface {
 
 
 func Sum(
-	a ...Numeric,	
+	a ...Numeric,
 ) (
 	s Numeric,
 ) {
@@ -25,5 +25,5 @@ func Sum(
 	for  _, x := range a {
 		s = s.Add(x)
 	}
-	return 
+	return
 }

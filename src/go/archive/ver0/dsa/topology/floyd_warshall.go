@@ -1,4 +1,4 @@
-package topology 
+package topology
 
 /* cut below */
 
@@ -31,7 +31,7 @@ func (
 		n,
 		inf,
 	)
-	fw.Dist = dist 
+	fw.Dist = dist
 	for i := Int(0); i < n; i++ {
 		fw.prepareSupport(i)
 	}
@@ -48,9 +48,9 @@ func (
 ) {
 	g := &fw.G
 	dist := fw.Dist
-	for 
+	for
 	_, e := range g.Edges[i] {
-		j := e.To 
+		j := e.To
 		d := e.Weight
 		dist[i][j] = Min(
 			dist[i][j],
@@ -67,7 +67,7 @@ func (
 	for k := 0; k < n; k++ {
 		fw.mid = k
 		fw.searchSupport0()
-	}	
+	}
 }
 
 
@@ -87,7 +87,7 @@ func (
 ) searchSupport1() {
 	n := len(fw.Dist)
 	k, i := fw.mid, fw.src
-	d := fw.Dist 
+	d := fw.Dist
 	for j := 0; j < n; j++ {
 		d[i][j] = Min(
 			d[i][j],

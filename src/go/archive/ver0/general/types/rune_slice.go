@@ -1,4 +1,4 @@
-package types 
+package types
 
 
 import (
@@ -45,16 +45,16 @@ func (
 func (
 	a RuneSlice,
 ) Make(
-	n Int, 
+	n Int,
 	v Rune,
 ) (
 	b RuneSlice,
 ) {
 	b = make(RuneSlice, n)
 	for i := Int(0); i < n; i++ {
-		b[i] = v 
+		b[i] = v
 	}
-	return 
+	return
 }
 
 
@@ -105,7 +105,7 @@ func (
 ) {
 	n := len(a)
 	return fmt.Sprintf(
-		SliceFormat(n, " "), 
+		SliceFormat(n, " "),
 		a.IS()...,
 	)
 }
@@ -166,7 +166,7 @@ func (
 	i, j int,
 ) bool {
 	return a[i] < a[j]
-} 
+}
 
 
 func (
@@ -175,7 +175,7 @@ func (
 	i, j int,
 ) {
 	a[i], a[j] = a[j], a[i]
-} 
+}
 
 
 func (
@@ -200,7 +200,7 @@ func (
 	a RuneSlice,
 ) Reversed() (
 	s RuneSlice,
-) { 
+) {
 	s = a.Clone().(RuneSlice)
 	s.Reverse()
 	return
@@ -239,7 +239,7 @@ func (
 		return a[i] >= x
 	}
 	i = Int(sort.Search(n, f))
-	return 
+	return
 }
 
 
@@ -257,7 +257,7 @@ func (
 		return a[i] > x
 	}
 	i = Int(sort.Search(n, f))
-	return 
+	return
 }
 
 
@@ -281,7 +281,7 @@ func (
 	x interface{},
 ) {
 	*a = append(
-		*a, 
+		*a,
 		x.(Rune),
 	)
 }
@@ -296,5 +296,5 @@ func (
 ) {
 	a = a.Clone().(RuneSlice)
 	a.Push(x)
-	return a 
+	return a
 }

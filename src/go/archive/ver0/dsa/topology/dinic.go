@@ -1,4 +1,4 @@
-package topology 
+package topology
 
 
 /* cut below */
@@ -9,9 +9,9 @@ type Dinic struct{
 	G Graph
 	Level IntSlice
 	Src, Sink Int
-	u Int 
+	u Int
 	e Edge
-	in, out, f Int 
+	in, out, f Int
 }
 
 
@@ -20,7 +20,7 @@ func (
 ) SetGraph(
 	g Graph,
 ) {
-	di.G = g 
+	di.G = g
 }
 
 
@@ -30,7 +30,7 @@ func (
 	Src, Sink Int,
 ) {
 	di.Src = Src
-	di.Sink = Sink 
+	di.Sink = Sink
 }
 
 
@@ -41,14 +41,14 @@ func (
 ) {
 	sink := di.Sink
 	src := di.Src
-	const inf = 1 << 60 
-	di.in = inf 
+	const inf = 1 << 60
+	di.in = inf
 	for {
 		di.updateLevel()
 		if di.Level[sink] == -1 {
 			return
 		}
-		di.u = src 
+		di.u = src
 		di.out = 0
 		di.flowToSink()
 		flow += di.out
@@ -73,7 +73,7 @@ func (
 	u := di.u
 	if u == di.Sink {
 		di.out = di.in
-		return 
+		return
 	}
 	g := &di.G
 	edges := g.Edges[u]
@@ -83,7 +83,7 @@ func (
 		len(edges),
 	)
 	for _, e := range edges {
-		di.e = e 
+		di.e = e
 		di.flowToSinkSupport()
 	}
 }
@@ -93,7 +93,7 @@ func (
 	di *Dinic,
 ) flowToSinkSupport() {
 	if !di.checkLevel() {
-		return 
+		return
 	}
 	di.calcSuccrFlow()
 	di.updateEdges()
@@ -111,15 +111,15 @@ func (
 func (
 	di *Dinic,
 ) updateEdges() {
-	f := di.f 
-	e := di.e 
+	f := di.f
+	e := di.e
 	v := e.To
 	e.Capacity -= f
 	if e.Capacity > 0 {
 		di.G.AddEdge(e)
 	}
 	if f == 0 {
-		return 
+		return
 	}
 	u := di.u
 	e = Edge{
@@ -134,7 +134,7 @@ func (
 func (
 	di *Dinic,
 ) calcSuccrFlow() {
-	u := di.u 
+	u := di.u
 	e := di.e
 	in := di.in
 	out := di.out
@@ -143,11 +143,11 @@ func (
 		in - out,
 		e.Capacity,
 	).(Int)
-	di.out = 0 
+	di.out = 0
 	di.flowToSink()
 	di.f = di.out
 	di.u = u
-	di.e = e 
+	di.e = e
 	di.in = in
 	di.out = out
 }
@@ -159,12 +159,12 @@ func (
 	ok Bool,
 ) {
 	lv := di.Level
-	u := di.u 
-	e := di.e 
-	v := e.To 
+	u := di.u
+	e := di.e
+	v := e.To
 	if lv[v] > lv[u] {
-		ok = true 
-		return 
+		ok = true
+		return
 	}
 	di.G.AddEdge(e)
 	return

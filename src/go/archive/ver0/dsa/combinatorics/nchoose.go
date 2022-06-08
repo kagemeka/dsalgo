@@ -29,7 +29,7 @@ func (
 		x = nChoose[i].Mul(x)
 		nChoose[i + 1] = x
 	}
-	for 
+	for
 	i := Int(0); i < l; i++ {
 		nChoose[i].IMul(ifac[i])
 	}

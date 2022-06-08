@@ -1,10 +1,10 @@
-package cp 
+package cp
 
 
 //
 
 
-type Int int 
+type Int int
 
 
 func (
@@ -38,7 +38,7 @@ func (
 		x >>= 1
 		l++
 	}
-	return 
+	return
 }
 
 

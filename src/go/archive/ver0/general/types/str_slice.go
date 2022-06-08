@@ -45,16 +45,16 @@ func (
 func (
 	a StrSlice,
 ) Make(
-	n Int, 
+	n Int,
 	v Str,
 ) (
 	b StrSlice,
 ) {
 	b = make(StrSlice, n)
 	for i := Int(0); i < n; i++ {
-		b[i] = v 
+		b[i] = v
 	}
-	return 
+	return
 }
 
 
@@ -82,7 +82,7 @@ func (
 	s := make(StrSlice, n)
 	copy(s, a)
 	return s
-} 
+}
 
 
 func (
@@ -109,7 +109,7 @@ func (
 	for i := 0; i < n; i++ {
 		b[i] = a[i]
 	}
-	return 
+	return
 }
 
 
@@ -118,7 +118,7 @@ func (
 ) String() string {
 	n := len(a)
 	return fmt.Sprintf(
-		SliceFormat(n, " "), 
+		SliceFormat(n, " "),
 		a.IS()...,
 	)
 }
@@ -169,7 +169,7 @@ func (
 	i, j int,
 ) bool {
 	return a[i] < a[j]
-} 
+}
 
 
 func (
@@ -203,7 +203,7 @@ func (
 	a StrSlice,
 ) Reversed() (
 	s StrSlice,
-) { 
+) {
 	s = a.Clone().(StrSlice)
 	s.Reverse()
 	return
@@ -242,7 +242,7 @@ func (
 		return a[i] >= x
 	}
 	i = Int(sort.Search(n, f))
-	return 
+	return
 }
 
 
@@ -260,7 +260,7 @@ func (
 		return a[i] > x
 	}
 	i = Int(sort.Search(n, f))
-	return 
+	return
 }
 
 
@@ -284,7 +284,7 @@ func (
 	x interface{},
 ) {
 	*a = append(
-		*a, 
+		*a,
 		x.(Str),
 	)
 }
@@ -299,5 +299,5 @@ func (
 ) {
 	a = a.Clone().(StrSlice)
 	a.Push(x)
-	return a 
+	return a
 }
