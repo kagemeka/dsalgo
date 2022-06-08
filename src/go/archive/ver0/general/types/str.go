@@ -33,7 +33,7 @@ func (
 	a := s.RuneSlice()
 	a = a[l:r]
 	sub = a.Str()
-	return 
+	return
 }
 
 
@@ -76,7 +76,7 @@ func (
 ) LE(
 	other Comparable,
 ) Bool {
-	return x <= other.(Str) 
+	return x <= other.(Str)
 }
 
 

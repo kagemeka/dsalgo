@@ -1,4 +1,4 @@
-import 
+import
 '../algebra/modular.dart';
 
 
@@ -30,6 +30,6 @@ class ModChoose<T> {
     res = fac[n];
     res *= iFac[r];
     res *= iFac[n - r];
-    return res;    
+    return res;
   }
 }

@@ -1,4 +1,4 @@
-package cp 
+package cp
 
 import (
 	"sort"
@@ -15,7 +15,7 @@ type BisectIF interface {
 	Get(i int) interface{}
 	Len() int
 }
-						
+
 
 type Bisect struct {
 	data BisectIF
@@ -66,8 +66,8 @@ func (
 ) rightFunc(
 	i int,
 ) bool {
-	return 
-		a.leftFunc(i) && 
+	return
+		a.leftFunc(i) &&
 		a.Get(i) != a.x
 }
 

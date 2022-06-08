@@ -52,7 +52,7 @@ func (
 		v := Modular{1, mod}
 		e[i][i] = v
 	}
-	return 
+	return
 }
 
 
@@ -69,9 +69,9 @@ func (
 	v := Modular{0, mod}
 	c = c.Make(n, m, v)
 	for i := Int(0); i < n; i++ {
-		for 
-		j := Int(0); 
-		j < m; 
+		for
+		j := Int(0);
+		j < m;
 		j++ {
 			c.dotSupport(a, b, i, j)
 		}
@@ -111,5 +111,5 @@ func (
 	if n & 1 == 1 {
 		b = b.Dot(a)
 	}
-	return b	
+	return b
 }

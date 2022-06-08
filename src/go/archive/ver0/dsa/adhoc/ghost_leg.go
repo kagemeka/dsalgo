@@ -35,7 +35,7 @@ func (
 	n := len(b)
 	c = make(
 		GhostLeg,
-		n,		
+		n,
 	)
 	for i := 0; i < n; i++ {
 		c[i] = a[b[i]]
@@ -61,5 +61,5 @@ func (
 	if n & 1 == 1 {
 		b = b.Dot(a)
 	}
-	return 
+	return
 }

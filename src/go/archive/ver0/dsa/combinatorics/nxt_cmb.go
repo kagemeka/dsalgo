@@ -10,10 +10,10 @@ func (
 	j Int,
 ) {
 	x := i & -i
-	y := i + x 
+	y := i + x
 	j = i & ^y
-	j /= x 
-	j >>= 1 
+	j /= x
+	j >>= 1
 	j |= y
 	return
 }

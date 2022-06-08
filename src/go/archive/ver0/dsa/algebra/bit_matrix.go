@@ -1,4 +1,4 @@
-package algebra 
+package algebra
 
 import (
 	. "kagemeka/general/types"
@@ -47,7 +47,7 @@ func (
 ) {
 	n := len(a)
 	return fmt.Sprintf(
-		SliceFormat(n, "\n"), 
+		SliceFormat(n, "\n"),
 		a.IS()...,
 	)
 }
@@ -107,7 +107,7 @@ func (
 			(IntSlice))
 	}
 	return s
-} 
+}
 
 
 func (
@@ -132,7 +132,7 @@ func (
 	a BitMatrix,
 ) Reversed() (
 	s BitMatrix,
-) { 
+) {
 	s = (
 		a.Clone().
 		(BitMatrix))
@@ -147,7 +147,7 @@ func (
 	x interface{},
 ) {
 	*a = append(
-		*a, 
+		*a,
 		x.(IntSlice),
 	)
 }
@@ -162,7 +162,7 @@ func (
 ) {
 	a = a.Clone().(BitMatrix)
 	a.Push(x)
-	return a 
+	return a
 }
 
 
@@ -177,7 +177,7 @@ func (
 	for i := Int(0); i < n; i++ {
 		e[i][i] = ^0
 	}
-	return 
+	return
 }
 
 
@@ -192,9 +192,9 @@ func (
 	_, m := b.Shape()
 	c = a.Make(n, m)
 	for i := Int(0); i < n; i++ {
-		for 
-		j := Int(0); 
-		j < m; 
+		for
+		j := Int(0);
+		j < m;
 		j++ {
 			c.dotSupport(a, b, i, j)
 		}
@@ -233,5 +233,5 @@ func (
 	if n & 1 == 1 {
 		b = b.Dot(a)
 	}
-	return b	
+	return b
 }

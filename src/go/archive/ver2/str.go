@@ -2,7 +2,7 @@ package cp
 
 //
 
-type Str string 
+type Str string
 
 
 func (

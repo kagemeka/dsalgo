@@ -3,7 +3,7 @@ import 'dart:io';
 void main() async {
   const n = 1 << 16;
   var ls = List<String>.filled(
-    n, 
+    n,
     '1234567890\n',
   );
   var s = ls.join();

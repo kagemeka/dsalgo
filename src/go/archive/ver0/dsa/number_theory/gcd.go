@@ -17,5 +17,5 @@ func (
 		return
 	}
 	gcd = j.GCD(i % j)
-	return 
+	return
 }

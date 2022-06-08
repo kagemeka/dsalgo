@@ -1,4 +1,4 @@
-package types 
+package types
 
 
 /* cut below */
@@ -11,16 +11,16 @@ type BoolSlice []Bool
 func (
 	a BoolSlice,
 ) Make(
-	n Int, 
+	n Int,
 	v Bool,
 ) (
 	b BoolSlice,
 ) {
 	b = make(BoolSlice, n)
 	for i := Int(0); i < n; i++ {
-		b[i] = v 
+		b[i] = v
 	}
-	return 
+	return
 }
 
 
@@ -33,7 +33,7 @@ func (
 		if !x {
 			continue
 		}
-		return true 
+		return true
 	}
 	return false
 }
@@ -48,7 +48,7 @@ func (
 		if x {
 			continue
 		}
-		return false 
+		return false
 	}
 	return true
 }

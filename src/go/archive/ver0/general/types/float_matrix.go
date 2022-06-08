@@ -5,7 +5,7 @@ package types
 
 
 
-type FloatMatrix []FloatSlice 
+type FloatMatrix []FloatSlice
 
 
 func (
@@ -44,7 +44,7 @@ func (
 ) {
 	n := len(a)
 	return fmt.Sprintf(
-		SliceFormat(n, "\n"), 
+		SliceFormat(n, "\n"),
 		a.IS()...,
 	)
 }
@@ -107,7 +107,7 @@ func (
 			(FloatSlice))
 	}
 	return s
-} 
+}
 
 
 func (
@@ -132,7 +132,7 @@ func (
 	a FloatMatrix,
 ) Reversed() (
 	s FloatMatrix,
-) { 
+) {
 	s = (
 		a.Clone().
 		(FloatMatrix))
@@ -147,7 +147,7 @@ func (
 	x interface{},
 ) {
 	*a = append(
-		*a, 
+		*a,
 		x.(FloatSlice),
 	)
 }
@@ -162,7 +162,7 @@ func (
 ) {
 	a = a.Clone().(FloatMatrix)
 	a.Push(x)
-	return a 
+	return a
 }
 
 
@@ -184,7 +184,7 @@ func (
 ) {
 	a = a.Clone().(FloatMatrix)
 	n, _ := a.Shape()
-	for 
+	for
 	i := Int(0); i < n - 1; i++ {
 		a.cumSum0Support(i)
 	}

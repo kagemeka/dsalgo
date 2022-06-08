@@ -1,4 +1,4 @@
-package topology 
+package topology
 
 
 /* cut below */
@@ -9,8 +9,8 @@ type TreeBFS struct {
 	G Tree
 	Root Int
 	Depth IntSlice
-	Dist IntSlice 
-	Parent IntSlice 
+	Dist IntSlice
+	Parent IntSlice
 	Que IntSlice
 }
 
@@ -44,14 +44,14 @@ func (
 		n,
 		-1,
 	)
-	parent[root] = root 
+	parent[root] = root
 	que := make(
 		IntSlice,
 		0,
 	)
 	que.Push(root)
 	bfs.Depth = depth
-	bfs.Dist = dist 
+	bfs.Dist = dist
 	bfs.Parent = parent
 	bfs.Que = que
 }
@@ -60,7 +60,7 @@ func (
 func (
 	bfs *TreeBFS,
 ) Search() {
-	que := &bfs.Que 
+	que := &bfs.Que
 	for que.Len() > 0 {
 		x := que.PopFront()
 		bfs.Explore(x)
@@ -77,9 +77,9 @@ func (
 	g := &bfs.G
 	que := &bfs.Que
 	depth := bfs.Depth
-	dist := bfs.Dist 
+	dist := bfs.Dist
 	parent := bfs.Parent
-	for 
+	for
 	_, e := range g.Edges[u] {
 		v := e.To
 		d := e.Weight
@@ -87,7 +87,7 @@ func (
 			continue
 		}
 		depth[v] = depth[u] + 1
-		dist[v] = dist[u] + d 
+		dist[v] = dist[u] + d
 		parent[v] = u
 		que.Push(v)
 	}

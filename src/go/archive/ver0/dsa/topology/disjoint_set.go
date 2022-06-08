@@ -6,8 +6,8 @@ package topology
 
 
 type DisjointSet struct {
-	Parent IntSlice 
-	Rank IntSlice 
+	Parent IntSlice
+	Rank IntSlice
 	Size IntSlice
 }
 
@@ -24,7 +24,7 @@ func (
 	rank := ds.Rank.Make(n, 0)
 	size := ds.Size.Make(n, 1)
 	ds.Parent = parent
-	ds.Rank = rank 
+	ds.Rank = rank
 	ds.Size = size
 }
 
@@ -36,14 +36,14 @@ func (
 ) (
 	root Int,
 ) {
-	parent := ds.Parent 
+	parent := ds.Parent
 	v := parent[u]
 	if v == u {
-		root = u 
+		root = u
 		return
 	}
 	root = ds.Find(v)
-	parent[u] = root 
+	parent[u] = root
 	return
 }
 
@@ -60,9 +60,9 @@ func (
 	}
 	u, v = ds.sort(u, v)
 	rank := ds.Rank
-	parent := ds.Parent 
-	size := ds.Size 
-	parent[v] = u 
+	parent := ds.Parent
+	size := ds.Size
+	parent[v] = u
 	size[u] += size[v]
 	rank[u] = Max(
 		rank[u],
@@ -80,9 +80,9 @@ func (
 ) {
 	rank := ds.Rank
 	if rank[u] < rank[v] {
-		u, v = v, u 
+		u, v = v, u
 	}
-	return u, v 	
+	return u, v
 }
 
 
@@ -95,5 +95,5 @@ func (
 ) {
 	u = ds.Find(u)
 	v = ds.Find(v)
-	return u == v 
+	return u == v
 }

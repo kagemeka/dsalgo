@@ -32,9 +32,9 @@ func (
 	bfs.SetGraph(l.G)
 	bfs.Prepare(root)
 	bfs.Search()
-	l.Parent = bfs.Parent 
+	l.Parent = bfs.Parent
 	l.Depth = bfs.Depth
-	l.Dist = bfs.Dist 
+	l.Dist = bfs.Dist
 }
 
 
@@ -42,7 +42,7 @@ func (
 	l *LCA,
 ) FindAncestors() {
 	n := Int(len(l.G.Nodes))
-	ancestors := l.Ancestors 
+	ancestors := l.Ancestors
 	m := l.Depth.Max().BitLen()
 	ancestors = ancestors.Make(
 		m,
@@ -51,7 +51,7 @@ func (
 	)
 	ancestors[0] = l.Parent
 	l.Ancestors = ancestors
-	for 
+	for
 	i := Int(0); i < m - 1; i++ {
 		l.nxtAncestor(i)
 	}
@@ -103,16 +103,16 @@ func (
 	du := l.Depth[u]
 	dv := l.Depth[v]
 	v = l.upStream(
-		v, 
+		v,
 		dv - du,
 	)
 	if v == u {
-		lca = u 
+		lca = u
 		return
 	}
 	lca = l.findLCASupport(
 		du,
-		u, 
+		u,
 		v,
 	)
 	return
@@ -164,15 +164,15 @@ func (
 ) {
 	n := dep.BitLen()
 	ancs := l.Ancestors
-	for 
+	for
 	i := n - 1; i > -1; i-- {
 		anc := ancs[i]
 		nu, nv := anc[u], anc[v]
 		if nu == nv {
 			continue
 		}
-		u, v = nu, nv 
+		u, v = nu, nv
 	}
 	lca = l.Parent[u]
-	return	
+	return
 }

@@ -26,22 +26,22 @@ func (
 func (
 	pn *PrimeNum,
 ) SieveOfEratosthenes() {
-	n := pn.n 
+	n := pn.n
 	isPrime := pn.IsPrime.Make(
 		n,
 		true,
 	)
 	isPrime[0] = false
 	isPrime[1] = false
-	pn.IsPrime = isPrime 
-	for 
+	pn.IsPrime = isPrime
+	for
 	i := Int(0);
 	i * i < n;
 	i++ {
 		if !isPrime[i] {
 			continue
 		}
-		pn.i = i 
+		pn.i = i
 		pn.sieveSupport()
 	}
 }
@@ -52,11 +52,11 @@ func (
 ) sieveSupport() {
 	n, i := pn.n, pn.i
 	isPrime := pn.IsPrime
-	for 
-	j := Int(i * 2); 
-	j < n; 
+	for
+	j := Int(i * 2);
+	j < n;
 	j += i {
-		isPrime[j] = false				
+		isPrime[j] = false
 	}
 }
 
@@ -68,7 +68,7 @@ func (
 		0,
 		0,
 	)
-	isPrime := pn.IsPrime 
+	isPrime := pn.IsPrime
 	for i, ok := range isPrime {
 		if !ok {
 			continue

@@ -9,6 +9,6 @@ extension BitCount on int {
       cnt += n & 1;
       n >>= 1;
     }
-    return cnt; 
+    return cnt;
   }
 }

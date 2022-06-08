@@ -7,14 +7,14 @@ extension Bisect<E> on List<E> {
   int bisectLeft(E element) {
     int lo = 0, hi = length;
     var compare = (
-      Comparable.compare 
+      Comparable.compare
       as Function(E, E)
     );
     while (lo < hi) {
       var x = (lo + hi) ~/ 2;
       if (
         compare(
-          element, 
+          element,
           this[x],
         ) > 0
       ) {
@@ -30,14 +30,14 @@ extension Bisect<E> on List<E> {
   int bisectRight(E element) {
     int lo = 0, hi = length;
     var compare = (
-      Comparable.compare 
+      Comparable.compare
       as Function(E, E)
     );
     while (lo < hi) {
       var x = (lo + hi) ~/ 2;
       if (
         compare(
-          element, 
+          element,
           this[x],
         ) < 0
       ) {

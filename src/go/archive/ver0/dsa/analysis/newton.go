@@ -1,4 +1,4 @@
-package analysis 
+package analysis
 
 
 
@@ -19,7 +19,7 @@ func (
 ) {
 	const dx = 1
 	d = (f(x + dx) - f(x)) / dx
-	return 
+	return
 }
 
 
@@ -33,9 +33,9 @@ func (
 	x = x0
 	const maxIter = 1 << 7
 	const eps = 1e-9
-	for 
-	i := 0; 
-	i < maxIter; 
+	for
+	i := 0;
+	i < maxIter;
 	i++ {
 		y := f(x)
 		der := f.Derivative(x)

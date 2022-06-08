@@ -11,7 +11,7 @@ type Binom map[PII]Modular
 
 type Choose struct {
 	cache Binom
-	mod Int	
+	mod Int
 }
 
 
@@ -21,7 +21,7 @@ func (
 	mod Int,
 ) {
 	c.cache = make(Binom)
-	c.mod = mod 
+	c.mod = mod
 }
 
 
@@ -55,7 +55,7 @@ func (
 	c *Choose,
 ) Calculator() (
 	func(
-		Int, 
+		Int,
 		Int,
 	) Modular,
 ) {

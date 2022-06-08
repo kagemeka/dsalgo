@@ -4,7 +4,7 @@ package types
 
 
 
-type RuneMatrix []RuneSlice 
+type RuneMatrix []RuneSlice
 
 
 func (
@@ -43,7 +43,7 @@ func (
 ) {
 	n := len(a)
 	return fmt.Sprintf(
-		SliceFormat(n, "\n"), 
+		SliceFormat(n, "\n"),
 		a.IS()...,
 	)
 }
@@ -106,7 +106,7 @@ func (
 			(RuneSlice))
 	}
 	return s
-} 
+}
 
 
 func (
@@ -131,7 +131,7 @@ func (
 	a RuneMatrix,
 ) Reversed() (
 	s RuneMatrix,
-) { 
+) {
 	s = (
 		a.Clone().
 		(RuneMatrix))
@@ -146,7 +146,7 @@ func (
 	x interface{},
 ) {
 	*a = append(
-		*a, 
+		*a,
 		x.(RuneSlice),
 	)
 }
@@ -161,7 +161,7 @@ func (
 ) {
 	a = a.Clone().(RuneMatrix)
 	a.Push(x)
-	return a 
+	return a
 }
 
 
@@ -176,5 +176,5 @@ func (
 	for i := Int(0); i < n; i++ {
 		b = append(b, a[i]...)
 	}
-	return 
+	return
 }

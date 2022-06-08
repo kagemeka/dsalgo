@@ -1,4 +1,4 @@
-import 
+import
 './abstract_algebra.dart';
 
 
@@ -7,18 +7,18 @@ import
 
 
 class Modular
-with 
+with
 Power<Modular>,
 Division<Modular>,
 Subtraction<Modular>
-implements 
-Field<Modular> { 
+implements
+Field<Modular> {
   int value = 0;
   final int mod;
 
 
   Modular(
-    this.value, 
+    this.value,
     this.mod,
   ) {
     value %= mod;
@@ -34,7 +34,7 @@ Field<Modular> {
     return Modular(value, mod);
   }
 
-  
+
   Modular operator +(
     final Modular other,
   ) {
@@ -97,7 +97,7 @@ Field<Modular> {
     return a;
   }
 
-  
+
   List<Modular> invFactorial()
   {
     int n = value;

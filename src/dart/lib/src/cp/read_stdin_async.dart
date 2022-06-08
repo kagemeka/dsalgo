@@ -44,5 +44,5 @@ class ReadStdinAsync {
       ' ',
     ).trim().split(' ');
     _i = 0;
-  }  
+  }
 }

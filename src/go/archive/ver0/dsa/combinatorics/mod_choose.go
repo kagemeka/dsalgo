@@ -21,7 +21,7 @@ type ModChoose struct {
 func (
 	c *ModChoose,
 ) Init(n Modular) {
-	c.Fact, c.InvFact = 
+	c.Fact, c.InvFact =
 		n.Factorial(),
 		n.InverseFactorial()
 	c.Mod = n.Mod

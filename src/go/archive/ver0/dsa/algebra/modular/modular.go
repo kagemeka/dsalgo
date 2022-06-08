@@ -1,4 +1,4 @@
-package modular 
+package modular
 
 
 import (
@@ -35,7 +35,7 @@ func (
 	m Modular,
 ) String() string {
 	return fmt.Sprint(m.Value)
-} 
+}
 
 
 func (
@@ -52,7 +52,7 @@ func (
 ) IAdd(
 	other Modular,
 ) {
-	m.Value += other.Value 
+	m.Value += other.Value
 	m.Init()
 }
 
@@ -86,7 +86,7 @@ func (
 ) ISub(
 	other Modular,
 ) {
-	negOther := other.Neg() 
+	negOther := other.Neg()
 	m.IAdd(negOther)
 }
 
@@ -109,7 +109,7 @@ func (
 	other Modular,
 ) {
 	mod := m.Mod
-	m.Value *= other.Value 
+	m.Value *= other.Value
 	m.Value %= mod
 }
 
@@ -122,7 +122,7 @@ func (
 	Modular,
 ) {
 	m.IMul(other)
-	return m 
+	return m
 }
 
 
@@ -194,7 +194,7 @@ func (
 	}
 	fact[0] = Modular{1, mod}
 	fact = fact.CumProd()
-	return 
+	return
 }
 
 
@@ -217,5 +217,5 @@ func (
 		Invert())
 	invFact = invFact.CumProd()
 	invFact.Reverse()
-	return 
+	return
 }

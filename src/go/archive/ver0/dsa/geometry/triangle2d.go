@@ -1,4 +1,4 @@
-package geometry 
+package geometry
 
 
 /* cut below */
@@ -16,7 +16,7 @@ func (
 	area Float,
 ) {
 	v1 := t.V1.Sub(t.V0)
-	v2 := t.V2.Sub(t.V0) 
+	v2 := t.V2.Sub(t.V0)
 	cross := v1.Cross(v2)
 	switch cross.(type) {
 	case Int:
@@ -27,7 +27,7 @@ func (
 		area = cross.(Float)
 	}
 	area /= 2
-	return 
+	return
 }
 
 
@@ -36,7 +36,7 @@ func (
 ) Area() (
 	Float,
 ) {
-	s := 
+	s :=
 		t.SignedArea().
 		Abs().
 		(Float)

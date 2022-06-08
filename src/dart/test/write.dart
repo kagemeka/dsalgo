@@ -15,12 +15,12 @@ class WriteStdout {
   void call(Object x) {
     print(x);
   }
-  
+
   void iter(
     Iterable<dynamic> a,
-  ) { 
+  ) {
     stdout.writeAll(a, '\n');
-    print(''); 
+    print('');
   }
 
   void iterln(
@@ -28,5 +28,5 @@ class WriteStdout {
   ) {
     stdout.writeAll(a, ' ');
     print('');
-  }  
+  }
 }

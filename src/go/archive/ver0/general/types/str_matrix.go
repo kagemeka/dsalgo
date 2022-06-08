@@ -1,4 +1,4 @@
-package types 
+package types
 
 
 
@@ -50,7 +50,7 @@ func (
 			(StrSlice))
 	}
 	return s
-} 
+}
 
 
 func (
@@ -75,7 +75,7 @@ func (
 	a StrMatrix,
 ) Reversed() (
 	s StrMatrix,
-) { 
+) {
 	s = (
 		a.Clone().
 		(StrMatrix))
@@ -90,7 +90,7 @@ func (
 	x interface{},
 ) {
 	*a = append(
-		*a, 
+		*a,
 		x.(StrSlice),
 	)
 }
@@ -105,5 +105,5 @@ func (
 ) {
 	a = a.Clone().(StrMatrix)
 	a.Push(x)
-	return a 
+	return a
 }

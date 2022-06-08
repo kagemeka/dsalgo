@@ -68,8 +68,8 @@ func (
 	factors MII,
 ) {
 	factors = make(MII)
-	f.fFactors = factors 
-	for 
+	f.fFactors = factors
+	for
 	i := Int(1); i < n + 1; i++ {
 		f.n = i
 		f.factorialSupport()
@@ -81,8 +81,8 @@ func (
 func (
 	f *Factorization,
 ) factorialSupport() {
-	n := f.n 
-	factors := f.fFactors 
+	n := f.n
+	factors := f.fFactors
 	for p, c := range f.Calc(n) {
 		factors[p] += c
 	}

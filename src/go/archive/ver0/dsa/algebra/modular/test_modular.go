@@ -4,11 +4,11 @@ package modular
 func TestModular() {
 	var mod Int = 1_000_000_007
 
-	var n int = 100 
+	var n int = 100
 	a := make([]Modular, n)
 	for i := 0; i < n; i++ {
 		a[i] = Modular{
-			Int(i), 
+			Int(i),
 			mod,
 	}
 	}
@@ -22,7 +22,7 @@ func TestModular() {
 	fmt.Println(a)
 
 	m := Modular{
-		Int(n), 
+		Int(n),
 		mod,
 	}
 	f := m.Factorial()

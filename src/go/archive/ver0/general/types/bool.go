@@ -1,11 +1,11 @@
-package types 
+package types
 
 
 /* cut below */
 
 
 
-type Bool bool 
+type Bool bool
 
 
 func (

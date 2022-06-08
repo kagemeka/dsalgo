@@ -4,7 +4,7 @@ package cp
 
 
 type Reversible interface {
-	Len() int 
+	Len() int
 	Swap(i, j int)
 }
 

@@ -1,4 +1,4 @@
-package topology 
+package topology
 
 
 /* cut below */
@@ -45,7 +45,7 @@ func (
 func (
 	bfs *GraphBFS,
 ) Search() {
-	que := &bfs.Que 
+	que := &bfs.Que
 	for que.Len() > 0 {
 		x := que.PopFront()
 		bfs.Explore(x)
@@ -62,7 +62,7 @@ func (
 	g := &bfs.G
 	que := &bfs.Que
 	lv := &bfs.Level
-	for 
+	for
 	_, e := range g.Edges[u] {
 		v := e.To
 		if (*lv)[v] != -1 {

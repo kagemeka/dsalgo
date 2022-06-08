@@ -1,4 +1,4 @@
-package topology 
+package topology
 
 
 /* cut below */
@@ -27,13 +27,13 @@ type NodeSlice []Node
 type Edge struct {
 	ID Int
 	From, To Int
-	Weight Int 
+	Weight Int
 	Capacity Int
 }
 
 
 
-type EdgeSlice []Edge 
+type EdgeSlice []Edge
 
 
 func (
@@ -42,7 +42,7 @@ func (
 	e interface{},
 ) {
 	*edges = append(
-		*edges, 
+		*edges,
 		e.(Edge),
 	)
 }
@@ -71,15 +71,15 @@ func (
 		)
 		edges[i] = e
 	}
-	g.Nodes = nodes 
-	g.Edges = edges 
+	g.Nodes = nodes
+	g.Edges = edges
 }
 
 
 func (
 	g *Graph,
 ) AddEdge(e Edge) {
-	u := e.From 
+	u := e.From
 	g.Edges[u].Push(e)
 }
 
@@ -100,7 +100,7 @@ func (
 ) AddNode(
 	v Node,
 ) {
-	g.Nodes[v.ID] = v 
+	g.Nodes[v.ID] = v
 }
 
 

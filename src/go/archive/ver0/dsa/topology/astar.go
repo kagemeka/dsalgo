@@ -18,7 +18,7 @@ func (
 	other AStarItem,
 ) Bool {
 	if x.S != other.S {
-		return x.S < other.S 
+		return x.S < other.S
 	}
 	return x.H < other.H
 }
@@ -59,7 +59,7 @@ func (
 	x interface{},
 ) {
 	*h = append(
-		*h, 
+		*h,
 		x.(AStarItem),
 	)
 }
@@ -94,7 +94,7 @@ type AStar struct {
 	src, dst Int
 	inf Int
 	x AStarItem
-	e Edge 
+	e Edge
 }
 
 
@@ -123,7 +123,7 @@ func (
 	dst Int,
 	inf Int,
 ) {
-	a.src, a.dst = src, dst 
+	a.src, a.dst = src, dst
 	a.inf = inf
 	a.InitCost()
 	a.InitHeap()
@@ -133,7 +133,7 @@ func (
 func (
 	a *AStar,
 ) InitCost() {
-	n := a.G.Size() 
+	n := a.G.Size()
 	src := a.src
 	inf := a.inf
 	cost := a.Cost.Make(
@@ -169,11 +169,11 @@ func (
 func (
 	a *AStar,
 ) Search() {
-	h := &a.Heap 
+	h := &a.Heap
 	for h.Len() > 0 {
 		a.Open()
 		if a.isDst() {
-			return 
+			return
 		}
 		if a.Searched() {
 			continue
@@ -199,7 +199,7 @@ func (
 ) isDst() (
 	Bool,
 ) {
-	x := a.x 
+	x := a.x
 	i := x.Node
 	return i == a.dst
 }
@@ -210,7 +210,7 @@ func (
 ) Searched() (
 	Bool,
 ) {
-	x := a.x 
+	x := a.x
 	i, c := x.Node, x.C
 	return c > a.Cost[i]
 }
@@ -222,7 +222,7 @@ func (
 	u := a.x.Node
 	edges := a.G.Edges
 	for _, e := range edges[u] {
-		a.e = e 
+		a.e = e
 		a.exploreSupport()
 	}
 }
@@ -232,14 +232,14 @@ func (
 	a *AStar,
 ) exploreSupport() {
 	c := a.x.C
-	e := a.e 
-	v := e.To 
+	e := a.e
+	v := e.To
 	c += e.Weight
-	cost := a.Cost 
+	cost := a.Cost
 	if c >= cost[v] {
-		return 
+		return
 	}
-	cost[v] = c 
+	cost[v] = c
 	h := a.F(c)
 	s := c + h
 	x := AStarItem{

@@ -45,16 +45,16 @@ func (
 func (
 	a IntSlice,
 ) Make(
-	n Int, 
+	n Int,
 	v Int,
 ) (
 	b IntSlice,
 ) {
 	b = make(IntSlice, n)
 	for i := Int(0); i < n; i++ {
-		b[i] = v 
+		b[i] = v
 	}
-	return 
+	return
 }
 
 
@@ -67,7 +67,7 @@ func (
 	s := make(IntSlice, n)
 	copy(s, a)
 	return s
-} 
+}
 
 
 func (
@@ -94,7 +94,7 @@ func (
 	for i := 0; i < n; i++ {
 		b[i] = a[i]
 	}
-	return 
+	return
 }
 
 
@@ -103,7 +103,7 @@ func (
 ) String() string {
 	n := len(a)
 	return fmt.Sprintf(
-		SliceFormat(n, " "), 
+		SliceFormat(n, " "),
 		a.IS()...,
 	)
 }
@@ -170,7 +170,7 @@ func (
 	i, j int,
 ) bool {
 	return a[i] < a[j]
-} 
+}
 
 
 func (
@@ -204,7 +204,7 @@ func (
 	a IntSlice,
 ) Reversed() (
 	s IntSlice,
-) { 
+) {
 	s = a.Clone().(IntSlice)
 	s.Reverse()
 	return
@@ -239,7 +239,7 @@ func (
 	for i := 0; i < n-1; i++ {
 		b[i + 1] += b[i]
 	}
-	return 
+	return
 }
 
 
@@ -253,7 +253,7 @@ func (
 	for i := 0; i < n-1; i++ {
 		b[i + 1] *= b[i]
 	}
-	return 
+	return
 }
 
 
@@ -270,7 +270,7 @@ func (
 			b[i],
 		).(Int)
 	}
-	return 
+	return
 }
 
 
@@ -288,7 +288,7 @@ func (
 		return a[i] >= x
 	}
 	i = Int(sort.Search(n, f))
-	return 
+	return
 }
 
 
@@ -306,7 +306,7 @@ func (
 		return a[i] > x
 	}
 	i = Int(sort.Search(n, f))
-	return 
+	return
 }
 
 
@@ -330,7 +330,7 @@ func (
 	x interface{},
 ) {
 	*a = append(
-		*a, 
+		*a,
 		x.(Int),
 	)
 }
@@ -345,7 +345,7 @@ func (
 ) {
 	a = a.Clone().(IntSlice)
 	a.Push(x)
-	return a 
+	return a
 }
 
 
@@ -368,7 +368,7 @@ func (
 	n := len(a)
 	b = make(BitMatrix, n)
 	for i := 0; i < n; i++ {
-		b[i] = IntSlice{a[i]}		
+		b[i] = IntSlice{a[i]}
 	}
 	return
 }
@@ -388,7 +388,7 @@ func (
 		v.Init()
 		b[i] = v
 	}
-	return 
+	return
 }
 
 
@@ -399,7 +399,7 @@ func (
 ) {
 	const bufSize = 1
 	ch = make(
-		chan IntSlice, 
+		chan IntSlice,
 		bufSize,
 	)
 	return

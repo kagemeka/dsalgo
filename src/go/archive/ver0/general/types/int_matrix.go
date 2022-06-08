@@ -1,11 +1,11 @@
-package types 
+package types
 
 
 /* cut below */
 
 
 
-type IntMatrix []IntSlice 
+type IntMatrix []IntSlice
 
 
 func (
@@ -44,7 +44,7 @@ func (
 ) {
 	n := len(a)
 	return fmt.Sprintf(
-		SliceFormat(n, "\n"), 
+		SliceFormat(n, "\n"),
 		a.IS()...,
 	)
 }
@@ -107,7 +107,7 @@ func (
 			(IntSlice))
 	}
 	return s
-} 
+}
 
 
 func (
@@ -132,7 +132,7 @@ func (
 	a IntMatrix,
 ) Reversed() (
 	s IntMatrix,
-) { 
+) {
 	s = (
 		a.Clone().
 		(IntMatrix))
@@ -147,7 +147,7 @@ func (
 	x interface{},
 ) {
 	*a = append(
-		*a, 
+		*a,
 		x.(IntSlice),
 	)
 }
@@ -162,7 +162,7 @@ func (
 ) {
 	a = a.Clone().(IntMatrix)
 	a.Push(x)
-	return a 
+	return a
 }
 
 
@@ -184,7 +184,7 @@ func (
 ) {
 	a = a.Clone().(IntMatrix)
 	n, _ := a.Shape()
-	for 
+	for
 	i := Int(0); i < n - 1; i++ {
 		a.cumSum0Support(i)
 	}
@@ -266,5 +266,5 @@ func (
 	for i := Int(0); i < n; i++ {
 		b[i] = a[i].Modularize(mod)
 	}
-	return 
+	return
 }

@@ -7,7 +7,7 @@ package combinatorics
 
 // dfs, n >= 63
 func Cmbs(
-	a []interface{}, 
+	a []interface{},
 	r int,
 ) (
 	res [][]interface{},
@@ -26,8 +26,8 @@ func Cmbs(
 			if indices[i] == i+n-r {
 				continue
 			}
-			flg = true 
-			break 
+			flg = true
+			break
 		}
 		if !flg {return}
 		indices[i]++
@@ -35,7 +35,7 @@ func Cmbs(
 			indices[j] = indices[j-1]+1
 		}
 		tmp := make(
-			[]interface{}, 
+			[]interface{},
 			r,
 		)
 		for j := 0; j < r; j++ {

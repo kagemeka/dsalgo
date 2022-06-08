@@ -1,4 +1,4 @@
-package types 
+package types
 
 import (
 	"unicode"
@@ -25,7 +25,7 @@ func (
 ) LE(
 	other Comparable,
 ) Bool {
-	return x <= other.(Rune) 
+	return x <= other.(Rune)
 }
 
 
