@@ -2,9 +2,9 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 0.1.0   | :white_check_mark: |
+| Language | Version | Supported          |
+| --- | ------- | ------------------ |
+| python  | 0.2.4   | :white_check_mark: |
 
 ## Reporting a Vulnerability
 

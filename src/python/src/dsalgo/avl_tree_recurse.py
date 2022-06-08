@@ -4,7 +4,7 @@ import dataclasses
 import typing
 
 import dsalgo.protocol
-import dsalgo.util
+import dsalgo._util
 
 K = typing.TypeVar("K", bound=dsalgo.protocol.Order)
 V = typing.TypeVar("V")
@@ -44,7 +44,7 @@ def _update(root: Node[K, V]) -> None:
 
 
 def _left_rotate(root: Node[K, V]) -> Node[K, V]:
-    u = dsalgo.util.unwrap(root.right)
+    u = dsalgo._util.unwrap(root.right)
     u.left, root.right = root, u.left
     _update(root)
     _update(u)
@@ -52,7 +52,7 @@ def _left_rotate(root: Node[K, V]) -> Node[K, V]:
 
 
 def _right_rotate(root: Node[K, V]) -> Node[K, V]:
-    u = dsalgo.util.unwrap(root.left)
+    u = dsalgo._util.unwrap(root.left)
     u.right, root.left = root, u.right
     _update(root)
     _update(u)
@@ -64,11 +64,11 @@ def _balance_tree(root: Node[K, V]) -> Node[K, V]:
     balance = _get_balance(root)
     if balance < -1:  # lean to left direction
         if _get_balance(root.left) > 0:
-            root.left = _left_rotate(dsalgo.util.unwrap(root.left))
+            root.left = _left_rotate(dsalgo._util.unwrap(root.left))
         return _right_rotate(root)
     elif balance > 1:
         if _get_balance(root.right) < 0:
-            root.right = _right_rotate(dsalgo.util.unwrap(root.right))
+            root.right = _right_rotate(dsalgo._util.unwrap(root.right))
         return _left_rotate(root)
     else:
         return root
@@ -118,7 +118,7 @@ def get_kth_node(root: Node[K, V], k: int) -> typing.Optional[Node[K, V]]:
     if k == i:
         return root
     if k < i:
-        return get_kth_node(dsalgo.util.unwrap(root.left), k)
+        return get_kth_node(dsalgo._util.unwrap(root.left), k)
     if root.right is None:
         return None
     return get_kth_node(root.right, k - i - 1)

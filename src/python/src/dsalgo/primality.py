@@ -28,22 +28,6 @@ def is_prime_table(size: int) -> list[bool]:
     return sieve_of_eratosthenes(size)
 
 
-def sieve_of_atkin(n: int) -> list[bool]:
-    ...
-
-
-def linear_sieve(n: int) -> list[bool]:
-    ...
-
-
-def rapin_test() -> bool:
-    ...
-
-
-def solovay_strassen_test() -> bool:
-    ...
-
-
 def _is_trivial_composite(n: int) -> bool:
     return n > 2 and n & 1 == 0
 
@@ -98,42 +82,6 @@ def miller_rabin_test_64(n: int) -> bool:
 def miller_rabin_test_64_v2(n: int) -> bool:
     BASES = [2, 325, 9375, 28178, 450775, 9780504, 1795265022]
     return _miller_rabin_fixed_bases(n, BASES)
-
-
-def miller_test() -> bool:
-    ...
-
-
-def miller_rabin_solovay_strassen_test() -> bool:
-    ...
-
-
-def lucas_test() -> bool:
-    ...
-
-
-def lucas_lehmer_test() -> bool:
-    ...
-
-
-def lucas_lehmer_reisel_test() -> bool:
-    ...
-
-
-def packlington_test() -> bool:
-    ...
-
-
-def frobenius_test() -> bool:
-    ...
-
-
-def baillie_psw_test() -> bool:
-    ...
-
-
-def agrawal_kayal_saxena_test(n: int) -> bool:
-    ...
 
 
 def fermat_test(n: int, check_times: int = 100) -> bool:
@@ -201,7 +149,3 @@ CARMICHAEL_NUMBERS: typing.Final[list[int]] = [
     488881,
     512461,
 ]
-
-
-def pollard_rho() -> None:
-    ...

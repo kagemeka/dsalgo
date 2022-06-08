@@ -3,7 +3,7 @@ Tag
 - numbe theory
 """
 
-from dsalgo.number_theory.floor_sqrt import floor_sqrt
+from dsalgo.floor_sqrt import floor_sqrt
 
 
 def floor_sum(n: int) -> int:

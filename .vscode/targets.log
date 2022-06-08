@@ -1,0 +1,2 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+/bin/sh: 1: make: not found

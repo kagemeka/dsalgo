@@ -4,7 +4,7 @@ requires = ["poetry_core >= 1.0.0"]
 
 # POETRY ------------------------------------------------------------------------------
 [tool.poetry]
-authors = ["Hiroshi Tsuyuki <kagemeka1@gmail.com>"]
+authors = ["kagemeka <kagemeka1@gmail.com>"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: MIT License",
@@ -23,7 +23,7 @@ include = []
 keywords = ["algorithm", "datastructure"]
 
 license = "MIT"
-maintainers = ["Hiroshi Tsuyuki <kagemeka1@gmail.com>"]
+maintainers = ["kagemeka <kagemeka1@gmail.com>"]
 name = "dsalgo"
 packages = [
   {include = "dsalgo", from = "src"},
@@ -38,8 +38,8 @@ version = "0.2.4"
 networkx = "^"
 numba = "0.55.1"
 numpy = "^"
-optext-python = "0.1.1"
-python = ">=3.8,<3.11"
+# optext-python = "0.1.1"
+python = ">=3.9,<3.11"
 scipy = "^"
 
 furo = {version = "^", optional = true}
@@ -187,6 +187,17 @@ warn_unused_ignores = true
 # github: https://github.com/pytest-dev/pytest
 # docs: https://docs.pytest.org
 cache_dir = "/tmp/.pytest_cache"
+# testpaths = [
+#   "tests/",
+#   "src/dsalgo/",
+# ]
+# verbose=true
+# asyncio_mode="strict"
+# python_files=[
+#   "*.py",
+# ]
+
+ignore="src/dsalgo_numba.py,src/dsalgo_numpy"
 
 [tool.tox]
 # github: https://github.com/tox-dev/tox

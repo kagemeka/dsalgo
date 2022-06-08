@@ -8,4 +8,12 @@ get_current_file_directory() {
 
 root=$(dirname "$(get_current_file_directory)")
 
-poetry run pytest --asyncio-mode=strict --verbose "$root"
+poetry run pytest \
+    --asyncio-mode=strict \
+    --verbose "$root" \
+    --ignore=docs \
+    --ignore=src/dsalgo_numba \
+    --ignore=src/dsalgo_numpy
+    # --testpaths="**/src/dsalgo/*.py"
+    # --testpaths=tests/
+    # --python

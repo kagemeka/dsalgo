@@ -5,7 +5,7 @@ Graph Theory
 
 import typing
 
-from dsalgo.algebra.abstract.abstract_structure import Monoid
+from dsalgo.abstract_structure import Monoid
 
 S = typing.TypeVar("S")
 F = typing.TypeVar("F")
@@ -23,36 +23,41 @@ def tree_dp_for_all_roots(
         graph[u].append((v, f))
         graph[v].append((u, f))
 
-    dp_from_childs = [monoid.e() for _ in range(n)]
+    dp_from_childs = [monoid.identity() for _ in range(n)]
 
     def tree_dp(u: int, parent: int) -> None:
         for v, f in graph[u]:
             if v == parent:
                 continue
             tree_dp(v, u)
-            dp_from_childs[u] = monoid.op(
+            dp_from_childs[u] = monoid.operation(
                 dp_from_childs[u],
                 map_(f, dp_from_childs[v]),
             )
 
     tree_dp(0, -1)
-    dp_from_parent = [monoid.e() for _ in range(n)]
+    dp_from_parent = [monoid.identity() for _ in range(n)]
 
     def reroot(u: int, parent: int) -> None:
         child_edges = [edge for edge in graph[u] if edge[0] != parent]
         deg = len(child_edges)
-        dp_l = [monoid.e() for _ in range(deg)]
-        dp_r = [monoid.e() for _ in range(deg)]
+        dp_l = [monoid.identity() for _ in range(deg)]
+        dp_r = [monoid.identity() for _ in range(deg)]
         for i, (v, f) in enumerate(child_edges[:-1]):
-            dp_l[i + 1] = monoid.op(dp_l[i], map_(f, dp_from_childs[v]))
+            dp_l[i + 1] = monoid.operation(dp_l[i], map_(f, dp_from_childs[v]))
         for i, (v, f) in reversed(list(enumerate(child_edges[1:]))):
-            dp_r[i] = monoid.op(dp_r[i + 1], map_(f, dp_from_childs[v]))
+            dp_r[i] = monoid.operation(dp_r[i + 1], map_(f, dp_from_childs[v]))
         for i, (v, f) in enumerate(child_edges):
             dp_from_parent[v] = map_(
                 f,
-                monoid.op(dp_from_parent[u], monoid.op(dp_l[i], dp_r[i])),
+                monoid.operation(
+                    dp_from_parent[u], monoid.operation(dp_l[i], dp_r[i])
+                ),
             )
             reroot(v, u)
 
     reroot(0, -1)
-    return [monoid.op(dp_from_childs[i], dp_from_parent[i]) for i in range(n)]
+    return [
+        monoid.operation(dp_from_childs[i], dp_from_parent[i])
+        for i in range(n)
+    ]
