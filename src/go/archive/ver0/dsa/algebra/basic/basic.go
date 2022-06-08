@@ -1,0 +1,3 @@
+import (
+	. "kagemeka/general/types"
+)
