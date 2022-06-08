@@ -11,4 +11,4 @@ cargo package --list --allow-dirty
 
 cargo publish --dry-run --allow-dirty
 
-pre-commit run --all-files
+./scripts/pre-commit.sh
