@@ -1,0 +1,34 @@
+version: '3.9'
+
+
+services:
+  dart:
+    build:
+      context: ..
+      dockerfile:
+        docker/Dockerfile
+    env_file:
+      - common.env
+    image:
+      kagemeka/kagemeka:dart
+    restart: on-failure
+    tty: true
+    volumes:
+      - type: tmpfs
+        target: /tmp/
+        volume:
+          nocopy: true
+        read_only: false
+      - type: bind
+        source: /tmp/.X11-unix
+        target: /tmp/.X11-unix
+        volume:
+          nocopy: true
+        read_only: false
+      - type: bind
+        source: $ROOT
+        target: /root/kagemeka
+        volume:
+          nocopy: true
+        read_only: false
+    working_dir: /root/kagemeka
