@@ -11,8 +11,8 @@ namespace graph_theory {
   namespace maximum_flow {
     template <typename T> struct FordFulkersonData { T capacity; };
     template <typename T> using FordFulkersonGraph = DenseDirectedGraph<void *, FordFulkersonData<T>>;
-    
-    template <typename T> 
+
+    template <typename T>
     T ford_fulkerson(FordFulkersonGraph<T> g, int src, int sink) {
       int n = g.nodes.size();
       T inf = std::numeric_limits<T>::max();

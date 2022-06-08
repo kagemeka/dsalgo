@@ -12,8 +12,8 @@ services:
     volumes:
       - type: bind
         source: $ROOT
-        target: /root/$PROJECT 
-        volume: 
+        target: /root/$PROJECT
+        volume:
           nocopy: true
         read_only: false
     working_dir: /root/$PROJECT

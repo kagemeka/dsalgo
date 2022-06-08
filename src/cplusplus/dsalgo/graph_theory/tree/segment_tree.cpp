@@ -21,7 +21,7 @@ public:
     data = std::vector<S>(n << 1, m.e());
     for (int i = 0; i < size; i++) data[n + i] = a[i];
     for (int i = n - 1; i > 0; --i) merge(i);
-  } 
+  }
   SegmentTree(M m, int n) : SegmentTree(m, std::vector<S>(n, m.e())) {}
 
   void set(int i, S x) {
@@ -31,8 +31,8 @@ public:
     while (i > 1) { i >>= 1; merge(i); }
   }
 
-  const S& operator[](int i) const { 
-    assert(0 <= i && i < size); 
+  const S& operator[](int i) const {
+    assert(0 <= i && i < size);
     return data[n + i];
   }
 
@@ -89,7 +89,7 @@ private:
   std::vector<F> lazy;
 
   void merge(int i) { data[i] = c.s.op(data[i << 1], data[i << 1 | 1]); }
-  
+
   void apply(int i, F f) {
     data[i] = c.map(f, data[i]);
     if (i < n) lazy[i] = c.f.op(f, lazy[i]);

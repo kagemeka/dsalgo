@@ -9,7 +9,7 @@ RUN \
   build-essential \
   neovim \
   software-properties-common \
-  xclip \  
+  xclip \
   xsel \
   && rm -rf /var/lib/apt/lists/* \
   && apt clean -y \

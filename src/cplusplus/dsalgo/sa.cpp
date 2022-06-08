@@ -1,5 +1,5 @@
 #include "kagemeka/std/array_compression.cpp"
-#include <vector> 
+#include <vector>
 #include <algorithm>
 #include <functional>
 #include <numeric>
@@ -14,7 +14,7 @@ std::vector<int> sa_is(std::vector<int> a) {
   int m = *std::max_element(a.begin(), a.end()) + 1;
   std::vector<bool> is_s(n, true), is_lms(n);
   std::vector<int> lms; lms.reserve(n);
-  for (int i = n - 1; i > 0; i--) { 
+  for (int i = n - 1; i > 0; i--) {
     is_s[i - 1] = a[i - 1] == a[i] ? is_s[i] : a[i - 1] < a[i];
     is_lms[i] = !is_s[i - 1] && is_s[i];
     if (is_lms[i]) lms.push_back(i);
@@ -34,19 +34,19 @@ std::vector<int> sa_is(std::vector<int> a) {
     int s = 0;
     for (int i = 0; i < m; i++) { sa_idx[i] += s; std::swap(s, sa_idx[i]); }
     for (int j = 0; j < n; j++) {
-      int i = sa[j] - 1; 
-      if (i >= 0 && !is_s[i]) sa[sa_idx[a[i]]++] = i; 
+      int i = sa[j] - 1;
+      if (i >= 0 && !is_s[i]) sa[sa_idx[a[i]]++] = i;
     }
-    
+
     std::copy(bucket.begin(), bucket.end(), sa_idx.begin());
     for (int i = 0; i < m - 1; i++) sa_idx[i + 1] += sa_idx[i];
     for (int j = n - 1; j > -1; j--) {
-      int i = sa[j] - 1; 
-      if (i >= 0 && is_s[i]) sa[--sa_idx[a[i]]] = i; 
+      int i = sa[j] - 1;
+      if (i >= 0 && is_s[i]) sa[--sa_idx[a[i]]] = i;
     }
     return sa;
   };
-  
+
   std::vector<int> sa = induce(), lms_idx, rank(n, -1);
   lms_idx.reserve(n);
   for (const int &i : sa) if (is_lms[i]) lms_idx.push_back(i);
@@ -80,7 +80,7 @@ std::vector<int> sa_is(std::vector<int> a) {
 }
 
 
-std::vector<int> sa_doubling(std::vector<int> a) { 
+std::vector<int> sa_doubling(std::vector<int> a) {
   int n = a.size();
   ArrayCompression<int> ac;
   std::vector<int> rank = ac.compress(a);

@@ -26,8 +26,8 @@ namespace graph_theory::maximum_flow {
         for (const auto &e : g.edges[u]) {
           if (level[e.v] != -1 || e.data.capacity == 0) continue;
           level[e.v] = level[u] + 1;
-          fifo_que.push(e.v);                       
-        }   
+          fifo_que.push(e.v);
+        }
       }
     };
 

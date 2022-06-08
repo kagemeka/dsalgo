@@ -15,7 +15,7 @@ public:
     std::vector<int> idx(n);
     for (int i = 0; i < n; i++) {
       idx[i] = std::lower_bound(v.begin(), v.end(), a[i]) - v.begin();
-    } 
+    }
     return idx;
   }
 

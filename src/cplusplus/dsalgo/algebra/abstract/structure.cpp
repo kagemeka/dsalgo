@@ -1,14 +1,14 @@
 #include <functional>
 
 
-// Operations are associative. 
-template <typename S> 
-struct Semigroup { 
+// Operations are associative.
+template <typename S>
+struct Semigroup {
 private:
   using Op = std::function<S(S, S)>;
 public:
-  Op op; 
-  bool commutative = false; 
+  Op op;
+  bool commutative = false;
 };
 
 
@@ -20,11 +20,11 @@ private:
 public:
   Op op;
   Id e;
-  bool commutative = false; 
+  bool commutative = false;
 };
 
 
-template <typename S> struct Group : public Monoid<S> { 
+template <typename S> struct Group : public Monoid<S> {
 private:
   using Op = std::function<S(S, S)>;
   using Id = std::function<S()>;
@@ -33,15 +33,15 @@ public:
   Op op;
   Id e;
   Inv inverse;
-  bool commutative; 
+  bool commutative;
 };
 
 
 // Multiplication should distributes over addition.
-// (S, +) is commutative monoid. 
+// (S, +) is commutative monoid.
 // S x e_add = e_add.
-template <typename S> 
-struct Semiring { 
+template <typename S>
+struct Semiring {
 private:
   using Op = std::function<S(S, S)>;
   using Id = std::function<S()>;
@@ -52,16 +52,16 @@ public:
 
   Semiring(
     Operator op_add,
-    Identity e_add,   
+    Identity e_add,
     Operator op_mul,
-    Identity e_mul, 
+    Identity e_mul,
     bool commutative = false
   ) : add(op_add, e_add, true), mul(op_mul, e_mul, commutative) {}
 };
 
 
-template <typename S> 
-struct Ring { 
+template <typename S>
+struct Ring {
 protected:
   using Operator = function<S(S, S)>;
   using Identity = function<S()>;
@@ -73,10 +73,10 @@ public:
 
   Ring(
     Operator op_add,
-    Identity e_add, 
-    Inverse inverse,  
+    Identity e_add,
+    Inverse inverse,
     Operator op_mul,
-    Identity e_mul, 
+    Identity e_mul,
     bool commutative = false
   ) : add(op_add, e_add, inverse, true), mul(op_mul, e_mul, commutative) {}
 };
