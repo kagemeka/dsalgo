@@ -3,6 +3,7 @@
 source ~/.bashrc
 
 ./scripts/update_toolchain.sh
+
 cargo update --verbose
 cargo package --list --allow-dirty
 
@@ -10,5 +11,3 @@ cargo package --list --allow-dirty
 ./scripts/test.sh
 
 cargo publish --dry-run --allow-dirty
-
-./scripts/pre-commit.sh
