@@ -1,9 +1,16 @@
-# Contributing to DsAlgo
+# Contributing to DsAlgo (Rust)
 
-Thanks for your help improving the project!.
+## module naming rule
 
-# Code of Conduct
+* basically,
+  * <theme>_<algorithm/data_structure>_<ext>.rs
+    * if theme is trivial, it can be omitted.
+    * for example, `floyd_warshall` is a algorithm only used for shortest path.
+    * extentional impl section should be separeted with absolute core API.
 
-see [here](./CODE_OF_CONDUCT.md)
+## project rules
 
-more details are coming soon!
+* do not introduce additional directory depth for this project.
+* instead, split files into small pieces, and connect them by `use` keyword.
+* run ./script/ci.sh before commit and push.
+* by defining abstract algebra and precice traits, preserve strict `DRY` principle and beautiful codes.
