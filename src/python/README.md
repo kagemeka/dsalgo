@@ -1,4 +1,5 @@
 # DsAlgo: Datastructures and Algorithms for Python
+
 DsAlgo is a package for Datastructures and Algorithms written in Python.
 
 [![Python package][ci-badge]][ci-url]
@@ -24,19 +25,18 @@ DsAlgo is a package for Datastructures and Algorithms written in Python.
 [gh-pages-badge]: https://github.com/kagemeka/dsalgo-python/actions/workflows/pages/pages-build-deployment/badge.svg
 [gh-pages-url]: https://kagemeka.github.io/dsalgo-python
 
-
 ## Installation
 
 DsAlgo can be installed using pip:
 
 ```bash
-$ python3 -m pip install -U dsalgo
+python3 -m pip install -U dsalgo
 ```
 
 If you want to run the latest version of the code, you can install from git:
 
 ```bash
-$ python3 -m pip install -U git+git://github.com/kagemeka/dsalgo-python.git
+python3 -m pip install -U git+git://github.com/kagemeka/dsalgo-python.git
 ```
 
 ## Contributing

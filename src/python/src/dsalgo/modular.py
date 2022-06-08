@@ -64,14 +64,16 @@ def invert_euler_theorem(mod: int, n: int) -> int:
 
 
 def invert_fermat(p: int, n: int) -> int:
+    # TODO: check primality if possible O(\log{N})
+    # or if impossible, we do not guarantee the correctness of the result.
     return pow(n, p - 2, p)
 
 
 def invert_extended_euclidean(mod: int, n: int) -> int | None:
-    import dsalgo.euclidean
+    import dsalgo.euclidean_algorithm
 
     assert mod > 1
-    gcd, x = dsalgo.euclidean.extended_euclidean_gcd_modular_inverse(mod, n)
+    gcd, x = dsalgo.euclidean_algorithm.extended_euclidean_gcd_modular_inverse(mod, n)
     return x if gcd == 1 else None
 
 

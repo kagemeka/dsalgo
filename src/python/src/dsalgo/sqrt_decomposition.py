@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import typing
 
-from dsalgo.algebra.abstract.abstract_structure import Monoid
-from dsalgo.number_theory.floor_sqrt import floor_sqrt
+from dsalgo.abstract_structure import Monoid
+from dsalgo.floor_sqrt import floor_sqrt
 
 S = typing.TypeVar("S")
 
@@ -13,13 +13,13 @@ class SqrtDecomposition(typing.Generic[S]):
         n = len(arr)
         sqrt = floor_sqrt(n)
         num_buckets = (n + sqrt - 1) // sqrt
-        buckets = [monoid.e() for _ in range(num_buckets)]
+        buckets = [monoid.identity() for _ in range(num_buckets)]
         data_size = sqrt * num_buckets
-        data = [monoid.e() for _ in range(data_size)]
+        data = [monoid.identity() for _ in range(data_size)]
         data[:n] = arr.copy()
         for i in range(num_buckets):
             for j in range(sqrt * i, sqrt * (i + 1)):
-                buckets[i] = monoid.op(buckets[i], data[j])
+                buckets[i] = monoid.operation(buckets[i], data[j])
         self.__data = data
         self.__buckets = buckets
         self.__sqrt = sqrt
@@ -33,9 +33,9 @@ class SqrtDecomposition(typing.Generic[S]):
         assert 0 <= i < len(self)
         self.__data[i] = x
         idx = i // self.__sqrt
-        self.__buckets[idx] = self.__monoid.e()
+        self.__buckets[idx] = self.__monoid.identity()
         for j in range(self.__sqrt * idx, self.__sqrt * (idx + 1)):
-            self.__buckets[idx] = self.__monoid.op(
+            self.__buckets[idx] = self.__monoid.operation(
                 self.__buckets[idx],
                 self.__data[j],
             )
@@ -46,21 +46,21 @@ class SqrtDecomposition(typing.Generic[S]):
 
     def get(self, left: int, right: int) -> S:
         assert 0 <= left <= right <= len(self)
-        v = self.__monoid.e()
+        v = self.__monoid.identity()
         for i in range(len(self.__buckets)):
             if left >= self.__sqrt * (i + 1):
                 continue
             if right <= self.__sqrt * i:
                 break
             if left <= self.__sqrt * i and self.__sqrt * (i + 1) <= right:
-                v = self.__monoid.op(v, self.__buckets[i])
+                v = self.__monoid.operation(v, self.__buckets[i])
                 continue
             for j in range(self.__sqrt * i, self.__sqrt * (i + 1)):
                 if j < left:
                     continue
                 if j >= right:
                     break
-                v = self.__monoid.op(v, self.__data[j])
+                v = self.__monoid.operation(v, self.__data[j])
         return v
 
 

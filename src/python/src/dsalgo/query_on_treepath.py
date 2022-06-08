@@ -1,6 +1,6 @@
 import typing
 
-from dsalgo.algebra.abstract.abstract_structure import Monoid
+from dsalgo.abstract_structure import Monoid
 
 S = typing.TypeVar("S")
 
@@ -20,7 +20,7 @@ def query_on_path_binary_lifting(
     que = [root]
     parent = [-1] * n
     depth = [0] * n
-    value_to_parent = [monoid.e() for _ in range(n)]
+    value_to_parent = [monoid.identity() for _ in range(n)]
     for u in que:
         for v, value in graph[u]:
             if v == parent[u]:
@@ -39,19 +39,19 @@ def query_on_path_binary_lifting(
         value_to_ancestor.append(value_to_ancestor[-1].copy())
         for j in range(n):
             ancestor[i + 1][j] = ancestor[i][ancestor[i][j]]
-            value_to_ancestor[i + 1][j] = monoid.op(
+            value_to_ancestor[i + 1][j] = monoid.operation(
                 value_to_ancestor[i][j],
                 value_to_ancestor[i][ancestor[i][j]],
             )
 
     def get_value(u: int, v: int) -> S:
-        value = monoid.e()
+        value = monoid.identity()
         if depth[u] > depth[v]:
             u, v = v, u
         d = depth[v] - depth[u]
         for i in range(d.bit_length()):
             if d >> i & 1:
-                value = monoid.op(value, value_to_ancestor[i][v])
+                value = monoid.operation(value, value_to_ancestor[i][v])
                 v = ancestor[i][v]
         if v == u:
             return value
@@ -59,11 +59,11 @@ def query_on_path_binary_lifting(
             nu, nv = a[u], a[v]
             if nu == nv:
                 continue
-            value = monoid.op(value, va[u])
-            value = monoid.op(value, va[v])
+            value = monoid.operation(value, va[u])
+            value = monoid.operation(value, va[v])
             u, v = nu, nv
-        value = monoid.op(value, value_to_parent[u])
-        value = monoid.op(value, value_to_parent[v])
+        value = monoid.operation(value, value_to_parent[u])
+        value = monoid.operation(value, value_to_parent[v])
         return value
 
     return get_value

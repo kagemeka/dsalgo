@@ -1,4 +1,4 @@
-FROM python:3.8.12-slim-buster
+FROM python:3.10-slim-buster
 SHELL ["/bin/bash", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /root/

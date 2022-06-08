@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-from dsalgo.util import unwrap
+from dsalgo._util import unwrap
 
 
 class NegativeCycleError(Exception):

@@ -1,3 +1,5 @@
+# mypy: ignore-errors
+
 import typing
 
 import numba as nb

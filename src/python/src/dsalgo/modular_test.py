@@ -1,6 +1,6 @@
 import unittest
 
-import optext.option
+import dsalgo._util
 
 import dsalgo.modular
 
@@ -18,7 +18,7 @@ class TestElement(unittest.TestCase):
 class TestInvertExtendedEuclidean(unittest.TestCase):
     def test(self) -> None:
         mod = 17
-        x = optext.option.unwrap(
+        x = dsalgo._util.unwrap(
             dsalgo.modular.invert_extended_euclidean(mod, 15)
         )
         self.assertGreaterEqual(x, 0)
