@@ -13,8 +13,7 @@ poetry run pytest \
     --verbose "$root" \
     --ignore=docs \
     --ignore=src/dsalgo_numba \
-    --ignore=src/dsalgo_numpy 
-    # --testpaths="**/src/dsalgo/*.py" 
+    --ignore=src/dsalgo_numpy
+    # --testpaths="**/src/dsalgo/*.py"
     # --testpaths=tests/
     # --python
-
