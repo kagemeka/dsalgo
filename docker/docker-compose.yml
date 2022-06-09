@@ -26,3 +26,9 @@ services:
         read_only: false
         volume:
           nocopy: true
+      - type: bind
+        source: $GIT_CONFIG_PATH
+        target: /etc/gitconfig
+        volume:
+          nocopy: true
+        read_only: true
