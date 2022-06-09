@@ -13,24 +13,24 @@ T pow(const T& x, const T& n) {
   return y;
 }
 
-template<typename T> 
+template<typename T>
 int bit_length(T n) {
-  int length = 0; 
+  int length = 0;
   while (n) {
-    n >>= 1; 
+    n >>= 1;
     length++;
-  }; 
+  };
   return length;
 }
 
-template<typename T> 
+template<typename T>
 int bit_count(T n) {
   int cnt = 0;
-  int l = bit_length(n); 
+  int l = bit_length(n);
   for (int i = 0; i < l; i++) {
-    cnt += n & 1; 
+    cnt += n & 1;
     n >>= 1;
-  }; 
+  };
   return cnt;
 }
 

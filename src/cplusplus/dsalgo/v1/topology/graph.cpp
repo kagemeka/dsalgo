@@ -10,9 +10,9 @@ T weight, capacity;
 
 Edge(
   T weight=1, T capacity=1
-) 
+)
 : weight(weight),
-  capacity(capacity) 
+  capacity(capacity)
 {}
 };
 
@@ -24,7 +24,7 @@ struct Node {};
 template<typename T>
 struct Graph {
 
-public: 
+public:
 
 Graph(int n=0)
 : edges(n), nodes(n)
@@ -35,7 +35,7 @@ void add_edge(
   T weight=1, T capacity=1
 ) {
   edges[u].emplace(
-    v, 
+    v,
     Edge<T>(weight, capacity)
   );
 }
@@ -72,7 +72,7 @@ void bfs(int source=0)
       level[v] = level[u] + 1;
       que.push(v);
     }
-  } 
+  }
 }
 
 };
@@ -113,13 +113,13 @@ void make_dist_matrix() {
 
 
 void update(
-  int src, 
+  int src,
   int dst,
   int mid,
 ) {
   dist[src][dst] = min(
     dist[src][dst],
-    dist[src][mid] 
+    dist[src][mid]
       + dist[mid][dst],
   );
 }

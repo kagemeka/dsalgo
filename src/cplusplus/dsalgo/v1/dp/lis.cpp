@@ -4,7 +4,7 @@ using namespace std;
 
 template<typename T>
 vector<T>
-longest_increasing_seq( 
+longest_increasing_seq(
   const vector<T>& a
 ) {
   vector<T> lis(

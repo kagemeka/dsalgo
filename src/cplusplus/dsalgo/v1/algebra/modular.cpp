@@ -12,10 +12,10 @@ using Type = typename decay<
 >::type;
 
 constexpr Modular() : value(
-) {  
+) {
 }
 
-template<typename U> 
+template<typename U>
 Modular(const U& x) {
   value = normalize(x);
 }
@@ -24,7 +24,7 @@ template<typename U>
 static Type normalize(
   const U& x
 ) {
-  Type v = 
+  Type v =
     static_cast<Type>(x);
   v %= mod();
   v += mod();
@@ -37,7 +37,7 @@ const Type& operator() (
   return value;
 }
 
-template<typename U> 
+template<typename U>
 explicit operator U() const {
   return static_cast<U>(value);
 }
@@ -59,7 +59,7 @@ Modular& operator+=(
 Modular operator+(
   const Modular& other
 ) const {
-  Modular res(*this); 
+  Modular res(*this);
   return res += other;
 }
 
@@ -69,18 +69,18 @@ Modular& operator-=(
   value -= other.value;
   if (value < 0) {
     value += mod();
-  } 
+  }
   return *this;
 }
 
 Modular operator-(
   const Modular& other
 ) const {
-  Modular res(*this); 
+  Modular res(*this);
   return res -= other;
-} 
+}
 
-template<typename U> 
+template<typename U>
 Modular& operator+=(
   const U& other
 ) {
@@ -88,7 +88,7 @@ Modular& operator+=(
   return *this;
 }
 
-template<typename U> 
+template<typename U>
 Modular& operator-=(
   const U& other
 ) {
@@ -105,8 +105,8 @@ Modular& operator--() {
 }
 
 Modular operator++(int) {
-  Modular res(*this); 
-  *this += 1; 
+  Modular res(*this);
+  *this += 1;
   return res;
 }
 
@@ -131,7 +131,7 @@ Modular& operator*=(
 Modular operator*(
   const Modular& other
 ) const {
-  Modular res(*this); 
+  Modular res(*this);
   return res *= other;
 }
 
@@ -139,7 +139,7 @@ Modular operator*(
 template<typename U>
 Modular pow(const U& n) const {
   if (!n) return 1;
-  Modular a = pow(n>>1); 
+  Modular a = pow(n>>1);
   a *= a;
   if (n&1) a *= *this;
   return a;
@@ -159,20 +159,20 @@ Modular& operator/=(
 Modular operator/(
   const Modular& other
 ) const {
-  Modular res(*this); 
+  Modular res(*this);
   return res /= other;
 }
 
 template<typename U>
 friend istream& operator>>(
-  istream& is, 
+  istream& is,
   Modular<U>& number
 ) {
   return is >> number.value;
 }
 
 friend ostream& operator<<(
-  ostream& os, 
+  ostream& os,
   const Modular& number
 ) {
   return os << number.value;
@@ -186,13 +186,13 @@ Type value;
 };
 
 
-constexpr long long MOD 
+constexpr long long MOD
   = (long long)1e9 + 7;
 
 
 using Mint = Modular<
   integral_constant<
-    decay<decltype(MOD)>::type, 
+    decay<decltype(MOD)>::type,
     MOD
   >
 >;
