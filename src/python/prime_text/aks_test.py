@@ -1,15 +1,14 @@
 import math
 
-from sympy.ntheory import n_order
-
 from is_perfect_power import is_perfect_power
 from n_times import n_times
 from sqrt_int import sqrt_int
+from sympy.ntheory import n_order
 from totient_function import totient_function
 
 
 def aks_test(n: int) -> str:
-    """ AKS法によってn>=2の素数判定を行う。
+    """AKS法によってn>=2の素数判定を行う。
 
     確定的アルゴリズム。
 
@@ -26,6 +25,7 @@ def aks_test(n: int) -> str:
         >>> aks_test(111)
         'composite number'
     """
+
     def _mul(poly_1, poly_2):
         result = [0] * r
         for i in range(r):
@@ -36,21 +36,21 @@ def aks_test(n: int) -> str:
         return result
 
     if is_perfect_power(n):
-        return 'composite number'
+        return "composite number"
 
     r = n
-    minimum_order = int(math.log2(n)**2)
+    minimum_order = int(math.log2(n) ** 2)
     for r_ in range(minimum_order, n):
         if math.gcd(n, r_) != 1:
-            return 'composite number'
+            return "composite number"
         if n_order(n, r_) > minimum_order:
             r = r_
 
     threshold = int(math.sqrt(totient_function(r)) * math.log2(n)) + 1
     if any(n % p == 0 for p in range(2, threshold)):  # thresholdまで試し割を行う
-        return 'composite number'
+        return "composite number"
     if sqrt_int(n) < threshold:
-        return 'prime number'
+        return "prime number"
 
     for a in range(threshold):
         # (x + a)^n
@@ -66,5 +66,5 @@ def aks_test(n: int) -> str:
 
         # (x + a)^n と x^n + a が mod x^r - 1, n で合同でないならば合成数と判定する
         if poly_1 != poly_2:
-            return 'composite number'
-    return 'prime number'
+            return "composite number"
+    return "prime number"

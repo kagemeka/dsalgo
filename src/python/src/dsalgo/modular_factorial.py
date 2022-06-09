@@ -1,6 +1,4 @@
 import functools
-
-
 import unittest
 
 

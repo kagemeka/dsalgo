@@ -5,7 +5,7 @@ from lucas_sequence import lucas_sequence
 
 
 def lucas_sequence_test(n: int, a: int, b: int) -> int:
-    """ Lucas数列の性質を用いて、素数判定を行う。
+    """Lucas数列の性質を用いて、素数判定を行う。
 
     Args:
         n    (int): 素数判定を行う対象の整数
@@ -28,7 +28,7 @@ def lucas_sequence_test(n: int, a: int, b: int) -> int:
     condition = math.gcd(n, 2 * b * delta)
     assert condition != n
     if condition != 1:
-        return 'composite number'
+        return "composite number"
     if lucas_sequence(n - legendre_symbol(delta, n), a, b) % n != 0:
-        return 'composite number'
-    return 'probable prime'
+        return "composite number"
+    return "probable prime"

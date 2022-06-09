@@ -3,7 +3,6 @@
 
 import unittest
 
-
 import numpy as np
 
 from dsalgo.modular_factorial_table_np import modular_factorial_table

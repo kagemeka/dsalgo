@@ -5,7 +5,7 @@ from sqrt_int import sqrt_int
 
 
 def pocklington_test(n: int, k: int = 10) -> str:
-    """ Pocklingtonの定理を用いて、n>2が素数かを判定する。
+    """Pocklingtonの定理を用いて、n>2が素数かを判定する。
 
     Args:
         n (int): 素数判定する対象の整数
@@ -40,7 +40,7 @@ def pocklington_test(n: int, k: int = 10) -> str:
     for _ in range(k):
         a = random.randrange(2, n)
         if pow(a, n - 1, n) != 1:
-            return 'composite number'
+            return "composite number"
         if all(math.gcd(pow(a, (n - 1) // q, n) - 1, n) == 1 for q in qs):
-            return 'prime number'
-    return 'possibly composite'
+            return "prime number"
+    return "possibly composite"

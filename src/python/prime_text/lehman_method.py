@@ -4,7 +4,7 @@ from sqrt_int import sqrt_int
 
 
 def lehman_method(n: int) -> int:
-    """ Lehman法による素因数分解を行う。
+    """Lehman法による素因数分解を行う。
     確定的アルゴリズムで、素数ならば確実に素数と判定し、
     合成数ならば、nの非自明な約数を返す。
 
@@ -23,7 +23,10 @@ def lehman_method(n: int) -> int:
     """
     for k in range(1, math.ceil(math.pow(n, 1 / 3)) + 1):
         head = 2 * math.sqrt(k * n)
-        for x in range(math.ceil(head), math.floor(head + pow(n, 1 / 6) / (4 * math.sqrt(k))) + 1):
+        for x in range(
+            math.ceil(head),
+            math.floor(head + pow(n, 1 / 6) / (4 * math.sqrt(k))) + 1,
+        ):
             y2 = x**2 - 4 * k * n
             y = sqrt_int(y2)
             if y**2 == y2:

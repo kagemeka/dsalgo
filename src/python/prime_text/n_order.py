@@ -1,10 +1,9 @@
 from sympy import factorint
-
 from totient_function import totient_function
 
 
 def n_order(a: int, n: int) -> int:
-    """ 法nにおけるaの位数を求める。
+    """法nにおけるaの位数を求める。
     つまり、a^s = 1 (mod n)を満たす最小のsを求める。
 
     Args:

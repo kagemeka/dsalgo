@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import typing
 
-import dsalgo.euclidean_algorithm
 import dsalgo._util
-
+import dsalgo.euclidean_algorithm
 
 
 def crt_2_coprime(
@@ -24,7 +23,9 @@ def crt_2(
     rem_1: int,
 ) -> typing.Optional[int]:
     assert 0 <= rem_0 < mod_0 > 1 and 0 <= rem_1 < mod_1 > 1
-    gcd, x, _ = dsalgo.euclidean_algorithm.extended_euclidean_recurse(mod_0, mod_1)
+    gcd, x, _ = dsalgo.euclidean_algorithm.extended_euclidean_recurse(
+        mod_0, mod_1
+    )
     if (rem_1 - rem_0) % gcd:
         return None
     lcm = mod_0 // gcd * mod_1
@@ -39,7 +40,10 @@ def safe_crt_2(
     rem_1: int,
 ) -> typing.Optional[int]:
     assert 0 <= rem_0 < mod_0 > 1 and 0 <= rem_1 < mod_1 > 1
-    gcd, inv_u0 = dsalgo.euclidean_algorithm.extended_euclidean_gcd_modular_inverse(
+    (
+        gcd,
+        inv_u0,
+    ) = dsalgo.euclidean_algorithm.extended_euclidean_gcd_modular_inverse(
         mod_1,
         mod_0 % mod_1,
     )

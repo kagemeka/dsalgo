@@ -1,9 +1,9 @@
 # mypy: ignore-errors
 
 
-import numpy as np
-
 import unittest
+
+import numpy as np
 
 
 def _butterfly(a: np.ndarray, inverse: bool) -> None:

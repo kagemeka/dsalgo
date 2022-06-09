@@ -4,7 +4,7 @@ from sympy import primerange
 
 
 def p_minus_1_method_stage2(n: int, *, B1: int, B2: int, a: int = 2) -> int:
-    """ p-1法によって、nの素因数分解を行う。
+    """p-1法によって、nの素因数分解を行う。
 
     Args:
         n  (int): 素因数分解を行う整数
@@ -31,7 +31,7 @@ def p_minus_1_method_stage2(n: int, *, B1: int, B2: int, a: int = 2) -> int:
     diff_dict = {}
     stage2_prime_list = list(primerange(B1 + 1, B2 + 1))
     for idx in range(len(stage2_prime_list) - 1):
-        prime_pair = stage2_prime_list[idx:idx + 2]
+        prime_pair = stage2_prime_list[idx : idx + 2]
         diff = prime_pair[1] - prime_pair[0]
         if diff not in diff_dict:
             diff_dict[diff] = pow(a, diff, n)
@@ -39,7 +39,7 @@ def p_minus_1_method_stage2(n: int, *, B1: int, B2: int, a: int = 2) -> int:
     a = pow(a, stage2_prime_list[0], n)
     d = a - 1
     for idx in range(len(stage2_prime_list) - 1):
-        prime_pair = stage2_prime_list[idx:idx + 2]
+        prime_pair = stage2_prime_list[idx : idx + 2]
         diff = prime_pair[1] - prime_pair[0]
         a = (a * diff_dict[diff]) % n
         d = (d * (a - 1)) % n

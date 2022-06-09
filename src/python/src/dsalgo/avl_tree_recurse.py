@@ -3,8 +3,8 @@ from __future__ import annotations
 import dataclasses
 import typing
 
-import dsalgo.protocol
 import dsalgo._util
+import dsalgo.protocol
 
 K = typing.TypeVar("K", bound=dsalgo.protocol.Order)
 V = typing.TypeVar("V")

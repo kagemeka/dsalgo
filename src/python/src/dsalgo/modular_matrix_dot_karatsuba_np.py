@@ -5,9 +5,9 @@ in all the files importing external untyped packages, disable mypy checks.
 """
 
 
-import numpy as np
-
 import unittest
+
+import numpy as np
 
 
 def dot_karatsuba(mod: int, a: np.ndarray, b: np.ndarray) -> np.ndarray:

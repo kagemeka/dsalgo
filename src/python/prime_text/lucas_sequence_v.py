@@ -1,5 +1,5 @@
 def lucas_sequence_v(v_j: int, k: int, n: int) -> int:
-    """ Lucas数列 V_j mod nから、V_jk mod nを計算する。
+    """Lucas数列 V_j mod nから、V_jk mod nを計算する。
 
     ここで、V_0 = 2, V_1 = a, V_j = aV_{j-1} - V_{j-2} (注: b=1)
 
@@ -21,7 +21,7 @@ def lucas_sequence_v(v_j: int, k: int, n: int) -> int:
     # kの2進数表記の上位ビットから下位ビットに向かって回す
     # ただし、最上位ビットの1は見ない
     for bit in bin(k)[3:]:
-        if bit == '1':
+        if bit == "1":
             x, y = (x * y - v_j) % n, (y**2 - 2) % n
         else:
             x, y = (x**2 - 2) % n, (x * y - v_j) % n

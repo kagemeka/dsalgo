@@ -5,9 +5,10 @@ in all the files importing external untyped packages, disable mypy checks.
 """
 
 
+import unittest
+
 import numpy as np
 
-import unittest
 from dsalgo.modular_matrix_dot_karatsuba_np import dot_karatsuba
 
 

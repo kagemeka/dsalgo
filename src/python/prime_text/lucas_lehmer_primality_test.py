@@ -1,5 +1,5 @@
 def lucas_lehmer_primality_test(q: int) -> str:
-    """ Lucas-Lehmerテストによって、Mersenne数M_q = 2**q - 1が素数かを判定する。
+    """Lucas-Lehmerテストによって、Mersenne数M_q = 2**q - 1が素数かを判定する。
 
     Args:
         q (int): 素数
@@ -19,6 +19,6 @@ def lucas_lehmer_primality_test(q: int) -> str:
     for _ in range(q - 2):
         v = (v**2 - 2) % M_q
     if v == 0:
-        return 'prime number'
+        return "prime number"
     else:
-        return 'composite number'
+        return "composite number"

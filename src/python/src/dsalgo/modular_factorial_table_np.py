@@ -2,8 +2,8 @@
 
 
 import unittest
-import numpy as np
 
+import numpy as np
 
 from dsalgo.modular_cumprod_np import modular_cumprod
 

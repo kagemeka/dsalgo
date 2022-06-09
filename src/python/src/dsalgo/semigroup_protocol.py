@@ -1,6 +1,7 @@
-import unittest
-from dsalgo.magma_protocol import Magma
 import typing
+import unittest
+
+from dsalgo.magma_protocol import Magma
 
 T = typing.TypeVar("T")
 

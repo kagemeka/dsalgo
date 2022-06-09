@@ -1,9 +1,9 @@
-import typing
-from dsalgo._option import unwrap
 import collections
 import heapq
-
+import typing
 import unittest
+
+from dsalgo._option import unwrap
 
 
 class MinMaxPriorityQueueInt:

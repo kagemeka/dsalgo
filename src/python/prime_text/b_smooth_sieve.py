@@ -2,7 +2,7 @@ from typing import List
 
 
 def b_smooth_sieve(n: int, B: int) -> List[int]:
-    """ B-smoothな数を篩う
+    """B-smoothな数を篩う
 
     Args:
         n (int): nまでのリストを作成する
@@ -17,7 +17,7 @@ def b_smooth_sieve(n: int, B: int) -> List[int]:
         20
         >>> sieve_list[14] # 14 = 2 * 7 は5-smoothではないから出力は14と一致しない
         2
-        """
+    """
     sieve_list = [1] * (n + 1)
     for p in range(2, B + 1):
         if sieve_list[p] == 1:

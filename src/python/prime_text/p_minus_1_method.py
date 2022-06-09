@@ -4,7 +4,7 @@ from sympy import primerange
 
 
 def p_minus_1_method(n: int, *, B: int, a: int = 2) -> int:
-    """ p-1法によって、nの素因数分解を行う。
+    """p-1法によって、nの素因数分解を行う。
 
     Args:
         n (int): 素因数分解を行う整数

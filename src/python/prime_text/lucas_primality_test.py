@@ -4,7 +4,7 @@ from sympy import factorint
 
 
 def lucas_primality_test(n: int, k: int = 10) -> str:
-    """ Lucasの定理を用いて、n > 2が素数かを判定する。
+    """Lucasの定理を用いて、n > 2が素数かを判定する。
 
     Args:
         n (int): 素数判定する対象の自然数
@@ -26,7 +26,7 @@ def lucas_primality_test(n: int, k: int = 10) -> str:
     for _ in range(k):
         a = random.randrange(2, n)
         if pow(a, n - 1, n) != 1:
-            return 'composite number'
+            return "composite number"
         if all(pow(a, (n - 1) // q, n) != 1 for q in qs):
-            return 'prime number'
-    return 'possibly composite'
+            return "prime number"
+    return "possibly composite"
