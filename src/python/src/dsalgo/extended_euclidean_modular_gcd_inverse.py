@@ -16,7 +16,6 @@ def euclidean_mod_gcd_inv(mod: int, n: int) -> tuple[int, int]:
     return gcd, x00
 
 
-# TODO:
 class Tests(unittest.TestCase):
     def test(self) -> None:
         # extgcd_modinv(10, 0) runtime error

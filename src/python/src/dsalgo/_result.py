@@ -1,4 +1,15 @@
-# mypy: ignore-errors
+"""
+inspired by Rust's Result<T, E> type.
+in python, Option[T] = Union[T, None] =: T | None
+while Option<T> in Rust is enum {Some(T), None}
+
+and because Result<T, E> is enum {Ok(T), Err(E)},
+Result[T, E] = Union[T, Err[E]] is fine in Python.
+
+we don't use any Exceptions
+which are starndard error handling feature in Python.
+instead, Result[T, E] is defactostandard in this package.
+"""
 
 import dataclasses
 import typing
@@ -6,8 +17,9 @@ import unittest
 
 from dsalgo._option import unwrap
 
-T = typing.TypeVar("T")
-E = typing.TypeVar("E")
+T = typing.TypeVar("T", contravariant=True)
+E = typing.TypeVar("E", contravariant=True)
+U = typing.TypeVar("U", covariant=True)
 
 
 @typing.final
@@ -35,11 +47,11 @@ def err(res: Result[T, E]) -> E | None:
     return typing.cast(Err[E], res).value if is_err(res) else None
 
 
-def unwrap_ok(res: Result[T, E]) -> T:
+def unwrap_ok(res: Result[U, E]) -> U:
     return unwrap(ok(res))
 
 
-def unwrap_err(res: Result[T, E]) -> E:
+def unwrap_err(res: Result[T, U]) -> U:
     return unwrap(err(res))
 
 
@@ -48,7 +60,7 @@ class Tests(unittest.TestCase):
         def generate_error() -> Result[int, str]:
             return Err("nothing")
 
-        a = Err[int](1)
+        a = Err(1)
         assert not is_ok(a)
         assert ok(a) is None
         assert err(a) == 1
