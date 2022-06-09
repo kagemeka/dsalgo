@@ -2,7 +2,7 @@ from sympy.ntheory import factorint
 
 
 def primitive_root(p: int, e: int) -> int:
-    """ p^eを法とする原始根を返す。
+    """p^eを法とする原始根を返す。
 
     Args:
         p (int): 奇素数

@@ -4,8 +4,8 @@ from legendre_symbol import legendre_symbol
 from n_times import n_times
 
 
-def cipolla_algorithm(a:int, p:int) -> int:
-    """ Cipollaのアルゴリズム。
+def cipolla_algorithm(a: int, p: int) -> int:
+    """Cipollaのアルゴリズム。
 
     x^2 = a mod p
     となるようなxを求める。
@@ -22,6 +22,7 @@ def cipolla_algorithm(a:int, p:int) -> int:
         >>> cipolla_algorithm(2, 7) # 4も解であるが、小さいほうの3を返す
         3
     """
+
     def _mul(x, y):
         a, b = x
         c, d = y
@@ -29,10 +30,10 @@ def cipolla_algorithm(a:int, p:int) -> int:
 
     assert legendre_symbol(a, p) == 1
     while True:
-        t = random.randrange(0, p-1)
+        t = random.randrange(0, p - 1)
         s = (t**2 - a) % p
         if legendre_symbol(s, p) == -1:
             break
 
-    x, _ = n_times((t, 1), (p+1)//2, _mul)
+    x, _ = n_times((t, 1), (p + 1) // 2, _mul)
     return min(x, -x % p)

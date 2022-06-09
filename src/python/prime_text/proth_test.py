@@ -4,7 +4,7 @@ from jacobi_symbol import jacobi_symbol
 
 
 def proth_test(m: int, s: int, k: int = 10) -> str:
-    """ Prothテストを用いて、n = m * 2**s + 1が素数かを判定する。
+    """Prothテストを用いて、n = m * 2**s + 1が素数かを判定する。
 
     Args:
         m (int): 奇数
@@ -29,7 +29,7 @@ def proth_test(m: int, s: int, k: int = 10) -> str:
         a = random.randrange(2, n)  # 2 <= a < n を満たす乱数を生成する
         if jacobi_symbol(a, n) == -1:
             if pow(a, (n - 1) // 2, n) == n - 1:
-                return 'prime number'
+                return "prime number"
             else:
-                return 'composite number'
-    return 'possibly composite'
+                return "composite number"
+    return "possibly composite"

@@ -1,7 +1,7 @@
+import typing
 import unittest
 
 from dsalgo.semigroup_protocol import Semigroup
-import typing
 
 T = typing.TypeVar("T")
 

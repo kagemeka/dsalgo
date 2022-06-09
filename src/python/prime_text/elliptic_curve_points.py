@@ -4,8 +4,10 @@ from legendre_symbol import legendre_symbol
 from tonelli_shanks_algorithm import tonelli_shanks_algorithm
 
 
-def elliptic_curve_points(a: int, b: int, p: int) -> Generator[Tuple[int, int], None, None]:
-    """ 楕円曲線 y**2 = x**3 + a*x + b (mod p) の点を枚挙する。
+def elliptic_curve_points(
+    a: int, b: int, p: int
+) -> Generator[Tuple[int, int], None, None]:
+    """楕円曲線 y**2 = x**3 + a*x + b (mod p) の点を枚挙する。
 
     Args:
         a: int, b: int: 楕円曲線のパラメータ。y**2 = x**3 + a * x + b
@@ -22,7 +24,7 @@ def elliptic_curve_points(a: int, b: int, p: int) -> Generator[Tuple[int, int], 
     """
     assert (4 * a**3 + 27 * b**2) % p != 0
     for x in range(p):
-        y2 = (x**3 + a*x + b) % p
+        y2 = (x**3 + a * x + b) % p
         legendre = legendre_symbol(y2, p)
         if legendre == 0:
             yield x, 0

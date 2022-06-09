@@ -4,7 +4,7 @@ from nth_root_int import nth_root_int
 
 
 def is_perfect_power(n: int) -> bool:
-    """ nが累乗数（n = a^bの形）かを判定する。
+    """nが累乗数（n = a^bの形）かを判定する。
 
     bが取り得る範囲の2 <= b <= lg(n) を全探索する
 

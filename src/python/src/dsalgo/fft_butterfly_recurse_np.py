@@ -5,9 +5,9 @@ in all the files importing external untyped packages, disable mypy checks.
 """
 
 
-import numpy as np
-
 import unittest
+
+import numpy as np
 
 
 def fft_butterfly_inplace_recurse(a: np.ndarray, inverse: bool) -> None:

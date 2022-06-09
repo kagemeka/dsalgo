@@ -3,7 +3,7 @@ from functools import lru_cache
 
 @lru_cache(maxsize=None)
 def lucas_sequence(n: int, a: int, b: int) -> int:
-    """ Lucas数列のn番目U_nを計算する。
+    """Lucas数列のn番目U_nを計算する。
 
     Args:
         n (int): n番目のLucas数列を求める

@@ -1,6 +1,6 @@
-import unittest
-import typing
 import math
+import typing
+import unittest
 
 
 def gcd_reduce(iter: typing.Iterable[int]) -> int:

@@ -22,6 +22,8 @@ setup() {
         curl
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
     echo "export PATH=\"$HOME/.cargo/bin:$PATH\"" >>~/.bashrc
+    source $HOME/.cargo/env
+    # please run `source ~/.bashrc` in command line.
 }
 
 update_toolchain() {
@@ -73,13 +75,11 @@ doc() {
         --open
 }
 
-
 ci() {
     if ! command -v cargo &>/dev/null; then
         echo "command not found"
         setup
     fi
-    source $HOME/.cargo/env
 
     update_toolchain
 
@@ -89,6 +89,8 @@ ci() {
     test
 
     cargo publish --dry-run --allow-dirty
+
+    $@
 }
 
-ci
+ci $@

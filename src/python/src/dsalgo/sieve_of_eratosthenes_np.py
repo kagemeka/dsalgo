@@ -1,8 +1,8 @@
 # mypy: ignore-errors
 
-import numpy as np
-
 import unittest
+
+import numpy as np
 
 
 def sieve_of_eratosthenes(sieve_size: int) -> np.ndarray:

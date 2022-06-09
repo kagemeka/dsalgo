@@ -2,15 +2,19 @@ import math
 import random
 from typing import Optional
 
+from inverse_mod import inverse_mod
 from sympy.ntheory import primerange
 
-from inverse_mod import inverse_mod
 
-
-def elliptic_curve_method_fast(n: int, *, B1: int,  D: int,
-                               B2: Optional[int] = None,
-                               sigma: Optional[int] = None) -> int:
-    """ 各種の高速化手法を取り入れた楕円曲線法を用いた素因数分解。
+def elliptic_curve_method_fast(
+    n: int,
+    *,
+    B1: int,
+    D: int,
+    B2: Optional[int] = None,
+    sigma: Optional[int] = None,
+) -> int:
+    """各種の高速化手法を取り入れた楕円曲線法を用いた素因数分解。
 
     Args:
         n (int): 素因数分解する整数。ただし、gcd(n,6)=1。
@@ -29,8 +33,7 @@ def elliptic_curve_method_fast(n: int, *, B1: int,  D: int,
     B2 = B2 or 100 * B1
 
     def _add(P, Q, diff):
-        """ Montgomery座標における加法 P+Q を計算する。ただし、diff=P-Q, A=1, B=0
-        """
+        """Montgomery座標における加法 P+Q を計算する。ただし、diff=P-Q, A=1, B=0"""
         P_x, P_z = P
         Q_x, Q_z = Q
         d_x, d_z = diff
@@ -42,33 +45,33 @@ def elliptic_curve_method_fast(n: int, *, B1: int,  D: int,
         return x, z
 
     def _double(P):
-        """ Montgomery座標におけるPの2倍を計算する。ただし、A=1, B=0
-        """
+        """Montgomery座標におけるPの2倍を計算する。ただし、A=1, B=0"""
         P_x, P_z = P
-        add, sub = (P_x + P_z)**2, (P_x - P_z)**2
+        add, sub = (P_x + P_z) ** 2, (P_x - P_z) ** 2
         diff = add - sub
         x = (add * sub) % n
         z = (diff * (sub + a24 * diff)) % n
         return x, z
 
     def _times(P, k):
-        """ Montgomery座標におけるPのk倍を計算する。ただし、A=1, B=0
-        """
+        """Montgomery座標におけるPのk倍を計算する。ただし、A=1, B=0"""
         Q = P
         R = _double(P)
         for bit in bin(k)[3:]:
-            if bit == '1':
+            if bit == "1":
                 Q, R = _add(R, Q, P), _double(R)
             else:
                 Q, R = _double(Q), _add(Q, R, P)
         return Q
 
     def _sequence(*, s_1, delta, k=None, s_0=None, s_2=None):
-        """ s_1, s_2, ..., s_k を返す
+        """s_1, s_2, ..., s_k を返す
         ただし、s_0 = s_1 - delta, s_1 = s_1, s_2 = s_1 + delta, s_3 = s_1 + 2delta
         """
+
         def _next(pre, current):
             return current, _add(current, delta, pre)
+
         yield s_1
         pre, current = _next(s_0, s_1) if s_0 is not None else (s_1, s_2)
         yield current
@@ -90,7 +93,7 @@ def elliptic_curve_method_fast(n: int, *, B1: int,  D: int,
     for prime in primerange(2, B1 + 1):
         l = math.floor(math.log(B1) / math.log(prime))
         Q = _times(Q, prime**l)
-    assert Q[1] != 0 # Q[1] == 0 は実用上滅多に発生しないが、この場合はB1が大きすぎた
+    assert Q[1] != 0  # Q[1] == 0 は実用上滅多に発生しないが、この場合はB1が大きすぎた
     g = math.gcd(Q[1], n)
     if 1 < g < n:
         return g
@@ -102,7 +105,7 @@ def elliptic_curve_method_fast(n: int, *, B1: int,  D: int,
     beta = [(x * z) % n for x, z in S]
     g = 1
     B = B1 - 1
-    seq = _sequence(s_0=_times(Q, B - 2 * D), s_1=_times(Q, B), delta=S[D-1])
+    seq = _sequence(s_0=_times(Q, B - 2 * D), s_1=_times(Q, B), delta=S[D - 1])
     for r in range(B, B2, 2 * D):
         R_x, R_z = next(seq)
         alpha = (R_x * R_z) % n

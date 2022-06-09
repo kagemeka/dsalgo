@@ -1,8 +1,8 @@
+import typing
 import unittest
 
-import typing
-from dsalgo.range_sieve_of_eratosthenes import range_sieve_of_eratosthenes
 from dsalgo.floor_sqrt import floor_sqrt
+from dsalgo.range_sieve_of_eratosthenes import range_sieve_of_eratosthenes
 
 
 def sieve_of_eratosthenes_low_memory_generator(

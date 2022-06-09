@@ -1,5 +1,6 @@
-import unittest
 import typing
+import unittest
+
 from dsalgo.floor_sqrt import floor_sqrt
 from dsalgo.sieve_of_eratosthenes import sieve_of_eratosthenes
 

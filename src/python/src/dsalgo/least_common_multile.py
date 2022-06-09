@@ -1,5 +1,5 @@
-import unittest
 import math
+import unittest
 
 
 def lcm(a: int, b: int) -> int:

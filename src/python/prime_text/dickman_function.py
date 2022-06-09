@@ -2,7 +2,7 @@ import math
 
 
 def dickman_function(u: float) -> float:
-    """ dickman関数を計算する。(u > 2においては近似値)
+    """dickman関数を計算する。(u > 2においては近似値)
 
     Args:
         u (float): 正の実数

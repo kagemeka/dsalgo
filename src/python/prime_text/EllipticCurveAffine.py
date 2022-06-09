@@ -7,7 +7,7 @@ from n_times import n_times
 
 class EllipticCurveAffine:
     def __init__(self, a: int, b: int, p: int):
-        """ F_p上における楕円曲線を定義する。
+        """F_p上における楕円曲線を定義する。
 
         Args:
             p (int): p > 3となる整数。
@@ -19,16 +19,17 @@ class EllipticCurveAffine:
         assert (4 * self.a**3 + 27 * self.b**2) % p != 0
 
     def _discoverd_divisor(self, d: int) -> None:
-        """ pを割り切る整数dを発見したとき、例外を発生させる。
+        """pを割り切る整数dを発見したとき、例外を発生させる。
 
         Args:
             d (int): pを割り切る整数
         """
         raise ValueError(
-            f'p is composite number. p={self.p} is divisible by {d}', d)
+            f"p is composite number. p={self.p} is divisible by {d}", d
+        )
 
     def is_zero(self, P: Tuple[int, int, int]) -> bool:
-        """ 点Pが無限遠点かを判定する。
+        """点Pが無限遠点かを判定する。
 
         Args:
             P(int, int, int): 点のx,y,z座標
@@ -46,8 +47,10 @@ class EllipticCurveAffine:
         y %= self.p
         return x == 0 and (y == 1 or y == self.p - 1) and z == 0
 
-    def add(self, P: Tuple[int, int, int], Q: Tuple[int, int, int]) -> Tuple[int, int, int]:
-        """ 点PとQの和を計算する。
+    def add(
+        self, P: Tuple[int, int, int], Q: Tuple[int, int, int]
+    ) -> Tuple[int, int, int]:
+        """点PとQの和を計算する。
 
         Args:
             P(int, int, int), Q(int, int, int): 点のx,y,z座標
@@ -89,7 +92,7 @@ class EllipticCurveAffine:
         return (x % self.p, y % self.p, 1)
 
     def times(self, P: Tuple[int, int, int], n: int) -> Tuple[int, int, int]:
-        """ Pのn倍を計算する
+        """Pのn倍を計算する
 
         Args:
             P(int, int, int): 点のx,y,z座標

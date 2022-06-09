@@ -3,7 +3,7 @@ from legendre_symbol import legendre_symbol
 
 
 def fibonacci_pseudoprime_test(n: int) -> str:
-    """ Fibonacci数列を用いた素数判定を行う。
+    """Fibonacci数列を用いた素数判定を行う。
 
     Args:
         n (int): 素数判定を行う対象の整数
@@ -19,5 +19,5 @@ def fibonacci_pseudoprime_test(n: int) -> str:
         'probable prime'
     """
     if fibonacci_sequence(n - legendre_symbol(n, 5)) % n != 0:
-        return 'composite number'
-    return 'probable prime'
+        return "composite number"
+    return "probable prime"

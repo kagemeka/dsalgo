@@ -1,4 +1,5 @@
 import typing
+
 from dsalgo.semiring_protocol import Semiring
 
 T = typing.TypeVar("T")

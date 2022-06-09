@@ -1,7 +1,6 @@
-from dsalgo.extended_euclidean_modular_gcd_inverse import euclidean_mod_gcd_inv
-
-
 import unittest
+
+from dsalgo.extended_euclidean_modular_gcd_inverse import euclidean_mod_gcd_inv
 
 
 def modular_inverse_extgcd(mod: int, n: int) -> int:

@@ -2,11 +2,12 @@
 
 
 import unittest
+
 import numpy as np
 
-from dsalgo.modular_inverse_extgcd import modular_inverse_extgcd
-from dsalgo.modular_factorial_table_np import modular_factorial_table
 from dsalgo.modular_cumprod_np import modular_cumprod
+from dsalgo.modular_factorial_table_np import modular_factorial_table
+from dsalgo.modular_inverse_extgcd import modular_inverse_extgcd
 
 
 def modular_inverse_factorial_table(mod: int, size: int) -> np.ndarray:

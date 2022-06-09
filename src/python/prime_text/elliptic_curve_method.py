@@ -1,13 +1,12 @@
 import math
 import random
 
-from sympy.ntheory import primerange
-
 from EllipticCurveAffine import EllipticCurveAffine
+from sympy.ntheory import primerange
 
 
 def elliptic_curve_method(n: int, B: int) -> int:
-    """ 楕円曲線法を用いて素因数分解を行う。
+    """楕円曲線法を用いて素因数分解を行う。
 
     Args:
         n (int): 素因数分解する整数。ただし、gcd(n,6)=1かつ累乗数でないとする。

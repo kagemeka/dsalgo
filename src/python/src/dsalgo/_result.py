@@ -1,10 +1,9 @@
 # mypy: ignore-errors
 
+import dataclasses
+import typing
 import unittest
 
-import typing
-
-import dataclasses
 from dsalgo._option import unwrap
 
 T = typing.TypeVar("T")

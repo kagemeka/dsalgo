@@ -1,4 +1,5 @@
 import typing
+
 from dsalgo.monoid_protocol import Monoid
 
 T = typing.TypeVar("T", covariant=True)
