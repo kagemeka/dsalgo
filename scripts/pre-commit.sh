@@ -7,14 +7,14 @@ install_pre-commit() {
     pip install pre-commit
 }
 
-pre-commit() {
+precommit() {
     if ! command -v pre-commit &>/dev/null; then
         echo "command not found"
-        ./scripts/install_pre-commit.sh
+        install_pre-commit
     fi
 
     pre-commit run --all-files
 
 }
 
-pre-commit
+precommit

@@ -2,6 +2,18 @@
 
 source ~/.bashrc
 
+abs_dirpath() {
+    echo $(dirname $(readlink -f $1))
+}
+
+this_file_dir() {
+    abs_dirpath ${BASH_SOURCE[0]}
+}
+
+entrypoint_file_dir() {
+    abs_dirpath $(realpath $0)
+}
+
 setup() {
     apt update
     apt install -y \
@@ -53,9 +65,14 @@ format() {
         --manifest-path=Cargo.toml \
         --message-format=human
     # --check
-
-    ./scripts/pre-commit.sh
+    ./../../scripts/pre-commit.sh
 }
+
+doc() {
+    cargo doc \
+        --open
+}
+
 
 ci() {
     if ! command -v cargo &>/dev/null; then
