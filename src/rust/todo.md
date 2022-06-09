@@ -1,6 +1,7 @@
 # todo
 
 find `TODO` with ctrl + shift + F in VSCode.
+
 * [ ]2-sat
 * [ ]2d segment tree
 * [ ]2d sqrt decomposition
@@ -89,11 +90,25 @@ find `TODO` with ctrl + shift + F in VSCode.
 * [ ]graph cycle detection
 * [ ]lucas lehmer
 * [ ]pocklington
-* [ ]rng xorshift (32, 96, 128, 246, 1024)
 * [ ]rng xoshiro
+* [ ]rng xoroshiro
 * [ ]rng chacha
 * [ ]rng pcg
 * [ ]rng mersenne twister
 * [ ]rename Modular -> ModularInt, and define ModularArthmetic struct (no instance, only associated functions), use modulararthmetic
-- [ ]binary gcd
-- [ ]modular arithmetic trait
+
+* [ ]binary gcd
+
+* [ ]modular arithmetic trait
+* [ ]Monoid -> StaticMonoid (also other abstract structures)
+* [ ]define DynamicMonoid (unlike StaticMonoid, call on instance e.g. fn identity(self, x: T) -> T)
+* [ ]StaticModulus -> ConstModulus, DynamicModulus -> StaticModulus, and define new DynamicModulus
+  * for each, define both concrete struct types and traits.
+  * new DynamicModulus trait has fn modulus(self) -> T instead of conventional fn modulus() -> T.
+  * both ConstModulus and StaticModulus structs are StaticModulus trait. (ConstModulus trait does not exist.)
+  * similarly, define [(static, dynamic), (struct, trait)] ModularArithmetic
+
+- [ ]define MonoidElement trait.
+  * StaticMonoid trait has fn operate(Self::S, Self::S) -> Self::S
+  * DynamicMonoid trait has fn operate(self, Self::S, Self::S) -> Self::S
+  * MonoidElement trait has fn operate(self, other: Self) -> Self
