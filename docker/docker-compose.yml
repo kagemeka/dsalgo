@@ -3,8 +3,11 @@ version: '3.9'
 services:
   main:
     image: ubuntu:latest
+    env_file:
+      - internal.env
     restart: on-failure
-    privileged: true
+    privileged: true # for swift
+    runtime: nvidia # to use gpu
     tty: true
     volumes:
       - type: bind
@@ -13,3 +16,13 @@ services:
         volume:
           nocopy: true
         read_only: false
+      - type: bind
+        # to access x-server
+        # also, you should run `xhost +` on host.
+        bind:
+          propagation: rprivate
+        source: /tmp/.X11-unix
+        target: /tmp/.X11-unix
+        read_only: false
+        volume:
+          nocopy: true
