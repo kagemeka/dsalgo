@@ -35,7 +35,7 @@ where
     y
 }
 
-pub trait PowerSemigroup<Id>: Semigroup<Id, S = Self>
+pub trait PowerSemigroupSelf<Id>: Semigroup<Id, S = Self>
 where
     Self: Clone,
 {
@@ -43,4 +43,14 @@ where
         pow_semigroup(&Self::operate, self, exponent)
     }
 }
-impl<S, Id> PowerSemigroup<Id> for S where S: Semigroup<Id, S = S> + Clone {}
+impl<S: Semigroup<Id, S = S> + Clone, Id> PowerSemigroupSelf<Id> for S {}
+
+pub trait StaticPowerSemigroup<Id>: Semigroup<Id>
+where
+    Self::S: Clone,
+{
+    fn pow_seimigroup(x: Self::S, exponent: u64) -> Self::S {
+        pow_semigroup(&Self::operate, x, exponent)
+    }
+}
+impl<T: Semigroup<Id>, Id> StaticPowerSemigroup<Id> for T where T::S: Clone {}

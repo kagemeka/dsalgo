@@ -1,6 +1,7 @@
 # todo
 
 find `TODO` with ctrl + shift + F in VSCode.
+
 * [ ]2-sat
 * [ ]2d segment tree
 * [ ]2d sqrt decomposition
@@ -89,11 +90,27 @@ find `TODO` with ctrl + shift + F in VSCode.
 * [ ]graph cycle detection
 * [ ]lucas lehmer
 * [ ]pocklington
-* [ ]rng xorshift (32, 96, 128, 246, 1024)
 * [ ]rng xoshiro
+* [ ]rng xoroshiro
 * [ ]rng chacha
 * [ ]rng pcg
 * [ ]rng mersenne twister
 * [ ]rename Modular -> ModularInt, and define ModularArthmetic struct (no instance, only associated functions), use modulararthmetic
-- [ ]binary gcd
-- [ ]modular arithmetic trait
+
+* [ ]binary gcd
+
+* [ ]Monoid -> StaticMonoid (also other abstract structures)
+  + [ ]define DynamicMonoid (unlike StaticMonoid, call on instance e.g. fn identity(self, x: T) -> T)
+
+* [ ]define MonoidElement trait.
+  + StaticMonoid trait has fn operate(Self:: S, Self:: S) -> Self:: S
+  + DynamicMonoid trait has fn operate(self, Self:: S, Self:: S) -> Self:: S
+  + StaticMonoidElement trait has fn operate(self, other: Self) -> Self
+
+* [ ]category theory
+  + category
+  + functor
+  + identity_morphism
+
+* dynamic segment tree and static segment tree
+  + dynamic one has dynamic monoid as property, static one has static monoid as generics.

@@ -24,7 +24,7 @@ where
     }
 }
 
-pub trait PowerGroup<Id>: Group<Id, S = Self>
+pub trait PowerGroupSelf<Id>: Group<Id, S = Self>
 where
     Self: Clone,
 {
@@ -38,4 +38,20 @@ where
         )
     }
 }
-impl<S, Id> PowerGroup<Id> for S where S: Group<Id, S = S> + Clone {}
+impl<S, Id> PowerGroupSelf<Id> for S where S: Group<Id, S = S> + Clone {}
+
+pub trait StaticPowerGroup<Id>: Group<Id>
+where
+    Self::S: Clone,
+{
+    fn pow_group(x: Self::S, exponent: i64) -> Self::S {
+        pow_group(
+            &Self::operate,
+            &Self::identity,
+            &Self::invert,
+            x,
+            exponent,
+        )
+    }
+}
+impl<T: Group<Id>, Id> StaticPowerGroup<Id> for T where T::S: Clone {}

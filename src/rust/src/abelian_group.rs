@@ -1,5 +1,5 @@
 use crate::{
-    binary_operation::BinaryOperationId,
+    binary_operation_id::BinaryOperationId,
     commutative_property::CommutativeProperty,
     group::Group,
 };

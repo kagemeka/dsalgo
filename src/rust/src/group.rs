@@ -1,5 +1,5 @@
 use crate::{
-    binary_operation::BinaryOperationId,
+    binary_operation_id::BinaryOperationId,
     inverse_element::InverseElement,
     monoid::Monoid,
 };

@@ -38,7 +38,6 @@ version = "0.2.4"
 networkx = "^"
 numba = "0.55.1"
 numpy = "^"
-# optext-python = "0.1.1"
 python = ">=3.9,<3.11"
 scipy = "^"
 
@@ -197,7 +196,7 @@ cache_dir = "/tmp/.pytest_cache"
 #   "*.py",
 # ]
 
-ignore="src/dsalgo_numba.py,src/dsalgo_numpy"
+ignore = "src/dsalgo_numba.py,src/dsalgo_numpy"
 
 [tool.tox]
 # github: https://github.com/tox-dev/tox

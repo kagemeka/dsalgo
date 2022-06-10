@@ -1,6 +1,8 @@
-pub trait BinaryOperationId {}
+// pub trait BinaryOperationId {}
 
-impl<T> BinaryOperationId for T {}
+// impl<T> BinaryOperationId for T {}
+
+use crate::binary_operation_id::BinaryOperationId;
 
 pub trait BinaryOperation<Id: BinaryOperationId> {
     type Lhs;

@@ -51,7 +51,8 @@ test() {
         --verbose . \
         --ignore=docs \
         --ignore=src/dsalgo_numba \
-        --ignore=src/dsalgo_numpy
+        --ignore=src/dsalgo_numpy \
+        --ignore=prime_text
     # --testpaths="**/src/dsalgo/*.py"
     # --testpaths=tests/
     # --python

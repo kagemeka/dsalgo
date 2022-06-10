@@ -1,3 +1,8 @@
+# TODO:
+# abelian group fenwick tree, invert as method of normal fenwick tree.
+# type assertion and cast of m with isinstance(), typing.cast()
+# if failed, raise not implemented error
+
 from __future__ import annotations
 
 import typing
