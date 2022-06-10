@@ -24,3 +24,18 @@ where
 }
 
 impl<S, Id> PowerMonoidSelf<Id> for S where S: Monoid<Id, S = S> + Clone {}
+
+pub trait StaticPowerMonoid<Id>: Monoid<Id>
+where
+    Self::S: Clone,
+{
+    fn pow_monoid(x: Self::S, exponent: u64) -> Self::S {
+        pow_monoid(
+            &Self::operate,
+            &Self::identity,
+            x,
+            exponent,
+        )
+    }
+}
+impl<T: Monoid<Id>, Id> StaticPowerMonoid<Id> for T where T::S: Clone {}
