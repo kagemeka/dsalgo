@@ -27,8 +27,13 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        use crate::{modular_int::ModularInt, static_modulus::StaticMod};
-        type Mint = ModularInt<StaticMod<1_000_000_007>>;
+        use crate::{
+            default_static_modular_arithmetic::Modular1_000_000_007,
+            static_modular_int::StaticModularInt,
+        };
+
+        type Mint = StaticModularInt<u32, Modular1_000_000_007>;
+
         let res = inverse_factorial_table::<Mint>(20)
             .into_iter()
             .map(|x| x.value())

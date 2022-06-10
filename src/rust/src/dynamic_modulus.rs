@@ -1,41 +1,25 @@
-use crate::modulus::Modulus;
+// use crate::modulus::Modulus;
 
-pub trait DynamicModId {}
+use crate::dynamic_modulus_trait::{DynamicModulusGet, DynamicModulusSet};
 
-impl<T> DynamicModId for T {}
-
+/// T is gonna be u64 or u32
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct DynamicMod<Id: DynamicModId>(std::marker::PhantomData<Id>);
+pub struct DynamicMod<T>(T);
 
-impl<I: DynamicModId> DynamicMod<I> {
-    fn core() -> &'static std::sync::atomic::AtomicU32 {
-        // VALUE type needs Sync + 'static
-        // std::cell types are not Sync
-        // std::sync::Mutex is not 'static
-        // only atomic types can be.
-        // or we can use external crate like `lazy_static`.
-
-        // why not defining as associated const variable?
-        // -> const variables are immutabe in any situation.
-
-        static VALUE: std::sync::atomic::AtomicU32 =
-            std::sync::atomic::AtomicU32::new(0);
-        &VALUE
-    }
-
-    pub fn set(value: u32) {
-        assert!(value > 1);
-        Self::core().store(
-            value,
-            std::sync::atomic::Ordering::SeqCst,
-        );
-    }
+impl<T> DynamicMod<T> {
+    pub fn new(value: T) -> Self { Self(value) }
 }
 
-impl<I: DynamicModId> Modulus for DynamicMod<I> {
-    fn modulus() -> u32 {
-        Self::core().load(std::sync::atomic::Ordering::SeqCst)
-    }
+impl<T: Copy> DynamicModulusGet for DynamicMod<T> {
+    type T = T;
+
+    fn get(&self) -> Self::T { self.0 }
+}
+
+impl<T> DynamicModulusSet for DynamicMod<T> {
+    type T = T;
+
+    fn set(&mut self, value: Self::T) { self.0 = value }
 }
 
 #[cfg(test)]
@@ -43,9 +27,11 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        struct Foo;
-        type Mod = DynamicMod<Foo>;
-        Mod::set(1_000_000_007);
-        assert_eq!(Mod::modulus(), 1_000_000_007);
+        type Mod = DynamicMod<u32>;
+
+        let mut x = Mod::new(998_244_353);
+        assert_eq!(x.get(), 998_244_353);
+        x.set(1_000_000_007);
+        assert_eq!(x.get(), 1_000_000_007);
     }
 }

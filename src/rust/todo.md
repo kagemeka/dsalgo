@@ -112,3 +112,15 @@ find `TODO` with ctrl + shift + F in VSCode.
   * StaticMonoid trait has fn operate(Self::S, Self::S) -> Self::S
   * DynamicMonoid trait has fn operate(self, Self::S, Self::S) -> Self::S
   * MonoidElement trait has fn operate(self, other: Self) -> Self
+
+- [ ]category theory
+  - category
+  - functor
+  - identity_morphism
+
+- [ ]review group theory
+  - StaticMonoidElement<Id> (DynamicMonoidElement does not exist because identity must be shared through a struct)
+
+
+- dynamic segment tree and static segment tree
+  - dynamic one has dynamic monoid as property, static one has static monoid as generics.

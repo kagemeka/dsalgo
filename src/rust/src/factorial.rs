@@ -12,8 +12,12 @@ mod tests {
     #[test]
     fn test() {
         use super::*;
-        use crate::{modular_int::ModularInt, static_modulus::StaticMod};
-        type Mint = ModularInt<StaticMod<1_000_000_007>>;
+        use crate::{
+            default_static_modular_arithmetic::Modular1_000_000_007,
+            static_modular_int::StaticModularInt,
+        };
+
+        type Mint = StaticModularInt<u32, Modular1_000_000_007>;
 
         assert_eq!(
             factorial::<Mint>(20).value(),

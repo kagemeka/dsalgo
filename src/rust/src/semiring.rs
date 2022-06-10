@@ -1,5 +1,5 @@
 use crate::{
-    binary_operation::BinaryOperationId,
+    binary_operation_id::BinaryOperationId,
     commutative_monoid::CommutativeMonoid,
     distributive_property::DistributiveProperty,
     magma::Magma,

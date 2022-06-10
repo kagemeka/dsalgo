@@ -1,4 +1,4 @@
-use crate::binary_operation::BinaryOperationId;
+use crate::binary_operation_id::BinaryOperationId;
 
 pub trait ZeroElement<Add, Mul>
 where

@@ -9,7 +9,7 @@ where
     if exponent == 0 { e() } else { pow_semigroup(f, x, exponent) }
 }
 
-pub trait PowerMonoid<Id>: Monoid<Id, S = Self>
+pub trait PowerMonoidSelf<Id>: Monoid<Id, S = Self>
 where
     Self: Clone,
 {
@@ -23,4 +23,4 @@ where
     }
 }
 
-impl<S, Id> PowerMonoid<Id> for S where S: Monoid<Id, S = S> + Clone {}
+impl<S, Id> PowerMonoidSelf<Id> for S where S: Monoid<Id, S = S> + Clone {}

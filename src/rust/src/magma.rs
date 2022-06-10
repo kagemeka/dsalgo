@@ -1,4 +1,7 @@
-use crate::binary_operation::{BinaryOperation, BinaryOperationId};
+use crate::{
+    binary_operation::BinaryOperation,
+    binary_operation_id::BinaryOperationId,
+};
 
 pub trait Magma<Id: BinaryOperationId> {
     type S;

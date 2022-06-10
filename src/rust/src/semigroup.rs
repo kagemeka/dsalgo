@@ -1,6 +1,6 @@
 use crate::{
     associative_property::AssociativeProperty,
-    binary_operation::BinaryOperationId,
+    binary_operation_id::BinaryOperationId,
     magma::Magma,
 };
 
