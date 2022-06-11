@@ -1,6 +1,6 @@
 pub fn int_sqrt_binary_search(n: u64) -> u64 {
     let mut lo = 0;
-    let mut hi = 1 << 32;
+    let mut hi = std::cmp::min(n + 1, 1 << 32);
     while hi - lo > 1 {
         let x = (lo + hi) >> 1;
         if x * x <= n {

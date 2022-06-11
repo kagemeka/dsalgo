@@ -3,10 +3,7 @@
 /// O(\sqrt{n})
 pub fn sum_of_multiples_sum(limit: u64) -> u64 {
     let mut s = 0;
-    for i in 1..=limit {
-        if i * i > limit {
-            break;
-        }
+    for i in (1..=limit).take_while(|&i| i * i <= limit) {
         let j = limit / i;
         s += i * i + i * (i + 1 + j) * (j - i);
     }

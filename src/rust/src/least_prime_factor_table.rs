@@ -9,10 +9,7 @@ pub fn least_prime_factor_table(size: usize) -> Vec<Option<u32>> {
     for i in (4..size).step_by(2) {
         lpf[i] = Some(2);
     }
-    for i in (3..size).step_by(2) {
-        if i * i >= size {
-            break;
-        }
+    for i in (3..size).step_by(2).take_while(|&i| i * i < size) {
         debug_assert!(lpf[i].is_some());
         if lpf[i] != Some(i as u32) {
             continue;
