@@ -1,6 +1,6 @@
 import unittest
-from dsalgo._result import Result, Err
 
+from dsalgo._result import Err, Result
 from dsalgo.extended_euclidean_modular_gcd_inverse import euclidean_mod_gcd_inv
 
 

@@ -13,6 +13,7 @@ pub fn prime_pi_fast(n: u64) -> u64 {
     let mut small = vec![0; sqrt + 1]; // small[j] = S(j, p)
     let mut large = vec![0; sqrt + 1];
     // large[k] := S([n/k]=j, p)
+    // large[0] is undefined.
     for i in 1..=sqrt {
         small[i] = i - 1;
         large[i] = n / i - 1;

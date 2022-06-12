@@ -11,22 +11,23 @@ pub fn prime_pi_fast_optimized(n: u64) -> u64 {
     if n == 2 {
         return 1;
     }
+    let half = |i: usize| (i - 1) >> 1;
     let sqrt = floor_sqrt(n) as usize;
     let n = n as usize;
     let mut size = (sqrt + 1) >> 1;
     // for memory saving. do not have space for even numbers.
     let mut small: Vec<usize> = (0..size).collect();
-    // 1, 3, 5, 7, ...
-    // -> unsieved count less than or equal to (j << 1 | 1) is j.
+    // j=1, 3, 5, 7, ..., k=0, 1, 2, 3
+    // -> unsieved count less than or equal to j is (j - 1) >> 1 = k.
     let mut large: Vec<usize> =
-        (0..size).map(|i| (n / (i << 1 | 1) - 1) >> 1).collect();
+        (0..size).map(|i| half(n / (i << 1 | 1))).collect();
+    // (j - 1) >> 1 = k <-> (k << 1 | 1) = j
     let mut unsieved_nums: Vec<usize> = (0..size).map(|i| i << 1 | 1).collect();
     // 1initially, 1, 3, 5, ... (odd at most sqrt(n))
     // unsieved_nums[..size] are odd integers which are still unsieved.
     // (size will be updated in each iteration)
     // unsieved_nums[size..] are no longer used.
     let mut checked_or_sieved = vec![false; size];
-    let half = |i: usize| (i - 1) >> 1;
     // 1, 2 -> 0, 3, 4 -> 1, ... (because even numbers are skipped.)
     let mut pi = 0;
     for i in (3..=sqrt).step_by(2) {

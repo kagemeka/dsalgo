@@ -23,6 +23,7 @@ pub mod analysis_search;
 pub mod apsp_johnson_dense;
 pub mod apsp_johnson_sparse;
 pub mod arborescence;
+pub mod prime_counting_fast_half;
 pub mod argsort;
 pub mod arithmetic_series;
 pub mod array_compression;

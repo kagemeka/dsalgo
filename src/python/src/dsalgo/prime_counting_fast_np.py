@@ -1,6 +1,7 @@
 import unittest
 
 import numpy as np
+
 from dsalgo.floor_sqrt import floor_sqrt
 
 
@@ -29,10 +30,11 @@ def prime_pi_fast(n: int) -> int:
     return int(large[1])
 
 
-# TODO:
 class Tests(unittest.TestCase):
     def test(self) -> None:
-        ...
+        from dsalgo._test_fast_prime_pi import test_fast_prime_counting
+
+        test_fast_prime_counting(prime_pi_fast)
 
 
 if __name__ == "__main__":
