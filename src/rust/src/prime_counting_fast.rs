@@ -1,7 +1,12 @@
+use crate::floor_sqrt::floor_sqrt;
+
 /// O(N^{3/4})
-pub fn prime_counting_fast(n: u64) -> u64 {
+pub fn prime_pi_fast(n: u64) -> u64 {
+    if n < 2 {
+        return 0;
+    }
+    let sqrt = floor_sqrt(n) as usize;
     let n = n as usize;
-    let sqrt = (1..1 << 32).find(|&i| i * i > n).unwrap_or(1 << 32) as usize;
 
     // consider sieve of Eratosthenes' transitions.
     // S(j, p) := number of trues in [2, j] after sieving with prime p.
@@ -29,8 +34,8 @@ pub fn prime_counting_fast(n: u64) -> u64 {
         // for large
         // large[n/j] -= large[n/(j/i)] - pi = large[(n/j)i] - pi
         // large[k] -= large[ki] - pi
-        // because v >= i*i, n/k >= i*i, k <= n/(i*i)
-        // becareful of updating in forward order because of in-place.
+        // because j = [N/k] >= i*i, k <= [N/(i*i)]
+        // be careful of updating in forward order because of in-place.
         let border = sqrt / i;
         let n_i = n / i; // cache
         for k in 1..=sqrt.min(n / i2) {
@@ -40,7 +45,7 @@ pub fn prime_counting_fast(n: u64) -> u64 {
 
         // for small
         // just small[j] -= small[j/i] - pi (i*i <= j <= sqrt)
-        // becareful of updating in reverse order because of in-place.
+        // be careful of updating in reverse order because of in-place.
         // for optimization, use multiplication instead of division
         // by computing giving dp instead of receiving.
         // small[j=[k*i, sqrt]] -= small[k] - pi (i <= k <= sqrt/i)
@@ -57,11 +62,7 @@ mod tests {
     #[test]
     fn test() {
         use super::*;
-        assert_eq!(prime_counting_fast(10), 4);
-        assert_eq!(prime_counting_fast(100), 25);
-        assert_eq!(
-            prime_counting_fast(100000000000),
-            4118054813
-        );
+        use crate::test_fast_prime_counting::test_fast_prime_counting;
+        test_fast_prime_counting(&prime_pi_fast);
     }
 }
