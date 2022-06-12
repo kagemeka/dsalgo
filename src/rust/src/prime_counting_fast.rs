@@ -26,7 +26,6 @@ pub fn prime_pi_fast(n: u64) -> u64 {
         // we want update S(j, i) such that j >= i * i.
         // for j > sqrt(n), update large[inv] such that j = [N/inv].
         // for j <= sqrt(n), update small[j].
-        let i2 = i * i; // cache, (multiplication is heavy.)
         let pi = small[i - 1]; // S(p - 1, p - 1) = pi(p - 1).
 
         // compute S(j, i) -= S(j/i, i - 1) - pi
@@ -38,9 +37,11 @@ pub fn prime_pi_fast(n: u64) -> u64 {
         // be careful of updating in forward order because of in-place.
         let border = sqrt / i;
         let n_i = n / i; // cache
-        for k in 1..=sqrt.min(n / i2) {
-            large[k] -=
-                if k <= border { large[k * i] } else { small[n_i / k] } - pi;
+        for k in 1..=border {
+            large[k] -= large[k * i] - pi;
+        }
+        for k in border + 1..=sqrt.min(n_i / i) {
+            large[k] -= small[n_i / k] - pi;
         }
 
         // for small
