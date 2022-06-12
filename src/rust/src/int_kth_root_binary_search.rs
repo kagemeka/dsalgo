@@ -1,3 +1,4 @@
+/// if n >= 1 and k >= 64, answer is always 1 under 64bit.
 pub fn int_kth_root_binary_search(n: u64, k: u8) -> u64 {
     assert!(k > 0);
     if k == 1 || n <= 1 {

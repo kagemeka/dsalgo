@@ -1,9 +1,5 @@
 pub fn int_sqrt_linear_naive(n: u64) -> u64 {
-    let mut x = 0;
-    while x * x <= n {
-        x += 1;
-    }
-    x - 1
+    (1..1 << 32).find(|&x| x * x > n).unwrap_or(1 << 32) - 1
 }
 
 #[cfg(test)]
