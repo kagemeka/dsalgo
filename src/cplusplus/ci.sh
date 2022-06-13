@@ -30,12 +30,19 @@ test() {
     ctest --test-dir build
 }
 
-tidy_lint_format() {
+dump_tidy_config() {
     clang-tidy \
         --dump-config \
         --format-style=file \
         -checks=modernize-* \
+        --fix \
         --fix-errors \
+        ./**/*.[ch]pp
+
+}
+tidy_lint_format() {
+    clang-tidy \
+        --config-file=.clang-tidy \
         ./**/*.[ch]pp
 }
 
@@ -55,3 +62,4 @@ ci() {
 }
 
 ci
+# dump_tidy_config
