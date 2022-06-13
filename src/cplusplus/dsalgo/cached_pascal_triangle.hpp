@@ -3,13 +3,14 @@
 
 #include <unordered_map>
 
-template <typename T> class cached_pascal_triangle {
+template <typename T>
+class cached_pascal_triangle {
   std::unordered_map<unsigned long long int, T> cache;
 
 public:
-  cached_pascal_triangle() {}
+  cached_pascal_triangle() = default;
 
-  T operator()(unsigned long int n, unsigned long int k) {
+  auto operator()(unsigned long int n, unsigned long int k) -> T {
     if (n < k) return 0;
     if (k == 0) return 1;
     unsigned long long int key = (unsigned long long int)n << 32 | k;

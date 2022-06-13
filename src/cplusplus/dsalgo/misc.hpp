@@ -17,18 +17,19 @@ using namespace Algebra;
 /* Combinatorics */
 namespace Combinatorics {
 
-template <typename T> T next_combination(T s) {
+template <typename T>
+auto next_combination(T s) -> T {
   T x = s & -s, y = s + x;
   return ((s & ~y) / x) >> 1 | y;
 }
 
-template <typename T> vector<T> combinations(T a, int r) {
+template <typename T>
+auto combinations(T a, int r) -> vector<T> {
   int n = a.size();
   vector<T> res;
   if (r > n || r < 0) return res;
   vector<int> indices(r);
-  for (int i = 0; i < r; i++)
-    indices[i] = i;
+  for (int i = 0; i < r; i++) indices[i] = i;
   res.push_back(T(a.begin(), a.begin() + r));
   while (true) {
     bool flg = false;
@@ -47,8 +48,7 @@ template <typename T> vector<T> combinations(T a, int r) {
       indices[j] = indices[j - 1] + 1;
     }
     T tmp(r);
-    for (int j = 0; j < r; j++)
-      tmp[j] = a[indices[j]];
+    for (int j = 0; j < r; j++) tmp[j] = a[indices[j]];
     res.push_back(tmp);
   }
   return res;
@@ -60,7 +60,8 @@ using namespace Combinatorics;
 /* Geometry and Topology */
 namespace GeometryTopology {
 
-template <typename... T> struct Vector {
+template <typename... T>
+struct Vector {
 public:
   Vector(T... args) {}
 };
@@ -68,14 +69,16 @@ public:
 // to vector crossing algorithm later.
 
 /* Graph */
-template <typename T> struct Graph {
+template <typename T>
+struct Graph {
 public:
   /* Tree Doubling For Finding LCA */
   void find_ancestors() {
     ancestors.push_back(parent);
-    for (int i = 0, l = bit_length(*max_element(depth.begin(), depth.end())); i < l; i++) {
+    for (int i = 0, l = bit_length(*max_element(depth.begin(), depth.end()));
+         i < l; i++) {
       auto ancestor = *prev(ancestors.end());
-      vector<int> nxt_ancestor(N);
+      auto nxt_ancestor(N)->vector<int>;
       for (int u = 0; u < N; u++) {
         nxt_ancestor[u] = ancestor[ancestor[u]];
       }
@@ -84,9 +87,11 @@ public:
   }
 
   /* Find dist(u, v) on Tree.*/
-  T find_dist(int u, int v) { return dist[u] + dist[v] - 2 * dist[find_lca(u, v)]; }
+  auto find_dist(int u, int v) -> T {
+    return dist[u] + dist[v] - 2 * dist[find_lca(u, v)];
+  }
 
-  int find_lca(int u, int v) {
+  auto find_lca(int u, int v) -> int {
     int du = depth[u], dv = depth[v];
     if (du > dv) {
       swap(u, v);
@@ -105,7 +110,7 @@ public:
     return parent[u];
   }
 
-  vector<T> dijkstra(int src) {
+  auto dijkstra(int src) -> vector<T> {
     using P = pair<T, int>;
     priority_queue<P, vector<P>, greater<P>> q;
     q.push(P(0, src));
@@ -141,7 +146,7 @@ public:
     return dist;
   }
 
-  vector<int> shortest_paths(int src) {
+  auto shortest_paths(int src) -> vector<int> {
     dijkstra(src);
     return paths;
   }
@@ -162,11 +167,10 @@ struct UnionFind {
 public:
   UnionFind(int n = 0) : parent(n), rank(n), size(n, 1) {
     N = n;
-    for (int i = 0; i < n; i++)
-      parent[i] = i;
+    for (int i = 0; i < n; i++) parent[i] = i;
   }
 
-  int find(int u) {
+  auto find(int u) -> int {
     if (parent[u] == u) return u;
     return parent[u] = find(parent[u]);
   }
@@ -180,7 +184,7 @@ public:
     rank[u] = max(rank[u], rank[v] + 1);
   }
 
-  bool same(int u, int v) { return find(u) == find(v); }
+  auto same(int u, int v) -> bool { return find(u) == find(v); }
 
   vector<int> size;
   vector<int> rank;
@@ -190,10 +194,11 @@ private:
   vector<int> parent;
 };
 
-template <typename T> struct Rectangle {
+template <typename T>
+struct Rectangle {
   T x1, y1, x2, y2;
   Rectangle(T _x1, T _y1, T _x2, T _y2) : x1(_x1), y1(_y1), x2(_x2), y2(_y2) {}
-  bool operator<(const Rectangle& r) const {
+  auto operator<(const Rectangle& r) const -> bool {
     if (this->x1 != r.x1) {
       return this->x1 < r.x1;
     }
@@ -214,7 +219,9 @@ using namespace GeometryTopology;
 
 namespace Algebra {
 
-template <typename T> vector<vector<T>> bitwise_dot(vector<vector<T>>& a, vector<vector<T>>& b) {
+template <typename T>
+auto bitwise_dot(vector<vector<T>>& a, vector<vector<T>>& b)
+    -> vector<vector<T>> {
   int h = a.size(), w = b[0].size(), l = b.size();
   assert((int)a[0].size() == l);
   vector<vector<T>> c(h, vector<T>(w));
@@ -228,11 +235,11 @@ template <typename T> vector<vector<T>> bitwise_dot(vector<vector<T>>& a, vector
   return c;
 }
 
-template <typename T> vector<vector<T>> bitwise_mat_pow(vector<vector<T>> a, T n) {
+template <typename T>
+auto bitwise_mat_pow(vector<vector<T>> a, T n) -> vector<vector<T>> {
   int m = a.size();
   vector<vector<T>> b = identity<T>(m);
-  for (int i = 0; i < m; i++)
-    b[i][i] = numeric_limits<T>::max();
+  for (int i = 0; i < m; i++) b[i][i] = numeric_limits<T>::max();
   while (n) {
     if (n & 1) b = bitwise_dot(b, a);
     n >>= 1;
@@ -241,32 +248,34 @@ template <typename T> vector<vector<T>> bitwise_mat_pow(vector<vector<T>> a, T n
   return b;
 }
 
-template <typename T> T gcd(T a, T b) { return __gcd(a, b); }
-template <typename T> T lcm(T a, T b) { return a / gcd(a, b) * b; }
-
-template <typename T> struct Kitamasa {};
-
-} // namespace Algebra
+template <typename T>
+auto gcd(T a, T b) -> T {
+  return __gcd(a, b);
+}
+template <typename T>
+auto lcm(T a, T b) -> T {
+  return a / gcd(a, b) * b;
+}
 
 /* NumberTheory */
 namespace NumberTheory {
-template <typename T> struct PrimeNumber {
+template <typename T>
+struct PrimeNumber {
 public:
   PrimeNumber() : prime_nums(0) {
     is_prime.set();
     is_prime[0] = is_prime[1] = 0;
     for (T i = 2; i < N; i++) {
       if (!is_prime[i]) continue;
-      for (T j = i * 2; j < N; j += i)
-        is_prime[j] = 0;
+      for (T j = i * 2; j < N; j += i) is_prime[j] = 0;
     }
     for (T i = 0; i < N; i++) {
       if (is_prime[i]) prime_nums.emplace_back(i);
     }
   }
-  T& operator[](int i) { return prime_nums[i]; }
-  bool operator()(T n) { return is_prime[n]; }
-  map<T, int> factorize(T n) {
+  auto operator[](int i) -> T& { return prime_nums[i]; }
+  auto operator()(T n) -> bool { return is_prime[n]; }
+  auto factorize(T n) -> map<T, int> {
     map<T, int> cnt;
     if (n < 2) return cnt;
     for (T& p : prime_nums) {
@@ -281,7 +290,7 @@ public:
     return cnt;
   }
 
-  map<T, int> factorize_factorial(T n) {
+  auto factorize_factorial(T n) -> map<T, int> {
     map<T, int> cnt;
     for (T i = 2; i < n + 1; i++) {
       for (auto& x : factorize(i)) {
@@ -296,21 +305,3 @@ private:
   bitset<(T)1e7> is_prime;
   vector<T> prime_nums;
 };
-
-template <typename T> vector<T> find_divisors(T n) {
-  vector<T> d(0);
-  for (T i = 1; i * i <= n; i++) {
-    if (n % i) {
-      continue;
-    }
-    d.push_back(i);
-    if (i * i != n) {
-      d.push_back(n / i);
-    }
-  }
-  sort(d.begin(), d.end());
-  return d;
-}
-
-} // namespace NumberTheory
-using namespace NumberTheory;

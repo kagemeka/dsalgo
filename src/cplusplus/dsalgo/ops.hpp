@@ -1,6 +1,9 @@
 #ifndef OPS_HPP
 #define OPS_HPP
 
-template <typename T> T mul(T a, T b) { return a * b; }
+template <typename T>
+auto mul(T a, T b) -> T {
+  return a * b;
+}
 
 #endif // OPS_HPP

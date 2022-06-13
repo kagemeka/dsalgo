@@ -1,2 +1,6 @@
 *.gch
 a.out
+/build
+/Catch2
+/googletest
+/CMakeFiles

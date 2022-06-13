@@ -1,4 +1,0 @@
-
-namespace {
-  void bar() {}
-}

@@ -1,6 +1,19 @@
 #!/bin/bash
 source ~/.bashrc
 
+# apt install -y \
+#     python3-neovim \
+#     python3-pip
+# PYVER=3.9
+# add-apt-repository -y ppa:deadsnakes/ppa
+# apt update
+# apt install -y \
+#     python$PYVER \
+#     python$PYVER-distutils \
+#     python$PYVER-dev
+# ln -fns /usr/bin/python$PYVER /usr/bin/python3
+# ln -fns /usr/bin/python3 /usr/bin/python
+
 install_poetry() {
     apt update
     apt install -y curl

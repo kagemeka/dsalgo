@@ -6,7 +6,8 @@
 #include <numeric>
 #include <vector>
 
-template <typename S> std::vector<S> inverse_factorial_table(unsigned long int size) {
+template <typename S>
+auto inverse_factorial_table(unsigned long int size) -> std::vector<S> {
   std::vector<S> v(size);
   std::iota(v.begin(), v.end(), 1);
   v[size - 1] = 1 / factorial_table<S>(size)[size - 1];

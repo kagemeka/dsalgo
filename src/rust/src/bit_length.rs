@@ -3,6 +3,10 @@ pub fn bit_length(n: u64) -> u8 {
     (0u64.leading_zeros() - n.leading_zeros()) as u8
 }
 
+pub fn bit_length_128(n: u128) -> u8 {
+    (0u128.leading_zeros() - n.leading_zeros()) as u8
+}
+
 /// O(\log\log{N}})
 pub fn bit_length_binary_search(mut n: u64) -> u8 {
     let mut length = 0;

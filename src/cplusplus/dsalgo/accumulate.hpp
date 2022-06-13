@@ -3,7 +3,8 @@
 
 #include <vector>
 
-template <typename S, S (*op)(S, S)> std::vector<S> accumulate(std::vector<S> v) {
+template <typename S, S (*op)(S, S)>
+auto accumulate(std::vector<S> v) -> std::vector<S> {
   for (int i = 0; i < (int)v.size(); ++i) {
     v[i + 1] = op(v[i], v[i + 1]);
   }
