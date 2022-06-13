@@ -52,7 +52,6 @@ pub fn prime_pi_fast_half(n: u64) -> u64 {
     large[0] as u64 + 1
 }
 
-
 #[cfg(test)]
 mod tests {
     #[test]

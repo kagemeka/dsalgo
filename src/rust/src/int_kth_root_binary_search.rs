@@ -4,6 +4,9 @@ pub fn int_kth_root_binary_search(n: u64, k: u8) -> u64 {
     if k == 1 || n <= 1 {
         return n;
     }
+    if k >= 64 {
+        return 1;
+    }
     let mut lo = 0;
     let mut hi = n;
     while hi - lo > 1 {
@@ -26,20 +29,18 @@ mod tests {
     #[test]
     fn test() {
         use super::*;
-        let pairs = [
-            (1, 100),
-            (2, 10),
-            (3, 4),
-            (4, 3),
-            (5, 2),
-            (6, 2),
-            (7, 1),
-        ];
-        for &(k, ans) in &pairs {
-            assert_eq!(
-                int_kth_root_binary_search(100, k),
-                ans
-            );
-        }
+        use crate::test_int_kth_root::{
+            test_int_kth_root,
+            CASES_ITERATIVE,
+            CASES_LINEAR,
+        };
+        test_int_kth_root(
+            &int_kth_root_binary_search,
+            CASES_ITERATIVE,
+        );
+        test_int_kth_root(
+            &int_kth_root_binary_search,
+            CASES_LINEAR,
+        );
     }
 }

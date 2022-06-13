@@ -1,13 +1,12 @@
-#include <vector>
 #include <algorithm>
-
+#include <vector>
 
 template <typename T>
 class ArrayCompression {
   std::vector<T> v;
 
 public:
-  std::vector<int> compress(const std::vector<T> &a) {
+  auto compress(const std::vector<T>& a) -> std::vector<int> {
     v = a;
     std::sort(v.begin(), v.end());
     v.erase(std::unique(v.begin(), v.end()), v.end());
@@ -19,5 +18,5 @@ public:
     return idx;
   }
 
-  T retrieve(int i) const { return v[i]; }
+  auto retrieve(int i) const -> T { return v[i]; }
 };

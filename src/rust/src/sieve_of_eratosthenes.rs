@@ -1,5 +1,5 @@
 pub fn sieve_of_eratosthenes(sieve_size: usize) -> Vec<u32> {
-    let mut primes = Vec::with_capacity(sieve_size >> 1);
+    let mut primes = Vec::with_capacity(sieve_size >> 4);
     if sieve_size > 2 {
         primes.push(2);
     }

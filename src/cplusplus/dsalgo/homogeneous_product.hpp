@@ -3,12 +3,13 @@
 
 #include "./combination.hpp"
 
-template <typename S> class homogeneous_product {
+template <typename S>
+class homogeneous_product {
   combination<S> choose;
 
 public:
   homogeneous_product(unsigned long int size) : choose(size) {}
-  S operator()(unsigned long int n, unsigned long int k) {
+  auto operator()(unsigned long int n, unsigned long int k) -> S {
     return n == 0 ? 0 : choose(n + k - 1, k);
   }
 };

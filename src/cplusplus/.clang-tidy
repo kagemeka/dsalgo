@@ -1,0 +1,125 @@
+---
+Checks: "clang-diagnostic-*,clang-analyzer-*,modernize-*"
+WarningsAsErrors: ""
+HeaderFilterRegex: ""
+AnalyzeTemporaryDtors: false
+FormatStyle: file
+CheckOptions:
+  - key: modernize-replace-auto-ptr.IncludeStyle
+    value: llvm
+  - key: modernize-use-auto.MinTypeNameLength
+    value: "5"
+  - key: cert-oop54-cpp.WarnOnlyIfThisHasSuspiciousField
+    value: "false"
+  - key: modernize-use-override.IgnoreDestructors
+    value: "false"
+  - key: cert-dcl16-c.NewSuffixes
+    value: "L;LL;LU;LLU"
+  - key: modernize-make-shared.MakeSmartPtrFunction
+    value: "std::make_shared"
+  - key: modernize-loop-convert.MaxCopySize
+    value: "16"
+  - key: modernize-use-default-member-init.UseAssignment
+    value: "false"
+  - key: modernize-make-shared.MakeSmartPtrFunctionHeader
+    value: "<memory>"
+  - key: modernize-make-unique.IgnoreMacros
+    value: "true"
+  - key: modernize-make-unique.IgnoreDefaultInitialization
+    value: "true"
+  - key: modernize-use-emplace.ContainersWithPushBack
+    value: "::std::vector;::std::list;::std::deque"
+  - key: modernize-use-override.AllowOverrideAndFinal
+    value: "false"
+  - key: modernize-make-unique.IncludeStyle
+    value: llvm
+  - key: modernize-use-override.OverrideSpelling
+    value: override
+  - key: modernize-pass-by-value.ValuesOnly
+    value: "false"
+  - key: modernize-loop-convert.IncludeStyle
+    value: llvm
+  - key: cert-str34-c.DiagnoseSignedUnsignedCharComparisons
+    value: "false"
+  - key: cert-err33-c.CheckedFunctions
+    value: "::aligned_alloc;::asctime_s;::at_quick_exit;::atexit;::bsearch;::bsearch_s;::btowc;::c16rtomb;::c32rtomb;::calloc;::clock;::cnd_broadcast;::cnd_init;::cnd_signal;::cnd_timedwait;::cnd_wait;::ctime_s;::fclose;::fflush;::fgetc;::fgetpos;::fgets;::fgetwc;::fopen;::fopen_s;::fprintf;::fprintf_s;::fputc;::fputs;::fputwc;::fputws;::fread;::freopen;::freopen_s;::fscanf;::fscanf_s;::fseek;::fsetpos;::ftell;::fwprintf;::fwprintf_s;::fwrite;::fwscanf;::fwscanf_s;::getc;::getchar;::getenv;::getenv_s;::gets_s;::getwc;::getwchar;::gmtime;::gmtime_s;::localtime;::localtime_s;::malloc;::mbrtoc16;::mbrtoc32;::mbsrtowcs;::mbsrtowcs_s;::mbstowcs;::mbstowcs_s;::memchr;::mktime;::mtx_init;::mtx_lock;::mtx_timedlock;::mtx_trylock;::mtx_unlock;::printf_s;::putc;::putwc;::raise;::realloc;::remove;::rename;::scanf;::scanf_s;::setlocale;::setvbuf;::signal;::snprintf;::snprintf_s;::sprintf;::sprintf_s;::sscanf;::sscanf_s;::strchr;::strerror_s;::strftime;::strpbrk;::strrchr;::strstr;::strtod;::strtof;::strtoimax;::strtok;::strtok_s;::strtol;::strtold;::strtoll;::strtoul;::strtoull;::strtoumax;::strxfrm;::swprintf;::swprintf_s;::swscanf;::swscanf_s;::thrd_create;::thrd_detach;::thrd_join;::thrd_sleep;::time;::timespec_get;::tmpfile;::tmpfile_s;::tmpnam;::tmpnam_s;::tss_create;::tss_get;::tss_set;::ungetc;::ungetwc;::vfprintf;::vfprintf_s;::vfscanf;::vfscanf_s;::vfwprintf;::vfwprintf_s;::vfwscanf;::vfwscanf_s;::vprintf_s;::vscanf;::vscanf_s;::vsnprintf;::vsnprintf_s;::vsprintf;::vsprintf_s;::vsscanf;::vsscanf_s;::vswprintf;::vswprintf_s;::vswscanf;::vswscanf_s;::vwprintf_s;::vwscanf;::vwscanf_s;::wcrtomb;::wcschr;::wcsftime;::wcspbrk;::wcsrchr;::wcsrtombs;::wcsrtombs_s;::wcsstr;::wcstod;::wcstof;::wcstoimax;::wcstok;::wcstok_s;::wcstol;::wcstold;::wcstoll;::wcstombs;::wcstombs_s;::wcstoul;::wcstoull;::wcstoumax;::wcsxfrm;::wctob;::wctrans;::wctype;::wmemchr;::wprintf_s;::wscanf;::wscanf_s;"
+  - key: google-readability-braces-around-statements.ShortStatementLines
+    value: "1"
+  - key: modernize-make-unique.MakeSmartPtrFunction
+    value: "std::make_unique"
+  - key: modernize-use-emplace.IgnoreImplicitConstructors
+    value: "false"
+  - key: modernize-make-unique.MakeSmartPtrFunctionHeader
+    value: "<memory>"
+  - key: modernize-use-equals-delete.IgnoreMacros
+    value: "true"
+  - key: modernize-use-emplace.TupleTypes
+    value: "::std::pair;::std::tuple"
+  - key: modernize-use-emplace.TupleMakeFunctions
+    value: "::std::make_pair;::std::make_tuple"
+  - key: modernize-use-nodiscard.ReplacementString
+    value: "[[nodiscard]]"
+  - key: modernize-replace-random-shuffle.IncludeStyle
+    value: llvm
+  - key: modernize-loop-convert.MinConfidence
+    value: reasonable
+  - key: modernize-loop-convert.MakeReverseRangeHeader
+    value: ""
+  - key: modernize-use-bool-literals.IgnoreMacros
+    value: "true"
+  - key: modernize-use-noexcept.UseNoexceptFalse
+    value: "true"
+  - key: google-readability-namespace-comments.ShortNamespaceLines
+    value: "10"
+  - key: google-readability-namespace-comments.SpacesBeforeComments
+    value: "2"
+  - key: cppcoreguidelines-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value: "true"
+  - key: modernize-use-override.FinalSpelling
+    value: final
+  - key: modernize-avoid-bind.PermissiveParameterList
+    value: "false"
+  - key: modernize-loop-convert.UseCxx20ReverseRanges
+    value: "true"
+  - key: modernize-use-noexcept.ReplacementString
+    value: ""
+  - key: modernize-use-using.IgnoreMacros
+    value: "true"
+  - key: modernize-use-default-member-init.IgnoreMacros
+    value: "true"
+  - key: llvm-qualified-auto.AddConstToQualified
+    value: "false"
+  - key: modernize-loop-convert.NamingStyle
+    value: CamelCase
+  - key: modernize-loop-convert.MakeReverseRangeFunction
+    value: ""
+  - key: google-readability-function-size.StatementThreshold
+    value: "800"
+  - key: llvm-else-after-return.WarnOnConditionVariables
+    value: "false"
+  - key: modernize-pass-by-value.IncludeStyle
+    value: llvm
+  - key: modernize-raw-string-literal.DelimiterStem
+    value: lit
+  - key: modernize-use-equals-default.IgnoreMacros
+    value: "true"
+  - key: modernize-use-nullptr.NullMacros
+    value: "NULL"
+  - key: modernize-raw-string-literal.ReplaceShorterLiterals
+    value: "false"
+  - key: modernize-use-emplace.SmartPointers
+    value: "::std::shared_ptr;::std::unique_ptr;::std::auto_ptr;::std::weak_ptr"
+  - key: modernize-use-auto.RemoveStars
+    value: "false"
+  - key: modernize-use-transparent-functors.SafeMode
+    value: "false"
+  - key: modernize-make-shared.IgnoreDefaultInitialization
+    value: "true"
+  - key: modernize-replace-disallow-copy-and-assign-macro.MacroName
+    value: DISALLOW_COPY_AND_ASSIGN
+  - key: modernize-make-shared.IgnoreMacros
+    value: "true"
+  - key: llvm-else-after-return.WarnOnUnfixable
+    value: "false"
+  - key: modernize-make-shared.IncludeStyle
+    value: llvm

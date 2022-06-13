@@ -3,11 +3,13 @@
 
 #include "./accumulate.hpp"
 #include "./ops.hpp"
+#include "rust_types.hpp"
 #include <cassert>
 #include <numeric>
 #include <vector>
 
-template <typename S> std::vector<S> factorial_table(unsigned long int size) {
+template <typename S>
+auto factorial_table(unsigned long int size) -> std::vector<S> {
   assert(size > 0);
   std::vector<S> v(size);
   std::iota(v.begin(), v.end(), 0);

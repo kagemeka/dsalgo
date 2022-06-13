@@ -1,7 +1,7 @@
 /// compute least prime factor table and prime numbers list.
 pub fn linear_prime_sieve(size: usize) -> (Vec<Option<u32>>, Vec<u32>) {
     let mut lpf = vec![None; size];
-    let mut prime_numbers = Vec::with_capacity(size);
+    let mut prime_numbers = Vec::with_capacity(size >> 4);
     for i in 2..size {
         if lpf[i].is_none() {
             lpf[i] = Some(i as u32);

@@ -6,7 +6,8 @@
 #include <cstdint>
 #include <vector>
 
-template <typename S> class combination {
+template <typename S>
+class combination {
   std::vector<S> fact, inv_fact;
 
 public:
@@ -14,12 +15,12 @@ public:
     fact = factorial_table<S>(size);
     inv_fact = inverse_factorial_table<S>(size);
   }
-  S operator()(unsigned long int n, unsigned long int k) {
+  auto operator()(unsigned long int n, unsigned long int k) -> S {
     if (n < k) return 0;
     return fact[n] * inv_fact[k] * inv_fact[n - k];
   }
 
-  S inverse(unsigned long int n, unsigned long int k) {
+  auto inverse(unsigned long int n, unsigned long int k) -> S {
     if (n < k) return 0;
     return inv_fact[n] * fact[k] * fact[n - k];
   }

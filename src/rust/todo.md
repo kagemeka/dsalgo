@@ -114,3 +114,5 @@ find `TODO` with ctrl + shift + F in VSCode.
 
 * dynamic segment tree and static segment tree
   + dynamic one has dynamic monoid as property, static one has static monoid as generics.
+
+- [] atkin sieve

@@ -1,3 +1,3 @@
 # cpp-algorithms
 
-Datastructures and Algorithms written in C-plus-plus
+Datastructures and Algorithms written in C++

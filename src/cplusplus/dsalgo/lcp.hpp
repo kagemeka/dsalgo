@@ -1,8 +1,8 @@
-#include <vector>
 #include <cassert>
+#include <vector>
 
-
-std::vector<int> lcp_array_kasai(std::vector<int> a, std::vector<int> sa) {
+auto lcp_array_kasai(std::vector<int> a, std::vector<int> sa)
+    -> std::vector<int> {
   int n = a.size();
   assert(n > 0 && (int)sa.size() == n);
   std::vector<int> rank(n), lcp(n - 1);

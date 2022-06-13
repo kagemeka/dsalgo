@@ -2,7 +2,8 @@
 #include <vector>
 
 template <typename T>
-std::vector<std::vector<T>> floyd_warshall(const std::vector<std::vector<T>>& min_edge_matrix) {
+auto floyd_warshall(const std::vector<std::vector<T>>& min_edge_matrix)
+    -> std::vector<std::vector<T>> {
   auto dist = min_edge_matrix;
   unsigned long int n = dist.size();
   for (unsigned long int i = 0; i < n; ++i) assert(dist[i].size() == n);
