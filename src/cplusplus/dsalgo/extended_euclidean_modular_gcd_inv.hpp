@@ -1,10 +1,10 @@
 // test: passed
+// TODO: more test cases.
 
 #include "./rust_types.hpp"
 #include <cassert>
 
-namespace dsalgo {
-namespace euclidean_modular_gcd_inv {
+namespace dsalgo::euclidean_modular_gcd_inv {
 using namespace dsalgo::rust_types;
 
 // return pair(g: gcd(mod, n), x: inverse(n / g) \mod (mod / g))
@@ -25,5 +25,4 @@ auto euclidean_mod_gcd_inv(u64 mod, u64 n) -> std::pair<u64, u64> {
   return {gcd, x00};
 }
 
-} // namespace euclidean_modular_gcd_inv
-} // namespace dsalgo
+} // namespace dsalgo::euclidean_modular_gcd_inv

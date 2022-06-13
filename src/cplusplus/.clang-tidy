@@ -5,6 +5,8 @@ HeaderFilterRegex: ""
 AnalyzeTemporaryDtors: false
 FormatStyle: file
 CheckOptions:
+  - key: modernize-concat-nested-namespaces
+    value: "true"
   - key: modernize-replace-auto-ptr.IncludeStyle
     value: llvm
   - key: modernize-use-auto.MinTypeNameLength

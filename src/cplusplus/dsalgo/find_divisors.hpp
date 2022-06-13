@@ -2,8 +2,7 @@
 #pragma once
 #include "./rust_types.hpp"
 
-namespace dsalgo {
-namespace find_divisors_naive {
+namespace dsalgo::find_divisors_naive {
 using namespace rust_types;
 
 template <typename T>
@@ -22,5 +21,4 @@ auto find_divisors(T n) -> vec<T> {
   return d;
 }
 
-} // namespace find_divisors_naive
-} // namespace dsalgo
+} // namespace dsalgo::find_divisors_naive

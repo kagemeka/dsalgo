@@ -7,7 +7,22 @@ setup() {
         clang-format \
         clangd \
         clang-tidy \
-        cmake
+        cmake \
+        sudo
+    install_googletest
+}
+
+install_googletest() {
+    # https://github.com/google/googletest/tree/main/googletest
+    git clone https://github.com/google/googletest.git -b release-1.11.0
+    cd googletest # Main directory of the cloned repository.
+    mkdir build   # Create a directory to hold the build output.
+    cd build
+    cmake .. # Generate native build scripts for GoogleTest.
+    make
+    make install
+    cd ../../
+    rm -r ./googletest
 }
 
 #region
@@ -20,9 +35,6 @@ gpp() {
     gpp_compile $1 && chmod +x main && time ./main
 }
 #endregion
-
-# install_googletest() {
-# }
 
 test() {
     cmake -S . -B build
@@ -46,7 +58,7 @@ tidy_lint_format() {
         ./**/*.[ch]pp
 }
 
-format() {
+clang_format() {
     clang-format \
         -i \
         --sort-includes \
@@ -55,11 +67,12 @@ format() {
 }
 
 ci() {
-    setup
+    # setup
     tidy_lint_format
-    format
+    clang_format
     test
 }
 
+# setup
 ci
 # dump_tidy_config

@@ -4,8 +4,8 @@
 #include <utility>
 
 // return pair(g: gcd(mod, n), x: inverse(n / g) \mod (mod / g))
-std::pair<int64_t, std::optional<int64_t>> extgcd_modinv(int64_t mod,
-                                                         int64_t n) {
+auto extgcd_modinv(int64_t mod, int64_t n)
+    -> std::pair<int64_t, std::optional<int64_t>> {
   assert(mod > 1 && 0 <= n && n < mod);
   if (n == 0) return {mod, std::nullopt};
   auto a = n, b = mod;

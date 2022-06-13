@@ -4,8 +4,7 @@
 #include <cassert>
 #include <vector>
 
-namespace dsalgo {
-namespace tribonacci_sequence {
+namespace dsalgo::tribonacci_sequence {
 using namespace rust_types;
 
 template <typename T>
@@ -17,5 +16,4 @@ auto tribonacci_sequence(usize size) -> vec<T> {
   return t;
 }
 
-} // namespace tribonacci_sequence
-} // namespace dsalgo
+} // namespace dsalgo::tribonacci_sequence

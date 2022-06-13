@@ -3,8 +3,7 @@
 #include "rust_types.hpp"
 #include <iostream>
 
-namespace dsalgo {
-namespace debug_print {
+namespace dsalgo::debug_print {
 using namespace dsalgo::rust_types;
 
 template <typename T>
@@ -41,5 +40,4 @@ void print(char sep, const T& t, const U&... args) {
 #define debug(...) nullptr
 #endif
 
-} // namespace debug_print
-} // namespace dsalgo
+} // namespace dsalgo::debug_print
