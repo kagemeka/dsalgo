@@ -1,10 +1,10 @@
-pub struct BarrettReduction63 {
+pub struct BarrettReduction64 {
     n: u128,
     m0: u128,
     m1: u128,
 }
 
-impl BarrettReduction63 {
+impl BarrettReduction64 {
     const MASK: u128 = (1u128 << 63) - 1;
 
     pub fn new(modulus: u64) -> Self {

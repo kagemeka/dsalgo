@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 pub(crate) fn lcs_dp_table<T: PartialEq>(a: &[T], b: &[T]) -> Vec<Vec<usize>> {
     let n = a.len();
     let m = b.len();

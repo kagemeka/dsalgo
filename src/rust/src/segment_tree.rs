@@ -66,7 +66,7 @@ where
         }
     }
 
-    /// not `reduce` but `fold`?
+    /// why `reduce` but `fold`?
     /// but initial element internally is just the identity element.
     /// it's not an arbitrary element.
     /// also, it is not necessarily used to compute _{op}\prod_l^r (l < r).

@@ -1,5 +1,5 @@
 use crate::{
-    euler_tour_ext::first_positions,
+    euler_tour_indices::first_positions,
     euler_tour_nodes::euler_tour_nodes,
     range_minimum_query::RangeMinimumQuery,
     tree_depths::tree_depths,
