@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import unittest
+import typing
+
 import dataclasses
 
 
@@ -34,17 +37,24 @@ class ArrayCompression:
         return self.__values[key]
 
 
-@dataclasses.dataclass
-class CompressionResult:
-    compressed_array: list[int]
-    values: list[int]
-
-
-def compress(array: list[int]) -> CompressionResult:
+def compress_array(array: list[int]) -> list[int]:
     import bisect
 
-    values = sorted(set(array))
-    return CompressionResult(
-        [bisect.bisect_left(values, value) for value in array],
-        values,
-    )
+    uniques = sorted(set(array))
+    return [bisect.bisect_left(uniques, value) for value in array]
+
+
+# TODO:
+class Tests(unittest.TestCase):
+    def test(self) -> None:
+        a = [-1, 10, 5]
+        res = compress_array(a)
+        print(res)
+
+
+if __name__ == "__main__":
+    import doctest
+
+    unittest.main()
+
+    doctest.testmod(verbose=True)

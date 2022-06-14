@@ -15,10 +15,36 @@ def sieve_of_eratosthenes(sieve_size: int) -> list[int]:
     return primes
 
 
-# TODO:
 class Tests(unittest.TestCase):
     def test(self) -> None:
-        ...
+        assert sieve_of_eratosthenes(2) == []
+        assert sieve_of_eratosthenes(100) == [
+            2,
+            3,
+            5,
+            7,
+            11,
+            13,
+            17,
+            19,
+            23,
+            29,
+            31,
+            37,
+            41,
+            43,
+            47,
+            53,
+            59,
+            61,
+            67,
+            71,
+            73,
+            79,
+            83,
+            89,
+            97,
+        ]
 
 
 if __name__ == "__main__":

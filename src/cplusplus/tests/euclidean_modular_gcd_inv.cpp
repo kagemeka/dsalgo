@@ -5,5 +5,5 @@
 TEST(euclidean_modular_gcd_inv, test) {
   using namespace dsalgo::euclidean_modular_gcd_inv;
   auto [gcd, x] = euclidean_mod_gcd_inv(15, 10);
-  EXPECT_EQ(gcd, 5);
+  EXPECT_EQ(gcd, 4);
 }

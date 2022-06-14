@@ -3,12 +3,19 @@ from __future__ import annotations
 import dataclasses
 import typing
 
-from dsalgo.type import T
+# from dsalgo.type import T
+
+T = typing.TypeVar("T")
 
 
 @dataclasses.dataclass
-class Semigroup(typing.Generic[T]):
+class Magma(typing.Generic[T]):
     operation: typing.Callable[[T, T], T]
+
+
+@dataclasses.dataclass
+class Semigroup(Magma[T]):
+    ...
 
 
 @dataclasses.dataclass
