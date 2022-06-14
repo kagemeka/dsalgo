@@ -1,26 +1,19 @@
 package cp
 
 import (
+	"bufio"
+	"fmt"
 	. "kagemeka/general/types"
+	"os"
 )
 
 /* cut below */
 
-
-
-import (
-	"bufio"
-	"os"
-	"strconv"
-)
-
-
 type IO struct {
 	Scanner *bufio.Scanner
-	Reader *bufio.Reader
-	Writer *bufio.Writer
+	Reader  *bufio.Reader
+	Writer  *bufio.Writer
 }
-
 
 func (
 	io *IO,
@@ -34,7 +27,6 @@ func (
 	io.Scanner = scanner
 }
 
-
 func (
 	io *IO,
 ) SetScanBuf(
@@ -46,7 +38,6 @@ func (
 	)
 }
 
-
 func (
 	io *IO,
 ) SetReader() {
@@ -56,8 +47,7 @@ func (
 	io.Reader = reader
 }
 
-
-func(
+func (
 	io *IO,
 ) SetWriter() {
 	writer := bufio.NewWriter(
@@ -65,7 +55,6 @@ func(
 	)
 	io.Writer = writer
 }
-
 
 func (
 	io *IO,
@@ -81,7 +70,6 @@ func (
 	}
 }
 
-
 func (
 	io *IO,
 ) Scan() Str {
@@ -91,14 +79,12 @@ func (
 	return s
 }
 
-
 func (
 	io *IO,
 ) ScanInt() Int {
 	s := io.Scan()
 	return s.Int()
 }
-
 
 func (
 	io *IO,
@@ -112,7 +98,6 @@ func (
 	)
 	writer.Flush()
 }
-
 
 func (
 	io *IO,

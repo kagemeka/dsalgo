@@ -1,6 +1,5 @@
 package fs
 
-
 import (
 	"bufio"
 	"fmt"
@@ -8,12 +7,11 @@ import (
 	"strconv"
 )
 
-
 // stdio := NewStdIO()
 // defer stdio.Flush()
 type StdIO struct {
 	scanner *bufio.Scanner
-	writer *bufio.Writer
+	writer  *bufio.Writer
 }
 
 func NewStdIO() *StdIO {
@@ -21,9 +19,9 @@ func NewStdIO() *StdIO {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Buffer([]byte{}, maxBuffer)
 	scanner.Split(bufio.ScanWords)
-	return &StdIO {
+	return &StdIO{
 		scanner: scanner,
-		writer: bufio.NewWriter(os.Stdout),
+		writer:  bufio.NewWriter(os.Stdout),
 	}
 }
 

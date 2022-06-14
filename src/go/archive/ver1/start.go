@@ -1,7 +1,5 @@
 package main
 
-
-
 import (
 	"bufio"
 	"container/heap"
@@ -14,10 +12,7 @@ import (
 	"unicode"
 )
 
-
-
 type IS []interface{}
-
 
 func (
 	a *IS,
@@ -32,7 +27,6 @@ func (
 	return
 }
 
-
 func (
 	a IS,
 ) Format() (
@@ -46,7 +40,6 @@ func (
 	format = s.Join(sep)
 	return
 }
-
 
 func (
 	a IS,
@@ -67,7 +60,6 @@ func (
 	return
 }
 
-
 func (
 	a IS,
 ) String() string {
@@ -75,10 +67,7 @@ func (
 	return fmt.Sprintf(f, a...)
 }
 
-
-
 type Bool bool
-
 
 func (
 	b Bool,
@@ -89,10 +78,7 @@ func (
 	return 0
 }
 
-
-
 type Bools []Bool
-
 
 func (
 	a Bools,
@@ -102,7 +88,6 @@ func (
 	a = make(Bools, n)
 	return a
 }
-
 
 func (
 	a Bools,
@@ -118,7 +103,6 @@ func (
 	return
 }
 
-
 func (
 	a Bools,
 ) All() (
@@ -133,10 +117,7 @@ func (
 	return true
 }
 
-
-
 type Int int
-
 
 func (
 	x Int,
@@ -146,7 +127,6 @@ func (
 	)
 	return Str(s)
 }
-
 
 func (
 	n Int,
@@ -160,7 +140,6 @@ func (
 	return
 }
 
-
 func (
 	n Int,
 ) BitCnt() (
@@ -172,7 +151,6 @@ func (
 	}
 	return
 }
-
 
 func (
 	x Int,
@@ -190,24 +168,17 @@ func (
 	return
 }
 
-
 func (
 	x Int,
-) AddIdentity() (
-	interface{},
-) {
+) AddIdentity() interface{} {
 	return Int(0)
 }
 
-
 func (
 	x Int,
-) AddInv() (
-	interface{},
-) {
+) AddInv() interface{} {
 	return -x
 }
-
 
 func (
 	x Int,
@@ -225,7 +196,6 @@ func (
 	return
 }
 
-
 func (
 	x Int,
 ) MulIdentity() (
@@ -235,13 +205,11 @@ func (
 	return
 }
 
-
 func (
 	x Int,
 ) MulInv() interface{} {
 	return 1 / Float(x)
 }
-
 
 func (
 	x Int,
@@ -250,7 +218,6 @@ func (
 ) Int {
 	return Pow(x, n).(Int)
 }
-
 
 func (
 	x Int,
@@ -269,7 +236,6 @@ func (
 	return
 }
 
-
 func (
 	x Int,
 ) LT(
@@ -278,16 +244,12 @@ func (
 	return x < other.(Int)
 }
 
-
 func (
 	n Int,
 ) Divisors() (
 	divs Ints,
 ) {
-	for
-	i := Int(1);
-	i * i <= n;
-	i++ {
+	for i := Int(1); i*i <= n; i++ {
 		if n%i != 0 {
 			continue
 		}
@@ -301,7 +263,6 @@ func (
 	sort.Sort(divs)
 	return
 }
-
 
 func (
 	i Int,
@@ -317,7 +278,6 @@ func (
 	return
 }
 
-
 func (
 	i Int,
 ) GCD(
@@ -332,7 +292,6 @@ func (
 	gcd = j.GCD(i % j)
 	return
 }
-
 
 func (
 	i Int,
@@ -353,7 +312,6 @@ func (
 	return
 }
 
-
 func (
 	i Int,
 ) LCM(
@@ -367,20 +325,17 @@ func (
 	return
 }
 
+func (
+	x Int,
+) AddCommutative() {
+}
 
 func (
 	x Int,
-) AddCommutative() {}
-
-
-func (
-	x Int,
-) MulCommutative() {}
-
-
+) MulCommutative() {
+}
 
 type Float float64
-
 
 func (
 	x Float,
@@ -398,24 +353,17 @@ func (
 	return
 }
 
-
 func (
 	x Float,
-) AddIdentity() (
-	interface{},
-) {
+) AddIdentity() interface{} {
 	return Float(0)
 }
 
-
 func (
 	x Float,
-) AddInv() (
-	interface{},
-) {
+) AddInv() interface{} {
 	return -x
 }
-
 
 func (
 	x Float,
@@ -433,7 +381,6 @@ func (
 	return
 }
 
-
 func (
 	x Float,
 ) MulIdentity() (
@@ -443,13 +390,11 @@ func (
 	return
 }
 
-
 func (
 	x Float,
 ) MulInv() interface{} {
 	return 1 / x
 }
-
 
 func (
 	x Float,
@@ -459,16 +404,15 @@ func (
 	return Pow(x, n).(Float)
 }
 
+func (
+	x Float,
+) AddCommutative() {
+}
 
 func (
 	x Float,
-) AddCommutative() {}
-
-
-func (
-	x Float,
-) MulCommutative() {}
-
+) MulCommutative() {
+}
 
 func (
 	x Float,
@@ -478,17 +422,13 @@ func (
 	return x < other.(Float)
 }
 
-
-
 type Floats []Float
-
 
 func (
 	a Floats,
 ) Len() int {
 	return len(a)
 }
-
 
 func (
 	a Floats,
@@ -497,7 +437,6 @@ func (
 ) {
 	a[i], a[j] = a[j], a[i]
 }
-
 
 func (
 	a *Floats,
@@ -510,7 +449,6 @@ func (
 	)
 }
 
-
 func (
 	a Floats,
 ) Less(
@@ -519,22 +457,16 @@ func (
 	return a[i] < a[j]
 }
 
-
-
 type Str string
-
 
 func (
 	s Str,
-) Int() (
-	Int,
-) {
+) Int() Int {
 	i, _ := strconv.Atoi(
 		string(s),
 	)
 	return Int(i)
 }
-
 
 func (
 	s Str,
@@ -542,28 +474,24 @@ func (
 	l, r Int,
 ) (
 	sub Str,
-){
+) {
 	a := Runes(s)
 	a = a[l:r]
 	sub = a.Str()
 	return
 }
 
-
 func (
 	s Str,
 ) Contains(
 	t Str,
-) (
-	Bool,
-) {
+) Bool {
 	bl := strings.Contains(
 		string(s),
 		string(t),
 	)
 	return Bool(bl)
 }
-
 
 func (
 	x Str,
@@ -573,7 +501,6 @@ func (
 	return x < other.(Str)
 }
 
-
 func (
 	s *Str,
 ) Reverse() {
@@ -581,7 +508,6 @@ func (
 	Reverse(a)
 	*s = a.Str()
 }
-
 
 func (
 	s *Str,
@@ -591,32 +517,23 @@ func (
 	*s = a.Str()
 }
 
-
 func (
 	s Str,
-) Lower() (
-	Str,
-) {
+) Lower() Str {
 	t := string(s)
 	t = strings.ToLower(t)
 	return Str(t)
 }
 
-
 func (
 	s Str,
-) Upper() (
-	Str,
-) {
+) Upper() Str {
 	t := string(s)
 	t = strings.ToUpper(t)
 	return Str(t)
 }
 
-
-
 type Strs []Str
-
 
 func (
 	a Strs,
@@ -624,17 +541,13 @@ func (
 	return len(a)
 }
 
-
 func (
 	a Strs,
 ) Get(
 	i int,
-) (
-	interface{},
-) {
+) interface{} {
 	return a[i]
 }
-
 
 func (
 	a Strs,
@@ -644,30 +557,23 @@ func (
 	a[i], a[j] = a[j], a[i]
 }
 
-
 func (
 	a Strs,
 ) Sub(
 	i, j int,
-) (
-	interface{},
-) {
+) interface{} {
 	return a[i:j]
 }
-
 
 func (
 	a Strs,
 ) Pushed(
 	x interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	a = Clone(a).(Strs)
 	a.Push(x)
 	return a
 }
-
 
 func (
 	a *Strs,
@@ -680,7 +586,6 @@ func (
 	)
 }
 
-
 func (
 	a Strs,
 ) Make(
@@ -689,7 +594,6 @@ func (
 	a = make(Strs, n)
 	return a
 }
-
 
 func (
 	a Strs,
@@ -700,21 +604,17 @@ func (
 	a[i] = x.(Str)
 }
 
-
 func (
 	s Strs,
 ) Join(
 	sep Str,
-) (
-	Str,
-) {
+) Str {
 	t := strings.Join(
 		s.Standard(),
 		string(sep),
 	)
 	return Str(t)
 }
-
 
 func (
 	a Strs,
@@ -729,7 +629,6 @@ func (
 	return
 }
 
-
 func (
 	a Strs,
 ) String() string {
@@ -738,10 +637,7 @@ func (
 	return s.String()
 }
 
-
-
 type Rune rune
-
 
 func (
 	x Rune,
@@ -751,66 +647,48 @@ func (
 	return x < other.(Rune)
 }
 
-
 func (
 	x Rune,
-) Lower() (
-	Rune,
-) {
+) Lower() Rune {
 	y := rune(x)
 	y = unicode.ToLower(y)
 	return Rune(y)
 }
 
-
 func (
 	x Rune,
-) Upper() (
-	Rune,
-) {
+) Upper() Rune {
 	y := rune(x)
 	y = unicode.ToUpper(y)
 	return Rune(y)
 }
 
-
-
 type Runes []Rune
-
 
 func (
 	a Runes,
 ) Get(
 	i int,
-) (
-	interface{},
-) {
+) interface{} {
 	return a[i]
 }
-
 
 func (
 	a Runes,
 ) Sub(
 	i, j int,
-) (
-	interface{},
-) {
+) interface{} {
 	return a[i:j]
 }
-
 
 func (
 	a Runes,
 ) Make(
 	n int,
-) (
-	interface{},
-) {
+) interface{} {
 	a = make(Runes, n)
 	return a
 }
-
 
 func (
 	a Runes,
@@ -828,23 +706,18 @@ func (
 	return
 }
 
-
 func (
 	a Runes,
-) Str() (
-	Str,
-) {
+) Str() Str {
 	b := a.Standard()
 	return Str(b)
 }
-
 
 func (
 	a Runes,
 ) Len() int {
 	return len(a)
 }
-
 
 func (
 	a Runes,
@@ -854,7 +727,6 @@ func (
 	return a[i] < a[j]
 }
 
-
 func (
 	a Runes,
 ) Swap(
@@ -862,7 +734,6 @@ func (
 ) {
 	a[i], a[j] = a[j], a[i]
 }
-
 
 func (
 	a *Runes,
@@ -875,19 +746,15 @@ func (
 	)
 }
 
-
 func (
 	a Runes,
 ) Pushed(
 	x interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	a = Clone(a).(Runes)
 	a.Push(x)
 	return a
 }
-
 
 func (
 	a Runes,
@@ -898,7 +765,6 @@ func (
 	a[i] = x.(Rune)
 }
 
-
 func (
 	a Runes,
 ) String() string {
@@ -907,51 +773,38 @@ func (
 	return s.String()
 }
 
-
-
 type RuneMatrix []Runes
-
 
 func (
 	a RuneMatrix,
 ) Get(
 	i int,
-) (
-	interface{},
-) {
+) interface{} {
 	return a[i]
 }
-
 
 func (
 	a RuneMatrix,
 ) Sub(
 	i, j int,
-) (
-	interface{},
-) {
+) interface{} {
 	return a[i:j]
 }
-
 
 func (
 	a RuneMatrix,
 ) Make(
 	n int,
-) (
-	interface{},
-) {
+) interface{} {
 	a = make(RuneMatrix, n)
 	return a
 }
-
 
 func (
 	a RuneMatrix,
 ) Len() int {
 	return len(a)
 }
-
 
 func (
 	a RuneMatrix,
@@ -960,7 +813,6 @@ func (
 ) {
 	a[i], a[j] = a[j], a[i]
 }
-
 
 func (
 	a *RuneMatrix,
@@ -973,19 +825,15 @@ func (
 	)
 }
 
-
 func (
 	a RuneMatrix,
 ) Pushed(
 	x interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	a = Clone(a).(RuneMatrix)
 	a.Push(x)
 	return a
 }
-
 
 func (
 	a RuneMatrix,
@@ -996,7 +844,6 @@ func (
 	a[i] = x.(Runes)
 }
 
-
 func (
 	a RuneMatrix,
 ) String() string {
@@ -1004,7 +851,6 @@ func (
 	s.From(a)
 	return s.String()
 }
-
 
 func (
 	a RuneMatrix,
@@ -1014,19 +860,16 @@ func (
 	a = Clone(a).(RuneMatrix)
 	s := Shape(a)
 	n, m := s[0], s[1]
-	b = make(Runes, 0, n * m)
+	b = make(Runes, 0, n*m)
 	for i := 0; i < n; i++ {
 		b = append(b, a[i]...)
 	}
 	return
 }
 
-
-
 type AddSemiGroup interface {
 	Add(interface{}) interface{}
 }
-
 
 func Add(
 	x, y AddSemiGroup,
@@ -1037,35 +880,27 @@ func Add(
 	return
 }
 
-
 func Sum(
 	a ...AddMonoid,
 ) (
 	s AddMonoid,
 ) {
-	s = (
-		s.AddIdentity().
-		(AddMonoid))
+	s = (s.AddIdentity().(AddMonoid))
 	for _, x := range a {
 		s = s.Add(x).(AddMonoid)
 	}
 	return
 }
 
-
-
 type AddMonoid interface {
 	AddSemiGroup
 	AddIdentity() interface{}
 }
 
-
-
 type AddGroup interface {
 	AddMonoid
 	AddInv() interface{}
 }
-
 
 func Sub(
 	x AddGroup,
@@ -1078,21 +913,16 @@ func Sub(
 	return
 }
 
-
-
-type AddAbelianGroup interface{
+type AddAbelianGroup interface {
 	AddGroup
 	AddCommutative()
 }
-
-
 
 type MulSemiGroup interface {
 	Mul(
 		interface{},
 	) interface{}
 }
-
 
 func Mul(
 	x, y MulSemiGroup,
@@ -1103,13 +933,10 @@ func Mul(
 	return
 }
 
-
-
 type MulMonoid interface {
 	MulSemiGroup
 	MulIdentity() interface{}
 }
-
 
 func Pow(
 	x MulMonoid,
@@ -1121,28 +948,23 @@ func Pow(
 		e := x.MulIdentity()
 		return e.(MulMonoid)
 	}
-	y = Pow(x, n >> 1)
+	y = Pow(x, n>>1)
 	y = y.Mul(y).(MulMonoid)
-	if n & 1 == 1 {
+	if n&1 == 1 {
 		y = y.Mul(x).(MulMonoid)
 	}
 	return y
 }
-
-
 
 type Ring interface {
 	AddAbelianGroup
 	MulMonoid
 }
 
-
-
 type MulGroup interface {
 	MulMonoid
 	MulInv() interface{}
 }
-
 
 func Div(
 	x MulGroup,
@@ -1155,34 +977,24 @@ func Div(
 	return
 }
 
-
-
-type MulAbelianGroup interface{
+type MulAbelianGroup interface {
 	MulGroup
 	MulCommutative()
 }
-
-
 
 type Field interface {
 	AddAbelianGroup
 	MulAbelianGroup
 }
 
-
-
 type Real interface {
 	Field
 	Comparable
 }
 
-
-
 func Abs(
 	x Real,
-) (
-	Real,
-) {
+) Real {
 	y := x.AddIdentity().(Real)
 	if LE(x, y) {
 		return x.AddInv().(Real)
@@ -1190,12 +1002,9 @@ func Abs(
 	return x
 }
 
-
-
 type Comparable interface {
 	LT(interface{}) bool
 }
-
 
 func LT(
 	x, y Comparable,
@@ -1203,13 +1012,11 @@ func LT(
 	return x.LT(y)
 }
 
-
 func LE(
 	x, y Comparable,
 ) bool {
 	return LT(x, y) || x == y
 }
-
 
 func GE(
 	x, y Comparable,
@@ -1222,7 +1029,6 @@ func GT(
 ) bool {
 	return !LE(x, y)
 }
-
 
 func Max(
 	a ...Comparable,
@@ -1239,7 +1045,6 @@ func Max(
 	return
 }
 
-
 func Min(
 	a ...Comparable,
 ) (
@@ -1254,8 +1059,6 @@ func Min(
 	}
 	return
 }
-
-
 
 type Slice interface {
 	Len() int
@@ -1274,24 +1077,20 @@ type Slice interface {
 	) interface{}
 }
 
-
 func Reverse(
 	s Slice,
 ) {
 	n := s.Len()
-	for i := 0; i < n / 2; i++ {
-		s.Swap(i, n - i - 1)
+	for i := 0; i < n/2; i++ {
+		s.Swap(i, n-i-1)
 	}
 }
-
 
 func Make(
 	a interface{},
 	v interface{},
 	shape ...int,
-) (
-	interface{},
-) {
+) interface{} {
 	var s Slice
 	switch x := a.(type) {
 	case Slice:
@@ -1313,7 +1112,6 @@ func Make(
 	return s
 }
 
-
 func Shape(
 	s Slice,
 ) (
@@ -1334,12 +1132,9 @@ func Shape(
 	return
 }
 
-
 func Clone(
 	a interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	var s Slice
 	switch x := a.(type) {
 	case Slice:
@@ -1357,13 +1152,10 @@ func Clone(
 	return t
 }
 
-
 func Get(
 	s Slice,
 	indices ...int,
-) (
-	interface{},
-) {
+) interface{} {
 	i := indices[0]
 	x := s.Get(i)
 	if len(indices) == 1 {
@@ -1377,17 +1169,14 @@ func Get(
 	return x
 }
 
-
-
 type TransPose struct {
-	S Slice
-	axes []int
+	S               Slice
+	axes            []int
 	shape, tgtShape []int
-	indices []int
-	axis int
-	x interface{}
+	indices         []int
+	axis            int
+	x               interface{}
 }
-
 
 func (
 	t *TransPose,
@@ -1397,7 +1186,6 @@ func (
 	t.S = s
 	t.shape = Shape(s)
 }
-
 
 func (
 	t *TransPose,
@@ -1409,7 +1197,6 @@ func (
 	}
 	t.indices = indices
 }
-
 
 func (
 	t *TransPose,
@@ -1425,7 +1212,6 @@ func (
 	t.tgtShape = tgtShape
 }
 
-
 func (
 	t *TransPose,
 ) Gen(
@@ -1439,7 +1225,6 @@ func (
 	t.genSupport()
 	return t.x.(Slice)
 }
-
 
 func (
 	t *TransPose,
@@ -1466,13 +1251,9 @@ func (
 	t.x = x
 }
 
-
-
 func Dot(
 	a, b Slice,
-) (
-	interface {},
-) {
+) interface{} {
 	sA := Shape(a)
 	sB := Shape(b)
 	dimA := len(sA)
@@ -1486,12 +1267,9 @@ func Dot(
 	return dot2D(a, b)
 }
 
-
 func dot2D(
 	a, b Slice,
-) (
-	interface {},
-) {
+) interface{} {
 	tp := TransPose{}
 	tp.Set(b)
 	b = tp.Gen(1, 0)
@@ -1505,12 +1283,9 @@ func dot2D(
 	return c
 }
 
-
 func dot12(
 	a, b Slice,
-) (
-	interface{},
-) {
+) interface{} {
 	n := b.Len()
 	c := a.Make(n).(Slice)
 	for i := 0; i < n; i++ {
@@ -1521,12 +1296,9 @@ func dot12(
 	return c
 }
 
-
 func dot1D(
 	a, b Slice,
-) (
-	interface{},
-) {
+) interface{} {
 	n := a.Len()
 	c := a.Make(n).(Slice)
 	for i := 0; i < n; i++ {
@@ -1539,15 +1311,12 @@ func dot1D(
 	return c.Get(n - 1)
 }
 
-
-
 type Permutations struct {
-	S Slice
+	S  Slice
 	Ch chan Slice
-	r int
-	i int
+	r  int
+	i  int
 }
-
 
 func (
 	p *Permutations,
@@ -1562,7 +1331,6 @@ func (
 	)
 }
 
-
 func (
 	p *Permutations,
 ) Gen(
@@ -1573,7 +1341,6 @@ func (
 	p.genSupport()
 	close(p.Ch)
 }
-
 
 func (
 	p *Permutations,
@@ -1597,7 +1364,6 @@ func (
 	}
 }
 
-
 func Permute(
 	s Slice,
 	r int,
@@ -1611,15 +1377,12 @@ func Permute(
 	return
 }
 
-
-
 type Product struct {
-	S Slice
+	S  Slice
 	Ch chan Slice
-	r int
-	a Slice
+	r  int
+	a  Slice
 }
-
 
 func (
 	p *Product,
@@ -1636,7 +1399,6 @@ func (
 	p.a = a.Sub(0, 0).(Slice)
 }
 
-
 func (
 	p *Product,
 ) Gen(
@@ -1646,7 +1408,6 @@ func (
 	p.genSupport()
 	close(p.Ch)
 }
-
 
 func (
 	p *Product,
@@ -1670,7 +1431,6 @@ func (
 	}
 }
 
-
 func Prod(
 	s Slice,
 	r int,
@@ -1683,8 +1443,6 @@ func Prod(
 	ch = p.Ch
 	return
 }
-
-
 
 func BisectLeft(
 	a Slice,
@@ -1705,7 +1463,6 @@ func BisectLeft(
 	return
 }
 
-
 func BisectRight(
 	a Slice,
 	x interface{},
@@ -1724,8 +1481,6 @@ func BisectRight(
 	i = sort.Search(n, f)
 	return
 }
-
-
 
 func LIS(
 	a Slice,
@@ -1752,8 +1507,6 @@ func LIS(
 	return
 }
 
-
-
 func Accumulate(
 	a Slice,
 	f func(
@@ -1764,14 +1517,13 @@ func Accumulate(
 ) {
 	b = Clone(a).(Slice)
 	n := b.Len()
-	for i := 0; i < n - 1; i++ {
+	for i := 0; i < n-1; i++ {
 		x := b.Get(i)
 		y := b.Get(i + 1)
-		b.Set(i + 1, f(x, y))
+		b.Set(i+1, f(x, y))
 	}
 	return
 }
-
 
 func CumMax(
 	a Slice,
@@ -1793,7 +1545,6 @@ func CumMax(
 	return
 }
 
-
 func CumMin(
 	a Slice,
 ) (
@@ -1814,7 +1565,6 @@ func CumMin(
 	return
 }
 
-
 func CumSum(
 	a Slice,
 ) (
@@ -1831,7 +1581,6 @@ func CumSum(
 	b = Accumulate(a, f)
 	return
 }
-
 
 func CumProd(
 	a Slice,
@@ -1850,10 +1599,7 @@ func CumProd(
 	return
 }
 
-
-
 type Reals []Real
-
 
 func (
 	a Reals,
@@ -1864,13 +1610,11 @@ func (
 	return a
 }
 
-
 func (
 	a Reals,
 ) Len() int {
 	return len(a)
 }
-
 
 func (
 	a Reals,
@@ -1880,7 +1624,6 @@ func (
 	return a[i]
 }
 
-
 func (
 	a Reals,
 ) Swap(
@@ -1889,30 +1632,23 @@ func (
 	a[i], a[j] = a[j], a[i]
 }
 
-
 func (
 	a Reals,
 ) Sub(
 	i, j int,
-) (
-	interface{},
-) {
+) interface{} {
 	return a[i:j]
 }
-
 
 func (
 	a Reals,
 ) Pushed(
 	x interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	a = Clone(a).(Reals)
 	a.Push(x)
 	return a
 }
-
 
 func (
 	a *Reals,
@@ -1924,7 +1660,6 @@ func (
 		x.(Real),
 	)
 }
-
 
 func (
 	a Reals,
@@ -1939,7 +1674,6 @@ func (
 	return
 }
 
-
 func (
 	a Reals,
 ) String() string {
@@ -1948,7 +1682,6 @@ func (
 	return s.String()
 }
 
-
 func (
 	a Reals,
 ) Less(
@@ -1956,7 +1689,6 @@ func (
 ) bool {
 	return LE(a[i], a[j])
 }
-
 
 func (
 	a Reals,
@@ -1967,28 +1699,21 @@ func (
 	a[i] = x.(Real)
 }
 
-
 func (
 	a Reals,
-) Max() (
-	Real,
-) {
+) Max() Real {
 	b := CumMax(a).(Reals)
 	n := len(a)
-	return b[n - 1]
+	return b[n-1]
 }
-
 
 func (
 	a Reals,
-) Min() (
-	Real,
-) {
+) Min() Real {
 	b := CumMin(a).(Reals)
 	n := len(a)
-	return b[n - 1]
+	return b[n-1]
 }
-
 
 func (
 	a *Reals,
@@ -1999,7 +1724,6 @@ func (
 	*a = (*a)[1:]
 	return
 }
-
 
 func (
 	a Reals,
@@ -2014,14 +1738,11 @@ func (
 	return
 }
 
-
 func (
 	a Reals,
 ) Add(
 	other interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	c := Clone(a).(Reals)
 	b := other.(Reals)
 	n := len(a)
@@ -2032,12 +1753,9 @@ func (
 	return c
 }
 
-
 func (
 	a Reals,
-) AddIdentity() (
-	interface{},
-) {
+) AddIdentity() interface{} {
 	n := len(a)
 	b := Make(
 		a,
@@ -2047,10 +1765,7 @@ func (
 	return b
 }
 
-
-
 type Ints []Int
-
 
 func (
 	a Ints,
@@ -2061,13 +1776,11 @@ func (
 	return a
 }
 
-
 func (
 	a Ints,
 ) Len() int {
 	return len(a)
 }
-
 
 func (
 	a Ints,
@@ -2077,7 +1790,6 @@ func (
 	return a[i]
 }
 
-
 func (
 	a Ints,
 ) Swap(
@@ -2086,30 +1798,23 @@ func (
 	a[i], a[j] = a[j], a[i]
 }
 
-
 func (
 	a Ints,
 ) Sub(
 	i, j int,
-) (
-	interface{},
-) {
+) interface{} {
 	return a[i:j]
 }
-
 
 func (
 	a Ints,
 ) Pushed(
 	x interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	a = Clone(a).(Ints)
 	a.Push(x)
 	return a
 }
-
 
 func (
 	a *Ints,
@@ -2121,7 +1826,6 @@ func (
 		x.(Int),
 	)
 }
-
 
 func (
 	a Ints,
@@ -2136,7 +1840,6 @@ func (
 	return
 }
 
-
 func (
 	a Ints,
 ) String() string {
@@ -2145,7 +1848,6 @@ func (
 	return s.String()
 }
 
-
 func (
 	a Ints,
 ) Less(
@@ -2153,7 +1855,6 @@ func (
 ) bool {
 	return a[i] < a[j]
 }
-
 
 func (
 	a Ints,
@@ -2164,28 +1865,21 @@ func (
 	a[i] = x.(Int)
 }
 
-
 func (
 	a Ints,
-) Max() (
-	Int,
-) {
+) Max() Int {
 	b := CumMax(a).(Ints)
 	n := len(a)
-	return b[n - 1]
+	return b[n-1]
 }
-
 
 func (
 	a Ints,
-) Min() (
-	Int,
-) {
+) Min() Int {
 	b := CumMin(a).(Ints)
 	n := len(a)
-	return b[n - 1]
+	return b[n-1]
 }
-
 
 func (
 	a *Ints,
@@ -2197,14 +1891,11 @@ func (
 	return
 }
 
-
 func (
 	a Ints,
 ) Add(
 	other interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	c := Clone(a).(Ints)
 	b := other.(Ints)
 	n := len(a)
@@ -2215,17 +1906,13 @@ func (
 	return c
 }
 
-
-
 type IntMatrix []Ints
-
 
 func (
 	a IntMatrix,
 ) Len() int {
 	return len(a)
 }
-
 
 func (
 	a IntMatrix,
@@ -2235,7 +1922,6 @@ func (
 	return a[i]
 }
 
-
 func (
 	a IntMatrix,
 ) Swap(
@@ -2244,17 +1930,13 @@ func (
 	a[i], a[j] = a[j], a[i]
 }
 
-
 func (
 	a IntMatrix,
 ) Sub(
 	i, j int,
-) (
-	interface{},
-) {
+) interface{} {
 	return a[i:j]
 }
-
 
 func (
 	a *IntMatrix,
@@ -2267,19 +1949,15 @@ func (
 	)
 }
 
-
 func (
 	a IntMatrix,
 ) Pushed(
 	x interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	a = Clone(a).(IntMatrix)
 	a.Push(x)
 	return a
 }
-
 
 func (
 	a IntMatrix,
@@ -2290,18 +1968,14 @@ func (
 	a[i] = x.(Ints)
 }
 
-
 func (
 	a IntMatrix,
 ) Make(
 	n int,
-) (
-	interface{},
-) {
+) interface{} {
 	a = make(IntMatrix, n)
 	return a
 }
-
 
 func (
 	a IntMatrix,
@@ -2311,69 +1985,51 @@ func (
 	return s.String()
 }
 
-
 func (
 	a IntMatrix,
-) T() (
-	IntMatrix,
-) {
+) T() IntMatrix {
 	tp := TransPose{}
 	tp.Set(a)
 	a = tp.Gen(1, 0).(IntMatrix)
 	return a
 }
 
-
 func (
 	a IntMatrix,
-) CumSum() (
-	IntMatrix,
-) {
+) CumSum() IntMatrix {
 	a = a.CumSum0()
 	a = a.CumSum1()
 	return a
 }
 
-
 func (
 	a IntMatrix,
-) CumSum0() (
-	IntMatrix,
-) {
+) CumSum0() IntMatrix {
 	a = CumSum(a).(IntMatrix)
 	return a
 }
 
-
 func (
 	a IntMatrix,
-) CumSum1() (
-	IntMatrix,
-) {
+) CumSum1() IntMatrix {
 	a = a.T()
 	a = a.CumSum0()
 	a = a.T()
 	return a
 }
 
-
 func (
 	a IntMatrix,
 ) Mul(
 	other interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	b := other.(IntMatrix)
 	return Dot(a, b)
 }
 
-
 func (
 	a IntMatrix,
-) MulIdentity() (
-	interface{},
-) {
+) MulIdentity() interface{} {
 	n := len(a)
 	e := Make(
 		a,
@@ -2386,17 +2042,13 @@ func (
 	return e
 }
 
-
-
 type Bit int
-
 
 func (
 	x Bit,
 ) Inv() interface{} {
 	return ^x
 }
-
 
 func (
 	x Bit,
@@ -2410,24 +2062,17 @@ func (
 	return
 }
 
-
 func (
 	x Bit,
-) AddIdentity() (
-	interface{},
-) {
+) AddIdentity() interface{} {
 	return Bit(0)
 }
 
-
 func (
 	x Bit,
-) AddInv() (
-	interface{},
-) {
+) AddInv() interface{} {
 	return x
 }
-
 
 func (
 	x Bit,
@@ -2441,7 +2086,6 @@ func (
 	return
 }
 
-
 func (
 	x Bit,
 ) MulIdentity() (
@@ -2451,21 +2095,15 @@ func (
 	return
 }
 
-
-
 type Bits []Bit
 
-
-
 type BitMatrix []Bits
-
 
 func (
 	a BitMatrix,
 ) Len() int {
 	return len(a)
 }
-
 
 func (
 	a BitMatrix,
@@ -2475,7 +2113,6 @@ func (
 	return a[i]
 }
 
-
 func (
 	a BitMatrix,
 ) Swap(
@@ -2484,17 +2121,13 @@ func (
 	a[i], a[j] = a[j], a[i]
 }
 
-
 func (
 	a BitMatrix,
 ) Sub(
 	i, j int,
-) (
-	interface{},
-) {
+) interface{} {
 	return a[i:j]
 }
-
 
 func (
 	a *BitMatrix,
@@ -2507,19 +2140,15 @@ func (
 	)
 }
 
-
 func (
 	a BitMatrix,
 ) Pushed(
 	x interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	a = Clone(a).(BitMatrix)
 	a.Push(x)
 	return a
 }
-
 
 func (
 	a BitMatrix,
@@ -2530,18 +2159,14 @@ func (
 	a[i] = x.(Bits)
 }
 
-
 func (
 	a BitMatrix,
 ) Make(
 	n int,
-) (
-	interface{},
-) {
+) interface{} {
 	a = make(BitMatrix, n)
 	return a
 }
-
 
 func (
 	a BitMatrix,
@@ -2551,36 +2176,27 @@ func (
 	return s.String()
 }
 
-
 func (
 	a BitMatrix,
-) T() (
-	BitMatrix,
-) {
+) T() BitMatrix {
 	tp := TransPose{}
 	tp.Set(a)
 	a = tp.Gen(1, 0).(BitMatrix)
 	return a
 }
 
-
 func (
 	a BitMatrix,
 ) Mul(
 	other interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	b := other.(BitMatrix)
 	return Dot(a, b)
 }
 
-
 func (
 	a BitMatrix,
-) MulIdentity() (
-	interface{},
-) {
+) MulIdentity() interface{} {
 	n := len(a)
 	e := Make(
 		a,
@@ -2593,12 +2209,9 @@ func (
 	return e
 }
 
-
-
 type Vector2D struct {
 	X, Y Real
 }
-
 
 func (
 	v Vector2D,
@@ -2612,48 +2225,36 @@ func (
 	return
 }
 
-
 func (
 	v Vector2D,
-) SqNorm() (
-	Real,
-) {
+) SqNorm() Real {
 	x2 := Pow(v.X, 2).(Real)
 	y2 := Pow(v.Y, 2).(Real)
 	return x2.Add(y2).(Real)
 }
 
-
 func (
 	v Vector2D,
 ) Add(
 	other interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	y := other.(Vector2D)
 	v.X = v.X.Add(y.X).(Real)
 	v.Y = v.Y.Add(y.Y).(Real)
 	return v
 }
 
-
 func (
 	v Vector2D,
-) AddIdentity() (
-	interface{},
-) {
+) AddIdentity() interface{} {
 	x := Float(0)
 	v = Vector2D{x, x}
 	return v
 }
 
-
 func (
 	v Vector2D,
-) AddInv() (
-	interface{},
-) {
+) AddInv() interface{} {
 	v = Vector2D{
 		v.X.AddInv().(Real),
 		v.Y.AddInv().(Real),
@@ -2661,51 +2262,39 @@ func (
 	return v
 }
 
-
 func (
 	v Vector2D,
 ) Times(
 	c Real,
-) (
-	Vector2D,
-) {
+) Vector2D {
 	v.X = v.X.Mul(c).(Real)
 	v.Y = v.Y.Mul(c).(Real)
 	return v
 }
 
-
 func (
 	v Vector2D,
 ) Dot(
 	other Vector2D,
-) (
-	Real,
-) {
+) Real {
 	x := v.X.Mul(other.X).(Real)
 	y := v.Y.Mul(other.Y).(Real)
 	return x.Add(y).(Real)
 }
 
-
 func (
 	v Vector2D,
 ) Cross(
 	other Vector2D,
-) (
-	Real,
-) {
+) Real {
 	a := v.X.Mul(other.Y).(Real)
 	b := v.Y.Mul(other.X).(Real)
 	return Sub(a, b).(Real)
 }
 
-
 func (
 	v Vector2D,
-) Arg() (
-	Float,
-) {
+) Arg() Float {
 	v = Sub(
 		v,
 		v.AddIdentity().(Vector2D),
@@ -2718,7 +2307,6 @@ func (
 	)
 	return Float(th)
 }
-
 
 func (
 	v Vector2D,
@@ -2735,7 +2323,6 @@ func (
 	return
 }
 
-
 func (
 	v Vector2D,
 ) Parallel(
@@ -2748,7 +2335,6 @@ func (
 	ok = c == zero
 	return
 }
-
 
 func (
 	v Vector2D,
@@ -2764,7 +2350,6 @@ func (
 	)
 	return
 }
-
 
 func (
 	v Vector2D,
@@ -2782,7 +2367,6 @@ func (
 	return
 }
 
-
 func (
 	v Vector2D,
 ) Perpendicular(
@@ -2795,7 +2379,6 @@ func (
 	ok = d == zero
 	return
 }
-
 
 func (
 	v Vector2D,
@@ -2813,7 +2396,6 @@ func (
 	return
 }
 
-
 func (
 	v Vector2D,
 ) Acute(
@@ -2828,7 +2410,6 @@ func (
 	)
 	return
 }
-
 
 func (
 	v Vector2D,
@@ -2845,7 +2426,6 @@ func (
 	return
 }
 
-
 func (
 	v Vector2D,
 ) Obtuse(
@@ -2860,7 +2440,6 @@ func (
 	)
 	return
 }
-
 
 func (
 	v Vector2D,
@@ -2877,7 +2456,6 @@ func (
 	return
 }
 
-
 func (
 	v Vector2D,
 ) OppositeDir(
@@ -2893,12 +2471,9 @@ func (
 	return
 }
 
-
-
 type Triangle2D struct {
 	V0, V1, V2 Vector2D
 }
-
 
 func (
 	t Triangle2D,
@@ -2923,22 +2498,16 @@ func (
 	return
 }
 
-
 func (
 	t Triangle2D,
-) Area() (
-	Float,
-) {
+) Area() Float {
 	s := t.SignedArea()
 	return Abs(s).(Float)
 }
 
-
-
 type LineSegment2D struct {
 	V0, V1 Vector2D
 }
-
 
 func (
 	s LineSegment2D,
@@ -2953,7 +2522,6 @@ func (
 	return
 }
 
-
 func (
 	s LineSegment2D,
 ) Across(
@@ -2967,10 +2535,9 @@ func (
 	o1 := other.Orientation(
 		s.V1,
 	)
-	ok = o0 * o1 <= 0
+	ok = o0*o1 <= 0
 	return
 }
-
 
 func (
 	s LineSegment2D,
@@ -2985,19 +2552,22 @@ func (
 		v,
 	}
 	a := t.SignedArea()
-	if a < 0 {return -1}
-	if a == 0 {return 0}
-	if a > 0 {return 1}
+	if a < 0 {
+		return -1
+	}
+	if a == 0 {
+		return 0
+	}
+	if a > 0 {
+		return 1
+	}
 	return
 }
 
-
-
 type Modular struct {
 	Value int
-	Mod int
+	Mod   int
 }
-
 
 func (
 	m *Modular,
@@ -3010,103 +2580,77 @@ func (
 	m.Value = v
 }
 
-
 func (
 	m Modular,
 ) String() string {
 	return fmt.Sprint(m.Value)
 }
 
-
 func (
 	m *Modular,
-) Clone() (
-	Modular,
-) {
+) Clone() Modular {
 	return Modular(*m)
 }
-
 
 func (
 	x Modular,
 ) Add(
 	other interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	y := other.(Modular)
 	x.Value += y.Value
 	x.Init()
 	return x
 }
 
-
 func (
 	x Modular,
-) AddIdentity() (
-	interface{},
-) {
+) AddIdentity() interface{} {
 	mod := x.Mod
 	return Modular{0, mod}
 }
 
-
 func (
 	m Modular,
-) AddInv() (
-	interface{},
-) {
+) AddInv() interface{} {
 	m = Modular{
 		Value: -m.Value,
-		Mod: m.Mod,
+		Mod:   m.Mod,
 	}
 	m.Init()
 	return m
 }
 
-
 func (
 	x Modular,
 ) Mul(
 	other interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	y := other.(Modular)
 	x.Value *= y.Value
 	x.Init()
 	return x
 }
 
-
 func (
 	x Modular,
-) MulIdentity() (
-	interface{},
-) {
+) MulIdentity() interface{} {
 	mod := x.Mod
 	return Modular{1, mod}
 }
 
-
 func (
 	x Modular,
-) MulInv() (
-	interface{},
-) {
+) MulInv() interface{} {
 	n := int(x.Mod) - 2
 	return x.Pow(n)
 }
 
-
 func (
 	m Modular,
-) Pow(n int) (
-	Modular,
-) {
+) Pow(n int) Modular {
 	return Pow(m, n).(Modular)
 }
-
 
 func (
 	m Modular,
@@ -3123,7 +2667,6 @@ func (
 	return
 }
 
-
 func (
 	m Modular,
 ) InvFactorial() (
@@ -3138,38 +2681,32 @@ func (
 			mod,
 		}
 	}
-	x := fact[n - 1].MulInv()
+	x := fact[n-1].MulInv()
 	iFact[0] = x.(Modular)
 	iFact = CumProd(iFact).(Mods)
 	Reverse(iFact)
 	return
 }
 
+func (
+	x Modular,
+) AddCommutative() {
+}
 
 func (
 	x Modular,
-) AddCommutative() {}
-
-
-func (
-	x Modular,
-) MulCommutative() {}
-
-
+) MulCommutative() {
+}
 
 type Mods []Modular
-
 
 func (
 	a Mods,
 ) Get(
 	i int,
-) (
-	interface{},
-) {
+) interface{} {
 	return a[i]
 }
-
 
 func (
 	a Mods,
@@ -3180,25 +2717,20 @@ func (
 	a[i] = x.(Modular)
 }
 
-
 func (
 	a Mods,
 ) Make(
 	n int,
-) (
-	interface{},
-) {
+) interface{} {
 	a = make(Mods, n)
 	return a
 }
-
 
 func (
 	a Mods,
 ) Len() int {
 	return len(a)
 }
-
 
 func (
 	a Mods,
@@ -3208,17 +2740,13 @@ func (
 	a[i], a[j] = a[j], a[i]
 }
 
-
 func (
 	a Mods,
 ) Sub(
 	i, j int,
-) (
-	interface{},
-) {
+) interface{} {
 	return a[i:j]
 }
-
 
 func (
 	a *Mods,
@@ -3231,30 +2759,23 @@ func (
 	)
 }
 
-
 func (
 	a Mods,
 ) Pushed(
 	x interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	a = Clone(a).(Mods)
 	a.Push(x)
 	return a
 }
 
-
-
 type ModMatrix []Mods
-
 
 func (
 	a ModMatrix,
 ) Len() int {
 	return len(a)
 }
-
 
 func (
 	a ModMatrix,
@@ -3264,7 +2785,6 @@ func (
 	return a[i]
 }
 
-
 func (
 	a ModMatrix,
 ) Swap(
@@ -3273,17 +2793,13 @@ func (
 	a[i], a[j] = a[j], a[i]
 }
 
-
 func (
 	a ModMatrix,
 ) Sub(
 	i, j int,
-) (
-	interface{},
-) {
+) interface{} {
 	return a[i:j]
 }
-
 
 func (
 	a *ModMatrix,
@@ -3296,19 +2812,15 @@ func (
 	)
 }
 
-
 func (
 	a ModMatrix,
 ) Pushed(
 	x interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	a = Clone(a).(ModMatrix)
 	a.Push(x)
 	return a
 }
-
 
 func (
 	a ModMatrix,
@@ -3319,18 +2831,14 @@ func (
 	a[i] = x.(Mods)
 }
 
-
 func (
 	a ModMatrix,
 ) Make(
 	n int,
-) (
-	interface{},
-) {
+) interface{} {
 	a = make(ModMatrix, n)
 	return a
 }
-
 
 func (
 	a ModMatrix,
@@ -3340,36 +2848,27 @@ func (
 	return s.String()
 }
 
-
 func (
 	a ModMatrix,
-) T() (
-	ModMatrix,
-) {
+) T() ModMatrix {
 	tp := TransPose{}
 	tp.Set(a)
 	a = tp.Gen(1, 0).(ModMatrix)
 	return a
 }
 
-
 func (
 	a ModMatrix,
 ) Mul(
 	other interface{},
-) (
-	interface{},
-) {
+) interface{} {
 	b := other.(ModMatrix)
 	return Dot(a, b)
 }
 
-
 func (
 	a ModMatrix,
-) MulIdentity() (
-	interface{},
-) {
+) MulIdentity() interface{} {
 	n := len(a)
 	mod := a[0][0].Mod
 	e := Make(
@@ -3383,13 +2882,10 @@ func (
 	return e
 }
 
-
-
 type ModChoose struct {
 	Fact, InvFact Mods
-	Mod int
+	Mod           int
 }
-
 
 func (
 	c *ModChoose,
@@ -3400,12 +2896,9 @@ func (
 	c.Mod = n.Mod
 }
 
-
 func (
 	c *ModChoose,
-) Calc(n, r Int) (
-	Modular,
-) {
+) Calc(n, r Int) Modular {
 	if r < 0 || r > n {
 		return Modular{0, c.Mod}
 	}
@@ -3414,39 +2907,30 @@ func (
 		c.InvFact[r],
 	).(Modular)
 	v = v.Mul(
-		c.InvFact[n - r],
+		c.InvFact[n-r],
 	).(Modular)
 	return v
 }
-
 
 func (
 	c *ModChoose,
 ) Calculator() (
 	choose func(
 		n, r Int,
-	) (
-		Modular,
-	),
+	) Modular,
+
 ) {
 	return c.Calc
 }
 
-
-
 type PII [2]int
-
-
 
 type Binom map[PII]Modular
 
-
-
 type Choose struct {
 	cache Binom
-	mod int
+	mod   int
 }
-
 
 func (
 	c *Choose,
@@ -3456,7 +2940,6 @@ func (
 	c.cache = make(Binom)
 	c.mod = mod
 }
-
 
 func (
 	c *Choose,
@@ -3477,31 +2960,25 @@ func (
 	if v, ok := cache[i]; ok {
 		return v
 	}
-	v = c.Calc(n - 1, r)
+	v = c.Calc(n-1, r)
 	v = v.Add(
-		c.Calc(n - 1, r - 1),
+		c.Calc(n-1, r-1),
 	).(Modular)
 	cache[i] = v
 	return
 }
 
-
 func (
 	c *Choose,
-) Calculator() (
-	func(
-		n, r int,
-	) Modular,
-) {
+) Calculator() func(
+	n, r int,
+) Modular {
 	return c.Calc
 }
-
-
 
 type NChoose struct {
 	Values Mods
 }
-
 
 func (
 	c *NChoose,
@@ -3517,12 +2994,12 @@ func (
 		Modular{1, mod},
 		int(l),
 	).(Mods)
-	for i := 0; i < l - 1; i++ {
+	for i := 0; i < l-1; i++ {
 		x := Modular{n - i, mod}
 		x = nChoose[i].Mul(
 			x,
 		).(Modular)
-		nChoose[i + 1] = x
+		nChoose[i+1] = x
 	}
 	for i := 0; i < l; i++ {
 		x := nChoose[i].Mul(
@@ -3532,7 +3009,6 @@ func (
 	}
 	c.Values = nChoose
 }
-
 
 func (
 	c *NChoose,
@@ -3545,14 +3021,11 @@ func (
 	return
 }
 
-
-
 type DisjointSet struct {
 	Parent Ints
-	Rank Ints
-	Size Ints
+	Rank   Ints
+	Size   Ints
 }
-
 
 func (
 	ds *DisjointSet,
@@ -3576,7 +3049,6 @@ func (
 	ds.Size = size
 }
 
-
 func (
 	ds *DisjointSet,
 ) Find(
@@ -3594,7 +3066,6 @@ func (
 	parent[u] = root
 	return
 }
-
 
 func (
 	ds *DisjointSet,
@@ -3614,10 +3085,9 @@ func (
 	size[u] += size[v]
 	rank[u] = Max(
 		rank[u],
-		rank[v] + 1,
+		rank[v]+1,
 	).(Int)
 }
-
 
 func (
 	ds *DisjointSet,
@@ -3633,27 +3103,21 @@ func (
 	return u, v
 }
 
-
 func (
 	ds *DisjointSet,
 ) Same(
 	u, v Int,
-) (
-	Bool,
-) {
+) Bool {
 	u = ds.Find(u)
 	v = ds.Find(v)
 	return u == v
 }
 
-
-
 type PrimeNum struct {
-	Values Ints
+	Values  Ints
 	IsPrime Bools
-	n, i Int
+	n, i    Int
 }
-
 
 func (
 	pn *PrimeNum,
@@ -3664,7 +3128,6 @@ func (
 	pn.SieveOfEratosthenes()
 	pn.Sparse()
 }
-
 
 func (
 	pn *PrimeNum,
@@ -3678,10 +3141,7 @@ func (
 	isPrime[0] = false
 	isPrime[1] = false
 	pn.IsPrime = isPrime
-	for
-	i := Int(0);
-	i * i < n;
-	i++ {
+	for i := Int(0); i*i < n; i++ {
 		if !isPrime[i] {
 			continue
 		}
@@ -3690,20 +3150,15 @@ func (
 	}
 }
 
-
 func (
 	pn *PrimeNum,
 ) sieveSupport() {
 	n, i := pn.n, pn.i
 	isPrime := pn.IsPrime
-	for
-	j := Int(i * 2);
-	j < n;
-	j += i {
+	for j := Int(i * 2); j < n; j += i {
 		isPrime[j] = false
 	}
 }
-
 
 func (
 	pn *PrimeNum,
@@ -3722,7 +3177,6 @@ func (
 	pn.Values = primeNums
 }
 
-
 func (
 	pn *PrimeNum,
 ) Get(
@@ -3734,18 +3188,13 @@ func (
 	return
 }
 
-
-
 type MII map[Int]Int
 
-
-
-type Factorization struct{
-	primeNums Ints
-	n, p Int
+type Factorization struct {
+	primeNums         Ints
+	n, p              Int
 	factors, fFactors MII
 }
-
 
 func (
 	f *Factorization,
@@ -3756,7 +3205,6 @@ func (
 	pn.Init(n)
 	f.primeNums = pn.Values
 }
-
 
 func (
 	f *Factorization,
@@ -3769,8 +3217,10 @@ func (
 	f.factors = factors
 	primeNums := f.primeNums
 	for _, p := range primeNums {
-		if n < 2 {return}
-		if p * p > n {
+		if n < 2 {
+			return
+		}
+		if p*p > n {
 			break
 		}
 		f.n, f.p = n, p
@@ -3781,19 +3231,17 @@ func (
 	return
 }
 
-
 func (
 	f *Factorization,
 ) calcSupport() {
 	n, p := f.n, f.p
 	factors := f.factors
-	for n % p == 0 {
+	for n%p == 0 {
 		factors[p]++
 		n /= p
 	}
 	f.n = n
 }
-
 
 func (
 	f *Factorization,
@@ -3804,14 +3252,12 @@ func (
 ) {
 	factors = make(MII)
 	f.fFactors = factors
-	for
-	i := Int(1); i < n + 1; i++ {
+	for i := Int(1); i < n+1; i++ {
 		f.n = i
 		f.factorialSupport()
 	}
 	return
 }
-
 
 func (
 	f *Factorization,
@@ -3823,8 +3269,6 @@ func (
 	}
 }
 
-
-
 func Root(
 	x Real,
 	n int,
@@ -3835,7 +3279,7 @@ func Root(
 	var f NewtonFunc
 	f = func(
 		x Real,
-	) (Real) {
+	) Real {
 		y := Pow(x, n).(Real)
 		return Sub(y, y0).(Real)
 	}
@@ -3844,12 +3288,9 @@ func Root(
 	return
 }
 
-
-
 type NewtonFunc func(
 	x Real,
-) (Real)
-
+) Real
 
 func (
 	f NewtonFunc,
@@ -3866,7 +3307,6 @@ func (
 	return
 }
 
-
 func (
 	f NewtonFunc,
 ) Newton(
@@ -3877,10 +3317,7 @@ func (
 	x = x0
 	const maxIter = 1 << 7
 	const eps = Float(1e-9)
-	for
-	i := 0;
-	i < maxIter;
-	i++ {
+	for i := 0; i < maxIter; i++ {
 		y := f(x)
 		der := f.Derivative(x)
 		dx := Div(y, der).(Real)
@@ -3892,17 +3329,11 @@ func (
 	return
 }
 
-
-
-type Rectangle2D struct{
+type Rectangle2D struct {
 	V0, V1 Vector2D
 }
 
-
-
 type Polygon2D []Vector2D
-
-
 
 func (
 	p *Polygon2D,
@@ -3915,13 +3346,11 @@ func (
 	)
 }
 
-
 func (
 	p Polygon2D,
 ) Len() int {
 	return len(p)
 }
-
 
 func (
 	p Polygon2D,
@@ -3938,7 +3367,6 @@ func (
 	return
 }
 
-
 func (
 	p Polygon2D,
 ) Swap(
@@ -3947,38 +3375,26 @@ func (
 	p[i], p[j] = p[j], p[i]
 }
 
-
-
 type Node struct {
 	ID Int
 }
 
-
 func (
 	v Node,
-) String() (
-	string,
-) {
+) String() string {
 	return fmt.Sprint(v.ID)
 }
 
-
-
 type NodeSlice []Node
 
-
-
 type Edge struct {
-	ID Int
+	ID       Int
 	From, To Int
-	Weight Int
+	Weight   Int
 	Capacity Int
 }
 
-
-
 type EdgeSlice []Edge
-
 
 func (
 	edges *EdgeSlice,
@@ -3991,25 +3407,20 @@ func (
 	)
 }
 
-
-
 type EdgeMatrix []EdgeSlice
-
-
 
 type Graph struct {
 	Nodes NodeSlice
 	Edges EdgeMatrix
 }
 
-
 func (
 	g *Graph,
 ) Init(n Int) {
 	nodes := make(NodeSlice, n)
 	edges := make(EdgeMatrix, n)
 	for i := Int(0); i < n; i++ {
-		e :=  make(
+		e := make(
 			EdgeSlice,
 			0,
 		)
@@ -4019,14 +3430,12 @@ func (
 	g.Edges = edges
 }
 
-
 func (
 	g *Graph,
 ) AddEdge(e Edge) {
 	u := e.From
 	g.Edges[u].Push(e)
 }
-
 
 func (
 	g *Graph,
@@ -4038,7 +3447,6 @@ func (
 	}
 }
 
-
 func (
 	g *Graph,
 ) AddNode(
@@ -4046,7 +3454,6 @@ func (
 ) {
 	g.Nodes[v.ID] = v
 }
-
 
 func (
 	g *Graph,
@@ -4056,19 +3463,16 @@ func (
 	n = len(g.Nodes)
 	return
 }
-
-
 
 type Tree Graph
 
-
 func (
 	g *Tree,
 ) Init(n Int) {
 	nodes := make(NodeSlice, n)
 	edges := make(EdgeMatrix, n)
 	for i := Int(0); i < n; i++ {
-		e :=  make(
+		e := make(
 			EdgeSlice,
 			0,
 		)
@@ -4078,14 +3482,12 @@ func (
 	g.Edges = edges
 }
 
-
 func (
 	g *Tree,
 ) AddEdge(e Edge) {
 	u := e.From
 	g.Edges[u].Push(e)
 }
-
 
 func (
 	g *Tree,
@@ -4097,7 +3499,6 @@ func (
 	}
 }
 
-
 func (
 	g *Tree,
 ) AddNode(
@@ -4105,7 +3506,6 @@ func (
 ) {
 	g.Nodes[v.ID] = v
 }
-
 
 func (
 	g *Tree,
@@ -4116,14 +3516,11 @@ func (
 	return
 }
 
-
-
 type GraphBFS struct {
-	G Graph
+	G     Graph
 	Level Ints
-	Que Ints
+	Que   Ints
 }
-
 
 func (
 	bfs *GraphBFS,
@@ -4132,7 +3529,6 @@ func (
 ) {
 	bfs.G = g
 }
-
 
 func (
 	bfs *GraphBFS,
@@ -4152,7 +3548,6 @@ func (
 	bfs.Que = que
 }
 
-
 func (
 	bfs *GraphBFS,
 ) Search() {
@@ -4163,7 +3558,6 @@ func (
 	}
 }
 
-
 func (
 	bfs *GraphBFS,
 ) Explore(
@@ -4173,8 +3567,7 @@ func (
 	g := &bfs.G
 	que := &bfs.Que
 	lv := &bfs.Level
-	for
-	_, e := range g.Edges[u] {
+	for _, e := range g.Edges[u] {
 		v := e.To
 		if (*lv)[v] != -1 {
 			continue
@@ -4184,17 +3577,14 @@ func (
 	}
 }
 
-
-
 type TreeBFS struct {
-	G Tree
-	Root Int
-	Depth Ints
-	Dist Ints
+	G      Tree
+	Root   Int
+	Depth  Ints
+	Dist   Ints
 	Parent Ints
-	Que Ints
+	Que    Ints
 }
-
 
 func (
 	bfs *TreeBFS,
@@ -4203,7 +3593,6 @@ func (
 ) {
 	bfs.G = g
 }
-
 
 func (
 	bfs *TreeBFS,
@@ -4240,7 +3629,6 @@ func (
 	bfs.Que = que
 }
 
-
 func (
 	bfs *TreeBFS,
 ) Search() {
@@ -4250,7 +3638,6 @@ func (
 		bfs.Explore(x)
 	}
 }
-
 
 func (
 	bfs *TreeBFS,
@@ -4263,8 +3650,7 @@ func (
 	depth := bfs.Depth
 	dist := bfs.Dist
 	parent := bfs.Parent
-	for
-	_, e := range g.Edges[u] {
+	for _, e := range g.Edges[u] {
 		v := e.To
 		d := e.Weight
 		if depth[v] != -1 {
@@ -4277,13 +3663,10 @@ func (
 	}
 }
 
-
-
 type DijkstraItem struct {
 	Node Int
 	Dist Int
 }
-
 
 func (
 	x DijkstraItem,
@@ -4294,18 +3677,13 @@ func (
 	return x.Dist < y.Dist
 }
 
-
-
-type DijkstraHeap [
-]DijkstraItem
-
+type DijkstraHeap []DijkstraItem
 
 func (
 	h DijkstraHeap,
 ) Len() int {
 	return len(h)
 }
-
 
 func (
 	h DijkstraHeap,
@@ -4315,7 +3693,6 @@ func (
 	return h[i].LT(h[j])
 }
 
-
 func (
 	h DijkstraHeap,
 ) Swap(
@@ -4323,7 +3700,6 @@ func (
 ) {
 	h[i], h[j] = h[j], h[i]
 }
-
 
 func (
 	h *DijkstraHeap,
@@ -4336,7 +3712,6 @@ func (
 	)
 }
 
-
 func (
 	h *DijkstraHeap,
 ) Pop() (
@@ -4348,21 +3723,18 @@ func (
 	return
 }
 
-
-
 type Dijkstra struct {
-	G Graph
-	Heap DijkstraHeap
-	Dist Ints
-	Paths Mods
+	G           Graph
+	Heap        DijkstraHeap
+	Dist        Ints
+	Paths       Mods
 	Predecessor IntMatrix
-	src Int
-	inf Int
-	mod int
-	x DijkstraItem
-	e Edge
+	src         Int
+	inf         Int
+	mod         int
+	x           DijkstraItem
+	e           Edge
 }
-
 
 func (
 	di *Dijkstra,
@@ -4371,7 +3743,6 @@ func (
 ) {
 	di.G = g
 }
-
 
 func (
 	di *Dijkstra,
@@ -4389,7 +3760,6 @@ func (
 	di.InitPredecessor()
 }
 
-
 func (
 	di *Dijkstra,
 ) InitHeap() {
@@ -4404,7 +3774,6 @@ func (
 	heap.Push(&h, x)
 	di.Heap = h
 }
-
 
 func (
 	di *Dijkstra,
@@ -4421,7 +3790,6 @@ func (
 	di.Dist = dist
 }
 
-
 func (
 	di *Dijkstra,
 ) InitPaths() {
@@ -4437,7 +3805,6 @@ func (
 	di.Paths = paths
 }
 
-
 func (
 	di *Dijkstra,
 ) InitPredecessor() {
@@ -4449,7 +3816,6 @@ func (
 	).(IntMatrix)
 	di.Predecessor = pred
 }
-
 
 func (
 	di *Dijkstra,
@@ -4464,28 +3830,21 @@ func (
 	}
 }
 
-
 func (
 	di *Dijkstra,
 ) Open() {
 	h := &di.Heap
-	x := (
-		heap.Pop(h).
-		(DijkstraItem))
+	x := (heap.Pop(h).(DijkstraItem))
 	di.x = x
 }
 
-
 func (
 	di *Dijkstra,
-) Searched() (
-	Bool,
-) {
+) Searched() Bool {
 	x := di.x
 	i, d := x.Node, x.Dist
 	return d > di.Dist[i]
 }
-
 
 func (
 	di *Dijkstra,
@@ -4497,7 +3856,6 @@ func (
 		di.exploreSupport()
 	}
 }
-
 
 func (
 	di *Dijkstra,
@@ -4530,14 +3888,11 @@ func (
 	heap.Push(&di.Heap, x)
 }
 
-
-
 type AStarItem struct {
-	Node Int
+	Node    Int
 	C, H, S Int
-	Dist Int
+	Dist    Int
 }
-
 
 func (
 	x AStarItem,
@@ -4550,17 +3905,13 @@ func (
 	return x.H < other.H
 }
 
-
-
 type AStarHeap []AStarItem
-
 
 func (
 	h AStarHeap,
 ) Len() int {
 	return len(h)
 }
-
 
 func (
 	h AStarHeap,
@@ -4570,7 +3921,6 @@ func (
 	return h[i].LT(h[j])
 }
 
-
 func (
 	h AStarHeap,
 ) Swap(
@@ -4578,7 +3928,6 @@ func (
 ) {
 	h[i], h[j] = h[j], h[i]
 }
-
 
 func (
 	h *AStarHeap,
@@ -4591,7 +3940,6 @@ func (
 	)
 }
 
-
 func (
 	h *AStarHeap,
 ) Pop() (
@@ -4603,27 +3951,20 @@ func (
 	return
 }
 
-
-
 type HeuristicFunc func(
 	Int,
-) (
-	Int,
-)
-
-
+) Int
 
 type AStar struct {
-	G Graph
-	Heap AStarHeap
-	Cost Ints
-	F HeuristicFunc
+	G        Graph
+	Heap     AStarHeap
+	Cost     Ints
+	F        HeuristicFunc
 	src, dst Int
-	inf Int
-	x AStarItem
-	e Edge
+	inf      Int
+	x        AStarItem
+	e        Edge
 }
-
 
 func (
 	a *AStar,
@@ -4633,7 +3974,6 @@ func (
 	a.G = g
 }
 
-
 func (
 	a *AStar,
 ) SetHeuristicFunc(
@@ -4641,7 +3981,6 @@ func (
 ) {
 	a.F = f
 }
-
 
 func (
 	a *AStar,
@@ -4655,7 +3994,6 @@ func (
 	a.InitCost()
 	a.InitHeap()
 }
-
 
 func (
 	a *AStar,
@@ -4672,7 +4010,6 @@ func (
 	a.Cost = cost
 }
 
-
 func (
 	a *AStar,
 ) InitHeap() {
@@ -4685,14 +4022,13 @@ func (
 	s := c + hc
 	x := AStarItem{
 		Node: src,
-		C: c,
-		H: hc,
-		S: s,
+		C:    c,
+		H:    hc,
+		S:    s,
 	}
 	heap.Push(&h, x)
 	a.Heap = h
 }
-
 
 func (
 	a *AStar,
@@ -4710,39 +4046,29 @@ func (
 	}
 }
 
-
 func (
 	a *AStar,
 ) Open() {
 	h := &a.Heap
-	x := (
-		heap.Pop(h).
-		(AStarItem))
+	x := (heap.Pop(h).(AStarItem))
 	a.x = x
 }
 
-
 func (
 	a *AStar,
-) isDst() (
-	Bool,
-) {
+) isDst() Bool {
 	x := a.x
 	i := x.Node
 	return i == a.dst
 }
 
-
 func (
 	a *AStar,
-) Searched() (
-	Bool,
-) {
+) Searched() Bool {
 	x := a.x
 	i, c := x.Node, x.C
 	return c > a.Cost[i]
 }
-
 
 func (
 	a *AStar,
@@ -4754,7 +4080,6 @@ func (
 		a.exploreSupport()
 	}
 }
-
 
 func (
 	a *AStar,
@@ -4772,21 +4097,18 @@ func (
 	s := c + h
 	x := AStarItem{
 		Node: v,
-		C: c,
-		H: h,
-		S: s,
+		C:    c,
+		H:    h,
+		S:    s,
 	}
 	heap.Push(&a.Heap, x)
 }
 
-
-
 type FloydWarshall struct {
-	G Graph
-	Dist IntMatrix
+	G             Graph
+	Dist          IntMatrix
 	src, mid, dst int
 }
-
 
 func (
 	fw *FloydWarshall,
@@ -4795,7 +4117,6 @@ func (
 ) {
 	fw.G = g
 }
-
 
 func (
 	fw *FloydWarshall,
@@ -4817,7 +4138,6 @@ func (
 	}
 }
 
-
 func (
 	fw *FloydWarshall,
 ) prepareSupport(
@@ -4825,8 +4145,7 @@ func (
 ) {
 	g := &fw.G
 	dist := fw.Dist
-	for
-	_, e := range g.Edges[i] {
+	for _, e := range g.Edges[i] {
 		j := e.To
 		d := e.Weight
 		dist[i][j] = Min(
@@ -4835,7 +4154,6 @@ func (
 		).(Int)
 	}
 }
-
 
 func (
 	fw *FloydWarshall,
@@ -4847,7 +4165,6 @@ func (
 	}
 }
 
-
 func (
 	fw *FloydWarshall,
 ) searchSupport0() {
@@ -4858,7 +4175,6 @@ func (
 	}
 }
 
-
 func (
 	fw *FloydWarshall,
 ) searchSupport1() {
@@ -4868,22 +4184,19 @@ func (
 	for j := 0; j < n; j++ {
 		d[i][j] = Min(
 			d[i][j],
-			d[i][k] + d[k][j],
+			d[i][k]+d[k][j],
 		).(Int)
 	}
 }
 
-
-
-type Dinic struct{
-	G Graph
-	Level Ints
-	Src, Sink Int
-	u Int
-	e Edge
+type Dinic struct {
+	G          Graph
+	Level      Ints
+	Src, Sink  Int
+	u          Int
+	e          Edge
 	in, out, f Int
 }
-
 
 func (
 	di *Dinic,
@@ -4893,7 +4206,6 @@ func (
 	di.G = g
 }
 
-
 func (
 	di *Dinic,
 ) Prepare(
@@ -4902,7 +4214,6 @@ func (
 	di.Src = Src
 	di.Sink = Sink
 }
-
 
 func (
 	di *Dinic,
@@ -4925,7 +4236,6 @@ func (
 	}
 }
 
-
 func (
 	di *Dinic,
 ) updateLevel() {
@@ -4935,7 +4245,6 @@ func (
 	bfs.Search()
 	di.Level = bfs.Level
 }
-
 
 func (
 	di *Dinic,
@@ -4958,7 +4267,6 @@ func (
 	}
 }
 
-
 func (
 	di *Dinic,
 ) flowToSinkSupport() {
@@ -4970,13 +4278,11 @@ func (
 	di.updateFlow()
 }
 
-
 func (
 	di *Dinic,
 ) updateFlow() {
 	di.out += di.f
 }
-
 
 func (
 	di *Dinic,
@@ -4993,13 +4299,12 @@ func (
 	}
 	u := di.u
 	e = Edge{
-		From: v,
-		To: u,
+		From:     v,
+		To:       u,
 		Capacity: f,
 	}
 	di.G.AddEdge(e)
 }
-
 
 func (
 	di *Dinic,
@@ -5010,7 +4315,7 @@ func (
 	out := di.out
 	di.u = e.To
 	di.in = Min(
-		in - out,
+		in-out,
 		e.Capacity,
 	).(Int)
 	di.out = 0
@@ -5021,7 +4326,6 @@ func (
 	di.in = in
 	di.out = out
 }
-
 
 func (
 	di *Dinic,
@@ -5040,16 +4344,13 @@ func (
 	return
 }
 
-
-
 type LCA struct {
-	G Tree
-	Parent Ints
+	G         Tree
+	Parent    Ints
 	Ancestors IntMatrix
-	Dist Ints
-	Depth Ints
+	Dist      Ints
+	Depth     Ints
 }
-
 
 func (
 	l *LCA,
@@ -5058,7 +4359,6 @@ func (
 ) {
 	l.G = g
 }
-
 
 func (
 	l *LCA,
@@ -5074,7 +4374,6 @@ func (
 	l.Dist = bfs.Dist
 }
 
-
 func (
 	l *LCA,
 ) FindAncestors() {
@@ -5088,11 +4387,10 @@ func (
 	).(IntMatrix)
 	ancestors[0] = l.Parent
 	l.Ancestors = ancestors
-	for i := 0; i < m - 1; i++ {
+	for i := 0; i < m-1; i++ {
 		l.nxtAncestor(i)
 	}
 }
-
 
 func (
 	l *LCA,
@@ -5105,9 +4403,8 @@ func (
 	for i := Int(0); i < n; i++ {
 		y[i] = x[x[i]]
 	}
-	l.Ancestors[i + 1] = y
+	l.Ancestors[i+1] = y
 }
-
 
 func (
 	l *LCA,
@@ -5120,10 +4417,9 @@ func (
 	dv := l.Dist[v]
 	lca := l.FindLCA(u, v)
 	dLCA := l.Dist[lca]
-	d = du + dv - 2 * dLCA
+	d = du + dv - 2*dLCA
 	return
 }
-
 
 func (
 	l *LCA,
@@ -5137,7 +4433,7 @@ func (
 	dv := l.Depth[v]
 	v = l.upStream(
 		v,
-		dv - du,
+		dv-du,
 	)
 	if v == u {
 		lca = u
@@ -5150,7 +4446,6 @@ func (
 	)
 	return
 }
-
 
 func (
 	l *LCA,
@@ -5167,25 +4462,21 @@ func (
 	return u, v
 }
 
-
 func (
 	l *LCA,
 ) upStream(
 	v Int,
 	d Int,
-) (
-	Int,
-){
+) Int {
 	n := d.BitLen()
 	for i := 0; i < n; i++ {
-		if ^d >> i & 1 == 1 {
+		if ^d>>i&1 == 1 {
 			continue
 		}
 		v = l.Ancestors[i][v]
 	}
 	return v
 }
-
 
 func (
 	l *LCA,
@@ -5197,8 +4488,7 @@ func (
 ) {
 	n := dep.BitLen()
 	ancs := l.Ancestors
-	for
-	i := n - 1; i > -1; i-- {
+	for i := n - 1; i > -1; i-- {
 		anc := ancs[i]
 		nu, nv := anc[u], anc[v]
 		if nu == nv {
@@ -5210,14 +4500,11 @@ func (
 	return
 }
 
-
-
 type DistXFormCDT struct {
-	A IntMatrix
-	B IntMatrix
+	A    IntMatrix
+	B    IntMatrix
 	i, j int
 }
-
 
 func (
 	cdt *DistXFormCDT,
@@ -5226,7 +4513,6 @@ func (
 ) {
 	cdt.A = a
 }
-
 
 func (
 	cdt *DistXFormCDT,
@@ -5247,7 +4533,6 @@ func (
 	}
 }
 
-
 func (
 	cdt *DistXFormCDT,
 ) prepareSupport() {
@@ -5263,7 +4548,6 @@ func (
 	}
 }
 
-
 func (
 	cdt *DistXFormCDT,
 ) Taxicab() {
@@ -5277,19 +4561,16 @@ func (
 	cdt.B = cdt.B.T()
 }
 
-
 func (
 	cdt *DistXFormCDT,
 ) CumMin() {
 	b := cdt.B
 	n := Shape(b)[0]
-	for
-	i := 0; i < n - 1; i++ {
+	for i := 0; i < n-1; i++ {
 		cdt.i = i
 		cdt.cumMinSupport()
 	}
 }
-
 
 func (
 	cdt *DistXFormCDT,
@@ -5298,21 +4579,18 @@ func (
 	i := cdt.i
 	m := Shape(b)[1]
 	for j := 0; j < m; j++ {
-		b[i + 1][j] = Min(
-			b[i + 1][j],
-			b[i][j] + 1,
+		b[i+1][j] = Min(
+			b[i+1][j],
+			b[i][j]+1,
 		).(Int)
 	}
 }
 
-
-
 type IO struct {
 	Scanner *bufio.Scanner
-	Reader *bufio.Reader
-	Writer *bufio.Writer
+	Reader  *bufio.Reader
+	Writer  *bufio.Writer
 }
-
 
 func (
 	io *IO,
@@ -5326,7 +4604,6 @@ func (
 	io.Scanner = scanner
 }
 
-
 func (
 	io *IO,
 ) SetScanBuf(
@@ -5338,7 +4615,6 @@ func (
 	)
 }
 
-
 func (
 	io *IO,
 ) SetReader() {
@@ -5348,8 +4624,7 @@ func (
 	io.Reader = reader
 }
 
-
-func(
+func (
 	io *IO,
 ) SetWriter() {
 	writer := bufio.NewWriter(
@@ -5358,7 +4633,6 @@ func(
 	io.Writer = writer
 }
 
-
 func (
 	io *IO,
 ) Init() {
@@ -5366,7 +4640,6 @@ func (
 	io.SetReader()
 	io.SetWriter()
 }
-
 
 func (
 	io *IO,
@@ -5377,14 +4650,12 @@ func (
 	return s
 }
 
-
 func (
 	io *IO,
 ) ScanInt() Int {
 	s := io.Scan()
 	return s.Int()
 }
-
 
 func (
 	io *IO,
@@ -5398,7 +4669,6 @@ func (
 	)
 	writer.Flush()
 }
-
 
 func (
 	io *IO,
@@ -5415,14 +4685,11 @@ func (
 	writer.Flush()
 }
 
-
-
-type Solver interface{
+type Solver interface {
 	Init()
 	Prepare()
 	Solve()
 }
-
 
 func Run(s Solver) {
 	s.Init()
@@ -5430,12 +4697,9 @@ func Run(s Solver) {
 	s.Solve()
 }
 
-
-
 type Problem struct {
 	io *IO
 }
-
 
 func (
 	p *Problem,
@@ -5447,21 +4711,17 @@ func (
 	p.io = io
 }
 
-
 func (
 	p *Problem,
 ) Prepare() {
 	io := p.io
 }
 
-
 func (
 	p *Problem,
 ) Solve() {
 	io := p.io
 }
-
-
 
 func main() {
 	p := new(Problem)
