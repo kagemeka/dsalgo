@@ -28,5 +28,16 @@ impl Default for Xorshift64 {
 #[cfg(test)]
 mod tests {
     #[test]
-    fn test() {}
+    fn test() {
+        use super::*;
+        const ANS: [u64; 3] = [
+            8748534153485358512,
+            3040900993826735515,
+            3453997556048239312,
+        ];
+        let mut rng = Xorshift64::default();
+        for i in 0..3 {
+            assert_eq!(rng.next(), ANS[i]);
+        }
+    }
 }
