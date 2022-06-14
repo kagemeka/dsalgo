@@ -11,9 +11,16 @@ pub fn mod_mul_doubling_128(mut a: u128, mut b: u128, m: u128) -> u128 {
     res
 }
 
-// TODO:
 #[cfg(test)]
 mod tests {
     #[test]
-    fn test() {}
+    fn test() {
+        use super::*;
+        let a = 1234567890123456789u128;
+        let m = 1u128 << 100;
+        assert_eq!(
+            mod_mul_doubling_128(a, a, m),
+            a * a % m,
+        );
+    }
 }
