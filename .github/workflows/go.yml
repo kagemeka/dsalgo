@@ -15,4 +15,4 @@ jobs:
       - name: CI
         run: |
           cd src/go
-          ./ci.sh
+          ./ci.sh setup
