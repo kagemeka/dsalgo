@@ -3,9 +3,9 @@
 setup() {
     GO_VERSION=1.18.3
     apt update
-    rm -rf /usr/local/go
+    sudo rm -rf /usr/local/go
     apt install -y wget
-    wget -O - https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz | tar -xzC /usr/local/
+    sudo wget -O - https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz | tar -xzC /usr/local/
     echo "export PATH=${PATH}:/usr/local/go/bin" >>~/.bashrc
     source ~/.bashrc
     go version
