@@ -13,4 +13,15 @@ setup() {
     # run source ~/.bashrc in console.
 }
 
-setup
+help() {
+    go help
+}
+
+ci() {
+    go fmt ./...
+    ./../../scripts/pre-commit.sh
+    go test ./...
+}
+
+# setup
+ci

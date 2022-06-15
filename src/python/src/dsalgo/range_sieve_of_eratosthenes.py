@@ -24,7 +24,7 @@ def range_sieve_of_eratosthenes(
         if lo == hi:
             return res
         size = (hi - lo + 1) >> 1
-        if_prime = [True] * size
+        is_prime = [True] * size
         for i in primes[1:]:
             mn = i * i
             if mn >= hi:
@@ -33,9 +33,9 @@ def range_sieve_of_eratosthenes(
             if mn & 1 == 0:
                 mn += i
             for j in range((mn - lo) >> 1, size, i):
-                if_prime[j] = False
+                is_prime[j] = False
         for i in range(size):
-            if if_prime[i]:
+            if is_prime[i]:
                 res.append(lo + (i << 1))
         return res
 

@@ -1,5 +1,11 @@
 #[allow(dead_code)]
-pub(crate) fn lcs_length_low_memory<T: PartialEq>(a: &[T], b: &[T]) -> usize {
+pub(crate) fn lcs_length_low_memory<T: PartialEq>(
+    mut a: &[T],
+    mut b: &[T],
+) -> usize {
+    if a.len() < b.len() {
+        std::mem::swap(&mut a, &mut b);
+    }
     let m = b.len();
     let mut length = vec![0; m + 1];
     for x in a {
