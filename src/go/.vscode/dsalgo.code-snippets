@@ -1,0 +1,10 @@
+{
+	"import_dsalgo": {
+		"prefix": "import_dsalgo",
+		"body": [
+			"import . \"github.com/kagemeka/dsalgo/src/go/src/\"",
+			""
+		],
+		"description": "import_dsalgo"
+	},
+}

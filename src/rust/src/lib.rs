@@ -515,7 +515,6 @@ pub mod previous_prime_number_table;
 pub mod primality;
 pub mod primality_test_fermat;
 pub mod primality_test_miller_rabin;
-pub mod primality_test_repin;
 pub mod primality_test_solovay_strassen;
 pub mod prime;
 pub mod prime_counting_fast;
