@@ -18,10 +18,15 @@ help() {
 }
 
 ci() {
-    go fmt ./...
+    if ! command -v go &>/dev/null; then
+        echo "go command not found"
+        setup
+        source ~/.bashrc
+    fi
+
+    go fmt -n -x ./...
     ./../../scripts/pre-commit.sh
-    go test ./...
+    go test -v ./...
 }
 
-# setup
 ci
