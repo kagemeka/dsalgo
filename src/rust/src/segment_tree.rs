@@ -1,17 +1,14 @@
-// TODO: review group theory trait constraints.
-// is it needed to be monoid to call `update`, `set`, ...?
-// answer: No.
-
 use std::iter::FromIterator;
 
-use crate::monoid::Monoid;
+use crate::algebraic_structure::*;
 
-pub struct SegmentTree<M: Monoid<Id>, Id> {
+/// Segment Tree
+pub struct Segtree<M: Monoid<Id>, Id> {
     pub(crate) size: usize,
     pub(crate) data: Vec<M::S>,
 }
 
-impl<M, Id> std::iter::FromIterator<M::S> for SegmentTree<M, Id>
+impl<M, Id> std::iter::FromIterator<M::S> for Segtree<M, Id>
 where
     M: Monoid<Id>,
     M::S: Clone,
@@ -21,9 +18,9 @@ where
         let size = data.len();
         let n = size.next_power_of_two();
         data = (0..n)
-            .map(|_| M::identity())
+            .map(|_| M::e())
             .chain(data.into_iter())
-            .chain((0..n - size).map(|_| M::identity()))
+            .chain((0..n - size).map(|_| M::e()))
             .collect::<Vec<_>>();
         let mut seg = Self { size, data };
         (1..n).rev().for_each(|i| seg.update(i));
@@ -31,13 +28,13 @@ where
     }
 }
 
-impl<M: Monoid<Id>, Id> SegmentTree<M, Id> {
+impl<M: Monoid<Id>, Id> Segtree<M, Id> {
     pub fn size(&self) -> usize { self.size }
 
     pub(crate) fn n(&self) -> usize { self.data.len() >> 1 }
 }
 
-impl<M, Id> SegmentTree<M, Id>
+impl<M, Id> Segtree<M, Id>
 where
     M: Monoid<Id>,
     M::S: Clone,
@@ -50,7 +47,7 @@ where
     }
 
     fn update(&mut self, i: usize) {
-        self.data[i] = M::operate(
+        self.data[i] = M::op(
             self.data[i << 1].clone(),
             self.data[i << 1 | 1].clone(),
         );
@@ -79,55 +76,395 @@ where
         let n = self.n();
         l += n;
         r += n;
-        let mut vl = M::identity();
-        let mut vr = M::identity();
+        let mut vl = M::e();
+        let mut vr = M::e();
         while l < r {
             if l & 1 == 1 {
-                vl = M::operate(vl, self.data[l].clone());
+                vl = M::op(vl, self.data[l].clone());
                 l += 1;
             }
             if r & 1 == 1 {
                 r -= 1;
-                vr = M::operate(self.data[r].clone(), vr);
+                vr = M::op(self.data[r].clone(), vr);
             }
             l >>= 1;
             r >>= 1;
         }
-        M::operate(vl, vr)
+        M::op(vl, vr)
     }
+}
+
+impl<M, Id> Segtree<M, Id>
+where
+    M: Monoid<Id>,
+    M::S: Clone,
+{
+    pub fn reduce_recurse(&self, l: usize, r: usize) -> M::S {
+        assert!(l <= r && r <= self.size);
+        self._reduce_recurse(l, r, 0, self.n(), 1)
+    }
+
+    fn _reduce_recurse(
+        &self,
+        l: usize,
+        r: usize,
+        cur_l: usize,
+        cur_r: usize,
+        i: usize,
+    ) -> M::S {
+        if cur_r <= l || r <= cur_l {
+            return M::e();
+        }
+        if l <= cur_l && cur_r <= r {
+            return self.data[i].clone();
+        }
+        let c = (cur_l + cur_r) >> 1;
+        M::op(
+            self._reduce_recurse(l, r, cur_l, c, i << 1),
+            self._reduce_recurse(l, r, c, cur_r, i << 1 | 1),
+        )
+    }
+}
+
+/// indexing
+impl<M, Id> std::ops::Index<usize> for Segtree<M, Id>
+where
+    M: Monoid<Id>,
+{
+    type Output = M::S;
+
+    fn index(&self, i: usize) -> &Self::Output {
+        assert!(i < self.size());
+        &self.data[i + self.n()]
+    }
+}
+
+impl<M, Id> From<&[M::S]> for Segtree<M, Id>
+where
+    M: Monoid<Id>,
+    M::S: Clone,
+{
+    fn from(slice: &[M::S]) -> Self { Self::from_iter(slice.iter().cloned()) }
+}
+
+impl<M, Id> Segtree<M, Id>
+where
+    M: Monoid<Id>,
+    M::S: Clone,
+{
+    pub fn max_right<F>(&self, is_ok: &F, l: usize) -> usize
+    where
+        F: Fn(&M::S) -> bool,
+    {
+        assert!(l <= self.size);
+        if l == self.size {
+            return self.size;
+        }
+        let n = self.n();
+        let mut v = M::e();
+        let mut i = l + n;
+        debug_assert_ne!(i, 0);
+        loop {
+            i >>= i.trailing_zeros(); // upstream
+            let nv = M::op(v.clone(), self.data[i].clone());
+            if !is_ok(&nv) {
+                break;
+            }
+            // otherwise up one stair to right
+            i += 1;
+            v = nv;
+            if i.count_ones() == 1 {
+                return self.size;
+            }
+        }
+        // down stairs to right
+        while i < n {
+            i <<= 1;
+            let nv = M::op(v.clone(), self.data[i].clone());
+            if !is_ok(&nv) {
+                continue;
+            }
+            v = nv;
+            i += 1;
+        }
+        i - n
+    }
+
+    pub fn min_left<F>(&self, is_ok: &F, r: usize) -> usize
+    where
+        F: Fn(&M::S) -> bool,
+    {
+        assert!(r <= self.size);
+        if r == 0 {
+            return 0;
+        }
+        let n = self.n();
+        let mut v = M::e();
+        let mut i = r + n;
+        debug_assert_ne!(i, 0);
+        loop {
+            i >>= i.trailing_zeros(); // upstream
+            let nv = M::op(
+                self.data[i - 1].clone(),
+                v.clone(),
+            );
+            if !is_ok(&nv) {
+                break;
+            }
+            i -= 1;
+            v = nv;
+            if i.count_ones() == 1 {
+                return 0;
+            }
+        }
+        while i < n {
+            i <<= 1;
+            let nv = M::op(
+                self.data[i - 1].clone(),
+                v.clone(),
+            );
+            if !is_ok(&nv) {
+                continue;
+            }
+            i -= 1;
+            v = nv;
+        }
+        i - n
+    }
+}
+
+impl<M, Id> Segtree<M, Id>
+where
+    M: Monoid<Id>,
+    M::S: Clone,
+{
+    pub fn max_right_recurse<F>(&self, is_ok: &F, l: usize) -> usize
+    where
+        F: Fn(&M::S) -> bool,
+    {
+        assert!(l <= self.size);
+        self._max_right_recurse(
+            is_ok,
+            l,
+            0,
+            self.n(),
+            &mut M::e(),
+            1,
+        )
+    }
+
+    /// find max right satisfying current_left <= right <= current_right.
+    /// if current_right <= left, return left
+    /// if current_left >= self.size, return self.size
+    fn _max_right_recurse<F>(
+        &self,
+        is_ok: &F,
+        l: usize,
+        cur_l: usize,
+        cur_r: usize,
+        v: &mut M::S,
+        i: usize,
+    ) -> usize
+    where
+        F: Fn(&M::S) -> bool,
+    {
+        if cur_r <= l {
+            return l;
+        }
+        if cur_l >= self.size {
+            return self.size;
+        }
+        let nv = M::op(v.clone(), self.data[i].clone());
+        if l <= cur_l && cur_r <= self.size && is_ok(&nv) {
+            *v = nv;
+            return cur_r;
+        }
+        if cur_r - cur_l == 1 {
+            return cur_l;
+        }
+        let c = (cur_l + cur_r) >> 1;
+        let res = self._max_right_recurse(is_ok, l, cur_l, c, v, i << 1);
+        if res < c || res == self.size {
+            return res;
+        }
+        self._max_right_recurse(
+            is_ok,
+            l,
+            c,
+            cur_r,
+            v,
+            i << 1 | 1,
+        )
+    }
+
+    pub fn min_left_recurse<F>(&self, is_ok: &F, r: usize) -> usize
+    where
+        F: Fn(&M::S) -> bool,
+    {
+        assert!(r <= self.size);
+        self._min_left_recurse(
+            is_ok,
+            r,
+            0,
+            self.n(),
+            &mut M::e(),
+            1,
+        )
+    }
+
+    fn _min_left_recurse<F>(
+        &self,
+        is_ok: &F,
+        r: usize,
+        cur_l: usize,
+        cur_r: usize,
+        v: &mut M::S,
+        i: usize,
+    ) -> usize
+    where
+        F: Fn(&M::S) -> bool,
+    {
+        if cur_l >= r {
+            return r;
+        }
+        let nv = M::op(self.data[i].clone(), v.clone());
+        if cur_r <= r && is_ok(&nv) {
+            *v = nv;
+            return cur_l;
+        }
+        if cur_r - cur_l == 1 {
+            return cur_r;
+        }
+        let c = (cur_l + cur_r) >> 1;
+        let res = self._min_left_recurse(
+            is_ok,
+            r,
+            c,
+            cur_r,
+            v,
+            i << 1 | 1,
+        );
+        if res > c {
+            return res;
+        }
+        self._min_left_recurse(is_ok, r, cur_l, c, v, i << 1)
+    }
+}
+
+use crate::range_get_query::RangeGetQuery;
+
+impl<M, Id> RangeGetQuery<M::S, Id> for Segtree<M, Id>
+where
+    M: Monoid<Id>,
+    M::S: Clone,
+{
+    fn get_range(&mut self, l: usize, r: usize) -> M::S { self.reduce(l, r) }
 }
 
 #[cfg(test)]
 mod tests {
+    use crate::{binary_function::*, group_theory_id::Additive};
+    struct Mon;
+    impl BinaryOp<Additive> for Mon {
+        type S = usize;
+
+        fn op(x: usize, y: usize) -> usize { x + y }
+    }
+    impl Associative<Additive> for Mon {}
+    impl Identity<Additive> for Mon {
+        fn e() -> usize { 0 }
+    }
 
     #[test]
-    fn test_as_monoid() {
-        // use crate::monoid::Monoid;
-        use crate::{
-            associative_property::AssociativeProperty,
-            binary_operation::BinaryOperation,
-            group_theory_id::Additive,
-            identity_element::IdentityElement,
-        };
-        struct Mon;
-        impl BinaryOperation<Additive> for Mon {
-            type Codomain = usize;
-            type Lhs = usize;
-            type Rhs = usize;
-
-            fn map(x: usize, y: usize) -> usize { x + y }
-        }
-        impl AssociativeProperty<Additive> for Mon {}
-        impl IdentityElement<Additive> for Mon {
-            type X = usize;
-
-            fn identity() -> usize { 0 }
-        }
-        let mut seg = super::SegmentTree::<Mon, _>::new(10, || 0);
+    fn test_basic() {
+        let mut seg = super::Segtree::<Mon, _>::new(10, || 0);
         assert_eq!(seg.reduce(0, 10), 0);
         seg.set(5, 5);
         assert_eq!(seg.reduce(0, 10), 5);
         seg.set(5, 10);
         assert_eq!(seg.reduce(0, 10), 10);
+    }
+
+    #[test]
+    fn test_indexing() {
+        let mut seg = super::Segtree::<Mon, _>::new(10, || 0);
+        seg.set(5, 10);
+        assert_eq!(seg[5], 10);
+    }
+
+    #[test]
+    fn test_reduce_recurse() {
+        let mut seg = super::Segtree::<Mon, _>::new(10, || 0);
+        assert_eq!(seg.reduce_recurse(0, 10), 0);
+        seg.set(5, 5);
+        assert_eq!(seg.reduce_recurse(0, 10), 5);
+        seg.set(5, 10);
+        assert_eq!(seg.reduce_recurse(0, 10), 10);
+    }
+
+    #[test]
+    fn test_binary_search() {
+        // use crate::monoid::Monoid;
+        let mut seg = super::Segtree::<Mon, _>::new(10, || 0);
+        assert_eq!(seg.reduce(0, 10), 0);
+        seg.set(5, 10);
+        let is_ok = &|sum: &usize| *sum < 10;
+        assert_eq!(seg.max_right(is_ok, 0), 5);
+        assert_eq!(seg.max_right(is_ok, 10), 10);
+        assert_eq!(seg.max_right(is_ok, 5), 5);
+        assert_eq!(seg.max_right(is_ok, 6), 10);
+
+        assert_eq!(seg.min_left(is_ok, 10), 6);
+        assert_eq!(seg.min_left(is_ok, 5), 0);
+        assert_eq!(seg.min_left(is_ok, 6), 6);
+    }
+
+    #[test]
+    fn test_binary_search_recurse() {
+        // use crate::monoid::Monoid;
+        use crate::{binary_function::*, group_theory_id::Additive};
+        struct Mon;
+        impl BinaryOp<Additive> for Mon {
+            type S = usize;
+
+            fn op(x: usize, y: usize) -> usize { x + y }
+        }
+        impl Associative<Additive> for Mon {}
+        impl Identity<Additive> for Mon {
+            fn e() -> usize { 0 }
+        }
+        let mut seg = super::Segtree::<Mon, _>::new(10, || 0);
+        assert_eq!(seg.reduce(0, 10), 0);
+        seg.set(5, 10);
+        let is_ok = &|sum: &usize| *sum < 10;
+        assert_eq!(
+            seg.max_right_recurse(is_ok, 0),
+            5
+        );
+        assert_eq!(
+            seg.max_right_recurse(is_ok, 10),
+            10
+        );
+        assert_eq!(
+            seg.max_right_recurse(is_ok, 5),
+            5
+        );
+        assert_eq!(
+            seg.max_right_recurse(is_ok, 6),
+            10
+        );
+
+        assert_eq!(
+            seg.min_left_recurse(is_ok, 10),
+            6
+        );
+        assert_eq!(
+            seg.min_left_recurse(is_ok, 5),
+            0
+        );
+        assert_eq!(
+            seg.min_left_recurse(is_ok, 6),
+            6
+        );
     }
 }

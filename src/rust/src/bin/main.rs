@@ -1,220 +1,377 @@
-fn main() {
-    // use crate::{monoid_self::Monoid, static_segment_tree::SegmentTree};
+fn main() {}
 
-    // struct Add;
-    // impl Monoid<Add> for i32 {
-    //     fn operate(lhs: Self, rhs: Self) -> Self { lhs + rhs }
+pub mod algebraic_structure {
+    use crate::binary_function::*;
 
-    //     fn identity() -> Self { 0 }
-    // }
+    pub trait Magma<I: Id>: BinaryOp<I> {}
 
-    // struct Xor;
-    // impl Monoid<Xor> for i32 {
-    //     fn operate(lhs: Self, rhs: Self) -> Self { lhs ^ rhs }
-
-    //     fn identity() -> Self { 0 }
-    // }
-
-    // let seg = SegmentTree::<i32>::new::<Xor>(5);
-    // println!("{:?}", seg);
-
-    // let g: u32 = gcd::int::gcd(-33, 111) as u32;
-
-    println!("{}", (-1i32 << 1));
-}
-
-pub mod static_segment_tree {
-    use crate::monoid_self::Monoid;
-
-    #[derive(Debug)]
-    pub struct SegmentTree<S> {
-        size: usize,
-        data: Vec<S>,
+    impl<I, T> Magma<I> for T
+    where
+        T: BinaryOp<I>,
+        I: Id,
+    {
     }
 
-    impl<S> SegmentTree<S> {
-        pub fn new<Id>(size: usize) -> Self
-        where
-            S: Monoid<Id> + Clone,
-        {
-            let data = vec![S::identity(); size];
-            Self { size, data }
-        }
-    }
-}
+    pub trait Semigroup<I: Id>: Magma<I> + Associative<I> {}
 
-pub mod gcd {
-    /// generalized greatest common divisor on commutative ring R.
-    /// gcd(a, b) might not be unique neither exist.
-    /// if R does not have Order property.
-    pub trait GCD {
-        type T;
-        fn gcd(_: Self::T, _: Self::T) -> Self::T;
+    impl<I, T> Semigroup<I> for T
+    where
+        T: Magma<I> + Associative<I>,
+        I: Id,
+    {
     }
 
-    pub mod int {
-        //! greatest common divisor on integer gcd(a, b)
-        //! a, b \in \Z.
-        //! 0 := identity element and empty product here.
-        //! gcd(0, 0) := 0
-        //! \prod_{\emptyset} := 0
+    pub trait Monoid<I: Id>: Semigroup<I> + Identity<I> {}
 
-        pub trait Base: Default + PartialEq + Copy {}
-        impl<T> Base for T where T: Default + PartialEq + Copy {}
-
-        pub fn gcd<T>(mut a: T, mut b: T) -> T
-        where
-            T: Base + std::ops::RemAssign,
-        {
-            let zero = T::default();
-            while b != zero {
-                a %= b;
-                std::mem::swap(&mut a, &mut b);
-            }
-            a
-        }
-
-        pub fn recurse<T>(a: T, b: T) -> T
-        where
-            T: Base + std::ops::Rem<Output = T>,
-        {
-            if b == T::default() { a } else { recurse(b, a % b) }
-        }
-
-        pub fn signed<T>(a: T, b: T) -> T
-        where
-            T: Base
-                + std::ops::RemAssign
-                + PartialOrd
-                + std::ops::Neg<Output = T>,
-        {
-            let mut g = gcd(a, b);
-            if g < T::default() {
-                g = -g;
-            }
-            g
-        }
-
-        pub fn gcd_reduce<T, I>(iter: I) -> T
-        where
-            I: Iterator<Item = T>,
-            T: Base
-                + std::ops::RemAssign
-                + PartialOrd
-                + std::ops::Neg<Output = T>,
-        {
-            iter.fold(T::default(), |a, b| {
-                signed(a, b)
-            })
-        }
-
-        #[cfg(test)]
-        mod tests {
-            use super::*;
-
-            const CASES: &[(&[i32], i32)] = &[
-                (&[], 0),
-                (&[0], 0),
-                (&[10], 10),
-                (&[0, 2, 8, 4], 2),
-                (&[33, -111], 3),
-                (&[-33, 111], 3),
-                (&[-33, -111], 3),
-            ];
-
-            fn test_2<F>(gcd: &F, a: i32, b: i32, expected: i32)
-            where
-                F: Fn(i32, i32) -> i32,
-            {
-                let mut g = gcd(a, b);
-                if g < 0 {
-                    g = -g;
-                }
-                assert_eq!(g, expected);
-            }
-
-            #[test]
-            fn test_gcd() {
-                for &(v, ans) in CASES {
-                    if v.len() != 2 {
-                        continue;
-                    }
-                    test_2(&gcd, v[0], v[1], ans);
-                }
-            }
-
-            #[test]
-            fn test_recurse() {
-                for &(v, ans) in CASES {
-                    if v.len() != 2 {
-                        continue;
-                    }
-                    test_2(&recurse, v[0], v[1], ans);
-                }
-            }
-
-            #[test]
-            fn test_reduce() {
-                for &(values, ans) in CASES {
-                    assert_eq!(
-                        gcd_reduce(values.iter().cloned()),
-                        ans
-                    );
-                }
-            }
-        }
-    }
-}
-
-pub mod static_monoid {
-    /// this has not operation id as generics.
-    /// it should be controlled by the implementor.
-    /// Example
-    /// ```
-    /// struct Int64Monoid<Id>;
-    /// struct Add;
-    /// impl Monoid for Int64Monoid<Add> {
-    ///     type S = i64;
-    ///
-    ///     fn operate(lhs: Self::S, rhs: Self::S) -> Self::S { lhs + rhs }
-    ///
-    ///     fn identity() -> Self::S { 0 }
-    /// }
-    /// assert_eq!(Int64Monoid::identity(), 0);
-    /// ```
-    pub trait Monoid: Semigroup {
-        fn identity() -> Self::S;
+    impl<I, T> Monoid<I> for T
+    where
+        T: Semigroup<I> + Identity<I>,
+        I: Id,
+    {
     }
 
-    pub trait Magma {
+    // TODO:
+    pub trait Quasigroup<I: Id>: Magma<I> {}
+    // TODO:
+    pub trait Loop<I: Id>: Quasigroup<I> + Identity<I> {}
+
+    pub trait Group<I: Id>: Monoid<I> + Inverse<I> {}
+
+    impl<I, T> Group<I> for T
+    where
+        T: Monoid<I> + Inverse<I>,
+        I: Id,
+    {
+    }
+
+    pub trait AbelianGroup<I: Id>: Group<I> + Commutative<I> {}
+
+    impl<I, T> AbelianGroup<I> for T
+    where
+        T: Group<I> + Commutative<I>,
+        I: Id,
+    {
+    }
+
+    pub trait Semiring<A, M>
+    where
+        A: Id,
+        M: Id,
+    {
         type S;
-        fn operate(_: Self::S, _: Self::S) -> Self::S;
+        fn add(l: Self::S, r: Self::S) -> Self::S;
+        fn mul(l: Self::S, r: Self::S) -> Self::S;
+        fn zero() -> Self::S;
+        fn one() -> Self::S;
     }
 
-    pub trait Semigroup: Magma {}
+    impl<S, A, M, T> Semiring<A, M> for T
+    where
+        T: Monoid<A, S = S>
+            + Commutative<A>
+            + Monoid<M, S = S>
+            + Distributive<A, M>
+            + Zero<A, M>,
+        A: Id,
+        M: Id,
+    {
+        type S = S;
+
+        fn add(l: Self::S, r: Self::S) -> Self::S {
+            <T as BinaryOp<A>>::op(l, r)
+        }
+
+        fn mul(l: Self::S, r: Self::S) -> Self::S {
+            <T as BinaryOp<M>>::op(l, r)
+        }
+
+        fn zero() -> Self::S { <T as Identity<A>>::e() }
+
+        fn one() -> Self::S { <T as Identity<M>>::e() }
+    }
+
+    pub trait Ring<A, M>: Semiring<A, M>
+    where
+        A: Id,
+        M: Id,
+    {
+        fn add_inv(element: Self::S) -> Self::S;
+    }
+
+    impl<S, A, M, T> Ring<A, M> for T
+    where
+        T: Semiring<A, M, S = S> + Inverse<A, S = S>,
+        A: Id,
+        M: Id,
+    {
+        fn add_inv(element: Self::S) -> Self::S {
+            <T as Inverse<A>>::inv(element)
+        }
+    }
 }
 
-pub mod dynamic_monoid {
+pub mod binary_function {
+    pub trait Id {}
+    impl<T> Id for T {}
 
-    pub trait Monoid {
+    /// binary function
+    pub trait BinaryFunc<I: Id> {
+        type L;
+        type R;
+        type Cod;
+        fn f(_: Self::L, _: Self::R) -> Self::Cod;
+    }
+
+    /// external binary operation
+    pub trait ExtBinaryOp<I: Id>: BinaryFunc<I> {}
+    impl<I: Id, T: BinaryFunc<I>> ExtBinaryOp<I> for T {}
+
+    /// binary operation on a set.
+    pub trait BinaryOp<I: Id> {
         type S;
-        fn operate(&self, lhs: Self::S, rhs: Self::S) -> Self::S;
-        fn identity(&self) -> Self::S;
+        fn op(_: Self::S, _: Self::S) -> Self::S;
     }
-}
 
-pub mod monoid_self {
-    //! unlike monoid `(S, *, e)`,
-    //! monoid element `S as a (*, e)` is only static.
-    //! because operation and identity must be common for all instances.
+    fn is_left_identity<S, F>(f: &F, e: S, x: S) -> bool
+    where
+        F: Fn(S, S) -> S,
+        S: Clone + PartialEq,
+    {
+        f(e, x.clone()) == x
+    }
 
-    /// operation-id is necessary.
-    /// for example,
-    /// if you implement monoid element trait for `i32`,
-    /// the operation can be add, mul, xor, etc,
-    /// and not unique.
-    pub trait Monoid<Id> {
-        fn operate(_: Self, _: Self) -> Self;
-        fn identity() -> Self;
+    fn is_right_identity<S, F>(f: &F, e: S, x: S) -> bool
+    where
+        F: Fn(S, S) -> S,
+        S: Clone + PartialEq,
+    {
+        f(x.clone(), e) == x
+    }
+
+    fn is_identity<S, F>(f: &F, e: S, x: S) -> bool
+    where
+        F: Fn(S, S) -> S,
+        S: Clone + PartialEq,
+    {
+        is_left_identity(f, e.clone(), x.clone()) && is_right_identity(f, e, x)
+    }
+
+    /// identity element
+    pub trait Identity<I: Id>: BinaryOp<I> {
+        fn e() -> Self::S;
+
+        fn assert(x: Self::S)
+        where
+            Self::S: Clone + PartialEq,
+        {
+            assert!(is_identity(
+                &Self::op,
+                Self::e(),
+                x
+            ));
+        }
+    }
+
+    pub fn is_invertible<F, G, X>(op: &F, inv: &G, e: X, x: X) -> bool
+    where
+        F: Fn(X, X) -> X,
+        G: Fn(X) -> X,
+        X: Clone + PartialEq,
+    {
+        op(x.clone(), inv(x.clone())) == e.clone()
+            && op(inv(x.clone()), x.clone()) == e
+    }
+
+    /// inverse element
+    pub trait Inverse<I: Id>: Identity<I> {
+        fn inv(_: Self::S) -> Self::S;
+
+        fn assert(x: Self::S)
+        where
+            Self::S: Clone + PartialEq,
+        {
+            assert!(is_invertible(
+                &Self::op,
+                &Self::inv,
+                Self::e(),
+                x
+            ));
+        }
+    }
+
+    pub fn is_commutative<F, X, Y>(f: &F, a: X, b: X) -> bool
+    where
+        F: Fn(X, X) -> Y,
+        X: Clone,
+        Y: PartialEq,
+    {
+        f(a.clone(), b.clone()) == f(b, a)
+    }
+
+    /// commutative property
+    pub trait Commutative<I: Id>: BinaryOp<I> {
+        fn assert(x: Self::S, y: Self::S)
+        where
+            Self::S: Clone + PartialEq,
+        {
+            assert!(is_commutative(&Self::op, x, y));
+        }
+    }
+
+    pub fn is_associative<F, X>(f: &F, a: X, b: X, c: X) -> bool
+    where
+        F: Fn(X, X) -> X,
+        X: Clone + PartialEq,
+    {
+        f(
+            f(a.clone(), b.clone()),
+            c.clone(),
+        ) == f(a, f(b, c))
+    }
+    /// associative property
+    pub trait Associative<I: Id>: BinaryOp<I> {
+        fn assert(x: Self::S, y: Self::S, z: Self::S)
+        where
+            Self::S: Clone + PartialEq,
+        {
+            assert!(is_associative(
+                &Self::op,
+                x,
+                y,
+                z
+            ));
+        }
+    }
+
+    pub fn is_idempotent<F, X>(f: &F, x: X) -> bool
+    where
+        F: Fn(X, X) -> X,
+        X: Clone + PartialEq,
+    {
+        f(x.clone(), x.clone()) == x
+    }
+
+    pub trait Idempotence<I: Id>: BinaryOp<I> {
+        fn assert(x: Self::S)
+        where
+            Self::S: Clone + PartialEq,
+        {
+            assert!(is_idempotent(&Self::op, x));
+        }
+    }
+
+    pub fn is_left_absorbing<F, X>(f: &F, z: X, x: X) -> bool
+    where
+        F: Fn(X, X) -> X,
+        X: Clone + PartialEq,
+    {
+        f(z.clone(), x) == z
+    }
+
+    pub fn is_right_absorbing<F, X>(f: &F, z: X, x: X) -> bool
+    where
+        F: Fn(X, X) -> X,
+        X: Clone + PartialEq,
+    {
+        f(x, z.clone()) == z
+    }
+
+    pub fn is_absorbing<F, X>(f: &F, z: X, x: X) -> bool
+    where
+        F: Fn(X, X) -> X,
+        X: Clone + PartialEq,
+    {
+        is_left_absorbing(f, z.clone(), x.clone())
+            && is_right_absorbing(f, z, x)
+    }
+
+    /// absorbing element
+    pub trait Absorbing<I: Id>: BinaryOp<I> {
+        type X;
+        fn z() -> Self::X;
+    }
+
+    pub fn is_left_distributive<Add, Mul, X>(
+        add: &Add,
+        mul: &Mul,
+        x: X,
+        y: X,
+        z: X,
+    ) -> bool
+    where
+        Add: Fn(X, X) -> X,
+        Mul: Fn(X, X) -> X,
+        X: Clone + PartialEq,
+    {
+        mul(
+            x.clone(),
+            add(y.clone(), z.clone()),
+        ) == add(mul(x.clone(), y), mul(x, z))
+    }
+
+    pub fn is_right_distributive<Add, Mul, X>(
+        add: &Add,
+        mul: &Mul,
+        y: X,
+        z: X,
+        x: X,
+    ) -> bool
+    where
+        Add: Fn(X, X) -> X,
+        Mul: Fn(X, X) -> X,
+        X: Clone + PartialEq,
+    {
+        mul(
+            add(y.clone(), z.clone()),
+            x.clone(),
+        ) == add(mul(y, x.clone()), mul(z, x))
+    }
+
+    pub fn is_distributive<Add, Mul, X>(
+        add: &Add,
+        mul: &Mul,
+        x: X,
+        y: X,
+        z: X,
+    ) -> bool
+    where
+        Add: Fn(X, X) -> X,
+        Mul: Fn(X, X) -> X,
+        X: Clone + PartialEq,
+    {
+        is_left_distributive(
+            add,
+            mul,
+            x.clone(),
+            y.clone(),
+            z.clone(),
+        ) && is_right_distributive(add, mul, y, z, x)
+    }
+
+    // TODO:
+    /// distributive property
+    pub trait Distributive<A, M>
+    where
+        A: Id,
+        M: Id,
+    {
+    }
+
+    pub fn iz_zero<F, X>(mul: &F, z: X, x: X) -> bool
+    where
+        F: Fn(X, X) -> X,
+        X: Clone + PartialEq,
+    {
+        is_absorbing(mul, z, x)
+    }
+
+    // TODO:
+    /// zero element
+    /// additive identity and multiplicative absorbing.
+    pub trait Zero<A, M>
+    where
+        A: Id,
+        M: Id,
+    {
     }
 }

@@ -1,4 +1,92 @@
-pub struct PotentialUnionFind<
+//! Disjoint-Set-Union (DSU) or Union-Find (UF).
+
+pub trait Root {
+    fn root(&mut self, u: usize) -> usize;
+}
+
+pub trait Unite {
+    fn unite(&mut self, u: usize, v: usize);
+}
+
+pub trait Size {
+    fn size_of(&mut self, u: usize) -> usize;
+}
+
+#[derive(Debug)]
+pub struct UF {
+    a: Vec<isize>, // neg-size or parent
+}
+
+impl UF {
+    fn size(&self) -> usize { self.a.len() }
+
+    pub fn new(size: usize) -> Self { Self { a: vec![-1; size] } }
+}
+
+impl Root for UF {
+    fn root(&mut self, u: usize) -> usize {
+        if self.a[u] < 0 {
+            return u;
+        }
+        self.a[u] = self.root(self.a[u] as usize) as isize;
+        self.a[u] as usize
+    }
+}
+
+impl Unite for UF {
+    fn unite(&mut self, u: usize, v: usize) {
+        let mut u = self.root(u);
+        let mut v = self.root(v);
+        if u == v {
+            return;
+        }
+        if self.a[u] > self.a[v] {
+            std::mem::swap(&mut u, &mut v);
+        }
+        self.a[u] += self.a[v];
+        self.a[v] = u as isize;
+    }
+}
+
+impl Size for UF {
+    /// size of the component containing u
+    fn size_of(&mut self, u: usize) -> usize {
+        let u = self.root(u);
+        -self.a[u] as usize
+    }
+}
+
+/// extensions
+impl UF {
+    /// same label -> same component.
+    pub fn labels(&mut self) -> Vec<usize> {
+        let n = Self::size(self);
+        let mut label = vec![n; n];
+        let mut l = 0;
+        for i in 0..n {
+            let r = self.root(i);
+            if label[r] == n {
+                label[r] = l;
+                l += 1;
+            }
+            label[i] = label[r];
+        }
+        label
+    }
+
+    pub fn same(&mut self, u: usize, v: usize) -> bool {
+        self.root(u) == self.root(v)
+    }
+}
+
+// TODO:
+pub struct RollbackUF {}
+
+// TODO:
+pub struct PersitentUF {}
+
+// TODO: refactor group theory
+pub struct PotentialUF<
     S: crate::group_theory::AbelianGroup<I> + Copy,
     I: crate::group_theory::BinaryOperationIdentifier,
 > {
@@ -7,7 +95,7 @@ pub struct PotentialUnionFind<
     potential_from_parent: Vec<S>,
 }
 
-impl<S, I> PotentialUnionFind<S, I>
+impl<S, I> PotentialUF<S, I>
 where
     S: crate::group_theory::AbelianGroup<I> + Copy,
     I: crate::group_theory::BinaryOperationIdentifier,
@@ -109,10 +197,19 @@ where
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
-    fn test_potential_union_find() {
+    fn test_uf() {
+        let mut uf = UF::new(10);
+        assert_eq!(uf.size_of(0), 1);
+        uf.unite(3, 9);
+        assert_eq!(uf.size_of(3), 2);
+    }
+
+    #[test]
+    fn test_potential_uf() {
         use crate::group_theory::Additive;
-        let mut uf = super::PotentialUnionFind::<i32, Additive>::new(10);
+        let mut uf = super::PotentialUF::<i32, Additive>::new(10);
         assert_eq!(uf.size_of(0), 1);
         // uf.unite(3, 9, &5);
         uf.unite(3, 9, 5);
