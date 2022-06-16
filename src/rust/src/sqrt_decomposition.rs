@@ -1,11 +1,11 @@
-use crate::{floor_sqrt::floor_sqrt, monoid::Monoid, semigroup::Semigroup};
+use crate::{algebraic_structure::*, floor_sqrt::floor_sqrt};
 
-pub struct SqrtDecomposition<G: Semigroup<Id>, Id> {
+pub struct SqrtDecomposition<G: Semigroup> {
     pub(crate) data: Vec<G::S>,
     pub(crate) buckets: Vec<G::S>,
 }
 
-impl<G: Semigroup<Id>, Id> SqrtDecomposition<G, Id> {
+impl<G: Semigroup> SqrtDecomposition<G> {
     pub fn size(&self) -> usize { self.data.len() }
 
     pub(crate) fn sqrt(&self) -> usize {
@@ -14,9 +14,9 @@ impl<G: Semigroup<Id>, Id> SqrtDecomposition<G, Id> {
     }
 }
 
-impl<G, Id> std::iter::FromIterator<G::S> for SqrtDecomposition<G, Id>
+impl<G> std::iter::FromIterator<G::S> for SqrtDecomposition<G>
 where
-    G: Semigroup<Id>,
+    G: Semigroup,
     G::S: Clone,
 {
     fn from_iter<T: IntoIterator<Item = G::S>>(iter: T) -> Self {
@@ -28,7 +28,7 @@ where
                 // data[j * n..std::cmp::min((j + 1) * n, size)]
                 //     .iter()
                 //     .cloned()
-                //     .reduce(|l, r| G::operate(l, r))
+                //     .reduce(|l, r| G::op(l, r))
                 //     .unwrap()
                 // CHANGE LATER: reduce is not supported on atcoder yet.
 
@@ -37,7 +37,7 @@ where
                     .cloned();
                 let mut v = iter.next().unwrap();
                 for x in iter {
-                    v = G::operate(v, x);
+                    v = G::op(v, x);
                 }
                 v
             })
@@ -46,9 +46,9 @@ where
     }
 }
 
-impl<G, Id> SqrtDecomposition<G, Id>
+impl<G> SqrtDecomposition<G>
 where
-    G: Semigroup<Id>,
+    G: Semigroup,
     G::S: Clone,
 {
     pub(crate) fn update(&mut self, bucket: usize) {
@@ -58,7 +58,7 @@ where
         //     [j * n..std::cmp::min((j + 1) * n, self.size())]
         //     .iter()
         //     .cloned()
-        //     .reduce(|l, r| G::operate(l, r))
+        //     .reduce(|l, r| G::op(l, r))
         //     .unwrap();
         // CHANGE LATER: reduce is not supported on atcoder yet.
         let mut iter = self.data
@@ -67,7 +67,7 @@ where
             .cloned();
         let mut v = iter.next().unwrap();
         for x in iter {
-            v = G::operate(v, x);
+            v = G::op(v, x);
         }
         self.buckets[j] = v;
     }
@@ -109,9 +109,9 @@ where
         //                     None
         //                 }
         //             })
-        //             .reduce(|l, r| G::operate(l, r))
+        //             .reduce(|l, r| G::op(l, r))
         //     })
-        //     .reduce(|l, r| G::operate(l, r))
+        //     .reduce(|l, r| G::op(l, r))
         // CHANGE LATER: reduce is not supported on atcoder yet.
 
         let mut iter = (0..self.buckets.len()).filter_map(|j| {
@@ -128,14 +128,68 @@ where
             });
             let mut v = iter.next().unwrap();
             for x in iter {
-                v = G::operate(v, x);
+                v = G::op(v, x);
             }
             Some(v)
         });
         let mut v = iter.next().unwrap();
         for x in iter {
-            v = G::operate(v, x);
+            v = G::op(v, x);
         }
         v
     }
+}
+
+/// fast reduce
+impl<G> SqrtDecomposition<G>
+where
+    G: Semigroup,
+    G::S: Clone,
+{
+    /// faster with constant time optimization.
+    /// more strictly, 2-times faster for random range queries mathematically.
+    pub fn fast_reduce(&self, mut l: usize, r: usize) -> G::S {
+        assert!(l < r && r <= self.size());
+        let n = self.sqrt();
+        let mut v = self.data[l].clone();
+        l += 1;
+        let lj = (l + n - 1) / n;
+        let rj = r / n;
+        if rj < lj {
+            for i in l..r {
+                v = G::op(v, self.data[i].clone());
+            }
+            return v;
+        }
+        for i in l..lj * n {
+            v = G::op(v, self.data[i].clone());
+        }
+        for j in lj..rj {
+            v = G::op(v, self.buckets[j].clone());
+        }
+        for i in rj * n..r {
+            v = G::op(v, self.data[i].clone());
+        }
+        v
+    }
+}
+
+use crate::{algebraic_structure_impl::*, range_get_query::RangeGetQuery};
+
+impl<S, I> RangeGetQuery<I> for SqrtDecomposition<GroupApprox<S, I>>
+where
+    GroupApprox<S, I>: Semigroup<S = S>,
+    S: Clone,
+{
+    type T = S;
+
+    fn get_range(&mut self, l: usize, r: usize) -> Self::T {
+        self.fast_reduce(l, r)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn test() {}
 }

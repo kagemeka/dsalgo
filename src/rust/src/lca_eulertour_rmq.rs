@@ -25,7 +25,7 @@ impl<Q> LCAEulerTourRMQ<Q> {
 
     pub fn get(&mut self, u: usize, v: usize) -> usize
     where
-        Q: RangeMinimumQuery<(usize, usize)>,
+        Q: RangeMinimumQuery<T = (usize, usize)>,
     {
         let mut left = self.first_pos[u];
         let mut right = self.first_pos[v];
@@ -35,3 +35,29 @@ impl<Q> LCAEulerTourRMQ<Q> {
         self.rmq.range_minimum(left, right + 1).1
     }
 }
+
+use crate::{
+    algebraic_structure_impl::*,
+    group_theory_id::Min,
+    segment_tree::Segtree,
+};
+
+type CommonG = GroupApprox<(usize, usize), Min>;
+
+#[allow(dead_code)]
+type LCAETRMQSeg = LCAEulerTourRMQ<Segtree<CommonG>>;
+
+use crate::sparse_table::SparseTable;
+
+#[allow(dead_code)]
+type LCAETRMQSpT = LCAEulerTourRMQ<SparseTable<CommonG>>;
+
+use crate::sqrt_decomposition::SqrtDecomposition;
+
+#[allow(dead_code)]
+type LCAETRMQSqD = LCAEulerTourRMQ<SqrtDecomposition<CommonG>>;
+
+use crate::disjoint_sparse_table::DisjointSparseTable;
+
+#[allow(dead_code)]
+type LCAETRMQDSpT = LCAEulerTourRMQ<DisjointSparseTable<CommonG>>;

@@ -3,14 +3,14 @@ use std::iter::FromIterator;
 use crate::algebraic_structure::*;
 
 /// Segment Tree
-pub struct Segtree<M: Monoid<Id>, Id> {
+pub struct Segtree<M: Monoid> {
     pub(crate) size: usize,
     pub(crate) data: Vec<M::S>,
 }
 
-impl<M, Id> std::iter::FromIterator<M::S> for Segtree<M, Id>
+impl<M> std::iter::FromIterator<M::S> for Segtree<M>
 where
-    M: Monoid<Id>,
+    M: Monoid,
     M::S: Clone,
 {
     fn from_iter<T: IntoIterator<Item = M::S>>(iter: T) -> Self {
@@ -28,15 +28,15 @@ where
     }
 }
 
-impl<M: Monoid<Id>, Id> Segtree<M, Id> {
+impl<M: Monoid> Segtree<M> {
     pub fn size(&self) -> usize { self.size }
 
     pub(crate) fn n(&self) -> usize { self.data.len() >> 1 }
 }
 
-impl<M, Id> Segtree<M, Id>
+impl<M> Segtree<M>
 where
-    M: Monoid<Id>,
+    M: Monoid,
     M::S: Clone,
 {
     pub fn new<F>(size: usize, default: F) -> Self
@@ -94,9 +94,9 @@ where
     }
 }
 
-impl<M, Id> Segtree<M, Id>
+impl<M> Segtree<M>
 where
-    M: Monoid<Id>,
+    M: Monoid,
     M::S: Clone,
 {
     pub fn reduce_recurse(&self, l: usize, r: usize) -> M::S {
@@ -127,9 +127,9 @@ where
 }
 
 /// indexing
-impl<M, Id> std::ops::Index<usize> for Segtree<M, Id>
+impl<M> std::ops::Index<usize> for Segtree<M>
 where
-    M: Monoid<Id>,
+    M: Monoid,
 {
     type Output = M::S;
 
@@ -139,17 +139,17 @@ where
     }
 }
 
-impl<M, Id> From<&[M::S]> for Segtree<M, Id>
+impl<M> From<&[M::S]> for Segtree<M>
 where
-    M: Monoid<Id>,
+    M: Monoid,
     M::S: Clone,
 {
     fn from(slice: &[M::S]) -> Self { Self::from_iter(slice.iter().cloned()) }
 }
 
-impl<M, Id> Segtree<M, Id>
+impl<M> Segtree<M>
 where
-    M: Monoid<Id>,
+    M: Monoid,
     M::S: Clone,
 {
     pub fn max_right<F>(&self, is_ok: &F, l: usize) -> usize
@@ -233,9 +233,9 @@ where
     }
 }
 
-impl<M, Id> Segtree<M, Id>
+impl<M> Segtree<M>
 where
-    M: Monoid<Id>,
+    M: Monoid,
     M::S: Clone,
 {
     pub fn max_right_recurse<F>(&self, is_ok: &F, l: usize) -> usize
@@ -351,33 +351,27 @@ where
     }
 }
 
-use crate::range_get_query::RangeGetQuery;
+use crate::{algebraic_structure_impl::*, range_get_query::RangeGetQuery};
 
-impl<M, Id> RangeGetQuery<M::S, Id> for Segtree<M, Id>
+impl<S, I> RangeGetQuery<I> for Segtree<GroupApprox<S, I>>
 where
-    M: Monoid<Id>,
-    M::S: Clone,
+    GroupApprox<S, I>: Monoid<S = S>,
+    S: Clone,
 {
-    fn get_range(&mut self, l: usize, r: usize) -> M::S { self.reduce(l, r) }
+    type T = S;
+
+    fn get_range(&mut self, l: usize, r: usize) -> Self::T { self.reduce(l, r) }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::{binary_function::*, group_theory_id::Additive};
-    struct Mon;
-    impl BinaryOp<Additive> for Mon {
-        type S = usize;
-
-        fn op(x: usize, y: usize) -> usize { x + y }
-    }
-    impl Associative<Additive> for Mon {}
-    impl Identity<Additive> for Mon {
-        fn e() -> usize { 0 }
-    }
+    use super::*;
+    use crate::group_theory_id::Additive;
+    type Seg = Segtree<GroupApprox<usize, Additive>>;
 
     #[test]
     fn test_basic() {
-        let mut seg = super::Segtree::<Mon, _>::new(10, || 0);
+        let mut seg = Seg::new(10, || 0);
         assert_eq!(seg.reduce(0, 10), 0);
         seg.set(5, 5);
         assert_eq!(seg.reduce(0, 10), 5);
@@ -387,14 +381,14 @@ mod tests {
 
     #[test]
     fn test_indexing() {
-        let mut seg = super::Segtree::<Mon, _>::new(10, || 0);
+        let mut seg = Seg::new(10, || 0);
         seg.set(5, 10);
         assert_eq!(seg[5], 10);
     }
 
     #[test]
     fn test_reduce_recurse() {
-        let mut seg = super::Segtree::<Mon, _>::new(10, || 0);
+        let mut seg = Seg::new(10, || 0);
         assert_eq!(seg.reduce_recurse(0, 10), 0);
         seg.set(5, 5);
         assert_eq!(seg.reduce_recurse(0, 10), 5);
@@ -405,7 +399,7 @@ mod tests {
     #[test]
     fn test_binary_search() {
         // use crate::monoid::Monoid;
-        let mut seg = super::Segtree::<Mon, _>::new(10, || 0);
+        let mut seg = Seg::new(10, || 0);
         assert_eq!(seg.reduce(0, 10), 0);
         seg.set(5, 10);
         let is_ok = &|sum: &usize| *sum < 10;
@@ -421,19 +415,7 @@ mod tests {
 
     #[test]
     fn test_binary_search_recurse() {
-        // use crate::monoid::Monoid;
-        use crate::{binary_function::*, group_theory_id::Additive};
-        struct Mon;
-        impl BinaryOp<Additive> for Mon {
-            type S = usize;
-
-            fn op(x: usize, y: usize) -> usize { x + y }
-        }
-        impl Associative<Additive> for Mon {}
-        impl Identity<Additive> for Mon {
-            fn e() -> usize { 0 }
-        }
-        let mut seg = super::Segtree::<Mon, _>::new(10, || 0);
+        let mut seg = Seg::new(10, || 0);
         assert_eq!(seg.reduce(0, 10), 0);
         seg.set(5, 10);
         let is_ok = &|sum: &usize| *sum < 10;
