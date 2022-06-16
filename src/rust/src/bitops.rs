@@ -179,8 +179,6 @@ pub fn shr_until_odd(n: u64) -> u64 {
     n >> n.trailing_zeros()
 }
 
-pub trait MSB {}
-
 /// most significant bit
 /// O(1)
 pub fn msb(n: u64) -> usize {
@@ -218,8 +216,6 @@ pub fn msb_number_binary_search(mut n: u64) -> u64 {
     n
 }
 
-pub trait LSB {}
-
 /// least significant bit
 pub fn lsb(n: u64) -> usize {
     assert!(n > 0);
@@ -237,6 +233,12 @@ pub fn lsb_number(n: u64) -> u64 {
 
 /// can be called safely only in release mode.
 pub fn rotate_left(x: u64, k: u8) -> u64 { (x << k) | (x >> (64 - k)) }
+
+pub fn reset(n: u64, i: usize) -> u64 { n & !(1 << i) }
+
+pub fn reset_least_bit(n: u64) -> u64 { if n == 0 { 0 } else { n & (n - 1) } }
+
+pub fn flip(n: u64, i: usize) -> u64 { n ^ (1 << i) }
 
 #[cfg(test)]
 mod tests {
@@ -264,5 +266,12 @@ mod tests {
         assert_eq!(lsb_number(1), 1);
         assert_eq!(lsb_number(2), 2);
         assert_eq!(lsb_number(3), 1);
+    }
+
+    #[test]
+    fn test_reset_least_bit() {
+        assert_eq!(reset_least_bit(0), 0);
+        assert_eq!(reset_least_bit(16), 0);
+        assert_eq!(reset_least_bit(3), 2);
     }
 }

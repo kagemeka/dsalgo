@@ -25,6 +25,7 @@ pub fn len<T: PartialEq>(a: &[T], b: &[T]) -> usize {
     dp(a, b)[a.len()][b.len()]
 }
 
+/// compute lcs length with O(N) space.
 pub fn len_low_mem<T: PartialEq>(a: &[T], b: &[T]) -> usize {
     let m = b.len();
     let mut l = vec![0; m + 1];
