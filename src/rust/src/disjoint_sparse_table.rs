@@ -1,5 +1,5 @@
 use crate::{
-    bit_length::bit_length,
+    bitops::len::with_clz as bit_length,
     commutative_property::CommutativeProperty,
     semigroup::Semigroup,
 };

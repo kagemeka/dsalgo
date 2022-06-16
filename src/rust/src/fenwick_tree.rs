@@ -1,7 +1,6 @@
 use crate::{
+    bitops::{lsb_number, msb},
     group_theory::{AbelianGroup, Additive, CommutativeMonoid},
-    least_significant_bit_number::lsb_number,
-    most_significant_bit::msb,
     reset_least_bit::reset_least_bit,
 };
 

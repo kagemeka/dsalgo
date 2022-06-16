@@ -1,6 +1,6 @@
 package dsalgo
 
-func LongestCommonPrefixArrayKasai(a, sa []int) (lcp []int) {
+func LCPKasai(a, sa []int) (lcp []int) {
 	n := len(a)
 	// n > 0 && len(sa) == n
 	rank := make([]int, n)

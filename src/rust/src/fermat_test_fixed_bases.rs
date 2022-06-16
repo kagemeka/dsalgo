@@ -1,5 +1,5 @@
 use crate::{
-    greatest_common_divisor::gcd,
+    gcd::int::euclidean as gcd,
     is_composite_fermat::is_composite_fermat,
 };
 

@@ -1,5 +1,5 @@
 use crate::{
-    bit_length::bit_length,
+    bitops::len::with_clz as bit_length,
     tree_depths::tree_depths,
     tree_parents::tree_parents,
 };

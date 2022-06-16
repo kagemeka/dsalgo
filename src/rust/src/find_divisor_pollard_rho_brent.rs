@@ -1,7 +1,7 @@
 use crate::{
     abs_diff::abs_diff,
-    bit_length::bit_length,
-    greatest_common_divisor::gcd,
+    bitops::len::with_clz as bit_length,
+    gcd::int::euclidean as gcd,
     montgomery_modular_multiplication_64::MontgomeryMultiplication64,
 };
 

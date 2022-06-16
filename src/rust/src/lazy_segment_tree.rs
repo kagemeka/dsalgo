@@ -1,8 +1,10 @@
 use crate::{
-    bit_length::bit_length,
-    bit_shr_until_odd::bit_shr_until_odd,
+    bitops::{
+        len::with_clz as bit_length,
+        lsb_number,
+        shr_until_odd as bit_shr_until_odd,
+    },
     group_theory::{BinaryOperationIdentifier, Monoid},
-    least_significant_bit_number::lsb_number,
     set_theory,
 };
 
@@ -207,7 +209,7 @@ where
         let mut node_index = n + left;
         self.propagate_above(node_index);
         loop {
-            node_index = bit_shr_until_odd(node_index as u64).unwrap() as usize;
+            node_index = bit_shr_until_odd(node_index as u64) as usize;
             // if !is_ok(&S::operate(&value, &self.data[node_index])) {
             //     break;
             // }
@@ -254,7 +256,7 @@ where
         self.propagate_above(node_index);
         loop {
             assert!(node_index >= 1);
-            node_index = bit_shr_until_odd(node_index as u64).unwrap() as usize;
+            node_index = bit_shr_until_odd(node_index as u64) as usize;
             assert!(node_index >= 1);
             // if !is_ok(&S::operate(&self.data[node_index - 1], &value)) {
             //     break;
