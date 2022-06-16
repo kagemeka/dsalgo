@@ -6,7 +6,7 @@
 pub(crate) fn dp<T: PartialEq>(a: &[T], b: &[T]) -> Vec<Vec<usize>> {
     let n = a.len();
     let m = b.len();
-    let mut l = vec![vec![0; m + 1]; n + 1]; // length
+    let mut l = vec![vec![0; m + 1]; n + 1]; // l
     for i in 0..n {
         for j in 0..m {
             if a[i] == b[j] {
@@ -20,26 +20,26 @@ pub(crate) fn dp<T: PartialEq>(a: &[T], b: &[T]) -> Vec<Vec<usize>> {
     l
 }
 
+/// lcs length.
 pub fn len<T: PartialEq>(a: &[T], b: &[T]) -> usize {
     dp(a, b)[a.len()][b.len()]
 }
 
-#[allow(dead_code)]
-pub(crate) fn len_low_mem<T: PartialEq>(a: &[T], b: &[T]) -> usize {
+pub fn len_low_mem<T: PartialEq>(a: &[T], b: &[T]) -> usize {
     let m = b.len();
-    let mut length = vec![0; m + 1];
+    let mut l = vec![0; m + 1];
     for x in a {
         for j in (0..m).rev() {
             if x == &b[j] {
-                debug_assert!(length[j + 1] <= length[j] + 1);
-                length[j + 1] = length[j] + 1;
+                debug_assert!(l[j + 1] <= l[j] + 1);
+                l[j + 1] = l[j] + 1;
             }
         }
         for j in 0..m {
-            length[j + 1] = std::cmp::max(length[j], length[j + 1]);
+            l[j + 1] = std::cmp::max(l[j], l[j + 1]);
         }
     }
-    length[m]
+    l[m]
 }
 
 /// restore one of the transtion histories.
