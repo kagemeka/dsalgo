@@ -19,7 +19,7 @@ where
         assert_eq!(ans[i as usize], res);
     }
 
-    for i in 0..12 {
+    for i in 0..11 {
         let ans = PRIME_PI_POWER_OF_10[i as usize] as u64;
         let res = pi(10u64.pow(i as u32));
         assert_eq!(ans, res);
