@@ -39,7 +39,7 @@ impl<Q> LCAEulerTourRMQ<Q> {
 use crate::{
     algebraic_structure_impl::*,
     group_theory_id::Min,
-    segment_tree::Segtree,
+    segtree::Segtree,
 };
 
 type CommonG = GroupApprox<(usize, usize), Min>;
