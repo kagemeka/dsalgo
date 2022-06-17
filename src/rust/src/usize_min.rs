@@ -2,7 +2,7 @@ use crate::{
     associative_property::AssociativeProperty,
     binary_operation::BinaryOperation,
     commutative_property::CommutativeProperty,
-    group_theory_id::Min,
+    grouop_theory_id::Min,
     idempotence::Idempotence,
     identity_element::IdentityElement,
 };

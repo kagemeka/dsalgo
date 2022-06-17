@@ -1,4 +1,4 @@
-use crate::{binary_function::*, group_theory_id::*};
+use crate::{binary_function::*, grouop_theory_id::*};
 
 /// ((usize, usize), min)
 pub struct GroupApprox<S, I>(std::marker::PhantomData<(S, I)>);

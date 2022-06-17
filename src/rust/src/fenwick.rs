@@ -270,7 +270,7 @@ mod tests {
     fn test_fw() {
         use crate::{
             algebraic_structure_impl::GroupApprox,
-            group_theory_id::Additive,
+            grouop_theory_id::Additive,
         };
 
         let arr = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -316,7 +316,7 @@ mod tests {
     fn test_dual() {
         use crate::{
             algebraic_structure_impl::GroupApprox,
-            group_theory_id::Additive,
+            grouop_theory_id::Additive,
         };
         let mut a = (0..10).collect::<Vec<_>>();
         for i in 0..9 {

@@ -3,7 +3,7 @@ use crate::{
     binary_operation::BinaryOperation,
     commutative_property::CommutativeProperty,
     gcd::int::euclidean as gcd,
-    group_theory_id::GCD,
+    grouop_theory_id::GCD,
     idempotence::Idempotence,
     identity_element::IdentityElement,
 };

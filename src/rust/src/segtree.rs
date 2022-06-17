@@ -366,7 +366,7 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::group_theory_id::Additive;
+    use crate::grouop_theory_id::Additive;
     type Seg = Segtree<GroupApprox<usize, Additive>>;
 
     #[test]

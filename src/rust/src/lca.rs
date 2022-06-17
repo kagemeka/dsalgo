@@ -183,7 +183,7 @@ pub mod tree {
 
     use crate::{
         algebraic_structure_impl::*,
-        group_theory_id::Min,
+        grouop_theory_id::Min,
         segtree::Segtree,
     };
 

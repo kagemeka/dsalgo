@@ -1,4 +1,4 @@
-use crate::{abelian_group::AbelianGroup, group_theory_id::Additive};
+use crate::{abelian_group::AbelianGroup, grouop_theory_id::Additive};
 
 pub trait AdditiveGroup {}
 

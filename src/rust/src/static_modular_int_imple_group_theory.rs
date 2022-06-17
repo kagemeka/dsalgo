@@ -1,7 +1,7 @@
 use crate::{
     associative_property::AssociativeProperty,
     binary_operation::BinaryOperation,
-    group_theory_id::Multiplicative,
+    grouop_theory_id::Multiplicative,
     identity_element::IdentityElement,
     multiplicative_inverse::MulInv,
     static_modular_arithmetic_trait::StaticModularArithmeticTrait,

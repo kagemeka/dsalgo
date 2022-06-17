@@ -106,7 +106,7 @@ mod tests {
     use super::*;
     #[test]
     fn test_self_as_min() {
-        use crate::group_theory_id::Min;
+        use crate::grouop_theory_id::Min;
         let arr: Vec<usize> = vec![0, 4, 2, 8, 5, 1];
         let sp = DisjointSparseTable::<GroupApprox<usize, Min>>::new(&arr);
         assert_eq!(sp.reduce(0, 4), 0);
