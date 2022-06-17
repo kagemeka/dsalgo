@@ -437,7 +437,7 @@ mod tests {
 
         use crate::{
             algebraic_structure_impl::GroupApprox,
-            grouop_theory_id::Additive,
+            group_theory_id::Additive,
         };
 
         struct Map;

@@ -183,7 +183,7 @@ pub mod tree {
 
     use crate::{
         algebraic_structure_impl::*,
-        grouop_theory_id::Min,
+        group_theory_id::Min,
         segtree::Segtree,
     };
 
@@ -202,7 +202,7 @@ pub mod tree {
     #[allow(dead_code)]
     type ETRMQSqD = EulerTourRMQ<SqrtDecomposition<CommonG>>;
 
-    use crate::disjoint_sparse_table::DisjointSparseTable;
+    use crate::sparse_table::DisjointSparseTable;
 
     #[allow(dead_code)]
     type ETRMQDSpT = EulerTourRMQ<DisjointSparseTable<CommonG>>;

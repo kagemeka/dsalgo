@@ -4,6 +4,7 @@ pub trait Root {
     fn root(&mut self, u: usize) -> usize;
 }
 
+#[allow(private_in_public)]
 trait Size {
     fn size(&self) -> usize;
 }
@@ -214,7 +215,7 @@ mod tests {
 
     #[test]
     fn test_potential_uf() {
-        use crate::{algebraic_structure_impl::*, grouop_theory_id::Additive};
+        use crate::{algebraic_structure_impl::*, group_theory_id::Additive};
         let mut uf = PotentialUF::<GroupApprox<i32, Additive>>::new(6);
         assert_eq!(uf.size_of(0), 1);
         assert!(uf.diff(0, 5).is_err());

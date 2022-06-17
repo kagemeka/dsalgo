@@ -190,30 +190,18 @@ pub fn msb_number(n: u64) -> u64 { if n == 0 { 0 } else { 1 << msb(n) } }
 
 /// O(\log\log{N})
 pub fn msb_number_binary_search(mut n: u64) -> u64 {
-    const M0: u64 = 0xffffffff00000000;
-    const M1: u64 = 0xffff0000ffff0000;
-    const M2: u64 = 0xff00ff00ff00ff00;
-    const M3: u64 = 0xf0f0f0f0f0f0f0f0;
-    const M4: u64 = 0xcccccccccccccccc; // 0b1100...
-    const M5: u64 = 0xaaaaaaaaaaaaaaaa; // 0b1010...
-
-    if n & M0 > 0 {
-        n &= M0;
-    }
-    if n & M1 > 0 {
-        n &= M1;
-    }
-    if n & M2 > 0 {
-        n &= M2;
-    }
-    if n & M3 > 0 {
-        n &= M3;
-    }
-    if n & M4 > 0 {
-        n &= M4;
-    }
-    if n & M5 > 0 {
-        n &= M5;
+    const MASKS: [u64; 6] = [
+        0xffffffff00000000,
+        0xffff0000ffff0000,
+        0xff00ff00ff00ff00,
+        0xf0f0f0f0f0f0f0f0,
+        0xcccccccccccccccc, // 0b1100...
+        0xaaaaaaaaaaaaaaaa, // 0b1010...
+    ];
+    for m in MASKS {
+        if n & m > 0 {
+            n &= m;
+        }
     }
     n
 }

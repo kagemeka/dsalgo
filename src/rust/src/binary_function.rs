@@ -1,4 +1,4 @@
-/// binary function
+//! binary function
 pub trait BinaryFunc {
     type L;
     type R;

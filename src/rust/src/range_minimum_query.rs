@@ -1,4 +1,4 @@
-use crate::{grouop_theory_id::Min, range_get_query::RangeGetQuery};
+use crate::{group_theory_id::Min, range_get_query::RangeGetQuery};
 
 pub trait RangeMinimumQuery {
     type T;
