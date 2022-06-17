@@ -1,6 +1,9 @@
+//! fenwick tree (binary indexed tree)
+
 use crate::{
-    bitops::{lsb_number, msb, reset_least_bit},
-    group_theory::{AbelianGroup, Additive, CommutativeMonoid},
+    algebraic_structure::*,
+    binary_function::*,
+    bitops::{lsb_number, reset_least_bit},
 };
 
 /// Node Indices
@@ -10,266 +13,374 @@ use crate::{
 /// |4      |       |
 /// |2  |   |6  |   |
 /// |1| |3| |5| |7| |
-pub struct FenwickTree<S, I = Additive>
-where
-    S: CommutativeMonoid<I>,
-    I: crate::group_theory::BinaryOperationIdentifier,
-{
-    phantom: std::marker::PhantomData<I>,
-    data: Vec<S>,
+pub struct Fenwick<G: Monoid> {
+    data: Vec<G::S>, // data
 }
 
-impl<S, I> From<&[S]> for FenwickTree<S, I>
+impl<G> Fenwick<G>
 where
-    S: CommutativeMonoid<I> + Clone + Copy,
-    I: crate::group_theory::BinaryOperationIdentifier,
+    G: Monoid + Commutative,
+    G::S: Clone,
 {
-    fn from(slice: &[S]) -> Self {
-        let size = slice.len();
-        let mut data = vec![S::identity(); size + 1];
-        data[1..].clone_from_slice(slice);
-        for node_index in 1..size as isize {
-            let parent_node_index =
-                (node_index + (node_index & -node_index)) as usize;
-            if parent_node_index <= size {
-                // data[parent_node_index] =
-                //     S::operate(&data[parent_node_index], &data[node_index as
-                // usize]);
-                data[parent_node_index] =
-                    data[parent_node_index].operate(data[node_index as usize]);
+    /// you need to pass initial values because,
+    /// it might not be identity element.
+    pub fn new(a: Vec<G::S>) -> Self {
+        let size = a.len();
+        let mut d = vec![G::e()];
+        d.append(&mut a.to_vec());
+        for i in 1..size {
+            let j = i + lsb_number(i as u64) as usize;
+            if j <= size {
+                d[j] = G::op(d[j].clone(), d[i].clone());
             }
         }
-        Self {
-            phantom: std::marker::PhantomData,
-            data,
-        }
-    }
-}
-
-impl<S, I> FenwickTree<S, I>
-where
-    S: CommutativeMonoid<I> + Copy,
-    I: crate::group_theory::BinaryOperationIdentifier,
-{
-    pub fn new(size: usize) -> Self
-    where
-        S: Clone,
-    {
-        (&vec![S::identity(); size]).as_slice().into()
+        Self { data: d }
     }
 
     pub fn size(&self) -> usize { self.data.len() - 1 }
 
-    // pub fn set_point(&mut self, array_index: usize,
-    // value_to_operate: &S) {
-    pub fn set_point(&mut self, array_index: usize, value_to_operate: S) {
-        assert!(array_index < self.size());
-        let mut node_index = array_index + 1;
-        while node_index <= self.size() {
-            // self.data[node_index] = S::operate(&self.data[node_index],
-            // value_to_operate);
-            self.data[node_index] =
-                self.data[node_index].operate(value_to_operate);
-            node_index += lsb_number(node_index as u64) as usize;
+    pub fn operate(&mut self, mut i: usize, v: G::S) {
+        i += 1;
+        while i <= self.size() {
+            self.data[i] = G::op(self.data[i].clone(), v.clone());
+            i += lsb_number(i as u64) as usize;
         }
     }
 
-    pub fn get_half_range(&self, right: usize) -> S {
-        assert!(right <= self.size());
-        let mut value = S::identity();
-        let mut node_index = right;
-        while node_index > 0 {
-            // value = S::operate(&value, &self.data[node_index]);
-            value = value.operate(self.data[node_index]);
-            node_index = reset_least_bit(node_index as u64) as usize;
+    // reduce less than.
+    pub fn reduce_lt(&self, mut i: usize) -> G::S {
+        let mut v = G::e();
+        while i > 0 {
+            v = G::op(v, self.data[i].clone());
+            i = reset_least_bit(i as u64) as usize;
         }
-        value
+        v
     }
 
-    pub fn find_max_right<F>(&self, is_ok: &F) -> usize
+    pub fn max_right<F>(&self, is_ok: &F) -> usize
     where
-        F: Fn(&S) -> bool,
+        F: Fn(&G::S) -> bool,
     {
-        if self.size() == 0 {
-            return 0;
-        }
-        let mut length = 1usize << msb(self.size() as u64);
-        let mut value = S::identity();
-        let mut right = 0;
-        while length > 0 {
-            if right + length <= self.size()
-                && is_ok(&value.operate(self.data[right + length]))
-            // && is_ok(&S::operate(&value, &self.data[right + length]))
-            {
-                right += length;
-                // value = S::operate(&value, &self.data[right]);
-                value = value.operate(self.data[right]);
+        let mut len = (self.size() + 1).next_power_of_two();
+        let mut v = G::e();
+        let mut r = 0;
+        loop {
+            len >>= 1;
+            if len == 0 {
+                return r;
             }
-            length >>= 1;
+            if r + len > self.size() {
+                continue;
+            }
+            let nv = G::op(
+                v.clone(),
+                self.data[r + len].clone(),
+            );
+            if is_ok(&nv) {
+                r += len;
+                v = nv;
+            }
         }
-        right
     }
 }
 
-impl<S, I> FenwickTree<S, I>
+impl<G> Fenwick<G>
 where
-    S: AbelianGroup<I> + Copy,
-    I: crate::group_theory::BinaryOperationIdentifier,
+    G: AbelianGroup,
+    G::S: Clone,
 {
-    pub fn get_range(&self, left: usize, right: usize) -> S {
-        assert!(left <= right);
-        // S::operate(
-        //     &S::invert(&self.get_half_range(left)),
-        //     &self.get_half_range(right),
-        // )
-        self.get_half_range(left)
-            .invert()
-            .operate(self.get_half_range(right))
+    pub fn reduce(&self, l: usize, r: usize) -> G::S {
+        assert!(l <= r);
+        G::op(
+            G::inv(self.reduce_lt(l)),
+            self.reduce_lt(r),
+        )
     }
 
-    pub fn get_point(&self, array_index: usize) -> S {
-        assert!(array_index < self.size());
-        self.get_range(array_index, array_index + 1)
-    }
+    pub fn get(&self, i: usize) -> G::S { self.reduce(i, i + 1) }
 
-    pub fn find_max_right_with_left<F>(&self, is_ok: &F, left: usize) -> usize
+    /// find r such that \prod[l, r) = true
+    pub fn max_right_from<F>(&self, is_ok: &F, l: usize) -> usize
     where
-        F: Fn(&S) -> bool,
+        F: Fn(&G::S) -> bool,
     {
-        assert!(left <= self.size());
-        if left == self.size() {
-            return self.size();
-        }
-        let mut length = 1usize << msb(self.size() as u64);
-        // let mut value = S::invert(&self.get_half_range(left));
-        let mut value = self.get_half_range(left).invert();
-        let mut right = 0;
-        while length > 0 {
-            if right + length <= left
-                || right + length <= self.size()
-                    && is_ok(&value.operate(self.data[right + length]))
-            // && is_ok(&S::operate(&value, &self.data[right + length]))
-            {
-                right += length;
-                // value = S::operate(&value, &self.data[right]);
-                value = value.operate(self.data[right]);
+        assert!(l <= self.size());
+        let mut len = (self.size() + 1).next_power_of_two();
+        let mut v = G::inv(self.reduce_lt(l));
+        let mut r = 0;
+        loop {
+            len >>= 1;
+            if len == 0 {
+                debug_assert!(l <= r);
+                return r;
             }
-            length >>= 1;
+            if r + len > self.size() {
+                continue;
+            }
+            let nv = G::op(
+                v.clone(),
+                self.data[r + len].clone(),
+            );
+            if r + len <= l || r + len <= self.size() && is_ok(&nv) {
+                r += len;
+                v = nv;
+            }
         }
-        right
     }
 
-    pub fn find_min_left_with_right<F>(&self, is_ok: &F, right: usize) -> usize
+    /// find l such that \prod[l, r) = true, or return r
+    pub fn min_left_from<F>(&self, is_ok: &F, r: usize) -> usize
     where
-        F: Fn(&S) -> bool,
+        F: Fn(&G::S) -> bool,
     {
-        assert!(right <= self.size());
-        if right == 0 {
+        assert!(r <= self.size());
+        if r == 0 {
             return 0;
         }
-        let mut length = 1usize << msb(self.size() as u64);
-        let mut value = self.get_half_range(right);
-        if is_ok(&value) {
+        let mut len = (self.size() + 1).next_power_of_two();
+        let mut v = self.reduce_lt(r);
+        if is_ok(&v) {
             return 0;
         }
-        let mut left = 1;
-        while length > 0 {
-            if left + length <= right
-                && !is_ok(&self.data[left - 1 + length].invert().operate(value))
-            // && !is_ok(&S::operate(&S::invert(&self.data[left - 1 + length]),
-            // &value))
-            {
-                left += length;
-                // value = S::operate(&S::invert(&self.data[left - 1]),
-                // &value);
-                value = self.data[left - 1].invert().operate(value);
+        let mut l = 1;
+        loop {
+            len >>= 1;
+            if len == 0 {
+                debug_assert!(l <= r);
+                return l;
             }
-            length >>= 1;
+            if l + len > r {
+                continue;
+            }
+            let nv = G::op(
+                G::inv(self.data[l + len - 1].clone()),
+                v.clone(),
+            );
+            if !is_ok(&nv) {
+                l += len;
+                v = nv;
+            }
         }
-        left
     }
 }
+
+pub struct FwDual<G: Monoid> {
+    fw: Fenwick<G>,
+}
+
+impl<G> FwDual<G>
+where
+    G: Monoid + Commutative,
+    G::S: Clone,
+{
+    pub fn new(mut a: Vec<G::S>) -> Self
+    where
+        G: Inverse,
+        G::S: Clone,
+    {
+        for i in (1..a.len()).rev() {
+            a[i] = G::op(
+                G::inv(a[i - 1].clone()),
+                a[i].clone(),
+            );
+        }
+        Self { fw: Fenwick::new(a) }
+    }
+
+    pub fn size(&self) -> usize { self.fw.size() }
+
+    /// operate on [i, size)
+    pub fn operate_ge(&mut self, i: usize, v: G::S) { self.fw.operate(i, v) }
+
+    pub fn get(&self, i: usize) -> G::S { self.fw.reduce_lt(i + 1) }
+
+    /// find first index i satisfying
+    /// `is_ok(&self.get_point(i)) == true`
+    /// Constraints:
+    /// `is_ok(&self.get_point(i))` must be monotonous [false,
+    /// false, .., true, true] if such an i is not found,
+    /// return `self.size()`
+    pub fn search<F>(&self, is_ok: &F) -> usize
+    where
+        F: Fn(&G::S) -> bool,
+    {
+        self.fw.max_right(&|prod: &G::S| !is_ok(prod))
+    }
+}
+
+impl<G> FwDual<G>
+where
+    G: AbelianGroup,
+    G::S: Clone,
+{
+    pub fn operate(&mut self, l: usize, r: usize, v: G::S) {
+        assert!(l < r && r <= self.size());
+        self.operate_ge(l, v.clone());
+        if r < self.size() {
+            self.operate_ge(r, G::inv(v));
+        }
+    }
+
+    /// prod[left, index) >= target_value - prod[0, left)
+    /// prod[left, index) + prod[0, left) >= target_value
+    /// is_ok(G::operate(prod[left, index), prod[0, left)))
+    /// `is_ok`'s results must be mnotonous
+    /// in the range of [left, self.size())
+    /// [?, .., ?, false(left), .., false, true .., true]
+    /// where first false index corresponds
+    /// to the given left, it might be there exists no
+    /// false.
+    pub fn search_from<F>(&self, is_ok: &F, l: usize) -> usize
+    where
+        F: Fn(&G::S) -> bool,
+    {
+        assert!(l <= self.size());
+        let prod_lt = if l == 0 { G::e() } else { self.get(l - 1) };
+        self.fw.max_right_from(
+            &|prod_ge: &G::S| {
+                !is_ok(&G::op(
+                    prod_lt.clone(),
+                    prod_ge.clone(),
+                ))
+            },
+            l,
+        )
+    }
+
+    // /// [false, .. false, true, .., true, ?, .. ?]
+    // /// find first true index.
+    // /// no longer necessary function.
+    // pub fn binary_search_from_right<F>(&self, is_ok: &F, right:
+    // usize) -> usize where
+    //     F: Fn(&S) -> bool,
+    // {
+    //     assert!(right <= self.size());
+    // }
+}
+
+// TODO:
+/// fenwick tree lazy for addition on int
+/// TODO: generalize to semiring
+pub struct FwLazyIntAdd {}
 
 #[cfg(test)]
 mod tests {
-
+    use super::*;
     #[test]
-    fn test_as_abelian_group() {
-        use crate::group_theory::Additive;
+    fn test_fw() {
+        use crate::{
+            algebraic_structure_impl::GroupApprox,
+            group_theory_id::Additive,
+        };
 
         let arr = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-        let mut fw = super::FenwickTree::<i32, Additive>::from(arr.as_slice());
+        let mut fw = Fenwick::<GroupApprox<i32, Additive>>::new(arr);
 
-        assert_eq!(fw.get_range(0, 10), 45);
-        assert_eq!(fw.get_range(6, 10), 30);
-        // fw.set_point(5, &10);
-        fw.set_point(5, 10);
-        assert_eq!(fw.get_range(6, 10), 30);
-        assert_eq!(fw.get_half_range(5), 10);
-        assert_eq!(fw.get_half_range(6), 25);
-        assert_eq!(fw.get_point(5), 15);
+        assert_eq!(fw.reduce(0, 10), 45);
+        assert_eq!(fw.reduce(6, 10), 30);
+        fw.operate(5, 10);
+        assert_eq!(fw.reduce(6, 10), 30);
+        assert_eq!(fw.reduce_lt(5), 10);
+        assert_eq!(fw.reduce_lt(6), 25);
+        assert_eq!(fw.get(5), 15);
         let is_ok = |x: &i32| *x <= 25;
-        assert_eq!(fw.find_max_right(&is_ok), 6);
-        assert_eq!(
-            fw.find_max_right_with_left(&is_ok, 0),
-            6
-        );
+        assert_eq!(fw.max_right(&is_ok), 6);
+        assert_eq!(fw.max_right_from(&is_ok, 0), 6);
         let is_ok = |x: &i32| *x < 25;
-        assert_eq!(fw.find_max_right(&is_ok), 5);
+        assert_eq!(fw.max_right(&is_ok), 5);
+        assert_eq!(fw.max_right_from(&is_ok, 0), 5);
+        assert_eq!(fw.max_right_from(&is_ok, 4), 6);
+        assert_eq!(fw.max_right_from(&is_ok, 5), 7);
+        assert_eq!(fw.max_right_from(&is_ok, 6), 9);
         assert_eq!(
-            fw.find_max_right_with_left(&is_ok, 0),
-            5
-        );
-        assert_eq!(
-            fw.find_max_right_with_left(&is_ok, 4),
-            6
-        );
-        assert_eq!(
-            fw.find_max_right_with_left(&is_ok, 5),
-            7
-        );
-        assert_eq!(
-            fw.find_max_right_with_left(&is_ok, 6),
-            9
-        );
-        assert_eq!(
-            fw.find_max_right_with_left(&is_ok, 9),
+            fw.max_right_from(&is_ok, 9),
             10
         );
-        assert_eq!(
-            fw.find_min_left_with_right(&is_ok, 10),
-            7
-        );
-        assert_eq!(
-            fw.find_min_left_with_right(&is_ok, 0),
-            0
-        );
-        assert_eq!(
-            fw.find_min_left_with_right(&is_ok, 6),
-            2
-        );
-        assert_eq!(
-            fw.find_min_left_with_right(&is_ok, 5),
-            0
-        );
+        assert_eq!(fw.min_left_from(&is_ok, 10), 7);
+        assert_eq!(fw.min_left_from(&is_ok, 0), 0);
+        assert_eq!(fw.min_left_from(&is_ok, 6), 2);
+        assert_eq!(fw.min_left_from(&is_ok, 5), 0);
         let is_ok = |x: &i32| *x < 15;
-        assert_eq!(
-            fw.find_max_right_with_left(&is_ok, 5),
-            5
-        );
-        assert_eq!(
-            fw.find_min_left_with_right(&is_ok, 6),
-            6
-        );
-        assert_eq!(
-            fw.find_min_left_with_right(&is_ok, 10),
-            9
-        );
+        assert_eq!(fw.max_right_from(&is_ok, 5), 5);
+        assert_eq!(fw.min_left_from(&is_ok, 6), 6);
+        assert_eq!(fw.min_left_from(&is_ok, 10), 9);
         let is_ok = |x: &i32| *x < 9;
         assert_eq!(
-            fw.find_min_left_with_right(&is_ok, 10),
+            fw.min_left_from(&is_ok, 10),
             10
         );
     }
+
+    #[test]
+    fn test_dual() {
+        use crate::{
+            algebraic_structure_impl::GroupApprox,
+            group_theory_id::Additive,
+        };
+        let mut a = (0..10).collect::<Vec<_>>();
+        for i in 0..9 {
+            a[i + 1] += a[i];
+        }
+        type Fw = FwDual<GroupApprox<i32, Additive>>;
+        let mut fw = Fw::new(a);
+        assert_eq!(fw.get(1), 1);
+        assert_eq!(fw.get(5), 15);
+        assert_eq!(fw.get(9), 45);
+        fw.operate_ge(5, 2);
+        assert_eq!(fw.get(1), 1);
+        assert_eq!(fw.get(5), 17);
+        assert_eq!(fw.get(9), 47);
+        assert_eq!(
+            fw.search(&|value: &i32| *value >= 23),
+            6
+        );
+        assert_eq!(
+            fw.search(&|value: &i32| *value >= 47),
+            9
+        );
+        assert_eq!(
+            fw.search(&|value: &i32| *value > 47),
+            10
+        );
+
+        fw.operate(2, 6, 1);
+        assert_eq!(fw.get(1), 1);
+        assert_eq!(fw.get(5), 18);
+        assert_eq!(fw.get(9), 47);
+        fw.operate(2, 6, -1);
+        assert_eq!(
+            fw.search_from(&|value: &i32| *value >= 23, 0),
+            6
+        );
+        assert_eq!(
+            fw.search_from(&|value: &i32| *value >= 47, 0),
+            9
+        );
+        assert_eq!(
+            fw.search_from(&|value: &i32| *value > 47, 0),
+            10
+        );
+
+        let b = (0..10).map(|i| fw.get(i)).collect::<Vec<_>>();
+        assert_eq!(
+            b,
+            [
+                0, 1, 3, 6, 10, 17, 23, 30, 38, 47
+            ]
+        );
+
+        assert_eq!(
+            fw.search_from(&|value: &i32| *value >= 23, 7),
+            7
+        );
+        assert_eq!(
+            fw.search_from(&|value: &i32| *value >= 23, 5),
+            6
+        );
+    }
+
+    // TODO:
+    #[test]
+    fn test_lazy() {}
 }
