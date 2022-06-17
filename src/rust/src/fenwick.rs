@@ -1,7 +1,6 @@
 use crate::{
-    bitops::{lsb_number, msb},
+    bitops::{lsb_number, msb, reset_least_bit},
     group_theory::{AbelianGroup, Additive, CommutativeMonoid},
-    reset_least_bit::reset_least_bit,
 };
 
 /// Node Indices

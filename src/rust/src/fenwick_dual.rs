@@ -1,5 +1,5 @@
 use crate::{
-    fenwick_tree,
+    fenwick,
     group_theory::{AbelianGroup, CommutativeMonoid},
 };
 pub struct FenwickTreeDual<S, I>
@@ -7,7 +7,7 @@ where
     S: CommutativeMonoid<I> + Copy,
     I: crate::group_theory::BinaryOperationIdentifier,
 {
-    fenwick: fenwick_tree::FenwickTree<S, I>,
+    fenwick: fenwick::FenwickTree<S, I>,
 }
 
 impl<S, I> FenwickTreeDual<S, I>
@@ -20,7 +20,7 @@ where
         S: Clone,
     {
         Self {
-            fenwick: fenwick_tree::FenwickTree::<S, I>::from(deltas),
+            fenwick: fenwick::FenwickTree::<S, I>::from(deltas),
         }
     }
 

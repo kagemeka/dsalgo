@@ -186,6 +186,8 @@ pub fn msb(n: u64) -> usize {
     crate::bitops::len::with_clz(n) as usize - 1
 }
 
+pub fn msb_number(n: u64) -> u64 { if n == 0 { 0 } else { 1 << msb(n) } }
+
 /// O(\log\log{N})
 pub fn msb_number_binary_search(mut n: u64) -> u64 {
     const M0: u64 = 0xffffffff00000000;
