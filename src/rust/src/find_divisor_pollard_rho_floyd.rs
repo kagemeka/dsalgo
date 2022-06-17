@@ -1,4 +1,4 @@
-use crate::{abs_diff::abs_diff, greatest_common_divisor::gcd};
+use crate::{abs_diff::abs_diff, gcd::int::euclidean as gcd};
 
 /// n is not prime.
 /// if prime, check in advance with primality test like miller-rabin.

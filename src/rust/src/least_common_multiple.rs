@@ -1,4 +1,4 @@
-use crate::greatest_common_divisor::gcd;
+use crate::gcd::int::euclidean as gcd;
 
 pub fn lcm(a: u64, b: u64) -> u64 {
     if a == 0 && b == 0 { 0 } else { a / gcd(a, b) * b }

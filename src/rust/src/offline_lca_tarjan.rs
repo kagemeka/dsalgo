@@ -1,4 +1,4 @@
-use crate::{tree_edges_to_graph::tree_edges_to_graph, union_find::UnionFind};
+use crate::{tree_edges_to_graph::tree_edges_to_graph, uf::*};
 
 pub fn offline_lca_tarjan(
     tree_edges: &[(usize, usize)],
@@ -9,7 +9,7 @@ pub fn offline_lca_tarjan(
         g: &Vec<Vec<usize>>,
         q: &Vec<Vec<(usize, usize)>>,
         visited: &mut Vec<bool>,
-        uf: &mut UnionFind,
+        uf: &mut UF,
         ancestor: &mut Vec<usize>,
         lca: &mut Vec<usize>,
         u: usize,
@@ -24,10 +24,10 @@ pub fn offline_lca_tarjan(
                 g, q, visited, uf, ancestor, lca, v,
             );
             uf.unite(u, v);
-            ancestor[uf.find_root(u)] = u;
+            ancestor[uf.root(u)] = u;
         }
         q[u].iter().filter(|&&(v, _)| visited[v]).for_each(|&(v, i)| {
-            lca[i] = ancestor[uf.find_root(v)];
+            lca[i] = ancestor[uf.root(v)];
         });
     }
     let n = tree_edges.len() + 1;
@@ -38,7 +38,7 @@ pub fn offline_lca_tarjan(
         q[v].push((u, i));
     }
     let mut visited = vec![false; n];
-    let mut uf = UnionFind::new(n);
+    let mut uf = UF::new(n);
     let mut ancestor = vec![n; n];
     let mut lca = vec![n; queries.len()];
     dfs(

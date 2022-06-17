@@ -1,16 +1,12 @@
-use crate::{
-    commutative_property::CommutativeProperty,
-    idempotence::Idempotence,
-    semigroup::Semigroup,
-};
+use crate::{algebraic_structure::*, binary_function::*};
 
-pub struct SparseTable<G: Semigroup<Id>, Id> {
+pub struct SparseTable<G: Semigroup> {
     data: Vec<Vec<G::S>>,
 }
 
-impl<G, Id> std::iter::FromIterator<G::S> for SparseTable<G, Id>
+impl<G> std::iter::FromIterator<G::S> for SparseTable<G>
 where
-    G: Semigroup<Id> + Idempotence<Id> + CommutativeProperty<Id>,
+    G: Semigroup + Idempotence + Commutative,
     G::S: Clone,
 {
     fn from_iter<T: IntoIterator<Item = G::S>>(iter: T) -> Self {
@@ -28,7 +24,7 @@ where
             data.push(
                 (0..row_size)
                     .map(|j| {
-                        G::operate(
+                        G::op(
                             data[i - 1][j].clone(),
                             data[i - 1][j + (1 << (i - 1))].clone(),
                         )
@@ -40,9 +36,9 @@ where
     }
 }
 
-impl<G, Id> SparseTable<G, Id>
+impl<G> SparseTable<G>
 where
-    G: Semigroup<Id> + Idempotence<Id> + CommutativeProperty<Id>,
+    G: Semigroup + Idempotence + Commutative,
     G::S: Clone,
 {
     pub fn new(slice: &[G::S]) -> Self {
@@ -57,40 +53,34 @@ where
             return self.data[0][l].clone();
         }
         let i = (r - l).next_power_of_two().trailing_zeros() as usize - 1;
-        G::operate(
+        G::op(
             self.data[i][l].clone(),
             self.data[i][r - (1 << i)].clone(),
         )
     }
 }
 
+use crate::{algebraic_structure_impl::*, range_get_query::RangeGetQuery};
+
+impl<S, I> RangeGetQuery<I> for SparseTable<GroupApprox<S, I>>
+where
+    GroupApprox<S, I>: Semigroup<S = S> + Idempotence + Commutative,
+    S: Clone,
+{
+    type T = S;
+
+    fn get_range(&mut self, l: usize, r: usize) -> Self::T { self.reduce(l, r) }
+}
+
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
     fn test_self_as_min() {
-        use crate::{
-            associative_property::AssociativeProperty,
-            binary_operation::BinaryOperation,
-            commutative_property::CommutativeProperty,
-            idempotence::Idempotence,
-        };
-
-        struct Min;
-
-        impl BinaryOperation<Min> for usize {
-            type Codomain = Self;
-            type Lhs = Self;
-            type Rhs = Self;
-
-            fn map(lhs: usize, rhs: usize) -> usize { std::cmp::min(lhs, rhs) }
-        }
-
-        impl AssociativeProperty<Min> for usize {}
-        impl Idempotence<Min> for usize {}
-        impl CommutativeProperty<Min> for usize {}
+        use crate::group_theory_id::Min;
 
         let arr: Vec<usize> = vec![0, 4, 2, 8, 5, 1];
-        let sp = super::SparseTable::<usize, Min>::new(&arr);
+        let sp = SparseTable::<GroupApprox<usize, Min>>::new(&arr);
         assert_eq!(sp.reduce(0, 4), 0);
         assert_eq!(sp.reduce(3, 4), 8);
         assert_eq!(sp.reduce(1, 6), 1);

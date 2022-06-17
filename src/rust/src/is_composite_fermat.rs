@@ -1,5 +1,5 @@
 use crate::{
-    greatest_common_divisor::gcd,
+    gcd::int::euclidean as gcd,
     montgomery_modular_multiplication_64::MontgomeryMultiplication64,
     power_semigroup::pow_semigroup,
 };

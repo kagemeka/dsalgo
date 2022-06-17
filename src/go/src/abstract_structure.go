@@ -1,12 +1,19 @@
 package dsalgo
 
-type Monoid struct {
-	Op func(a, b interface{}) interface{}
-	E  func() interface{}
+type Magma[S any] interface {
+	op(S, S) S
 }
 
-type Group struct {
-	Op      func(a, b interface{}) interface{}
-	E       func() interface{}
-	Inverse func(interface{}) interface{}
+type Semigroup[S any] interface {
+	Magma[S]
+}
+
+type Monoid[S any] interface {
+	Semigroup[S]
+	identity() S
+}
+
+type Group[S any] interface {
+	Monoid[S]
+	invert(S) S
 }

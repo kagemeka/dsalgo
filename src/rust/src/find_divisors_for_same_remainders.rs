@@ -1,7 +1,4 @@
-use crate::{
-    find_divisors_naive::find_divisors_naive,
-    greatest_common_divisor_reduce::gcd_reduce,
-};
+use crate::{find_divisors_naive::find_divisors_naive, gcd::int::gcd_reduce};
 
 pub fn find_divisors_for_same_remainders<I>(mut iter: I) -> Vec<u64>
 where
