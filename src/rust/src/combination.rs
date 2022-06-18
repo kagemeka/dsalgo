@@ -1,7 +1,7 @@
 use crate::{
     factorial_table::factorial_table,
     inverse_factorial_table::inverse_factorial_table,
-    multiplicative_inverse::MulInv,
+    ops::MulInv,
 };
 
 pub struct Combination<T> {

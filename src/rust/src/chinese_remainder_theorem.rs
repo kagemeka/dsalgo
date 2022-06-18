@@ -1,7 +1,4 @@
-use crate::{
-    extended_euclidean_algorithm::extgcd,
-    extended_euclidean_modular_gcd_inverse::euclidean_mod_gcd_inv,
-};
+use crate::ext_euclid::{extgcd, mod_gcd_inv};
 
 // fn crt_pre_swap(
 //     mod_0: &mut u64,
@@ -74,7 +71,7 @@ pub fn safe_crt(
         };
     }
 
-    let (gcd, inv_u0) = euclidean_mod_gcd_inv(
+    let (gcd, inv_u0) = mod_gcd_inv(
         mod_1 as u64,
         (mod_0 % mod_1) as u64,
     );

@@ -351,11 +351,11 @@ pub mod inv {
         // related: carmichael_function.rs
     }
 
-    use crate::euclidean_algorithms::euclidean_mod_gcd_inv;
+    use crate::ext_euclid::mod_gcd_inv;
 
     /// inverse by Extended Euclidean Algorithm.
     pub fn extgcd(modulus: u64, element: u64) -> Result<u64, &'static str> {
-        let (gcd, inv) = euclidean_mod_gcd_inv(modulus, element);
+        let (gcd, inv) = mod_gcd_inv(modulus, element);
         if gcd == 1 {
             Ok(inv)
         } else {
@@ -615,11 +615,7 @@ pub mod int {
         pub fn pow(self, exponent: u64) -> Self { self.pow_monoid(exponent) }
     }
 
-    use crate::{
-        binary_function::itself::*,
-        group_theory_id::*,
-        multiplicative_inverse::MulInv,
-    };
+    use crate::{binary_function::itself::*, group_theory_id::*, ops::MulInv};
 
     impl<T, M> BinaryOp<Multiplicative> for Modint<T, M>
     where
