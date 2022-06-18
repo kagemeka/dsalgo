@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-import dsalgo.abstract_structure
+import dsalgo.algebraic_structure
 from dsalgo.type import T
 
 
@@ -53,7 +53,7 @@ def get_labels(uf: UnionFind) -> list[int]:
 class PotentialUnionFind(typing.Generic[T]):
     def __init__(
         self,
-        group: dsalgo.abstract_structure.Group[T],
+        group: dsalgo.algebraic_structure.Group[T],
         size: int,
     ) -> None:
         self.__group = group  # abelian group

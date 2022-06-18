@@ -144,7 +144,7 @@ pub trait Idempotence: BinaryOp {
     }
 }
 
-/// latain square property
+/// latin square property
 pub trait LatinSquare: BinaryOp {}
 
 impl<T: Inverse> LatinSquare for T {}

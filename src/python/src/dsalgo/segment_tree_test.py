@@ -3,13 +3,13 @@ from __future__ import annotations
 import typing
 import unittest
 
-import dsalgo.abstract_structure
+import dsalgo.algebraic_structure
 import dsalgo.segment_tree
 
 
 class Test(unittest.TestCase):
     def test_segment_tree(self) -> None:
-        monoid = dsalgo.abstract_structure.Monoid[int](
+        monoid = dsalgo.algebraic_structure.Monoid[int](
             operation=lambda a, b: a + b,
             identity=lambda: 0,
         )
@@ -39,11 +39,11 @@ class Test(unittest.TestCase):
             self.assertEqual(seg.min_left(lambda s: s < 10, 4), 0)
 
     def test_segment_tree_lazy(self) -> None:
-        monoid_s = dsalgo.abstract_structure.Monoid[typing.Tuple[int, int]](
+        monoid_s = dsalgo.algebraic_structure.Monoid[typing.Tuple[int, int]](
             operation=lambda a, b: (a[0] + b[0], a[1] + b[1]),
             identity=lambda: (0, 0),
         )
-        monoid_f = dsalgo.abstract_structure.Monoid[int](
+        monoid_f = dsalgo.algebraic_structure.Monoid[int](
             operation=lambda f, g: f + g,
             identity=lambda: 0,
         )

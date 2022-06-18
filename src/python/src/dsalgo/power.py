@@ -1,11 +1,11 @@
 import typing
 
-import dsalgo.abstract_structure
+import dsalgo.algebraic_structure
 from dsalgo.type import S
 
 
 def define_power_func(
-    monoid: dsalgo.abstract_structure.Monoid[S],
+    monoid: dsalgo.algebraic_structure.Monoid[S],
 ) -> typing.Callable[[S, int], S]:
     def pow(value: S, exponent: int) -> S:
         assert exponent >= 0

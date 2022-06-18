@@ -14,7 +14,7 @@ use crate::{
 /// |2  |   |6  |   |
 /// |1| |3| |5| |7| |
 pub struct Fenwick<G: Monoid> {
-    data: Vec<G::S>, // data
+    d: Vec<G::S>, // data
 }
 
 impl<G> Fenwick<G>
@@ -34,15 +34,15 @@ where
                 d[j] = G::op(d[j].clone(), d[i].clone());
             }
         }
-        Self { data: d }
+        Self { d }
     }
 
-    pub fn size(&self) -> usize { self.data.len() - 1 }
+    pub fn size(&self) -> usize { self.d.len() - 1 }
 
     pub fn operate(&mut self, mut i: usize, v: G::S) {
         i += 1;
         while i <= self.size() {
-            self.data[i] = G::op(self.data[i].clone(), v.clone());
+            self.d[i] = G::op(self.d[i].clone(), v.clone());
             i += lsb_number(i as u64) as usize;
         }
     }
@@ -51,7 +51,7 @@ where
     pub fn reduce_lt(&self, mut i: usize) -> G::S {
         let mut v = G::e();
         while i > 0 {
-            v = G::op(v, self.data[i].clone());
+            v = G::op(v, self.d[i].clone());
             i = reset_least_bit(i as u64) as usize;
         }
         v
@@ -74,7 +74,7 @@ where
             }
             let nv = G::op(
                 v.clone(),
-                self.data[r + len].clone(),
+                self.d[r + len].clone(),
             );
             if is_ok(&nv) {
                 r += len;
@@ -119,7 +119,7 @@ where
             }
             let nv = G::op(
                 v.clone(),
-                self.data[r + len].clone(),
+                self.d[r + len].clone(),
             );
             if r + len <= l || r + len <= self.size() && is_ok(&nv) {
                 r += len;
@@ -153,7 +153,7 @@ where
                 continue;
             }
             let nv = G::op(
-                G::inv(self.data[l + len - 1].clone()),
+                G::inv(self.d[l + len - 1].clone()),
                 v.clone(),
             );
             if !is_ok(&nv) {

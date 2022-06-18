@@ -1,6 +1,0 @@
-class DualSegmentTree:
-    ...
-
-
-class DualFenwickTree:
-    ...

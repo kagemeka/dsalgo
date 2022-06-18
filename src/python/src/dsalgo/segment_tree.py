@@ -2,18 +2,18 @@ from __future__ import annotations
 
 import typing
 
-import dsalgo.abstract_structure
+import dsalgo.algebraic_structure
 from dsalgo.type import F, S
 
 
 class SegmentTree(typing.Generic[S]):
-    _monoid: dsalgo.abstract_structure.Monoid[S]
+    _monoid: dsalgo.algebraic_structure.Monoid[S]
     _data: list[S]
     _size: int
 
     def __init__(
         self,
-        monoid: dsalgo.abstract_structure.Monoid[S],
+        monoid: dsalgo.algebraic_structure.Monoid[S],
         array: list[S],
     ) -> None:
         size = len(array)
@@ -156,16 +156,16 @@ class SegmentTreeBeats:
 
 
 class LazySegmentTree(typing.Generic[S, F]):
-    _monoid_s: dsalgo.abstract_structure.Monoid[S]
-    _monoid_f: dsalgo.abstract_structure.Monoid[F]
+    _monoid_s: dsalgo.algebraic_structure.Monoid[S]
+    _monoid_f: dsalgo.algebraic_structure.Monoid[F]
     _data: list[S]
     _lazy: list[F]
     _size: int
 
     def __init__(
         self,
-        monoid_s: dsalgo.abstract_structure.Monoid[S],
-        monoid_f: dsalgo.abstract_structure.Monoid[F],
+        monoid_s: dsalgo.algebraic_structure.Monoid[S],
+        monoid_f: dsalgo.algebraic_structure.Monoid[F],
         map_: typing.Callable[[F, S], S],
         arr: list[S],
     ) -> None:

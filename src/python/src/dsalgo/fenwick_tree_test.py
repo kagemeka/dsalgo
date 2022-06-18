@@ -1,12 +1,12 @@
 import unittest
 
-import dsalgo.abstract_structure
+import dsalgo.algebraic_structure
 import dsalgo.fenwick_tree
 
 
 class TestFenwickTree2D(unittest.TestCase):
     def test(self) -> None:
-        monoid = dsalgo.abstract_structure.Monoid[int](
+        monoid = dsalgo.algebraic_structure.Monoid[int](
             lambda x, y: x + y,
             lambda: 0,
         )
@@ -32,7 +32,7 @@ class TestFenwickTreeIntAdd2D(unittest.TestCase):
 
 class TestDualFenwickTree(unittest.TestCase):
     def test(self) -> None:
-        group = dsalgo.abstract_structure.Group[int](
+        group = dsalgo.algebraic_structure.Group[int](
             lambda x, y: x + y,
             lambda: 0,
             lambda x: -x,

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-import dsalgo.abstract_structure
+import dsalgo.algebraic_structure
 import dsalgo.euler_tour
 import dsalgo.heavy_light_decomposition
 import dsalgo.sparse_table
@@ -88,7 +88,7 @@ def euler_tour_rmq(
     depth = dsalgo.euler_tour.compute_depth(tour)
     tour = dsalgo.euler_tour.to_nodes(tour)
     first_idx = dsalgo.euler_tour.compute_first_index(tour)
-    semigroup = dsalgo.abstract_structure.Semigroup[typing.Tuple[int, int]](
+    semigroup = dsalgo.algebraic_structure.Semigroup[typing.Tuple[int, int]](
         operation=min
     )
     """
