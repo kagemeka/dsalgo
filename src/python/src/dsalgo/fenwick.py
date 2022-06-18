@@ -4,11 +4,11 @@
 # if failed, raise not implemented error
 
 from __future__ import annotations
-import unittest
 
 import typing
+import unittest
 
-from dsalgo.algebraic_structure import Monoid, Group
+from dsalgo.algebraic_structure import Group, Monoid
 from dsalgo.type import S
 
 
@@ -256,6 +256,68 @@ class Fw2DAbelian(typing.Generic[S]):
 # mypy: ignore-errors
 
 
+class FwMultiset:
+    __max_value: int
+
+    def __init__(self, max_value: int) -> None:
+        """instance can contain values range of [0, max_value)."""
+        self.__fw = FwIntAdd([0] * max_value)
+
+        self.__max_value = max_value
+
+    @property
+    def max_value(self) -> int:
+        return self.__max_value
+
+    def __len__(self) -> int:
+        return self.__fw[self.max_value]
+
+    def __contains__(self, x: int) -> bool:
+        return self.count(x) >= 1
+
+    def count(self, x: int) -> int:
+        if x < 0 or self.max_value <= x:
+            return 0
+        return self.__fw.get_range(x, x + 1)
+
+    def is_empty(self) -> bool:
+        return len(self) == 0
+
+    def __bool__(self) -> bool:
+        return not self.is_empty()
+
+    def insert(self, x: int) -> None:
+        assert 0 <= x < self.max_value
+        self.__fw[x] = 1
+
+    def remove(self, x: int) -> None:
+        if x not in self:
+            raise KeyError(x)
+        self.__fw[x] = -1
+
+    def remove_all(self, x: int) -> None:
+        assert 0 <= x < self.max_value
+        self.__fw[x] = -self.count(x)
+
+    def __getitem__(self, i: int) -> int | None:
+        """Return i-th element."""
+        if not 0 <= i < len(self):
+            return None
+        return self.__fw.max_right(lambda v: v < i + 1)
+
+    def min(self) -> int | None:
+        return None if len(self) == 0 else self[0]
+
+    def max(self) -> int | None:
+        return None if len(self) == 0 else self[len(self) - 1]
+
+    def lower_bound(self, x: int) -> int:
+        return self.__fw[x]
+
+    def upper_bound(self, x: int) -> int:
+        return self.__fw[x + 1]
+
+
 class Tests(unittest.TestCase):
     def test_fenwick(self) -> None:
         import operator
@@ -300,6 +362,77 @@ class Tests(unittest.TestCase):
         a[1][1] -= 1
         assert_sum()
 
+    def test_fw_multiset(self) -> None:
+        ms = FwMultiset(max_value=1 << 10)
+        self.assertIsNone(ms.min())
+        self.assertIsNone(ms.max())
+        ms.insert(5)
+        self.assertEqual(len(ms), 1)
+        ms.insert(1000)
+        self.assertEqual(len(ms), 2)
+        ms.insert(5)
+        self.assertEqual(len(ms), 3)
+        self.assertEqual(ms.max(), 1000)
+        self.assertEqual(ms.min(), 5)
+        with self.assertRaises(AssertionError):
+            ms.insert(1 << 10)
+        self.assertEqual(ms.lower_bound(5), 0)
+        self.assertEqual(ms.upper_bound(5), 2)
+        self.assertEqual(ms.lower_bound(6), 2)
+        self.assertEqual(ms.upper_bound(4), 0)
+        ms.remove(1000)
+        with self.assertRaises(KeyError):
+            ms.remove(1000)
+        self.assertEqual(len(ms), 2)
+        ms.remove_all(5)
+        self.assertTrue(ms.is_empty())
+
+
+# class TestFenwickTree2D(unittest.TestCase):
+#     def test(self) -> None:
+#         monoid = dsalgo.algebraic_structure.Monoid[int](
+#             lambda x, y: x + y,
+#             lambda: 0,
+#         )
+#         fw = dsalgo.fenwick_tree.FenwickTree2D(monoid, (4, 5))
+#         fw.set(1, 2, 1)
+#         self.assertEqual(fw.get(2, 3), 1)
+#         fw.set(0, 3, -1)
+#         fw.set(2, 0, 3)
+#         self.assertEqual(fw.get(3, 3), 4)
+#         self.assertEqual(fw.get(2, 4), 0)
+
+
+# class TestFenwickTreeIntAdd2D(unittest.TestCase):
+#     def test(self) -> None:
+#         fw = dsalgo.fenwick_tree.FenwickTreeIntAdd2D((4, 5))
+#         fw.set(1, 2, 1)
+#         self.assertEqual(fw.get(2, 3), 1)
+#         fw.set(0, 3, -1)
+#         fw.set(2, 0, 3)
+#         self.assertEqual(fw.get(3, 3), 4)
+#         self.assertEqual(fw.get(2, 4), 0)
+
+
+# class TestDualFenwickTree(unittest.TestCase):
+#     def test(self) -> None:
+#         group = dsalgo.algebraic_structure.Group[int](
+#             lambda x, y: x + y,
+#             lambda: 0,
+#             lambda x: -x,
+#         )
+#         fw = dsalgo.fenwick_tree.DualFenwickTree[int](group, list(range(5)))
+#         self.assertEqual(fw[4], 4)
+#         fw.set(1, 3, 2)
+#         self.assertEqual(fw[2], 4)
+
+
+# class TestDualFenwickTreeIntAdd(unittest.TestCase):
+#     def test(self) -> None:
+#         fw = dsalgo.fenwick_tree.DualFenwickTreeIntAdd(list(range(5)))
+#         self.assertEqual(fw[4], 4)
+#         fw.set(1, 3, 2)
+#         self.assertEqual(fw[2], 4)
 
 if __name__ == "__main__":
     import doctest

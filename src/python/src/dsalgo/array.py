@@ -24,10 +24,10 @@ def bincount(arr: list[int]) -> list[int]:
 
 def compute_inversion_number(arr: list[int]) -> int:
     import dsalgo.array_compression
-    import dsalgo.fenwick_tree
+    import dsalgo.fenwick
 
     arr = dsalgo.array_compression.compress(arr).compressed_array
-    fw = dsalgo.fenwick_tree.FenwickTreeIntAdd([0] * len(arr))
+    fw = dsalgo.fenwick.FenwickTreeIntAdd([0] * len(arr))
     count = 0
     for i, x in enumerate(arr):
         count += i - fw[x]

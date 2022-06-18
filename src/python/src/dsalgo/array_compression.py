@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
-import typing
-
 import dataclasses
+import typing
+import unittest
 
 
 class ArrayCompression:

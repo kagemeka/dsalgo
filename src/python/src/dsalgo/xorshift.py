@@ -1,5 +1,4 @@
 import typing
-
 import unittest
 
 T = typing.TypeVar("T")
