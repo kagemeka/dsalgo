@@ -5,7 +5,7 @@ Graph Theory
 
 import typing
 
-from dsalgo.abstract_structure import Monoid
+from dsalgo.algebraic_structure import Monoid
 
 S = typing.TypeVar("S")
 F = typing.TypeVar("F")

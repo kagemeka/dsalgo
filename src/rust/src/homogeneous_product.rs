@@ -26,8 +26,10 @@ mod tests {
         use super::HomogeneousProduct;
         use crate::{
             combination::Combination,
-            default_static_modular_arithmetic::Modular1_000_000_007,
-            static_modular_int::StaticModularInt,
+            modular::{
+                arithmetic::Modular1_000_000_007,
+                int::Modint as StaticModularInt,
+            },
         };
 
         type Mint = StaticModularInt<u32, Modular1_000_000_007>;

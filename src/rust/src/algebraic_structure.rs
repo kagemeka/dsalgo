@@ -58,4 +58,31 @@ pub mod itself {
         I: Id,
     {
     }
+
+    pub trait Semigroup<I: Id>: Magma<I> + Associative<I> {}
+
+    impl<I, T> Semigroup<I> for T
+    where
+        T: Magma<I> + Associative<I>,
+        I: Id,
+    {
+    }
+
+    pub trait Monoid<I: Id>: Semigroup<I> + Identity<I> {}
+
+    impl<I, T> Monoid<I> for T
+    where
+        T: Semigroup<I> + Identity<I>,
+        I: Id,
+    {
+    }
+
+    pub trait Group<I: Id>: Monoid<I> + Inverse<I> {}
+
+    impl<I, T> Group<I> for T
+    where
+        T: Monoid<I> + Inverse<I>,
+        I: Id,
+    {
+    }
 }

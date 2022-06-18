@@ -1,4 +1,4 @@
-/// binary function
+//! binary function
 pub trait BinaryFunc {
     type L;
     type R;
@@ -144,7 +144,7 @@ pub trait Idempotence: BinaryOp {
     }
 }
 
-/// latain square property
+/// latin square property
 pub trait LatinSquare: BinaryOp {}
 
 impl<T: Inverse> LatinSquare for T {}
@@ -314,5 +314,19 @@ pub mod itself {
 
     pub trait BinaryOp<I: Id> {
         fn op(_: Self, _: Self) -> Self;
+    }
+
+    pub trait Commutative<I: Id> {}
+
+    pub trait Associative<I: Id> {}
+
+    pub trait Idempotence<I: Id> {}
+
+    pub trait Identity<I: Id> {
+        fn e() -> Self;
+    }
+
+    pub trait Inverse<I: Id> {
+        fn inv(_: Self) -> Self;
     }
 }

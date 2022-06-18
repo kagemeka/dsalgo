@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import typing
 
-import dsalgo.abstract_structure
+import dsalgo.algebraic_structure
 import dsalgo.modular
 from dsalgo.type import T
 
 
 def pascal_triangle(
-    monoid: dsalgo.abstract_structure.Monoid[T],
+    monoid: dsalgo.algebraic_structure.Monoid[T],
     default: typing.Callable[[], T],
     size: int,
 ) -> list[list[T]]:
@@ -22,7 +22,7 @@ def pascal_triangle(
 
 
 def define_caching_pascal_triangle(
-    monoid: dsalgo.abstract_structure.Monoid[T],
+    monoid: dsalgo.algebraic_structure.Monoid[T],
     default: typing.Callable[[], T],
 ) -> typing.Callable[[int, int], T]:
     import functools

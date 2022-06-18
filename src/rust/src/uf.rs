@@ -4,6 +4,7 @@ pub trait Root {
     fn root(&mut self, u: usize) -> usize;
 }
 
+#[allow(private_in_public)]
 trait Size {
     fn size(&self) -> usize;
 }

@@ -1,8 +1,9 @@
 use crate::{binary_function::*, group_theory_id::*};
 
-/// ((usize, usize), min)
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct GroupApprox<S, I>(std::marker::PhantomData<(S, I)>);
 
+/// ((usize, usize), min)
 impl BinaryOp for GroupApprox<(usize, usize), Min> {
     type S = (usize, usize);
 
@@ -73,4 +74,55 @@ impl Identity for GroupApprox<i32, Additive> {
 
 impl Inverse for GroupApprox<i32, Additive> {
     fn inv(x: i32) -> i32 { -x }
+}
+
+/// (u64, +)
+impl BinaryOp for GroupApprox<u64, Additive> {
+    type S = u64;
+
+    fn op(lhs: Self::S, rhs: Self::S) -> Self::S { lhs + rhs }
+}
+
+impl Commutative for GroupApprox<u64, Additive> {}
+
+impl Associative for GroupApprox<u64, Additive> {}
+
+impl Identity for GroupApprox<u64, Additive> {
+    fn e() -> Self::S { 0 }
+}
+
+/// (i64, +)
+impl BinaryOp for GroupApprox<i64, Additive> {
+    type S = i64;
+
+    fn op(lhs: Self::S, rhs: Self::S) -> Self::S { lhs + rhs }
+}
+
+impl Commutative for GroupApprox<i64, Additive> {}
+
+impl Associative for GroupApprox<i64, Additive> {}
+
+impl Identity for GroupApprox<i64, Additive> {
+    fn e() -> Self::S { 0 }
+}
+
+impl Inverse for GroupApprox<i64, Additive> {
+    fn inv(x: i64) -> i64 { -x }
+}
+
+/// (u64, min)
+impl BinaryOp for GroupApprox<u64, Min> {
+    type S = u64;
+
+    fn op(lhs: Self::S, rhs: Self::S) -> Self::S { lhs.min(rhs) }
+}
+
+impl Idempotence for GroupApprox<u64, Min> {}
+
+impl Commutative for GroupApprox<u64, Min> {}
+
+impl Associative for GroupApprox<u64, Min> {}
+
+impl Identity for GroupApprox<u64, Min> {
+    fn e() -> Self::S { std::u64::MAX }
 }

@@ -1,8 +1,4 @@
-use crate::{
-    accumulate::accumulate,
-    factorial::factorial,
-    multiplicative_inverse::MulInv,
-};
+use crate::{accumulate::accumulate, factorial::factorial, ops::MulInv};
 
 pub fn inverse_factorial_table<T>(size: usize) -> Vec<T>
 where
@@ -27,9 +23,9 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        use crate::{
-            default_static_modular_arithmetic::Modular1_000_000_007,
-            static_modular_int::StaticModularInt,
+        use crate::modular::{
+            arithmetic::Modular1_000_000_007,
+            int::Modint as StaticModularInt,
         };
 
         type Mint = StaticModularInt<u32, Modular1_000_000_007>;

@@ -10,7 +10,7 @@ T = typing.TypeVar("T")
 
 @dataclasses.dataclass
 class Magma(typing.Generic[T]):
-    operation: typing.Callable[[T, T], T]
+    op: typing.Callable[[T, T], T]
 
 
 @dataclasses.dataclass
@@ -20,12 +20,12 @@ class Semigroup(Magma[T]):
 
 @dataclasses.dataclass
 class Monoid(Semigroup[T]):
-    identity: typing.Callable[[], T]
+    e: typing.Callable[[], T]
 
 
 @dataclasses.dataclass
 class Group(Monoid[T]):
-    invert: typing.Callable[[T], T]
+    inv: typing.Callable[[T], T]
 
 
 @dataclasses.dataclass

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import dsalgo.abstract_structure
+import dsalgo.algebraic_structure
 import dsalgo.fenwick_tree
 
 # import typing
