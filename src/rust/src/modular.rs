@@ -270,7 +270,9 @@ pub mod arithmetic {
     /// why `default`?
     /// because there exists other modular arithmetic implementations.
     /// e.g. Montgomery Multiplication, or Burrett Reduction.
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
+    #[derive(
+        Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Default,
+    )]
     pub struct DefaultStatic<T, M: StaticGet<T = T>>(
         std::marker::PhantomData<(T, M)>,
     );
@@ -283,6 +285,7 @@ pub mod arithmetic {
                 fn modulus() -> Self::T { M::get() }
 
                 fn add(lhs: Self::T, rhs: Self::T) -> Self::T {
+                    assert!(lhs < M::get() && rhs < M::get());
                     let mut x = lhs;
                     x += rhs;
                     if x >= M::get() {
@@ -292,6 +295,7 @@ pub mod arithmetic {
                 }
 
                 fn neg(x: Self::T) -> Self::T {
+                    assert!(x < M::get());
                     if x == 0 { 0 } else { M::get() - x }
                 }
 
@@ -404,6 +408,24 @@ pub mod int {
         }
     }
 
+    impl<M: Arithmetic<T = u64>> Modint<u64, M> {
+        pub fn new(mut v: u64) -> Self {
+            if v >= M::modulus() {
+                v %= M::modulus();
+            }
+            Modint { value: v }
+        }
+    }
+
+    impl<M: Arithmetic<T = u32>> Modint<u32, M> {
+        pub fn new(mut v: u32) -> Self {
+            if v >= M::modulus() {
+                v %= M::modulus();
+            }
+            Modint { value: v }
+        }
+    }
+
     impl<T, M> Modint<T, M>
     where
         M: Arithmetic<T = T>,
@@ -412,7 +434,7 @@ pub mod int {
         // TODO: make const
         pub fn value(&self) -> M::T { self.value }
 
-        pub fn new(value: M::T) -> Self { Self { value } }
+        // pub fn new(value: M::T) -> Self { Self { value } }
 
         pub fn modulus() -> M::T { M::modulus() }
     }

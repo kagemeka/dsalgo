@@ -616,6 +616,7 @@ pub mod upper_bound_on_sequence;
 pub mod usize_min;
 pub mod van_emde_boas_tree;
 pub mod vector;
+pub mod vector_space;
 pub mod vector_unique;
 pub mod verbal_arithmetic;
 pub mod vertex_cut;

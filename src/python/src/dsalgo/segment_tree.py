@@ -2,97 +2,86 @@ from __future__ import annotations
 
 import typing
 
-import dsalgo.algebraic_structure
-from dsalgo.type import F, S
+from dsalgo.algebraic_structure import Monoid
+
+T = typing.TypeVar("T")
+S = typing.TypeVar("S")
+F = typing.TypeVar("F")
 
 
-class SegmentTree(typing.Generic[S]):
-    _monoid: dsalgo.algebraic_structure.Monoid[S]
-    _data: list[S]
-    _size: int
+class Segtree(typing.Generic[S]):
+    _g: Monoid[S]
+    _d: list[S]  # data
+    _sz: int  # size
 
-    def __init__(
-        self,
-        monoid: dsalgo.algebraic_structure.Monoid[S],
-        array: list[S],
-    ) -> None:
-        size = len(array)
-        n = 1 << (size - 1).bit_length()
-        data = [monoid.identity() for _ in range(n << 1)]
-        data[n : n + size] = array.copy()
-        self._monoid, self._size, self._data = monoid, size, data
-        for node_index in range(n - 1, 0, -1):
-            self._merge(node_index)
+    def __init__(self, g: Monoid[S], a: list[S]) -> None:
+        sz = len(a)
+        n = 1 << (sz - 1).bit_length()
+        d = [g.e() for _ in range(n << 1)]
+        d[n : n + sz] = a
+        self._g, self._sz, self._d = g, sz, d
+        for i in range(n - 1, 0, -1):
+            self._update(i)
 
     @property
     def size(self) -> int:
-        return self._size
+        return self._sz
 
-    def _merge(self, i: int) -> None:
-        self._data[i] = self._monoid.operation(
-            self._data[i << 1],
-            self._data[i << 1 | 1],
-        )
+    def _n(self) -> int:
+        return len(self._d) >> 1
 
-    def __setitem__(self, i: int, x: S) -> None:
-        if not 0 <= i < self.size:
-            raise IndexError
-        i += len(self._data) >> 1
-        self._data[i] = x
+    def _update(self, i: int) -> None:
+        self._d[i] = self._g.op(self._d[i << 1], self._d[i << 1 | 1])
+
+    def __setitem__(self, i: int, v: S) -> None:
+        assert 0 <= i < self.size
+        i += self._n()
+        self._d[i] = v
         while i > 1:
             i >>= 1
-            self._merge(i)
+            self._update(i)
 
     def __getitem__(self, i: int) -> S:
-        if not 0 <= i < self.size:
-            raise IndexError
-        return self._data[(len(self._data) >> 1) + i]
+        assert 0 <= i < self.size
+        return self._d[i + self._n()]
 
-    def get(self, left: int, right: int) -> S:
-        if not 0 <= left <= right <= self.size:
-            raise IndexError
-        n = len(self._data) >> 1
-        left += n
-        right += n
-        value_left = self._monoid.identity()
-        value_right = self._monoid.identity()
-        while left < right:
-            if left & 1:
-                value_left = self._monoid.operation(
-                    value_left,
-                    self._data[left],
-                )
-                left += 1
-            if right & 1:
-                right -= 1
-                value_right = self._monoid.operation(
-                    self._data[right],
-                    value_right,
-                )
-            left >>= 1
-            right >>= 1
-        return self._monoid.operation(value_left, value_right)
+    def reduce(self, l: int, r: int) -> S:
+        assert 0 <= l <= r <= self.size
+        n = self._n()
+        l += n
+        r += n
+        vl = self._g.e()
+        vr = self._g.e()
+        while l < r:
+            if l & 1:
+                vl = self._g.op(vl, self._d[l])
+                l += 1
+            if r & 1:
+                r -= 1
+                vr = self._g.op(self._d[r], vr)
+            l >>= 1
+            r >>= 1
+        return self._g.op(vl, vr)
 
-    def max_right(self, is_ok: typing.Callable[[S], bool], left: int) -> int:
-        if not 0 <= left <= self.size:
-            raise IndexError
-        if left == self.size:
+    def max_right(self, is_ok: typing.Callable[[S], bool], l: int) -> int:
+        assert 0 <= l <= self.size
+        if l == self.size:
             return self.size
         n = len(self._data) >> 1
-        v, i = self._monoid.identity(), n + left
+        v, i = self._g.identity(), n + left
         while True:
             i //= i & -i
-            if not is_ok(self._monoid.operation(v, self._data[i])):
+            if not is_ok(self._g.operation(v, self._data[i])):
                 break
-            v = self._monoid.operation(v, self._data[i])
+            v = self._g.operation(v, self._data[i])
             i += 1
             if i & -i == i:
                 return self.size
         while i < n:
             i <<= 1
-            if not is_ok(self._monoid.operation(v, self._data[i])):
+            if not is_ok(self._g.operation(v, self._data[i])):
                 continue
-            v = self._monoid.operation(v, self._data[i])
+            v = self._g.operation(v, self._data[i])
             i += 1
         return i - n
 
@@ -102,21 +91,21 @@ class SegmentTree(typing.Generic[S]):
         if right == 0:
             return 0
         n = len(self._data) >> 1
-        v, i = self._monoid.identity(), n + right
+        v, i = self._g.identity(), n + right
         while True:
             i //= i & -i
-            if not is_ok(self._monoid.operation(self._data[i - 1], v)):
+            if not is_ok(self._g.operation(self._data[i - 1], v)):
                 break
             i -= 1
-            v = self._monoid.operation(self._data[i], v)
+            v = self._g.operation(self._data[i], v)
             if i & -i == i:
                 return 0
         while i < n:
             i <<= 1
-            if not is_ok(self._monoid.operation(self._data[i - 1], v)):
+            if not is_ok(self._g.operation(self._data[i - 1], v)):
                 continue
             i -= 1
-            v = self._monoid.operation(self._data[i], v)
+            v = self._g.operation(self._data[i], v)
         return i - n
 
 
@@ -135,11 +124,11 @@ class SegmentTreeDFS(SegmentTree[S]):
         node_index: int,
     ) -> S:
         if current_right <= left or right <= current_left:
-            return self._monoid.identity()
+            return self._g.identity()
         if left <= current_left and current_right <= right:
             return self._data[node_index]
         center = (current_left + current_right) >> 1
-        return self._monoid.operation(
+        return self._g.operation(
             self.__get(left, right, current_left, center, node_index << 1),
             self.__get(
                 left, right, center, current_right, node_index << 1 | 1
@@ -156,8 +145,8 @@ class SegmentTreeBeats:
 
 
 class LazySegmentTree(typing.Generic[S, F]):
-    _monoid_s: dsalgo.algebraic_structure.Monoid[S]
-    _monoid_f: dsalgo.algebraic_structure.Monoid[F]
+    _g_s: dsalgo.algebraic_structure.Monoid[S]
+    _g_f: dsalgo.algebraic_structure.Monoid[F]
     _data: list[S]
     _lazy: list[F]
     _size: int
@@ -174,7 +163,7 @@ class LazySegmentTree(typing.Generic[S, F]):
         data = [monoid_s.identity() for _ in range(n << 1)]
         data[n : n + size] = arr.copy()
         lazy = [monoid_f.identity() for _ in range(n)]
-        self._monoid_s, self._monoid_f, self.__map = monoid_s, monoid_f, map_
+        self._g_s, self._g_f, self.__map = monoid_s, monoid_f, map_
         self._size, self._data, self._lazy = size, data, lazy
         for i in range(n - 1, 0, -1):
             self._merge(i)
@@ -186,8 +175,8 @@ class LazySegmentTree(typing.Generic[S, F]):
     def size(self) -> int:
         return self._size
 
-    def _merge(self, i: int) -> None:
-        self._data[i] = self._monoid_s.operation(
+    def _update(self, i: int) -> None:
+        self._data[i] = self._g_s.operation(
             self._data[i << 1],
             self._data[i << 1 | 1],
         )
@@ -195,12 +184,12 @@ class LazySegmentTree(typing.Generic[S, F]):
     def _apply(self, i: int, f: F) -> None:
         self._data[i] = self.__map(f, self._data[i])
         if i < len(self._lazy):
-            self._lazy[i] = self._monoid_f.operation(f, self._lazy[i])
+            self._lazy[i] = self._g_f.operation(f, self._lazy[i])
 
     def _propagate(self, i: int) -> None:
         self._apply(i << 1, self._lazy[i])
         self._apply(i << 1 | 1, self._lazy[i])
-        self._lazy[i] = self._monoid_f.identity()
+        self._lazy[i] = self._g_f.identity()
 
     def set(self, left: int, right: int, f: F) -> None:
         assert 0 <= left <= right <= self.size
@@ -244,16 +233,16 @@ class LazySegmentTree(typing.Generic[S, F]):
             if (right >> i) << i != right:
                 self._propagate((right - 1) >> i)
 
-        vl, vr = self._monoid_s.identity(), self._monoid_s.identity()
+        vl, vr = self._g_s.identity(), self._g_s.identity()
         while left < right:
             if left & 1:
-                vl = self._monoid_s.operation(vl, self._data[left])
+                vl = self._g_s.operation(vl, self._data[left])
                 left += 1
             if right & 1:
                 right -= 1
-                vr = self._monoid_s.operation(self._data[right], vr)
+                vr = self._g_s.operation(self._data[right], vr)
             left, right = left >> 1, right >> 1
-        return self._monoid_s.operation(vl, vr)
+        return self._g_s.operation(vl, vr)
 
     def update(self, i: int, x: S) -> None:
         assert 0 <= i < self.size
@@ -312,7 +301,7 @@ class LazySegmentTreeDFS(LazySegmentTree[S, F]):
         if i < n:
             self._propagate(i)
         if current_right <= left or right <= current_left:
-            return self._monoid_s.identity()
+            return self._g_s.identity()
         if left <= current_left and current_right <= right:
             if i < n:
                 self._propagate(i)
@@ -321,7 +310,7 @@ class LazySegmentTreeDFS(LazySegmentTree[S, F]):
         vl = self.__get(left, right, current_left, center, i << 1)
         vr = self.__get(left, right, center, current_right, i << 1 | 1)
         self._merge(i)
-        return self._monoid_s.operation(vl, vr)
+        return self._g_s.operation(vl, vr)
 
     def update(self, i: int, x: S) -> None:
         assert 0 <= i < self.size

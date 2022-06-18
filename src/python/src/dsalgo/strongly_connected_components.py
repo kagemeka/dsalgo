@@ -25,7 +25,7 @@ def kosaraju(graph: list[list[int]]) -> list[int]:
                 dfs(v)
         que.append(u)
 
-    def rev_dfs(u: int, label: int):
+    def rev_dfs(u: int, label: int) -> None:
         labels[u] = label
         for v in t_graph[u]:
             if labels[v] == -1:
