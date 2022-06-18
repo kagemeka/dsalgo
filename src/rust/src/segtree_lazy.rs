@@ -11,10 +11,10 @@ where
     Fg: Monoid,
     M: BinaryFunc<L = Fg::S, R = Sg::S, Cod = Sg::S>,
 {
-    size: usize,    // size
-    h: u8,          // height
-    d: Vec<Sg::S>,  // data
-    lz: Vec<Fg::S>, // lazy operators
+    size: usize,               // size
+    h: u8,                     // height
+    pub(crate) d: Vec<Sg::S>,  // data, pub(crate) for debug
+    pub(crate) lz: Vec<Fg::S>, // lazy operators
     _phantom: std::marker::PhantomData<M>,
 }
 

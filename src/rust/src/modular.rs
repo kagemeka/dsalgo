@@ -124,23 +124,24 @@ pub mod modulus {
     define_static_mod!(StaticMod32, u32, AtomicU32);
     define_static_mod!(StaticMod64, u64, AtomicU64);
 
-    macro_rules! define_const_mod {
-        ($name:ident, $uint:ty) => {
-            #[derive(
-                Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash,
-            )]
-            pub struct $name<const MOD: $uint>;
+    // TODO: change later. not compile on AtCoder.
+    // macro_rules! define_const_mod {
+    //     ($name:ident, $uint:ty) => {
+    //         #[derive(
+    //             Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash,
+    //         )]
+    //         pub struct $name<const MOD: $uint>;
 
-            impl<const MOD: $uint> StaticGet for $name<MOD> {
-                type T = $uint;
+    //         impl<const MOD: $uint> StaticGet for $name<MOD> {
+    //             type T = $uint;
 
-                fn get() -> Self::T { MOD }
-            }
-        };
-    }
+    //             fn get() -> Self::T { MOD }
+    //         }
+    //     };
+    // }
 
-    define_const_mod!(ConstMod64, u64);
-    define_const_mod!(ConstMod32, u32);
+    // define_const_mod!(ConstMod64, u64);
+    // define_const_mod!(ConstMod32, u32);
 
     /// old version for online judges.
     macro_rules! define_const_mod_old {
@@ -192,11 +193,13 @@ pub mod modulus {
     #[cfg(test)]
     mod tests {
         use super::*;
-        #[test]
-        fn test_const_mod() {
-            type Mod = ConstMod32<1_000_000_007>;
-            assert_eq!(Mod::get(), 1_000_000_007);
-        }
+        // TODO: change later. not compile on AtCoder.
+
+        // #[test]
+        // fn test_const_mod() {
+        //     type Mod = ConstMod32<1_000_000_007>;
+        //     assert_eq!(Mod::get(), 1_000_000_007);
+        // }
 
         #[test]
         fn test_const_mod_old() {
@@ -310,14 +313,24 @@ pub mod arithmetic {
     impl_default_static!(u32, u64);
     impl_default_static!(u64, u128);
 
-    use crate::modular::modulus::ConstMod32;
+    // TODO: change later. still not compile on AtCoder.
+    // use crate::modular::modulus::ConstMod32;
+
+    // #[allow(dead_code)]
+    // pub type Modular1_000_000_007 =
+    //     DefaultStatic<u32, ConstMod32<1_000_000_007>>;
+
+    // #[allow(dead_code)]
+    // pub type Modular998_244_353 =
+    //     DefaultStatic<u32, ConstMod32<998_244_353>>;
+
+    use crate::modular::modulus::{Mod1_000_000_007, Mod998_244_353};
 
     #[allow(dead_code)]
-    pub type Modular1_000_000_007 =
-        DefaultStatic<u32, ConstMod32<1_000_000_007>>;
+    pub type Modular1_000_000_007 = DefaultStatic<u32, Mod1_000_000_007>;
 
     #[allow(dead_code)]
-    pub type Modular998_244_353 = DefaultStatic<u32, ConstMod32<998_244_353>>;
+    pub type Modular998_244_353 = DefaultStatic<u32, Mod998_244_353>;
 
     #[cfg(test)]
     mod tests {
@@ -396,9 +409,10 @@ pub mod int {
         M: Arithmetic<T = T>,
         M::T: Copy,
     {
-        pub const fn value(&self) -> M::T { self.value }
+        // TODO: make const
+        pub fn value(&self) -> M::T { self.value }
 
-        pub const fn new(value: M::T) -> Self { Self { value } }
+        pub fn new(value: M::T) -> Self { Self { value } }
 
         pub fn modulus() -> M::T { M::modulus() }
     }

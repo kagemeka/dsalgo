@@ -198,7 +198,9 @@ pub fn msb_number_binary_search(mut n: u64) -> u64 {
         0xcccccccccccccccc, // 0b1100...
         0xaaaaaaaaaaaaaaaa, // 0b1010...
     ];
-    for m in MASKS {
+    // TODO: change later. not compile on AtCoder.
+    // for m in MASKS {
+    for m in MASKS.iter() {
         if n & m > 0 {
             n &= m;
         }

@@ -1,8 +1,9 @@
 use crate::{binary_function::*, group_theory_id::*};
 
-/// ((usize, usize), min)
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct GroupApprox<S, I>(std::marker::PhantomData<(S, I)>);
 
+/// ((usize, usize), min)
 impl BinaryOp for GroupApprox<(usize, usize), Min> {
     type S = (usize, usize);
 
