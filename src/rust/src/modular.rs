@@ -1,4 +1,4 @@
-use crate::power_monoid::pow_monoid;
+use crate::power::pow_monoid;
 
 /// pow for u32
 /// why not only u64?
@@ -597,7 +597,7 @@ pub mod int {
         fn from(value: usize) -> Self { Self::from(value as u64) }
     }
 
-    use crate::power_monoid::PowerMonoidSelf;
+    use crate::power::itself::PowMonoid;
 
     impl<M> Modint<u64, M>
     where
@@ -616,44 +616,34 @@ pub mod int {
     }
 
     use crate::{
-        associative_property::AssociativeProperty,
-        binary_operation::BinaryOperation,
-        group_theory_id::Multiplicative,
-        identity_element::IdentityElement,
+        binary_function::itself::*,
+        group_theory_id::*,
         multiplicative_inverse::MulInv,
     };
 
-    impl<T, M> BinaryOperation<Multiplicative> for Modint<T, M>
+    impl<T, M> BinaryOp<Multiplicative> for Modint<T, M>
     where
         M: Arithmetic<T = T>,
         T: Copy,
     {
-        type Codomain = Self;
-        type Lhs = Self;
-        type Rhs = Self;
-
-        fn map(lhs: Self, rhs: Self) -> Self { lhs * rhs }
+        fn op(lhs: Self, rhs: Self) -> Self { lhs * rhs }
     }
 
-    impl<M> IdentityElement<Multiplicative> for Modint<u64, M>
+    impl<M> Identity<Multiplicative> for Modint<u64, M>
     where
         M: Arithmetic<T = u64>,
     {
-        type X = Self;
-
-        fn identity() -> Self { 1.into() }
+        fn e() -> Self { 1.into() }
     }
 
-    impl<M> IdentityElement<Multiplicative> for Modint<u32, M>
+    impl<M> Identity<Multiplicative> for Modint<u32, M>
     where
         M: Arithmetic<T = u32>,
     {
-        type X = Self;
-
-        fn identity() -> Self { 1.into() }
+        fn e() -> Self { 1.into() }
     }
 
-    impl<T, M> AssociativeProperty<Multiplicative> for Modint<T, M> where
+    impl<T, M> Associative<Multiplicative> for Modint<T, M> where
         M: Arithmetic<T = T>
     {
     }

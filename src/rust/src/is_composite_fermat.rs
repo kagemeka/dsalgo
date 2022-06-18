@@ -1,7 +1,7 @@
 use crate::{
     gcd::int::euclidean as gcd,
     montgomery_modular_multiplication_64::MontgomeryMultiplication64,
-    power_semigroup::pow_semigroup,
+    power::pow_semigroup,
 };
 
 pub fn is_composite_fermat(base: u64, n: u64) -> bool {

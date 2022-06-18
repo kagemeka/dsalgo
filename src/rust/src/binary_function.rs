@@ -315,4 +315,18 @@ pub mod itself {
     pub trait BinaryOp<I: Id> {
         fn op(_: Self, _: Self) -> Self;
     }
+
+    pub trait Commutative<I: Id> {}
+
+    pub trait Associative<I: Id> {}
+
+    pub trait Idempotence<I: Id> {}
+
+    pub trait Identity<I: Id> {
+        fn e() -> Self;
+    }
+
+    pub trait Inverse<I: Id> {
+        fn inv(_: Self) -> Self;
+    }
 }

@@ -1,4 +1,4 @@
-use crate::power_semigroup::pow_semigroup;
+use crate::power::pow_semigroup;
 
 /// \sum_{i=0}^{n}a_0r^i
 pub fn geometric_series(a0: i64, r: i64, n: usize) -> i64 {

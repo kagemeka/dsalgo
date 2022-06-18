@@ -1,6 +1,6 @@
 use crate::{
     montgomery_modular_multiplication_64::MontgomeryMultiplication64,
-    power_semigroup::pow_semigroup,
+    power::pow_semigroup,
 };
 
 pub(crate) fn is_composite_miller_rabin(base: u64, n: u64) -> bool {
