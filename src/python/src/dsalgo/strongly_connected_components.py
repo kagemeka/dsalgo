@@ -1,49 +1,54 @@
 from __future__ import annotations
 
+import typing
 
-def _transpose_graph(graph: list[list[int]]) -> list[list[int]]:
-    n = len(graph)
-    new_graph: list[list[int]] = [[] for _ in range(n)]
+G = typing.List[typing.List[int]]
+L = typing.List[int]
+
+
+def _transpose(g: G) -> G:
+    n = len(g)
+    g2: G = [[] for _ in range(n)]
     for u in range(n):
-        for v in graph[u]:
-            new_graph[v].append(u)
-    return new_graph
+        for v in g[u]:
+            g2[v].append(u)
+    return g2
 
 
-def kosaraju(graph: list[list[int]]) -> list[int]:
-    n = len(graph)
-    visited = [False] * n
-    que: list[int] = []
-    t_graph = _transpose_graph(graph)
-    labels = [-1] * n
-    label = 0
+def kosaraju(g: G) -> L:
+    n = len(g)
+    vis = [False] * n
+    q: list[int] = []
 
     def dfs(u: int) -> None:
-        visited[u] = True
-        for v in graph[u]:
-            if not visited[v]:
+        vis[u] = True
+        for v in g[u]:
+            if not vis[v]:
                 dfs(v)
-        que.append(u)
+        q.append(u)
 
-    def rev_dfs(u: int, label: int) -> None:
-        labels[u] = label
-        for v in t_graph[u]:
-            if labels[v] == -1:
-                rev_dfs(v, label)
+    g = _transpose(g)
+    label = [-1] * n
+    l = 0
+
+    def rdfs(u: int, l: int) -> None:
+        label[u] = l
+        for v in g[u]:
+            if label[v] == -1:
+                rdfs(v, l)
 
     for u in range(n):
-        if not visited[u]:
+        if not vis[u]:
             dfs(u)
-    for u in que[::-1]:
-        if labels[u] != -1:
-            continue
-        rev_dfs(u, label)
-        label += 1
-    return labels
+    for u in q[::-1]:
+        if label[u] == -1:
+            rdfs(u, l)
+            l += 1
+    return label
 
 
-def path_based(graph: list[list[int]]) -> list[int]:
-    n = len(graph)
+def path_based(g: G) -> L:
+    n = len(g)
     order = [-1] * n
     labels = [-1] * n
     stack_0: list[int] = []
@@ -57,7 +62,7 @@ def path_based(graph: list[list[int]]) -> list[int]:
         ord += 1
         stack_0.append(u)
         stack_1.append(u)
-        for v in graph[u]:
+        for v in g[u]:
             if order[v] == -1:
                 dfs(v)
             elif labels[v] == -1:
@@ -83,8 +88,8 @@ def path_based(graph: list[list[int]]) -> list[int]:
     return labels
 
 
-def tarjan_lowlink(graph: list[list[int]]) -> list[int]:
-    n = len(graph)
+def tarjan_lowlink(g: G) -> list[int]:
+    n = len(g)
     stack: list[int] = []
     on_stack = [False] * n
     order = [-1] * n
@@ -99,7 +104,7 @@ def tarjan_lowlink(graph: list[list[int]]) -> list[int]:
         ord += 1
         stack.append(u)
         on_stack[u] = True
-        for v in graph[u]:
+        for v in g[u]:
             if order[v] == -1:
                 dfs(v)
                 lowlink[u] = min(lowlink[u], lowlink[v])
@@ -120,3 +125,36 @@ def tarjan_lowlink(graph: list[list[int]]) -> list[int]:
         if order[i] == -1:
             dfs(i)
     return labels
+
+
+import unittest
+
+
+class Tests(unittest.TestCase):
+    def test_kosaraju(self) -> None:
+        g: G = [[1, 3], [2], [3], []]
+        labels = dsalgo.strongly_connected_components.kosaraju(g)
+        self.assertEqual(
+            labels,
+            [0, 1, 2, 3],
+        )
+
+    def test_path_based(self) -> None:
+        g: G = [[1, 3], [2], [3], []]
+        labels = dsalgo.strongly_connected_components.path_based(g)
+        self.assertEqual(
+            labels,
+            [3, 2, 1, 0],
+        )
+
+    def test_tarjan_lowlink(self) -> None:
+        g: G = [[1, 3], [2], [3], []]
+        labels = dsalgo.strongly_connected_components.tarjan_lowlink(g)
+        self.assertEqual(
+            labels,
+            [3, 2, 1, 0],
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()

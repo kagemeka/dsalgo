@@ -1,250 +1,189 @@
 //! strongly connected components
 
-pub fn scc_kosaraju(sparse_graph: Vec<Vec<usize>>) -> Vec<usize> {
-    SCCKosaraju::compute_labels(sparse_graph)
+/// directed sparse graph. it not necessarily be simple.
+pub type G = Vec<Vec<usize>>;
+
+fn trans(g: G) -> G {
+    let n = g.len();
+    let mut t = vec![vec![]; n];
+    for i in 0..n {
+        for j in g[i].clone() {
+            t[j].push(i);
+        }
+    }
+    t
+}
+pub fn kosaraju(g: G) -> Vec<usize> {
+    struct D {
+        g: G,
+        vis: Vec<bool>,
+        q: Vec<usize>,
+        l: Vec<usize>,
+    }
+    let n = g.len();
+    let mut d = D {
+        g,
+        vis: vec![false; n],
+        q: vec![],
+        l: vec![n; n],
+    };
+    fn dfs(d: &mut D, u: usize) {
+        d.vis[u] = true;
+        for v in d.g[u].clone() {
+            if !d.vis[v] {
+                dfs(d, v);
+            }
+        }
+        d.q.push(u);
+    }
+    fn rds(d: &mut D, u: usize, l: usize) {
+        d.l[u] = l;
+        for v in d.g[u].clone() {
+            if d.l[v] == d.g.len() {
+                rds(d, v, l);
+            }
+        }
+    }
+    for i in 0..n {
+        if !d.vis[i] {
+            dfs(&mut d, i);
+        }
+    }
+    d.g = trans(d.g);
+    let mut l = 0;
+    for i in d.q.clone().into_iter().rev() {
+        if d.l[i] == n {
+            rds(&mut d, i, l);
+            l += 1;
+        }
+    }
+    d.l
 }
 
-struct SCCKosaraju {
-    graph: Vec<Vec<usize>>,
-    visited: Vec<bool>,
-    topological_reverse_order: Vec<usize>,
-    labels: Vec<usize>,
+fn toposort(lb: Vec<usize>) -> Vec<usize> {
+    let k = *lb.iter().max().unwrap();
+    lb.into_iter().map(|l| k - l).collect::<Vec<_>>()
 }
 
-impl SCCKosaraju {
-    fn compute_labels(directed_sparse_graph: Vec<Vec<usize>>) -> Vec<usize> {
-        let mut scc = SCCKosaraju::new(directed_sparse_graph);
+/// with tarjan's lowlink algorithm.
+pub fn tarjan(g: G) -> Vec<usize> {
+    struct D {
+        g: G,
+        s: Vec<usize>,   // stack
+        ord: Vec<usize>, // preorder
+        o: usize,
+        lo: Vec<usize>, // low preorder
+        lb: Vec<usize>, // label
+        l: usize,
+    }
+    let n = g.len();
+    let mut d = D {
+        g,
+        s: vec![],
+        ord: vec![n; n],
+        o: 0,
+        lo: vec![n; n],
+        lb: vec![n; n],
+        l: 0,
+    };
 
-        for u in 0..scc.size() {
-            if !scc.visited[u] {
-                scc.compute_topological_rev_ord(u);
+    fn labeling(d: &mut D, u: usize) {
+        d.ord[u] = d.o;
+        d.o += 1;
+        d.s.push(u);
+        let n = d.g.len();
+        for v in d.g[u].clone() {
+            if d.ord[v] == n {
+                labeling(d, v);
+                d.lo[u] = d.lo[u].min(d.lo[v]);
+            } else if d.lb[v] == n {
+                // on stack
+                d.lo[u] = d.lo[u].min(d.ord[v]);
             }
         }
-        scc.transpose_graph();
-        let mut label = 0;
-        for u in scc.topological_reverse_order.clone().into_iter().rev() {
-            if scc.labels[u] != scc.size() {
-                continue;
-            }
-            scc.labeling(label, u);
-            label += 1;
-        }
-        scc.labels
-    }
-
-    fn new(directed_sparse_graph: Vec<Vec<usize>>) -> Self {
-        let n = directed_sparse_graph.len();
-        Self {
-            graph: directed_sparse_graph,
-            visited: vec![false; n],
-            topological_reverse_order: vec![],
-            labels: vec![n; n],
-        }
-    }
-
-    fn size(&self) -> usize { self.graph.len() }
-
-    fn transpose_graph(&mut self) {
-        let n = self.size();
-        let mut g = vec![vec![]; n];
-        for i in 0..n {
-            for &j in &self.graph[i] {
-                g[j].push(i);
-            }
-        }
-        self.graph = g;
-    }
-
-    fn compute_topological_rev_ord(&mut self, u: usize) {
-        self.visited[u] = true;
-        for v in self.graph[u].clone().into_iter() {
-            if !self.visited[v] {
-                Self::compute_topological_rev_ord(self, v);
-            }
-        }
-        self.topological_reverse_order.push(u);
-    }
-
-    // components are fixed in topological order for initial(user-given) edges.
-    fn labeling(&mut self, label: usize, u: usize) {
-        self.labels[u] = label;
-        for v in self.graph[u].clone().into_iter() {
-            if self.labels[v] == self.size() {
-                self.labeling(label, v);
-            }
-        }
-    }
-}
-
-/// essentially same with Path-Based algorithm
-pub fn scc_tarjan_lowlink(sparse_graph: &[Vec<usize>]) -> Vec<usize> {
-    SCCTarjanLowLink::compute_labels(sparse_graph)
-}
-
-// just a data wrapper to avoid having many parameters in a dfs function.
-struct SCCTarjanLowLink<'a> {
-    graph: &'a [Vec<usize>],
-    stack: Vec<usize>,
-    orders: Vec<usize>,
-    order: usize,
-    low_order: Vec<usize>,
-    labels: Vec<usize>,
-    label: usize,
-}
-
-impl<'a> SCCTarjanLowLink<'a> {
-    pub fn compute_labels(
-        directed_sparse_graph: &'a [Vec<usize>],
-    ) -> Vec<usize> {
-        let mut scc = Self::new(directed_sparse_graph);
-        for i in 0..scc.size() {
-            if scc.labels[i] == scc.size() {
-                Self::labeling(&mut scc, i);
-            }
-        }
-        Self::topological_sort(scc.labels)
-    }
-
-    fn new(graph: &'a [Vec<usize>]) -> Self {
-        let n = graph.len();
-        Self {
-            graph,
-            stack: vec![],
-            orders: vec![n; n],
-            order: 0,
-            low_order: vec![n; n],
-            labels: vec![n; n],
-            label: 0,
-        }
-    }
-
-    fn size(&self) -> usize { self.graph.len() }
-
-    // labels are fixed in topologically reverse order of components.
-    fn labeling(scc: &mut Self, u: usize) {
-        scc.orders[u] = scc.order;
-        scc.order += 1;
-        scc.stack.push(u);
-        for &v in &scc.graph[u] {
-            if scc.orders[v] == scc.size() {
-                Self::labeling(scc, v);
-                scc.low_order[u] = std::cmp::min(
-                    scc.low_order[u],
-                    scc.low_order[v],
-                );
-            } else if scc.labels[v] == scc.size() {
-                // v is not in a scc yet.
-                scc.low_order[u] =
-                    std::cmp::min(scc.low_order[u], scc.orders[v]);
-                // `s.t. if low[v] < low[u] then low[u] = low[v]`?
-                // but low[v] is still under computing.
-                // here,
-                // it's just enough to know whether
-                // low[u] can be smaller than or equal to ord[v].
-            }
-        }
-        if scc.low_order[u] < scc.orders[u] {
+        if d.lo[u] < d.ord[u] {
             return;
         }
-        // a scc is fixed.
         loop {
-            let v = scc.stack.pop().unwrap();
-            scc.labels[v] = scc.label;
+            let v = d.s.pop().unwrap();
+            d.lb[v] = d.l;
             if v == u {
                 break;
             }
         }
-        scc.label += 1;
+        d.l += 1;
     }
 
-    fn topological_sort(labels: Vec<usize>) -> Vec<usize> {
-        // after labeling, labels are still reverse order
-        // in a point of topologicality.
-        let k = *labels.iter().max().unwrap();
-        labels.into_iter().map(|l| k - l).collect::<Vec<_>>()
-    }
-}
-
-/// essentially same with Tarjan's Lowlink algorithm
-pub fn scc_path_based(sparse_graph: &[Vec<usize>]) -> Vec<usize> {
-    SCCPathBased::compute_labels(sparse_graph)
-}
-
-struct SCCPathBased<'a> {
-    graph: &'a [Vec<usize>],
-    stack: Vec<usize>,
-    low_stack: Vec<usize>,
-    orders: Vec<usize>,
-    order: usize,
-    labels: Vec<usize>,
-    label: usize,
-}
-
-impl<'a> SCCPathBased<'a> {
-    pub fn compute_labels(
-        directed_sparse_graph: &'a [Vec<usize>],
-    ) -> Vec<usize> {
-        let mut scc = Self::new(directed_sparse_graph);
-        for i in 0..scc.size() {
-            if scc.labels[i] == scc.size() {
-                Self::labeling(&mut scc, i);
-            }
-        }
-        Self::topological_sort(scc.labels)
-    }
-
-    fn new(graph: &'a [Vec<usize>]) -> Self {
-        let n = graph.len();
-        Self {
-            graph,
-            stack: vec![],
-            low_stack: vec![],
-            orders: vec![n; n],
-            order: 0,
-            labels: vec![n; n],
-            label: 0,
+    for i in 0..n {
+        if d.ord[i] == n {
+            labeling(&mut d, i);
         }
     }
+    toposort(d.lb)
+}
 
-    fn size(&self) -> usize { self.graph.len() }
+/// essentially same as Tarjan's Lowlink algorithm
+pub fn path_based(g: G) -> Vec<usize> {
+    struct D {
+        g: G,
+        s: Vec<usize>,   // stack
+        sl: Vec<usize>,  // stack for lowlink
+        ord: Vec<usize>, // preorder
+        o: usize,
+        lb: Vec<usize>, // label
+        l: usize,
+    }
+    let n = g.len();
+    let mut d = D {
+        g,
+        s: vec![],
+        sl: vec![],
+        ord: vec![n; n],
+        o: 0,
+        lb: vec![n; n],
+        l: 0,
+    };
 
-    fn labeling(scc: &mut Self, u: usize) {
-        scc.orders[u] = scc.order;
-        scc.order += 1;
-        scc.stack.push(u);
-        scc.low_stack.push(u);
-        for &v in &scc.graph[u] {
-            if scc.orders[v] == scc.size() {
-                Self::labeling(scc, v);
-            } else if scc.labels[v] == scc.size() {
-                while scc.orders[*scc.low_stack.last().unwrap()] > scc.orders[v]
-                {
-                    scc.low_stack.pop();
+    fn labeling(d: &mut D, u: usize) {
+        d.ord[u] = d.o;
+        d.o += 1;
+        d.s.push(u);
+        d.sl.push(u);
+        let n = d.g.len();
+        for v in d.g[u].clone() {
+            if d.ord[v] == n {
+                labeling(d, v);
+            } else if d.lb[v] == n {
+                while d.ord[*d.sl.last().unwrap()] > d.ord[v] {
+                    d.sl.pop();
                 }
             }
         }
-        if scc.low_stack.last().unwrap() != &u {
+        if d.sl.last().unwrap() != &u {
             return;
         }
         loop {
-            let v = scc.stack.pop().unwrap();
-            scc.labels[v] = scc.label;
+            let v = d.s.pop().unwrap();
+            d.lb[v] = d.l;
             if v == u {
                 break;
             }
         }
-        scc.label += 1;
-        scc.low_stack.pop();
+        d.l += 1;
+        d.sl.pop();
     }
 
-    fn topological_sort(labels: Vec<usize>) -> Vec<usize> {
-        let k = *labels.iter().max().unwrap();
-        labels.into_iter().map(|l| k - l).collect::<Vec<_>>()
+    for i in 0..n {
+        if d.ord[i] == n {
+            labeling(&mut d, i);
+        }
     }
+    toposort(d.lb)
 }
 
 // TODO:
-pub fn scc_reachability_based() {}
+/// reachability based
+pub fn reachable_based() {}
 
 // TODO
 #[cfg(test)]
