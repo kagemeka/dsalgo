@@ -144,7 +144,7 @@ pub mod tree {
     use crate::{
         euler_tour_indices::first_positions,
         euler_tour_nodes::euler_tour_nodes,
-        range_minimum_query::RangeMinimumQuery,
+        query::RangeMinimumQuery,
     };
 
     /// with euler tour and static range minimum query.

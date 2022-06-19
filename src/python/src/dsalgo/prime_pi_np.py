@@ -1,10 +1,37 @@
 import unittest
 
+import numpy as np
+
 from dsalgo.floor_sqrt import floor_sqrt
 
 
+def fast(n: int) -> int:
+    if n < 2:
+        return 0
+    sqrt = floor_sqrt(n)
+    j = np.arange(sqrt) + 1
+    small = np.zeros(sqrt + 1, np.int64)
+    large = np.zeros(sqrt + 1, np.int64)
+    small[1:] = j - 1
+    large[1:] = n // j - 1
+    for i in range(2, sqrt + 1):
+        if small[i] == small[i - 1]:
+            continue
+        pi = small[i - 1]
+        border = sqrt // i
+        n_i = n // i
+        d = min(sqrt, border)
+        k = np.arange(1, d + 1)
+        large[k] -= large[k * i] - pi
+        k = np.arange(d + 1, min(sqrt, n_i // i) + 1)
+        large[k] -= small[n_i // k] - pi
+        j = np.arange(i * i, sqrt + 1)
+        small[j] -= small[j // i] - pi
+    return int(large[1])
+
+
 # mypy: ignore-errors
-def prime_pi_fast_optimized_np(n: int) -> int:
+def fast_opt(n: int) -> int:
     import numpy as np
 
     if n < 2:
@@ -80,10 +107,15 @@ def prime_pi_fast_optimized_np(n: int) -> int:
 
 
 class Tests(unittest.TestCase):
-    def test(self) -> None:
-        from dsalgo._test_fast_prime_pi import test_fast_prime_counting
+    def test_fast_opt(self) -> None:
+        from dsalgo.prime_pi import _test_fast_prime_pi
 
-        test_fast_prime_counting(prime_pi_fast_optimized_np)
+        _test_fast_prime_pi(fast_opt)
+
+    def test_fast(self) -> None:
+        from dsalgo.prime_pi import _test_fast_prime_pi
+
+        _test_fast_prime_pi(fast)
 
 
 if __name__ == "__main__":

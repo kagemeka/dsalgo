@@ -1,15 +1,12 @@
-"""Mypy Inline Configs.
-see https://mypy.readthedocs.io/en/stable/inline_config.html
-in all the files importing external untyped packages, disable mypy checks.
 # mypy: ignore-errors
-"""
+
 
 import unittest
 
 import numpy as np
 
 
-def lcs_dp_table(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def dp_np(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     n, m = a.size, b.size
     length = np.zeros((n + 1, m + 1), dtype=np.int64)
     for i in range(n):

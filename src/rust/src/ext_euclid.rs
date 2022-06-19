@@ -12,14 +12,11 @@ pub fn extgcd(mut a: i64, mut b: i64) -> (u64, i64, i64) {
     let (mut x00, mut x01, mut x10, mut x11) = (1, 0, 0, 1);
     while b != 0 {
         let q = a / b;
-        // (x00, x01) = (x01, x00 - q * x01);
-        // (x10, x11) = (x11, x10 - q * x11);
-        // (a, b) = (b, a % b);
-        x00 -= q * x01;
-        std::mem::swap(&mut x00, &mut x01);
-        x10 -= q * x11;
-        std::mem::swap(&mut x10, &mut x11);
         a %= b;
+        x00 -= q * x01;
+        x10 -= q * x11;
+        std::mem::swap(&mut x00, &mut x01);
+        std::mem::swap(&mut x10, &mut x11);
         std::mem::swap(&mut a, &mut b);
     }
     if a < 0 {

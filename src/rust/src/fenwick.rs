@@ -3,7 +3,7 @@
 use crate::{
     algebraic_structure::*,
     binary_function::*,
-    bitops::{lsb_number, reset_least_bit},
+    bitops::{lsb_number, reset_lsb},
 };
 
 /// Node Indices
@@ -52,7 +52,7 @@ where
         let mut v = G::e();
         while i > 0 {
             v = G::op(v, self.d[i].clone());
-            i = reset_least_bit(i as u64) as usize;
+            i = reset_lsb(i as u64) as usize;
         }
         v
     }

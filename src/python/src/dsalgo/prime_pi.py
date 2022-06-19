@@ -1,9 +1,49 @@
+import typing
 import unittest
 
 from dsalgo.floor_sqrt import floor_sqrt
+from dsalgo.sieve_of_eratosthenes import sieve_of_eratosthenes
+
+POW_OF_10 = [
+    0,
+    4,
+    25,
+    168,
+    1229,
+    9592,
+    78498,
+    664579,
+    5761455,
+    50847534,
+    455052511,
+    4118054813,
+    37607912018,
+    346065536839,
+    3204941750802,
+    29844570422669,
+    279238341033925,
+    2623557157654233,
+    24739954287740860,
+    234057667276344607,
+    2220819602560918840,
+    21127269486018731928,
+    201467286689315906290,
+]
 
 
-def prime_pi_fast_optimized(n: int) -> int:
+def pi_table(size: int) -> list[int]:
+
+    pi = [0] * size
+    for p in sieve_of_eratosthenes(size):
+        pi[p] = 1
+    for i in range(size - 1):
+        pi[i + 1] += pi[i]
+    return pi
+
+
+# optimized
+def fast_opt(n: int) -> int:
+
     if n < 2:
         return 0
     if n == 2:
@@ -68,11 +108,19 @@ def prime_pi_fast_optimized(n: int) -> int:
     return large[0] + 1
 
 
+def _test_fast_prime_pi(pi: typing.Callable[[int], int]) -> None:
+    N = 1 << 10
+    ans = pi_table(N)
+    for i in range(N):
+        assert pi(i) == ans[i]
+
+    for i in range(11):
+        assert pi(10**i) == POW_OF_10[i]
+
+
 class Tests(unittest.TestCase):
     def test(self) -> None:
-        from dsalgo._test_fast_prime_pi import test_fast_prime_counting
-
-        test_fast_prime_counting(prime_pi_fast_optimized)
+        _test_fast_prime_pi(fast_opt)
 
 
 if __name__ == "__main__":

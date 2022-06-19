@@ -5,4 +5,4 @@ from dsalgo.extended_euclidean_algorithm_recurse import extgcd_recurse
 from dsalgo.greatest_common_divisor import gcd
 from dsalgo.greatest_common_divisor_recurse import gcd_recurse
 from dsalgo.greatest_common_divisor_reduce import gcd_reduce
-from dsalgo.least_common_multile import lcm
+from dsalgo.lcm import lcm

@@ -174,7 +174,7 @@ where
     }
 }
 
-use crate::{algebraic_structure_impl::*, range_get_query::RangeGetQuery};
+use crate::{algebraic_structure_impl::*, query::RangeGetQuery};
 
 impl<S, I> RangeGetQuery<I> for SqrtDecomposition<GroupApprox<S, I>>
 where

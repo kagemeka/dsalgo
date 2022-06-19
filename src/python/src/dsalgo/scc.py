@@ -1,7 +1,7 @@
 from __future__ import annotations
-import unittest
 
 import typing
+import unittest
 
 G = typing.List[typing.List[int]]
 L = typing.List[int]
@@ -57,26 +57,26 @@ def _toposort(lb: L) -> L:
 # tarjan's lowlink algorithm
 def tarjan(g: G) -> L:
     n = len(g)
-    s = []
-    order = [n] * n
+    s = []  # stack
+    od = [n] * n  # preorder
     o = 0
-    lo = [n] * n
-    lb = [n] * n
+    lo = [n] * n  # low preorder
+    lb = [n] * n  # label
     l = 0
 
     def labeling(u: int) -> None:
         nonlocal o, l
-        order[u] = lo[u] = o
+        od[u] = lo[u] = o
         o += 1
         s.append(u)
         for v in g[u]:
-            if order[v] == n:
+            if od[v] == n:
                 labeling(v)
                 lo[u] = min(lo[u], lo[v])
             elif lb[v] == n:
-                lo[u] = min(lo[u], order[v])
+                lo[u] = min(lo[u], od[v])
 
-        if lo[u] < order[u]:
+        if lo[u] < od[u]:
             return
         while True:
             v = s.pop()
@@ -86,7 +86,7 @@ def tarjan(g: G) -> L:
         l += 1
 
     for i in range(n):
-        if order[i] == n:
+        if od[i] == n:
             labeling(i)
     return _toposort(lb)
 
@@ -96,22 +96,22 @@ def path_based(g: G) -> L:
     n = len(g)
     s = []
     sl = []
-    order = [n] * n
+    od = [n] * n
     o = 0
     lb = [n] * n
     l = 0
 
     def labeling(u: int) -> None:
         nonlocal o, l
-        order[u] = o
+        od[u] = o
         o += 1
         s.append(u)
         sl.append(u)
         for v in g[u]:
-            if order[v] == n:
+            if od[v] == n:
                 labeling(v)
             elif lb[v] == n:
-                while order[sl[-1]] > order[v]:
+                while od[sl[-1]] > od[v]:
                     sl.pop()
 
         if sl[-1] != u:
@@ -125,7 +125,7 @@ def path_based(g: G) -> L:
         sl.pop()
 
     for i in range(n):
-        if order[i] == n:
+        if od[i] == n:
             labeling(i)
     return _toposort(lb)
 

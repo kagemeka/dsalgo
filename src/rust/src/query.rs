@@ -1,4 +1,9 @@
-use crate::{group_theory_id::Min, range_get_query::RangeGetQuery};
+pub trait RangeGetQuery<I> {
+    type T;
+    fn get_range(&mut self, l: usize, r: usize) -> Self::T;
+}
+
+use crate::group_theory_id::Min;
 
 pub trait RangeMinimumQuery {
     type T;

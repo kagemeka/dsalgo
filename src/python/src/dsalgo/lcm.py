@@ -1,7 +1,9 @@
+# least common multiple
 import math
 import unittest
 
 
+# by gcd
 def lcm(a: int, b: int) -> int:
     return 0 if a == b == 0 else abs(a // math.gcd(a, b) * b)
 

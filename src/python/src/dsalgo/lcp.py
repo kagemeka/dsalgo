@@ -3,8 +3,8 @@
 
 from __future__ import annotations
 
-import unittest
 import typing
+import unittest
 
 L = typing.List
 
