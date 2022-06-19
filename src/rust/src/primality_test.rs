@@ -31,7 +31,7 @@ pub mod mr {
         pub fn new(bases: Vec<u64>) -> Self { Self(bases) }
 
         // TODO: impl as common trait
-        pub fn with_rand(epochs: u8) -> Self {
+        pub fn new_rand(epochs: u8) -> Self {
             use crate::rng_static_xorshift64::static_xorshift64;
             Self::new(
                 (0..epochs).map(|_| static_xorshift64()).collect::<Vec<_>>(),
@@ -93,4 +93,73 @@ pub mod mr {
             assert!(!is_prime(512_461));
         }
     }
+}
+
+pub mod ss {
+    //! solovay strassen's test
+
+    use crate::{
+        euler_criterion::try_euler_criterion,
+        jacobi_symbol::jacobi_symbol,
+    };
+
+    pub fn is_composite_euler_jacobi(b: u64, n: u64) -> bool {
+        assert!(n > 2 && n & 1 == 1 && 2 <= b && b < n);
+        // 2 <= a because if a == 1, it's trivial jacobi = euler = 1.
+        // compare jcobi symbol and euler's criterion.
+        let jacobi = jacobi_symbol(n, b);
+        if jacobi == 0 {
+            return true;
+        }
+        if let Ok(euler) = try_euler_criterion(n, b) {
+            let jacobi = if jacobi == 1 { 1 } else { n - 1 };
+            euler != jacobi
+        } else {
+            true
+        }
+    }
+    pub struct FixedBases(Vec<u64>);
+
+    impl FixedBases {
+        pub fn new(bases: Vec<u64>) -> Self { Self(bases) }
+
+        // TODO: implement as common trait.
+        pub fn new_rand(epochs: u8) -> Self {
+            use crate::rng_static_xorshift64::static_xorshift64;
+            Self::new(
+                (0..epochs).map(|_| static_xorshift64()).collect::<Vec<_>>(),
+            )
+        }
+
+        /// check whether n is Euler-Jacobi pseudo-prime or definite composite.
+        pub fn is_prime(&self, n: u64) -> bool {
+            if n == 2 {
+                return true;
+            }
+            if n < 2 || n & 1 == 0 {
+                return false;
+            }
+            // [2, n)
+            self.0
+                .iter()
+                .map(|&base| base % n)
+                .filter(|&b| 2 <= b && b < n)
+                .all(|b| !is_composite_euler_jacobi(b, n))
+        }
+    }
+
+    pub fn is_prime(n: u64, epochs: u8) -> bool {
+        FixedBases::new_rand(epochs).is_prime(n)
+    }
+
+    // TODO:
+    #[cfg(test)]
+    mod tests {
+        #[test]
+        fn test() {}
+    }
+}
+
+pub mod mr_ss {
+    //! Miller Rabin - Solovay Strassen's Test
 }
