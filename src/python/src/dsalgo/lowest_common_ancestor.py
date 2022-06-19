@@ -9,85 +9,89 @@ import dsalgo.sparse_table
 import dsalgo.tree_bfs
 
 
-def binary_lifting(
-    tree_edges: list[tuple[int, int]],
-    root: int,
+# binary lifting
+def doubling(
+    e: list[tuple[int, int]],
+    r: int,
 ) -> typing.Callable[[int, int], int]:
-    n = len(tree_edges) + 1
-    parent, depth = dsalgo.tree_bfs.tree_bfs(tree_edges, root)
-    k = max(1, max(depth).bit_length())
-    ancestor = [[n] * n for _ in range(k)]
-    ancestor[0] = parent
-    ancestor[0][root] = root
+    n = len(e) + 1
+    par, dep = dsalgo.tree_bfs.tree_bfs(e, r)
+    k = max(1, max(dep).bit_length())
+    a = [[n] * n for _ in range(k)]
+    a[0] = par
+    a[0][r] = r
     for i in range(k - 1):
         for j in range(n):
-            ancestor[i + 1][j] = ancestor[i][ancestor[i][j]]
+            a[i + 1][j] = a[i][a[i][j]]
 
-    def get_lca(u: int, v: int) -> int:
-        if depth[u] > depth[v]:
+    def get(u: int, v: int) -> int:
+        if dep[u] > dep[v]:
             u, v = v, u
-        d = depth[v] - depth[u]
+        d = dep[v] - dep[u]
         for i in range(d.bit_length()):
             if d >> i & 1:
-                v = ancestor[i][v]
+                v = a[i][v]
         if v == u:
             return u
-        for a in ancestor[::-1]:
-            nu, nv = a[u], a[v]
+        for f in a[::-1]:
+            nu, nv = f[u], f[v]
             if nu != nv:
                 u, v = nu, nv
-        return parent[u]
+        return par[u]
 
-    return get_lca
+    return get
 
 
-def tarjan_offline(
-    tree_edges: list[tuple[int, int]],
-    root: int,
-    query_pairs: list[tuple[int, int]],
+# tarjan's offline algorithm
+def tarjan(
+    e: list[tuple[int, int]],
+    r: int,
+    qs: list[tuple[int, int]],  # queries
 ) -> list[int]:
     import dsalgo.union_find
 
-    n = len(tree_edges) + 1
-    graph: list[list[int]] = [[] for _ in range(n)]
-    for u, v in tree_edges:
-        graph[u].append(v)
-        graph[v].append(u)
-    queries: list[list[tuple[int, int]]] = [[] for _ in range(n)]
-    for i, (u, v) in enumerate(query_pairs):
-        queries[u].append((v, i))
-        queries[v].append((u, i))
-    visited = [False] * n
+    n = len(e) + 1
+    g = [[] for _ in range(n)]
+    for u, v in e:
+        g[u].append(v)
+        g[v].append(u)
+    q = [[] for _ in range(n)]
+    for i, (u, v) in enumerate(qs):
+        q[u].append((v, i))
+        q[v].append((u, i))
+    vis = [False] * n
     uf = dsalgo.union_find.UnionFind(n)
-    ancestor = [n] * n
-    lca = [n] * len(query_pairs)
+    a = [n] * n  # anc
+    lca = [n] * len(qs)
 
     def dfs(u: int) -> None:
-        visited[u] = True
-        ancestor[u] = u
-        for v in graph[u]:
-            if visited[v]:
+        vis[u] = True
+        a[u] = u
+        for v in g[u]:
+            if vis[v]:
                 continue
             dfs(v)
             uf.unite(u, v)
-            ancestor[uf.find_root(u)] = u
+            a[uf.find_root(u)] = u
 
-        for v, query_id in queries[u]:
-            if visited[v]:
-                lca[query_id] = ancestor[uf.find_root(v)]
+        for v, i in q[u]:
+            if vis[v]:
+                lca[i] = a[uf.find_root(v)]
 
-    dfs(root)
+    dfs(r)
     return lca
 
 
-def euler_tour_rmq(
-    tree_edges: list[tuple[int, int]],
-    root: int,
+# with euler touer and rmq
+# rmq constructor as parameter.
+def et_rmq(
+    e: list[tuple[int, int]],
+    r: int,
 ) -> typing.Callable[[int, int], int]:
-    tour = dsalgo.euler_tour.euler_tour(tree_edges, root)
-    depth = dsalgo.euler_tour.compute_depth(tour)
-    tour = dsalgo.euler_tour.to_nodes(tour)
-    first_idx = dsalgo.euler_tour.compute_first_index(tour)
+    to = dsalgo.euler_tour.euler_tour(e, r)
+    dep = dsalgo.euler_tour.compute_depth(to)
+    to = dsalgo.euler_tour.to_nodes(to)
+    first_idx = dsalgo.euler_tour.compute_first_index(to)
     semigroup = dsalgo.algebraic_structure.Semigroup[typing.Tuple[int, int]](
         operation=min
     )
@@ -99,19 +103,19 @@ def euler_tour_rmq(
     """
     get_min = dsalgo.sparse_table.sparse_table(
         semigroup,
-        [(depth[i], i) for i in tour],
+        [(dep[i], i) for i in to],
     )
 
-    def get_lca(u: int, v: int) -> int:
-        left, right = first_idx[u], first_idx[v]
-        if left > right:
-            left, right = right, left
-        return get_min(left, right + 1)[1]
+    def get(u: int, v: int) -> int:
+        l, r = first_idx[u], first_idx[v]
+        if l > r:
+            l, r = r, l
+        return get_min(l, r + 1)[1]
 
-    return get_lca
+    return get
 
 
-def heavy_light_decomposition(
+def with_hld(
     tree_edges: list[tuple[int, int]],
     root: int,
 ) -> typing.Callable[[int, int], int]:
@@ -139,4 +143,26 @@ def heavy_light_decomposition(
 
 
 def lca_farach_colton_bender() -> None:
+    ...
+
+
+class TestHLD:
+    # edges = [
+    #     (0, 1),
+    #     (0, 6),
+    #     (0, 10),
+    #     (1, 2),
+    #     (1, 5),
+    #     (2, 3),
+    #     (2, 4),
+    #     (6, 7),
+    #     (7, 8),
+    #     (7, 9),
+    #     (10, 11),
+    # ]
+    # root = 0
+
+    # get_lca = lca_hld(edges, root)
+
+    # print(get_lca(3, 5))
     ...

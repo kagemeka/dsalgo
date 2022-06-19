@@ -2,6 +2,8 @@
 
 /// directed sparse graph. it not necessarily be simple.
 pub type G = Vec<Vec<usize>>;
+/// label
+pub type L = Vec<usize>;
 
 fn trans(g: G) -> G {
     let n = g.len();
@@ -13,12 +15,12 @@ fn trans(g: G) -> G {
     }
     t
 }
-pub fn kosaraju(g: G) -> Vec<usize> {
+pub fn kosaraju(g: G) -> L {
     struct D {
         g: G,
         vis: Vec<bool>,
         q: Vec<usize>,
-        l: Vec<usize>,
+        l: L,
     }
     let n = g.len();
     let mut d = D {
@@ -60,20 +62,20 @@ pub fn kosaraju(g: G) -> Vec<usize> {
     d.l
 }
 
-fn toposort(lb: Vec<usize>) -> Vec<usize> {
+fn toposort(lb: L) -> L {
     let k = *lb.iter().max().unwrap();
     lb.into_iter().map(|l| k - l).collect::<Vec<_>>()
 }
 
 /// with tarjan's lowlink algorithm.
-pub fn tarjan(g: G) -> Vec<usize> {
+pub fn tarjan(g: G) -> L {
     struct D {
         g: G,
         s: Vec<usize>,   // stack
         ord: Vec<usize>, // preorder
         o: usize,
         lo: Vec<usize>, // low preorder
-        lb: Vec<usize>, // label
+        lb: L,          // label
         l: usize,
     }
     let n = g.len();
@@ -123,14 +125,14 @@ pub fn tarjan(g: G) -> Vec<usize> {
 }
 
 /// essentially same as Tarjan's Lowlink algorithm
-pub fn path_based(g: G) -> Vec<usize> {
+pub fn path_based(g: G) -> L {
     struct D {
         g: G,
-        s: Vec<usize>,   // stack
-        sl: Vec<usize>,  // stack for lowlink
-        ord: Vec<usize>, // preorder
+        s: Vec<usize>,
+        sl: Vec<usize>, // stack for lowlink
+        ord: Vec<usize>,
         o: usize,
-        lb: Vec<usize>, // label
+        lb: L,
         l: usize,
     }
     let n = g.len();

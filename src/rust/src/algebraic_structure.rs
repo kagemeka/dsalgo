@@ -8,6 +8,9 @@ pub trait Semigroup: Magma + Associative {}
 
 impl<T: Magma + Associative> Semigroup for T {}
 
+// TODO:
+// pub trait InvSemigroup
+
 pub trait Monoid: Semigroup + Identity {}
 
 impl<T> Monoid for T where T: Semigroup + Identity {}
