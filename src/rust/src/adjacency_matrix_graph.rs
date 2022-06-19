@@ -48,11 +48,10 @@ impl<T> std::ops::IndexMut<(usize, usize)> for AdjacencyMatrix<T> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::debug_print::debug_print;
     #[test]
     fn test() {
         let mut g = AdjacencyMatrix::new(5);
         g[(0, 0)] = 1;
-        debug_print(&g);
+        dbg!(&g);
     }
 }

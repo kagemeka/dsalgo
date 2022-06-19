@@ -142,8 +142,7 @@ pub mod tree {
     }
 
     use crate::{
-        euler_tour_indices::first_positions,
-        euler_tour_nodes::euler_tour_nodes,
+        ett::{first_positions, tour_nodes},
         query::RangeMinimumQuery,
     };
 
@@ -158,7 +157,7 @@ pub mod tree {
         where
             Q: std::iter::FromIterator<(usize, usize)>,
         {
-            let tour_nodes = euler_tour_nodes(tree_edges, root);
+            let tour_nodes = tour_nodes(tree_edges, root);
             let depth = tree_depths(tree_edges, root);
             let first_pos = first_positions(&tour_nodes);
             let depth =
