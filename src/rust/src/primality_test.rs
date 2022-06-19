@@ -163,3 +163,71 @@ pub mod ss {
 pub mod mr_ss {
     //! Miller Rabin - Solovay Strassen's Test
 }
+
+pub mod fermat {
+    //! Fermat's Test
+
+    use crate::{
+        gcd::int::euclidean as gcd,
+        montgomery_modular_multiplication_64::MontgomeryMultiplication64,
+        power::pow_semigroup,
+    };
+
+    pub struct FixedBases(Vec<u64>);
+
+    impl FixedBases {
+        pub fn new(bases: Vec<u64>) -> Self { Self(bases) }
+
+        // TODO: implement as common trait.
+        pub fn new_rand(epochs: u8) -> Self {
+            use crate::rng_static_xorshift64::static_xorshift64;
+            Self::new(
+                (0..epochs).map(|_| static_xorshift64()).collect::<Vec<_>>(),
+            )
+        }
+
+        pub fn is_prime(&self, n: u64) -> bool {
+            if n == 2 {
+                return true;
+            }
+            if n < 2 || n & 1 == 0 {
+                return false;
+            }
+            let m = MontgomeryMultiplication64::new(n);
+            let mul = |x, y| m.mul(x, y);
+            let is_composite =
+                |b| -> bool { pow_semigroup(&mul, b, n - 1) != 1 };
+            // [2, n - 1)
+            self.0
+                .iter()
+                .map(|&base| base % n)
+                .filter(|&b| 2 <= b && b < n - 1)
+                .all(|b| gcd(b, n) == 1 && !is_composite(b))
+            // strong probable prime.
+        }
+    }
+
+    pub fn is_prime(n: u64, epochs: u8) -> bool {
+        FixedBases::new_rand(epochs).is_prime(n)
+    }
+
+    #[cfg(test)]
+    mod tests {
+        #[test]
+        fn test() {
+            assert_eq!(
+                super::is_prime(998_244_353, 10),
+                true
+            );
+            assert_eq!(
+                super::is_prime(1_000_000_007, 10),
+                true
+            );
+            assert_eq!(super::is_prime(561, 10), false);
+            assert_eq!(
+                super::is_prime(512461, 10),
+                false
+            );
+        }
+    }
+}
