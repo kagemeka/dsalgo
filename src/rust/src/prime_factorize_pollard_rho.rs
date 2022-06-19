@@ -23,13 +23,10 @@ mod tests {
     #[test]
     fn test() {
         use super::*;
-        use crate::{
-            primality_test_miller_rabin::*,
-            prime_factorize_trial_division::*,
-        };
+        use crate::{primality_test::mr::*, prime_factorize_trial_division::*};
         for i in 1..10000 {
             assert_eq!(
-                prime_factorize_pollard_rho(&miller_rabin_test, i),
+                prime_factorize_pollard_rho(&is_prime, i),
                 Ok(prime_factorize_trial_division(
                     i
                 )),
