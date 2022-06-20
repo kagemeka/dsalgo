@@ -3,7 +3,7 @@
 use crate::{
     algebraic_structure::*,
     binary_function::*,
-    bitops::{lsb_number, reset_lsb},
+    bitops::{lsb_num, reset_lsb},
 };
 
 /// Node Indices
@@ -13,11 +13,9 @@ use crate::{
 /// |4      |       |
 /// |2  |   |6  |   |
 /// |1| |3| |5| |7| |
-pub struct Fenwick<G: Monoid> {
-    d: Vec<G::S>, // data
-}
+pub struct Fw<G: Monoid>(Vec<G::S>);
 
-impl<G> Fenwick<G>
+impl<G> Fw<G>
 where
     G: Monoid + Commutative,
     G::S: Clone,
@@ -25,111 +23,106 @@ where
     /// you need to pass initial values because,
     /// it might not be identity element.
     pub fn new(a: Vec<G::S>) -> Self {
-        let size = a.len();
+        let n = a.len();
         let mut d = vec![G::e()];
         d.append(&mut a.to_vec());
-        for i in 1..size {
-            let j = i + lsb_number(i as u64) as usize;
-            if j <= size {
+        for i in 1..n {
+            let j = i + lsb_num(i as u64) as usize;
+            if j <= n {
                 d[j] = G::op(d[j].clone(), d[i].clone());
             }
         }
-        Self { d }
+        Self(d)
     }
 
-    pub fn size(&self) -> usize { self.d.len() - 1 }
+    pub fn size(&self) -> usize { self.0.len() - 1 }
 
-    pub fn operate(&mut self, mut i: usize, v: G::S) {
+    /// a[i] += v
+    pub fn op(&mut self, mut i: usize, v: G::S) {
         i += 1;
         while i <= self.size() {
-            self.d[i] = G::op(self.d[i].clone(), v.clone());
-            i += lsb_number(i as u64) as usize;
+            self.0[i] = G::op(self.0[i].clone(), v.clone());
+            i += lsb_num(i as u64) as usize;
         }
     }
 
-    // reduce less than.
-    pub fn reduce_lt(&self, mut i: usize) -> G::S {
+    // \sum_{j=0}^{i-1} a[i].
+    pub fn get(&self, mut i: usize) -> G::S {
         let mut v = G::e();
         while i > 0 {
-            v = G::op(v, self.d[i].clone());
+            v = G::op(v, self.0[i].clone());
             i = reset_lsb(i as u64) as usize;
         }
         v
     }
 
-    pub fn max_right<F>(&self, is_ok: &F) -> usize
+    /// max i (l < i <= n) satisfying f(op(v, get(i))) is true.
+    /// f(op(v, get(i))) must be monotonous for i.
+    /// l(true, .., true, false, .., false]n
+    /// if l == n or f(op(v, get(l + 1))) is false, return l.
+    fn _max<F>(&self, f: &F, l: usize, mut v: G::S) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
-        let mut len = (self.size() + 1).next_power_of_two();
-        let mut v = G::e();
-        let mut r = 0;
+        let n = self.size();
+        let mut d = (n + 1).next_power_of_two(); // covering
+        let mut i = 0;
         loop {
-            len >>= 1;
-            if len == 0 {
-                return r;
+            d >>= 1;
+            if d == 0 {
+                debug_assert!(l <= i && i <= n);
+                return i;
             }
-            if r + len > self.size() {
+            if i + d > n {
                 continue;
             }
             let nv = G::op(
                 v.clone(),
-                self.d[r + len].clone(),
+                self.0[i + d].clone(),
             );
-            if is_ok(&nv) {
-                r += len;
+            if i + d <= l || f(&nv) {
+                i += d;
                 v = nv;
             }
         }
     }
+
+    /// max i satisfying f(get(i)) is true.
+    /// f(get(i)) must be monotonous for i. [tr, .., tr, fal, .., fal]
+    pub fn max<F>(&self, f: &F) -> usize
+    where
+        F: Fn(&G::S) -> bool,
+    {
+        self._max(f, 0, G::e())
+    }
 }
 
-impl<G> Fenwick<G>
+impl<G> Fw<G>
 where
     G: AbelianGroup,
     G::S: Clone,
 {
-    pub fn reduce(&self, l: usize, r: usize) -> G::S {
+    /// get range [l, r) = get(r) - get(l)
+    pub fn getr(&self, l: usize, r: usize) -> G::S {
         assert!(l <= r);
         G::op(
-            G::inv(self.reduce_lt(l)),
-            self.reduce_lt(r),
+            G::inv(self.get(l)),
+            self.get(r),
         )
     }
 
-    pub fn get(&self, i: usize) -> G::S { self.reduce(i, i + 1) }
-
-    /// find r such that \prod[l, r) = true
-    pub fn max_right_from<F>(&self, is_ok: &F, l: usize) -> usize
+    /// max i (l < i <= n) f(getr(l, i)) is true. l(tr, .., tr, fal, .. fal]n
+    /// or l
+    pub fn max_from<F>(&self, f: &F, l: usize) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
-        assert!(l <= self.size());
-        let mut len = (self.size() + 1).next_power_of_two();
-        let mut v = G::inv(self.reduce_lt(l));
-        let mut r = 0;
-        loop {
-            len >>= 1;
-            if len == 0 {
-                debug_assert!(l <= r);
-                return r;
-            }
-            if r + len > self.size() {
-                continue;
-            }
-            let nv = G::op(
-                v.clone(),
-                self.d[r + len].clone(),
-            );
-            if r + len <= l || r + len <= self.size() && is_ok(&nv) {
-                r += len;
-                v = nv;
-            }
-        }
+        self._max(f, l, G::inv(self.get(l)))
     }
 
-    /// find l such that \prod[l, r) = true, or return r
-    pub fn min_left_from<F>(&self, is_ok: &F, r: usize) -> usize
+    /// min i (0 <= i < r), f(getr(i, r)) is true. 0[fal, .. fal, tr, .. tr)r
+    /// or r
+    pub fn min_from<F>(&self, f: &F, r: usize) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
@@ -137,38 +130,36 @@ where
         if r == 0 {
             return 0;
         }
-        let mut len = (self.size() + 1).next_power_of_two();
-        let mut v = self.reduce_lt(r);
-        if is_ok(&v) {
+        let mut d = (self.size() + 1).next_power_of_two();
+        let mut v = self.get(r);
+        if f(&v) {
             return 0;
         }
-        let mut l = 1;
+        let mut i = 1;
         loop {
-            len >>= 1;
-            if len == 0 {
-                debug_assert!(l <= r);
-                return l;
+            d >>= 1;
+            if d == 0 {
+                debug_assert!(i <= r);
+                return i;
             }
-            if l + len > r {
+            if i + d > r {
                 continue;
             }
             let nv = G::op(
-                G::inv(self.d[l + len - 1].clone()),
+                G::inv(self.0[i + d - 1].clone()),
                 v.clone(),
             );
-            if !is_ok(&nv) {
-                l += len;
+            if !f(&nv) {
+                i += d;
                 v = nv;
             }
         }
     }
 }
 
-pub struct FwDual<G: Monoid> {
-    fw: Fenwick<G>,
-}
+pub struct Dual<G: Monoid>(Fw<G>);
 
-impl<G> FwDual<G>
+impl<G> Dual<G>
 where
     G: Monoid + Commutative,
     G::S: Clone,
@@ -184,15 +175,16 @@ where
                 a[i].clone(),
             );
         }
-        Self { fw: Fenwick::new(a) }
+        Self(Fw::new(a))
     }
 
-    pub fn size(&self) -> usize { self.fw.size() }
+    pub fn size(&self) -> usize { self.0.size() }
 
-    /// operate on [i, size)
-    pub fn operate_ge(&mut self, i: usize, v: G::S) { self.fw.operate(i, v) }
+    /// a[i] += v (l <= i < n)
+    pub fn op(&mut self, i: usize, v: G::S) { self.0.op(i, v) }
 
-    pub fn get(&self, i: usize) -> G::S { self.fw.reduce_lt(i + 1) }
+    /// a[i]
+    pub fn get(&self, i: usize) -> G::S { self.0.get(i + 1) }
 
     /// find first index i satisfying
     /// `is_ok(&self.get_point(i)) == true`
@@ -204,20 +196,21 @@ where
     where
         F: Fn(&G::S) -> bool,
     {
-        self.fw.max_right(&|prod: &G::S| !is_ok(prod))
+        self.0.max(&|prod: &G::S| !is_ok(prod))
     }
 }
 
-impl<G> FwDual<G>
+impl<G> Dual<G>
 where
     G: AbelianGroup,
     G::S: Clone,
 {
-    pub fn operate(&mut self, l: usize, r: usize, v: G::S) {
+    /// a[i] += v (l <= i < r)
+    pub fn opr(&mut self, l: usize, r: usize, v: G::S) {
         assert!(l < r && r <= self.size());
-        self.operate_ge(l, v.clone());
+        self.op(l, v.clone());
         if r < self.size() {
-            self.operate_ge(r, G::inv(v));
+            self.op(r, G::inv(v));
         }
     }
 
@@ -236,7 +229,7 @@ where
     {
         assert!(l <= self.size());
         let prod_lt = if l == 0 { G::e() } else { self.get(l - 1) };
-        self.fw.max_right_from(
+        self.0.max_from(
             &|prod_ge: &G::S| {
                 !is_ok(&G::op(
                     prod_lt.clone(),
@@ -275,41 +268,35 @@ mod tests {
 
         let arr = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-        let mut fw = Fenwick::<GroupApprox<i32, Additive>>::new(arr);
+        let mut fw = Fw::<GroupApprox<i32, Additive>>::new(arr);
 
-        assert_eq!(fw.reduce(0, 10), 45);
-        assert_eq!(fw.reduce(6, 10), 30);
-        fw.operate(5, 10);
-        assert_eq!(fw.reduce(6, 10), 30);
-        assert_eq!(fw.reduce_lt(5), 10);
-        assert_eq!(fw.reduce_lt(6), 25);
-        assert_eq!(fw.get(5), 15);
+        assert_eq!(fw.getr(0, 10), 45);
+        assert_eq!(fw.getr(6, 10), 30);
+        fw.op(5, 10);
+        assert_eq!(fw.getr(6, 10), 30);
+        assert_eq!(fw.get(5), 10);
+        assert_eq!(fw.get(6), 25);
+        assert_eq!(fw.getr(5, 6), 15);
         let is_ok = |x: &i32| *x <= 25;
-        assert_eq!(fw.max_right(&is_ok), 6);
-        assert_eq!(fw.max_right_from(&is_ok, 0), 6);
+        assert_eq!(fw.max(&is_ok), 6);
+        assert_eq!(fw.max_from(&is_ok, 0), 6);
         let is_ok = |x: &i32| *x < 25;
-        assert_eq!(fw.max_right(&is_ok), 5);
-        assert_eq!(fw.max_right_from(&is_ok, 0), 5);
-        assert_eq!(fw.max_right_from(&is_ok, 4), 6);
-        assert_eq!(fw.max_right_from(&is_ok, 5), 7);
-        assert_eq!(fw.max_right_from(&is_ok, 6), 9);
-        assert_eq!(
-            fw.max_right_from(&is_ok, 9),
-            10
-        );
-        assert_eq!(fw.min_left_from(&is_ok, 10), 7);
-        assert_eq!(fw.min_left_from(&is_ok, 0), 0);
-        assert_eq!(fw.min_left_from(&is_ok, 6), 2);
-        assert_eq!(fw.min_left_from(&is_ok, 5), 0);
+        assert_eq!(fw.max(&is_ok), 5);
+        assert_eq!(fw.max_from(&is_ok, 0), 5);
+        assert_eq!(fw.max_from(&is_ok, 4), 6);
+        assert_eq!(fw.max_from(&is_ok, 5), 7);
+        assert_eq!(fw.max_from(&is_ok, 6), 9);
+        assert_eq!(fw.max_from(&is_ok, 9), 10);
+        assert_eq!(fw.min_from(&is_ok, 10), 7);
+        assert_eq!(fw.min_from(&is_ok, 0), 0);
+        assert_eq!(fw.min_from(&is_ok, 6), 2);
+        assert_eq!(fw.min_from(&is_ok, 5), 0);
         let is_ok = |x: &i32| *x < 15;
-        assert_eq!(fw.max_right_from(&is_ok, 5), 5);
-        assert_eq!(fw.min_left_from(&is_ok, 6), 6);
-        assert_eq!(fw.min_left_from(&is_ok, 10), 9);
+        assert_eq!(fw.max_from(&is_ok, 5), 5);
+        assert_eq!(fw.min_from(&is_ok, 6), 6);
+        assert_eq!(fw.min_from(&is_ok, 10), 9);
         let is_ok = |x: &i32| *x < 9;
-        assert_eq!(
-            fw.min_left_from(&is_ok, 10),
-            10
-        );
+        assert_eq!(fw.min_from(&is_ok, 10), 10);
     }
 
     #[test]
@@ -322,12 +309,12 @@ mod tests {
         for i in 0..9 {
             a[i + 1] += a[i];
         }
-        type Fw = FwDual<GroupApprox<i32, Additive>>;
+        type Fw = Dual<GroupApprox<i32, Additive>>;
         let mut fw = Fw::new(a);
         assert_eq!(fw.get(1), 1);
         assert_eq!(fw.get(5), 15);
         assert_eq!(fw.get(9), 45);
-        fw.operate_ge(5, 2);
+        fw.op(5, 2);
         assert_eq!(fw.get(1), 1);
         assert_eq!(fw.get(5), 17);
         assert_eq!(fw.get(9), 47);
@@ -344,11 +331,11 @@ mod tests {
             10
         );
 
-        fw.operate(2, 6, 1);
+        fw.opr(2, 6, 1);
         assert_eq!(fw.get(1), 1);
         assert_eq!(fw.get(5), 18);
         assert_eq!(fw.get(9), 47);
-        fw.operate(2, 6, -1);
+        fw.opr(2, 6, -1);
         assert_eq!(
             fw.search_from(&|value: &i32| *value >= 23, 0),
             6

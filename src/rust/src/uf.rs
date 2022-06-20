@@ -35,20 +35,21 @@ impl<U: Root + Size> Labels for U {
     /// same label -> same component.
     fn labels(&mut self) -> Vec<usize> {
         let n = self.size();
-        let mut label = vec![n; n];
+        let mut lb = vec![n; n];
         let mut l = 0;
         for i in 0..n {
             let r = self.root(i);
-            if label[r] == n {
-                label[r] = l;
+            if lb[r] == n {
+                lb[r] = l;
                 l += 1;
             }
-            label[i] = label[r];
+            lb[i] = lb[r];
         }
-        label
+        lb
     }
 }
 
+/// Union Find
 #[derive(Debug)]
 pub struct UF(Vec<isize>); // root: neg-size, other: parent
 
@@ -103,6 +104,7 @@ impl<G: AbelianGroup> Size for PotentialUF<G> {
     fn size(&self) -> usize { self.a.len() }
 }
 
+/// Potentialized (or Weighted) Union Find
 impl<G> PotentialUF<G>
 where
     G: AbelianGroup,
@@ -123,7 +125,7 @@ where
 
     /// potential v against u.
     pub fn diff(&mut self, u: usize, v: usize) -> Result<G::S, &'static str> {
-        if self.root(u) != self.root(v) {
+        if !self.same(u, v) {
             Err("different components")
         } else {
             Ok(G::op(

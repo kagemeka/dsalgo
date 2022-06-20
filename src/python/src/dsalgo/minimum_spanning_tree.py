@@ -46,7 +46,7 @@ def kruskal_unionfind(
     n: int,
     edges: list[tuple[int, int, int]],
 ) -> list[tuple[int, int, int]]:
-    from dsalgo.union_find import UnionFind
+    from dsalgo.uf import UnionFind
 
     edges = sorted(edges, key=lambda e: e[2])
     uf = UnionFind(n)

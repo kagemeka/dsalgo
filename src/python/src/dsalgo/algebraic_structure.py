@@ -3,7 +3,6 @@ from __future__ import annotations
 import dataclasses
 import typing
 
-# from dsalgo.type import T
 
 T = typing.TypeVar("T")
 

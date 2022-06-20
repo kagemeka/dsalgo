@@ -1,5 +1,6 @@
 use crate::graph_edge_trait::From;
 
+// TODO: rename Adjlist
 #[derive(Debug)]
 pub struct AdjacencyList<E> {
     pub(crate) edges: Vec<Vec<E>>,

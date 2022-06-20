@@ -1,5 +1,7 @@
 use crate::tree_edges_to_graph::tree_edges_to_graph;
 
+// TODO: genelized edge type.
+// TODO: return parent and data
 pub fn tree_bfs<T, F>(
     tree_edges: &[(usize, usize)],
     root: usize,

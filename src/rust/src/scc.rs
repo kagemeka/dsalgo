@@ -124,6 +124,9 @@ pub fn tarjan(g: G) -> L {
     toposort(d.lb)
 }
 
+// TODO:
+// tarjan non recurse
+
 /// essentially same as Tarjan's Lowlink algorithm
 pub fn path_based(g: G) -> L {
     struct D {
@@ -182,6 +185,9 @@ pub fn path_based(g: G) -> L {
     }
     toposort(d.lb)
 }
+
+// TODO:
+// path based non recurse
 
 // TODO:
 /// reachability based

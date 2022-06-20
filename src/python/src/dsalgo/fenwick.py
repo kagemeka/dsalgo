@@ -9,14 +9,15 @@ import typing
 import unittest
 
 from dsalgo.algebraic_structure import Group, Monoid
-from dsalgo.type import S
+
+S = typing.TypeVar("S")
 
 
-class Fenwick(typing.Generic[S]):
+class Fw(typing.Generic[S]):
     _g: Monoid[S]  # Commutative
     _d: typing.List[S]  # data
 
-    def __init__(self, g: Monoid[S], a: list[S]) -> None:
+    def __init__(self, g: Monoid[S], a: typing.List[S]) -> None:
         """Not from size because intial values might not be identity."""
         n = len(a)
         a = [g.e()] + a
@@ -30,7 +31,7 @@ class Fenwick(typing.Generic[S]):
         return len(self._d) - 1
 
     def __setitem__(self, i: int, v: S) -> None:
-        """operate"""
+        """a[i] = op(a[i], v)"""
         n = len(self)
         assert 0 <= i < n
         i += 1
@@ -39,97 +40,65 @@ class Fenwick(typing.Generic[S]):
             i += i & -i
 
     def __getitem__(self, i: int) -> S:
-        """reduce less than"""
+        """\prod_{j=0}^{i-1} a[j]"""
         v = self._g.e()
         while i > 0:
             v = self._g.op(v, self._d[i])
             i -= i & -i
         return v
 
-    def max_right(self, is_ok: typing.Callable[[S], bool]) -> int:
+
+    def _max(self, f: typing.Callable[[S], bool], l: int, v: S) -> int:
+
+    def max(self, f: typing.Callable[[S], bool]) -> int:
+        # max i such that is_ok(fw[i]) is true.
         n = len(self)
-        leng = 1 << n.bit_length()
+        l = 1 << n.bit_length()  # length of covering nodes
         v, r = self._g.e(), 0
         while True:
-            leng >>= 1
-            if leng == 0:
+            l >>= 1
+            if l == 0:
                 return r
-            if r + leng > n:
+            if r + l > n:
                 continue
-            nv = self._g.op(v, self._d[r + leng])
-            if is_ok(nv):
-                r += leng
+            nv = self._g.op(v, self._d[r + l])
+            if f(nv):
+                r += l
                 v = nv
 
 
-class FwAbelian(Fenwick[S]):
-    _g: Group[S]
+class Abel(Fw[S]):
+    _g: Group[S]  # abelian
 
-    def __init__(self, g: Group[S], a: list[S]) -> None:
+    def __init__(self, g: Group[S], a: typing.List[S]) -> None:
         super().__init__(g, a)
 
-    def reduce(self, l: int, r: int) -> S:
+    def get(self, l: int, r: int) -> S:
+        # reduce [l, r)
         return self._g.op(self._g.inv(self[l]), self[r])
 
 
-class FwIntAdd:
-    """faster than abstract one"""
+class TestAbel(unittest.TestCase):
+    def test(self) -> None:
+        import operator
 
-    _d: typing.List[int]
-
-    def __init__(self, a: list[int]) -> None:
-        n = len(a)
-        a = [0] + a
-        for i in range(n):
-            j = i + (i & -i)
-            if j <= n:
-                a[j] += a[i]
-        self._d = a
-
-    def __len__(self) -> int:
-        return len(self._d) - 1
-
-    def __setitem__(self, i: int, x: int) -> None:
-        assert 0 <= i < len(self)
-        i += 1
-        while i < len(self) + 1:
-            self._d[i] += x
-            i += i & -i
-
-    def __getitem__(self, i: int) -> int:
-        v = 0
-        while i > 0:
-            v += self._d[i]
-            i -= i & -i
-        return v
-
-    def get_range(self, l: int, r: int) -> int:
-        return self[r] - self[l]
-
-    def max_right(self, is_ok: typing.Callable[[int], bool]) -> int:
-        n = len(self)
-        leng = 1 << n.bit_length()
-        v, r = 0, 0
-        while True:
-            leng >>= 1
-            if leng == 0:
-                return r
-            if r + leng > n:
-                continue
-            if is_ok(v + self._d[r + leng]):
-                r += leng
-                v += self._d[r]
+        g = Group[int](op=operator.add, e=lambda: 0, inv=lambda x: -x)
+        a = [0, 1, 2, 3, 4]
+        fw = Abel(g, a)
+        assert fw[3] == 3
+        fw[2] = 2
+        fw[3] == 5
+        assert fw.get(1, 3) == 3
 
 
-class Fw2DAbelian(typing.Generic[S]):
+class Abel2D(typing.Generic[S]):
+    # 2D fenwick tree for abelian group
     _g: Group[S]
-    _d: typing.List[FwAbelian[S]]
+    _d: typing.List[Abel[S]]
 
-    def __init__(self, g: Monoid[S], a: list[list[S]]) -> None:
+    def __init__(self, g: Group[S], a: typing.List[typing.List[S]]) -> None:
         h, w = len(a), len(a[0])
-        d = [FwAbelian(g, [g.e() for _ in range(w)])] + [
-            FwAbelian(g, row) for row in a
-        ]
+        d = [Abel(g, [g.e() for _ in range(w)])] + [Abel(g, row) for row in a]
         for i in range(1, h):
             ni = i + (i & -i)
             if ni > h:
@@ -141,24 +110,24 @@ class Fw2DAbelian(typing.Generic[S]):
         self._g, self._d = g, d
 
     @property
-    def shape(self) -> tuple[int, int]:
+    def shape(self) -> typing.Tuple[int, int]:
         return (len(self._d) - 1, len(self._d[0]) - 1)
 
-    def operate(self, i: int, j: int, v: S) -> None:
+    def __setitem__(self, idx: typing.Tuple[int, int], v: S) -> None:
         """
         operate v on a[i][j].
-        tuple indexing is slow.
         """
+        i, j = idx
         h, w = self.shape
         assert 0 <= i < h and 0 <= j < w
         i += 1
         while i <= h:
             self._d[i][j] = v
-
             i += i & -i
 
-    def reduce_lt(self, i: int, j: int) -> S:
+    def __getitem__(self, idx: typing.Tuple[int, int]) -> S:
         """reduce range [0, i) & [0, j)"""
+        i, j = idx
         v = self._g.e()
         while i > 0:
             v = self._g.op(v, self._d[i][j])
@@ -166,38 +135,37 @@ class Fw2DAbelian(typing.Generic[S]):
 
         return v
 
-    def reduce(self, i0: int, i1: int, j0: int, j1: int) -> S:
-        v = self.reduce_lt(i1, j1)
-        v = self._g.op(v, self._g.inv(self.reduce_lt(i1, j0)))
-        v = self._g.op(v, self._g.inv(self.reduce_lt(i0, j1)))
-        return self._g.op(v, self.reduce_lt(i0, j0))
+    def get(self, i0: int, i1: int, j0: int, j1: int) -> S:
+        # reduce [i0, i1) & [j0, j1)
+        v = self[i1, j1]
+        v = self._g.op(v, self._g.inv(self[i1, j0]))
+        v = self._g.op(v, self._g.inv(self[i0, j1]))
+        return self._g.op(v, self[i0, j0])
 
 
-# class FwDual(typing.Generic[S]):
-#     _g: Group[S]  # Abelian
+class Dual(typing.Generic[S]):
+    _g: Group[S]  # Abelian
+    _fw: Fw[S]
 
-#     def __init__(self, g: Group[S], a: list[S]) -> None:
-#         """
-#         group: Abelian Group.
-#         """
-#         n = len(arr)
-#         assert n > 0
-#         delta = [arr[0]]
-#         for i in range(n - 1):
-#             delta.append(group.op(group.invert(arr[i]), arr[i + 1]))
-#         self.__fw = FenwickTree[S](group, delta)
-#         self._g = group
+    def __init__(self, g: Group[S], a: typing.List[S]) -> None:
+        n = len(a)
+        assert n > 0
+        for i in range(n - 1, 0, -1):
+            a[i] = g.op(g.inv(a[i - 1]), a[i])
+        self._g, self._fw = g, Fw[S](g, a)
 
-#     def set(self, left: int, right: int, x: S) -> None:
-#         n = len(self.__fw)
-#         assert 0 <= left < right <= n
-#         self.__fw[left] = x
-#         if right < n:
-#             self.__fw[right] = self._g.invert(x)
+    def __setitem__(self, lr: typing.Tuple[int, int], x: S) -> None:
+        n = len(self._fw)
+        l, r = lr
+        assert 0 <= lr <= n
+        self.__fw[left] = x
+        if right < n:
+            self.__fw[right] = self._g.invert(x)
 
-#     def __getitem__(self, i: int) -> S:
-#         assert 0 <= i < len(self.__fw)
-#         return self.__fw[i + 1]
+    def __getitem__(self, i: int) -> S:
+        # return a[i]
+        assert 0 <= i < len(self.__fw)
+        return self.__fw[i + 1]
 
 
 # class FwDualIntAdd:
@@ -251,9 +219,6 @@ class Fw2DAbelian(typing.Generic[S]):
 #         assert 0 <= left <= right <= len(self)
 #         fw0, fw1 = self.__fw_0, self.__fw_1
 #         return fw0[right] + fw1[right] * right - fw0[left] - fw1[left] * left
-
-
-# mypy: ignore-errors
 
 
 class FwMultiset:
@@ -318,74 +283,64 @@ class FwMultiset:
         return self.__fw[x + 1]
 
 
-class Tests(unittest.TestCase):
-    def test_fenwick(self) -> None:
-        import operator
+# class Tests(unittest.TestCase):
+#     def test_dual(self) -> None:
+#         a = [0, 1, 2, 3, 4]
+#         # g = Group[int](lambda x, y: x + y, lambda: 0, lambda x: -x)
+#         # fw = FwDual(g, a)
+#         # fw.set(1, 5, 2)
+#         # assert fw[3] == 5
+#         # assert fw[0] == 0
 
-        g = Group(op=operator.add, e=lambda: 0, inv=lambda x: -x)
-        a = [0, 1, 2, 3, 4]
-        fw = FwAbelian(g, a)
-        assert fw[3] == 3
-        fw[2] = 2
-        fw[3] == 5
+#     def test_2d(self) -> None:
+#         import operator
 
-    def test_dual(self) -> None:
-        a = [0, 1, 2, 3, 4]
-        # g = Group[int](lambda x, y: x + y, lambda: 0, lambda x: -x)
-        # fw = FwDual(g, a)
-        # fw.set(1, 5, 2)
-        # assert fw[3] == 5
-        # assert fw[0] == 0
+#         g = Group(op=operator.add, e=lambda: 0, inv=lambda x: -x)
 
-    def test_2d(self) -> None:
-        import operator
+#         h, w = 3, 3
+#         a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+#         fw = Fw2DAbel(g, a)
 
-        g = Group(op=operator.add, e=lambda: 0, inv=lambda x: -x)
+#         def assert_sum() -> None:
+#             for i0 in range(h + 1):
+#                 for i1 in range(i0, h + 1):
+#                     for j0 in range(w + 1):
+#                         for j1 in range(j0, w + 1):
+#                             assert fw.reduce(i0, i1, j0, j1) == sum(
+#                                 a[i][j]
+#                                 for i in range(i0, i1)
+#                                 for j in range(j0, j1)
+#                             )
 
-        h, w = 3, 3
-        a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-        fw = Fw2DAbelian(g, a)
+#         assert_sum()
+#         fw.operate(1, 1, -1)
+#         a[1][1] -= 1
+#         assert_sum()
 
-        def assert_sum() -> None:
-            for i0 in range(h + 1):
-                for i1 in range(i0, h + 1):
-                    for j0 in range(w + 1):
-                        for j1 in range(j0, w + 1):
-                            assert fw.reduce(i0, i1, j0, j1) == sum(
-                                a[i][j]
-                                for i in range(i0, i1)
-                                for j in range(j0, j1)
-                            )
-
-        assert_sum()
-        fw.operate(1, 1, -1)
-        a[1][1] -= 1
-        assert_sum()
-
-    def test_fw_multiset(self) -> None:
-        ms = FwMultiset(max_value=1 << 10)
-        self.assertIsNone(ms.min())
-        self.assertIsNone(ms.max())
-        ms.insert(5)
-        self.assertEqual(len(ms), 1)
-        ms.insert(1000)
-        self.assertEqual(len(ms), 2)
-        ms.insert(5)
-        self.assertEqual(len(ms), 3)
-        self.assertEqual(ms.max(), 1000)
-        self.assertEqual(ms.min(), 5)
-        with self.assertRaises(AssertionError):
-            ms.insert(1 << 10)
-        self.assertEqual(ms.lower_bound(5), 0)
-        self.assertEqual(ms.upper_bound(5), 2)
-        self.assertEqual(ms.lower_bound(6), 2)
-        self.assertEqual(ms.upper_bound(4), 0)
-        ms.remove(1000)
-        with self.assertRaises(KeyError):
-            ms.remove(1000)
-        self.assertEqual(len(ms), 2)
-        ms.remove_all(5)
-        self.assertTrue(ms.is_empty())
+#     def test_fw_multiset(self) -> None:
+#         ms = FwMultiset(max_value=1 << 10)
+#         self.assertIsNone(ms.min())
+#         self.assertIsNone(ms.max())
+#         ms.insert(5)
+#         self.assertEqual(len(ms), 1)
+#         ms.insert(1000)
+#         self.assertEqual(len(ms), 2)
+#         ms.insert(5)
+#         self.assertEqual(len(ms), 3)
+#         self.assertEqual(ms.max(), 1000)
+#         self.assertEqual(ms.min(), 5)
+#         with self.assertRaises(AssertionError):
+#             ms.insert(1 << 10)
+#         self.assertEqual(ms.lower_bound(5), 0)
+#         self.assertEqual(ms.upper_bound(5), 2)
+#         self.assertEqual(ms.lower_bound(6), 2)
+#         self.assertEqual(ms.upper_bound(4), 0)
+#         ms.remove(1000)
+#         with self.assertRaises(KeyError):
+#             ms.remove(1000)
+#         self.assertEqual(len(ms), 2)
+#         ms.remove_all(5)
+#         self.assertTrue(ms.is_empty())
 
 
 # class TestFenwickTree2D(unittest.TestCase):

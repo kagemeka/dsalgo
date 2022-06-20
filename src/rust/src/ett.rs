@@ -8,28 +8,47 @@ use crate::{
 /// Undirected Tree Edges.
 pub type E = [(usize, usize)];
 
-pub fn tour_edges(tree_edges: &E, root: usize) -> Vec<isize> {
-    let graph = tree_edges_to_graph(tree_edges);
-    let n = graph.len();
-    let mut parent = vec![None; n];
-    let mut tour = Vec::with_capacity(n << 1);
-    let mut stack = vec![root as isize];
+/// from edges, root
+pub fn tour_edges(e: &E, r: usize) -> Vec<isize> {
+    let g = tree_edges_to_graph(e);
+    let n = g.len();
+    let mut p = vec![None; n]; // parent
+    let mut t = Vec::with_capacity(n << 1);
+    let mut s = vec![r as isize]; // stack
     for _ in 0..n << 1 {
-        let u = stack.pop().unwrap();
-        tour.push(u);
+        let u = s.pop().unwrap();
+        t.push(u);
         if u < 0 {
             continue;
         }
-        stack.push(!u);
+        s.push(!u);
         let u = u as usize;
-        graph[u].iter().rev().for_each(|&v| {
-            if Some(v) != parent[u] {
-                parent[v] = Some(u);
-                stack.push(v as isize);
+        g[u].iter().rev().for_each(|&v| {
+            if Some(v) != p[u] {
+                p[v] = Some(u);
+                s.push(v as isize);
             }
         });
     }
-    tour
+    t
+}
+
+// TODO: recurse
+// pub fn tour_edges_recurse(e: &E, r: usize) -> Vec<isize> {}
+
+pub fn tour_nodes(e: &E, r: usize) -> Vec<usize> {
+    let p = tree_parents(e, r);
+    tour_edges(e, r)
+        .iter()
+        .rev()
+        .skip(1)
+        .rev()
+        .map(
+            |&u| {
+                if u < 0 { p[!u as usize].unwrap() } else { u as usize }
+            },
+        )
+        .collect()
 }
 
 pub fn last_positions(tour_nodes: &[usize]) -> Vec<usize> {
@@ -48,22 +67,6 @@ pub fn first_positions(tour_nodes: &[usize]) -> Vec<usize> {
     tour.reverse();
     last_positions(&tour).iter().map(|&i| size - i - 1).collect()
 }
-
-pub fn tour_nodes(tree_edges: &E, root: usize) -> Vec<usize> {
-    let parent = tree_parents(tree_edges, root);
-    tour_edges(tree_edges, root)
-        .iter()
-        .rev()
-        .skip(1)
-        .rev()
-        .map(
-            |&u| {
-                if u < 0 { parent[!u as usize].unwrap() } else { u as usize }
-            },
-        )
-        .collect()
-}
-
 #[cfg(test)]
 mod tests {
     #[test]

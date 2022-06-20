@@ -4,21 +4,21 @@ import typing
 
 import dsalgo.algebraic_structure
 import dsalgo.euler_tour
-import dsalgo.heavy_light_decomposition
+import dsalgo.hld
 import dsalgo.sparse_table
-import dsalgo.tree_bfs
+from dsalgo.tree_bfs import tree_bfs
 
 
-# binary lifting
 def doubling(
-    e: list[tuple[int, int]],
-    r: int,
+    e: typing.List[typing.Tuple[int, int]],
 ) -> typing.Callable[[int, int], int]:
+    # binary lifting
     n = len(e) + 1
-    par, dep = dsalgo.tree_bfs.tree_bfs(e, r)
+    r = 0  # root
+    p, dep = tree_bfs(e, r)
     k = max(1, max(dep).bit_length())
     a = [[n] * n for _ in range(k)]
-    a[0] = par
+    a[0] = p
     a[0][r] = r
     for i in range(k - 1):
         for j in range(n):
@@ -37,7 +37,7 @@ def doubling(
             nu, nv = f[u], f[v]
             if nu != nv:
                 u, v = nu, nv
-        return par[u]
+        return p[u]
 
     return get
 
@@ -48,7 +48,7 @@ def tarjan(
     r: int,
     qs: list[tuple[int, int]],  # queries
 ) -> list[int]:
-    import dsalgo.union_find
+    import dsalgo.uf
 
     n = len(e) + 1
     g = [[] for _ in range(n)]
@@ -60,7 +60,7 @@ def tarjan(
         q[u].append((v, i))
         q[v].append((u, i))
     vis = [False] * n
-    uf = dsalgo.union_find.UnionFind(n)
+    uf = dsalgo.uf.UnionFind(n)
     a = [n] * n  # anc
     lca = [n] * len(qs)
 
@@ -120,11 +120,11 @@ def with_hld(
     root: int,
 ) -> typing.Callable[[int, int], int]:
     parent, depth = dsalgo.tree_bfs.tree_bfs(tree_edges, root)
-    labels = dsalgo.heavy_light_decomposition.heavy_light_decompose(
+    labels = dsalgo.hld.heavy_light_decompose(
         tree_edges,
         root,
     )
-    roots = dsalgo.heavy_light_decomposition.compute_roots(
+    roots = dsalgo.hld.compute_roots(
         tree_edges,
         root,
         labels,

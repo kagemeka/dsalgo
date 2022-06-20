@@ -1,6 +1,7 @@
 //! lowest common ancestor
 
 pub mod tree {
+    //! LCA for undirected tree.
 
     use crate::{
         bitops::len::with_clz as bit_length,
@@ -13,6 +14,7 @@ pub mod tree {
         depth: Vec<usize>,
     }
 
+    // TODO: fix root as 0
     impl LCABinaryLifting {
         pub fn new(tree_edges: &[(usize, usize)], root: usize) -> Self {
             let n = tree_edges.len() + 1;
@@ -113,31 +115,32 @@ pub mod tree {
         lca
     }
 
-    use crate::heavy_light_decomposition::heavy_light_decompose;
+    use crate::hld::heavy_light_decompose;
 
     pub struct LCAHLD {
-        parent: Vec<Option<usize>>,
-        depth: Vec<usize>,
-        roots: Vec<usize>,
+        p: Vec<Option<usize>>, // parents
+        d: Vec<usize>,         // depths
+        r: Vec<usize>,         // roots
     }
 
     impl LCAHLD {
         pub fn new(tree_edges: &[(usize, usize)], root: usize) -> Self {
             Self {
-                parent: tree_parents(tree_edges, root),
-                depth: tree_depths(tree_edges, root),
-                roots: heavy_light_decompose(tree_edges, root),
+                p: tree_parents(tree_edges, root),
+                d: tree_depths(tree_edges, root),
+                r: heavy_light_decompose(tree_edges, root),
             }
         }
 
         pub fn get(&self, mut u: usize, mut v: usize) -> usize {
-            while self.roots[u] != self.roots[v] {
-                if self.depth[self.roots[u]] > self.depth[self.roots[v]] {
-                    std::mem::swap(&mut u, &mut v);
+            use std::mem::swap;
+            while self.r[u] != self.r[v] {
+                if self.d[self.r[u]] > self.d[self.r[v]] {
+                    swap(&mut u, &mut v);
                 }
-                v = self.parent[self.roots[v]].unwrap();
+                v = self.p[self.r[v]].unwrap();
             }
-            if self.depth[u] <= self.depth[v] { u } else { v }
+            if self.d[u] <= self.d[v] { u } else { v }
         }
     }
 
