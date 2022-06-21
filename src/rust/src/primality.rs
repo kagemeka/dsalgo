@@ -1,5 +1,29 @@
 //! primality tests
 
+use crate::rng_static_xorshift64::static_xorshift64;
+
+pub fn rng_bases(k: usize) -> Vec<u64> {
+    (0..k).map(|_| static_xorshift64()).collect()
+}
+
+pub(crate) mod test_cases {
+    #[allow(dead_code)]
+    pub(crate) const P: &'static [u64] = &[2, 998_244_353, 1_000_000_007];
+
+    #[allow(dead_code)]
+    pub(crate) const NP: &'static [u64] = &[0, 1, 561, 512_461];
+}
+
+pub(crate) fn trivial_primality(n: u64) -> Option<bool> {
+    if n == 2 {
+        return Some(true);
+    }
+    if n < 2 || n & 1 == 0 {
+        return Some(false);
+    }
+    None
+}
+
 pub mod mr {
     //! Miller Rabin's Test
 
@@ -8,11 +32,11 @@ pub mod mr {
 
         pub const B32: [u32; 3] = [2, 7, 61];
 
-        pub const B64: [u64; 12] = [
+        pub const B64_12: [u64; 12] = [
             2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37,
         ];
 
-        pub const B64_FEW: [u64; 7] = [
+        pub const B64_7: [u64; 7] = [
             2,
             325,
             9_375,
@@ -23,76 +47,48 @@ pub mod mr {
         ];
     }
 
-    pub struct FixedBases(Vec<u64>);
-
-    impl Default for FixedBases {
-        fn default() -> Self { Self::new(bases::B64_FEW.to_vec()) }
-    }
-
-    impl FixedBases {
-        pub fn new(bases: Vec<u64>) -> Self { Self(bases) }
-
-        // TODO: impl as common trait
-        pub fn new_rand(epochs: u8) -> Self {
-            use crate::rng_static_xorshift64::static_xorshift64;
-            Self::new(
-                (0..epochs).map(|_| static_xorshift64()).collect::<Vec<_>>(),
-            )
+    pub fn is_p(n: u64) -> bool {
+        use crate::{
+            montgomery_modular_multiplication_64::*,
+            power::pow_semigroup,
+        };
+        if let Some(bl) = super::trivial_primality(n) {
+            return bl;
         }
+        let s = (n - 1).trailing_zeros();
+        let d = (n - 1) >> s;
+        // n - 1 = 2^s*d
+        let m = MontgomeryMultiplication64::new(n);
+        let mul = |x, y| m.mul(x, y);
 
-        pub fn is_prime(&self, n: u64) -> bool {
-            use crate::{
-                montgomery_modular_multiplication_64::*,
-                power::pow_semigroup,
-            };
-            if n == 2 {
-                return true;
-            }
-            if n < 2 || n & 1 == 0 {
+        let is_c = |b| -> bool {
+            let mut x = pow_semigroup(&mul, b, d);
+            if x == 1 {
                 return false;
             }
-            let s = (n - 1).trailing_zeros();
-            let d = (n - 1) >> s;
-            // n - 1 = 2^s*d
-            let m = MontgomeryMultiplication64::new(n);
-            let mul = |x, y| m.mul(x, y);
-
-            let is_composite = |b| -> bool {
-                assert!(n > 2 && n & 1 == 1 && 2 <= b && b < n - 1);
-                let mut x = pow_semigroup(&mul, b, d);
-                if x == 1 {
+            for _ in 0..s {
+                if x == n - 1 {
                     return false;
                 }
-                for _ in 0..s {
-                    if x == n - 1 {
-                        return false;
-                    }
-                    x = mul(x, x);
-                }
-                true // definite
-            };
-            // [2, n - 1)
-            self.0
-                .iter()
-                .map(|&base| base % n)
-                .filter(|&b| 2 <= b && b < n - 1)
-                .all(|b| !is_composite(b))
-            // strong probable prime.
-        }
+                x = mul(x, x);
+            }
+            true
+        };
+        bases::B64_7
+            .iter()
+            .map(|&b| b % n)
+            .filter(|&b| 2 <= b && b < n - 1)
+            .all(|b| !is_c(b))
     }
 
-    pub fn is_prime(n: u64) -> bool { FixedBases::default().is_prime(n) }
-
-    #[cfg(test)]
-    mod tests {
-        #[test]
-        fn test_mr() {
-            use super::*;
-            assert!(is_prime(998_244_353));
-            assert!(is_prime(1_000_000_007));
-            assert!(is_prime(1_000_000_007));
-            assert!(!is_prime(561));
-            assert!(!is_prime(512_461));
+    #[test]
+    fn test_mr() {
+        use crate::primality::test_cases::*;
+        for x in P.into_iter() {
+            assert!(is_p(*x));
+        }
+        for x in NP.into_iter() {
+            assert!(!is_p(*x));
         }
     }
 }
@@ -105,60 +101,39 @@ pub mod ss {
         jacobi_symbol::jacobi_symbol,
     };
 
-    pub fn is_composite_euler_jacobi(b: u64, n: u64) -> bool {
-        assert!(n > 2 && n & 1 == 1 && 2 <= b && b < n);
-        // 2 <= a because if a == 1, it's trivial jacobi = euler = 1.
+    pub fn is_p(b: &[u64], n: u64) -> bool {
+        if let Some(bl) = super::trivial_primality(n) {
+            return bl;
+        }
         // compare jcobi symbol and euler's criterion.
-        let jacobi = jacobi_symbol(n, b);
-        if jacobi == 0 {
-            return true;
-        }
-        if let Ok(euler) = try_euler_criterion(n, b) {
-            let jacobi = if jacobi == 1 { 1 } else { n - 1 };
-            euler != jacobi
-        } else {
-            true
-        }
-    }
-    pub struct FixedBases(Vec<u64>);
-
-    impl FixedBases {
-        pub fn new(bases: Vec<u64>) -> Self { Self(bases) }
-
-        // TODO: implement as common trait.
-        pub fn new_rand(epochs: u8) -> Self {
-            use crate::rng_static_xorshift64::static_xorshift64;
-            Self::new(
-                (0..epochs).map(|_| static_xorshift64()).collect::<Vec<_>>(),
-            )
-        }
-
-        /// check whether n is Euler-Jacobi pseudo-prime or definite composite.
-        pub fn is_prime(&self, n: u64) -> bool {
-            if n == 2 {
+        let is_c = |b| -> bool {
+            let j = jacobi_symbol(n, b);
+            if j == 0 {
                 return true;
             }
-            if n < 2 || n & 1 == 0 {
-                return false;
+            if let Ok(e) = try_euler_criterion(n, b) {
+                let j = if j == 1 { 1 } else { n - 1 };
+                e != j
+            } else {
+                true
             }
-            // [2, n)
-            self.0
-                .iter()
-                .map(|&base| base % n)
-                .filter(|&b| 2 <= b && b < n)
-                .all(|b| !is_composite_euler_jacobi(b, n))
+        };
+        b.iter()
+            .map(|&b| b % n)
+            .filter(|&b| 2 <= b && b < n)
+            .all(|b| !is_c(b))
+    }
+
+    #[test]
+    fn test() {
+        use crate::primality::{rng_bases, test_cases::*};
+        let bases = rng_bases(20);
+        for x in P.into_iter() {
+            assert!(is_p(&bases, *x));
         }
-    }
-
-    pub fn is_prime(n: u64, epochs: u8) -> bool {
-        FixedBases::new_rand(epochs).is_prime(n)
-    }
-
-    // TODO:
-    #[cfg(test)]
-    mod tests {
-        #[test]
-        fn test() {}
+        for x in NP.into_iter() {
+            assert!(!is_p(&bases, *x));
+        }
     }
 }
 
@@ -175,61 +150,30 @@ pub mod fermat {
         power::pow_semigroup,
     };
 
-    pub struct FixedBases(Vec<u64>);
-
-    impl FixedBases {
-        pub fn new(bases: Vec<u64>) -> Self { Self(bases) }
-
-        // TODO: implement as common trait.
-        pub fn new_rand(epochs: u8) -> Self {
-            use crate::rng_static_xorshift64::static_xorshift64;
-            Self::new(
-                (0..epochs).map(|_| static_xorshift64()).collect::<Vec<_>>(),
-            )
+    pub fn is_p(b: &[u64], n: u64) -> bool {
+        if let Some(bl) = super::trivial_primality(n) {
+            return bl;
         }
-
-        pub fn is_prime(&self, n: u64) -> bool {
-            if n == 2 {
-                return true;
-            }
-            if n < 2 || n & 1 == 0 {
-                return false;
-            }
-            let m = MontgomeryMultiplication64::new(n);
-            let mul = |x, y| m.mul(x, y);
-            let is_composite =
-                |b| -> bool { pow_semigroup(&mul, b, n - 1) != 1 };
-            // [2, n - 1)
-            self.0
-                .iter()
-                .map(|&base| base % n)
-                .filter(|&b| 2 <= b && b < n - 1)
-                .all(|b| gcd(b, n) == 1 && !is_composite(b))
-            // strong probable prime.
-        }
+        let m = MontgomeryMultiplication64::new(n);
+        let mul = |x, y| m.mul(x, y);
+        let is_composite = |b| -> bool { pow_semigroup(&mul, b, n - 1) != 1 };
+        // [2, n - 1)
+        b.iter()
+            .map(|&b| b % n)
+            .filter(|&b| 2 <= b && b < n - 1)
+            .all(|b| gcd(b, n) == 1 && !is_composite(b))
+        // strong probable prime.
     }
 
-    pub fn is_prime(n: u64, epochs: u8) -> bool {
-        FixedBases::new_rand(epochs).is_prime(n)
-    }
-
-    #[cfg(test)]
-    mod tests {
-        #[test]
-        fn test() {
-            assert_eq!(
-                super::is_prime(998_244_353, 10),
-                true
-            );
-            assert_eq!(
-                super::is_prime(1_000_000_007, 10),
-                true
-            );
-            assert_eq!(super::is_prime(561, 10), false);
-            assert_eq!(
-                super::is_prime(512461, 10),
-                false
-            );
+    #[test]
+    fn test() {
+        use crate::primality::{rng_bases, test_cases::*};
+        let bases = rng_bases(30);
+        for x in P.into_iter() {
+            assert!(is_p(&bases, *x));
+        }
+        for x in NP.into_iter() {
+            assert!(!is_p(&bases, *x));
         }
     }
 }

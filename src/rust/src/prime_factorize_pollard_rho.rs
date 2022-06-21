@@ -26,7 +26,7 @@ mod tests {
         use crate::{primality::mr::*, prime_factorize_trial_division::*};
         for i in 1..10000 {
             assert_eq!(
-                prime_factorize_pollard_rho(&is_prime, i),
+                prime_factorize_pollard_rho(&is_p, i),
                 Ok(prime_factorize_trial_division(
                     i
                 )),

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 import random
+import re
 import typing
 
 
@@ -28,60 +29,42 @@ def is_prime_table(size: int) -> list[bool]:
     return sieve_of_eratosthenes(size)
 
 
-def _is_trivial_composite(n: int) -> bool:
-    return n > 2 and n & 1 == 0
-
-
-def _is_composite(n: int, base: int) -> bool:
-    assert n >= 3
-    r, d = 0, n - 1
-    while d & 1 == 0:
-        r += 1
-        d >>= 1
-    # n - 1 = d2^r
-    x = pow(base, d, n)
-    if x == 1:
-        return False
-    for _ in range(r):
-        if x == n - 1:
-            return False
-        x = x * x % n
-    return True
-
-
-def _miller_rabin_fixed_bases(n: int, bases: list[int]) -> bool:
-    assert n >= 1
-    if _is_trivial_composite(n):
-        return False
+def trivial_primality(n: int) -> typing.Optional[bool]:
     if n == 2:
         return True
-    for base in bases:
-        if _is_composite(n, base):
-            return False
-    return True
-
-
-def miller_rabin_test(n: int, check_times: int = 20) -> bool:
-    assert n >= 1
-    if n == 1:
+    if n < 2 or n & 1 == 0:
         return False
-    bases = list(set(random.randint(1, n - 1) for _ in range(check_times)))
-    return _miller_rabin_fixed_bases(n, bases)
+    return None
 
 
-def miller_rabin_test_32(n: int) -> bool:
-    BASES = [2, 7, 61]
-    return _miller_rabin_fixed_bases(n, BASES)
+def mr(n: int) -> bool:
+    MR_BASES = (
+        (2, 7, 61),  # < 2^32
+        (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37),  # < 2^64
+        (2, 325, 9375, 28178, 450775, 9780504, 1795265022),  # < 2^64
+    )
 
+    bl = trivial_primality(n)
+    if bl is not None:
+        return bl
 
-def miller_rabin_test_64(n: int) -> bool:
-    BASES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
-    return _miller_rabin_fixed_bases(n, BASES)
+    def is_c(b: int) -> bool:
+        assert n >= 3
+        r, d = 0, n - 1
+        while d & 1 == 0:
+            r += 1
+            d >>= 1
+        # n - 1 = d2^r
+        x = pow(b, d, n)
+        if x == 1:
+            return False
+        for _ in range(r):
+            if x == n - 1:
+                return False
+            x = x * x % n
+        return True
 
-
-def miller_rabin_test_64_v2(n: int) -> bool:
-    BASES = [2, 325, 9375, 28178, 450775, 9780504, 1795265022]
-    return _miller_rabin_fixed_bases(n, BASES)
+    return all(not is_c(b) for b in MR_BASES)
 
 
 def fermat_test(n: int, check_times: int = 100) -> bool:
