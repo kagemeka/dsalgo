@@ -1,4 +1,4 @@
-use crate::{algebraic_structure::*, isqrt};
+use crate::{algebraic_structure::*, find_root::isqrt};
 
 pub struct SqrtDecomposition<G: Semigroup> {
     pub(crate) data: Vec<G::S>,

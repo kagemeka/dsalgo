@@ -266,7 +266,6 @@ pub mod is_subsequence;
 pub mod is_twin_prime;
 pub mod is_undirected_dense_graph;
 pub mod isomorphism;
-pub mod isqrt;
 pub mod jacobi_symbol;
 pub mod jacobi_symbol_recurse;
 pub mod join;

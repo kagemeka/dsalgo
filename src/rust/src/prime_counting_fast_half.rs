@@ -1,7 +1,7 @@
 //! this does not pass test.
 // TODO: fix bug.
 
-use crate::isqrt;
+use crate::find_root::isqrt;
 
 /// O(N^{3/4}) with constant time optimization.
 /// insipired by O(N^{3/4}/log{N}) implementation.

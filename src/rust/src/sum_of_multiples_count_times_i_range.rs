@@ -1,4 +1,4 @@
-use crate::isqrt;
+use crate::find_root::isqrt;
 
 /// \sum_{i=1}^n{i \cdot |multiples(i)|}
 pub fn sum_of_multiples_count_times_i_range(

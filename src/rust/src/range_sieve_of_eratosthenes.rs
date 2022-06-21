@@ -1,4 +1,4 @@
-use crate::{find_prime_numbers::find_prime_numbers, isqrt};
+use crate::{find_prime_numbers::find_prime_numbers, find_root::isqrt};
 pub struct RangeSieveOfEratosthenes {
     primes: Vec<u64>,
     less_than: u64,

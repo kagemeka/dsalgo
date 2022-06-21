@@ -1,4 +1,4 @@
-use crate::isqrt;
+use crate::find_root::isqrt;
 
 /// Compute \pi(n)
 /// O(N^{3/4}/log{N})

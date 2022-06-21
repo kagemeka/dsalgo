@@ -1,4 +1,4 @@
-use crate::{isqrt, sum_of_multiples::sum_of_multiples};
+use crate::{find_root::isqrt, sum_of_multiples::sum_of_multiples};
 
 /// \sum_{i=lo}^{hi}{\sum_{i|j, j <= limit}{j}}
 /// sqrt split teqnique

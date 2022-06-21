@@ -1,4 +1,7 @@
-use crate::{isqrt, range_sieve_of_eratosthenes::RangeSieveOfEratosthenes};
+use crate::{
+    find_root::isqrt,
+    range_sieve_of_eratosthenes::RangeSieveOfEratosthenes,
+};
 pub struct SieveOfEratosthenesLowMemoryPrimeGenerator {
     iter: std::vec::IntoIter<u64>,
     range_sieve: RangeSieveOfEratosthenes,

@@ -1,4 +1,4 @@
-use crate::isqrt;
+use crate::find_root::isqrt;
 
 /// O(N^{3/4})
 pub fn prime_pi_fast(n: u64) -> u64 {

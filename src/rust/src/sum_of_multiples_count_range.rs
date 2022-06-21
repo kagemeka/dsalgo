@@ -1,4 +1,4 @@
-use crate::isqrt;
+use crate::find_root::isqrt;
 
 /// [lo, hi]
 pub fn sum_of_multiples_count_range(limit: u64, lo: u64, mut hi: u64) -> u64 {

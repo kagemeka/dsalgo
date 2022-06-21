@@ -1,4 +1,4 @@
-use crate::isqrt;
+use crate::find_root::isqrt;
 
 /// for odd integer n
 /// n = ab (\exist a, b are odd)
