@@ -1,3 +1,5 @@
+//! Priority Queue
+
 pub trait PriorityQueue {}
 
 pub trait MinimumQueue {}

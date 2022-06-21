@@ -24,6 +24,14 @@ pub(crate) fn trivial_primality(n: u64) -> Option<bool> {
     None
 }
 
+/// n is composite but b^(n-1) = 1 (mod n) for all b such gcd(b, n) = 1
+pub const CARMICHAEL_NUMS: &'static [u64] = &[
+    561, 1105, 1729, 2465, 2821, 6601, 8911, 10585, 15841, 29341, 41041, 46657,
+    52633, 62745, 63973, 75361, 101101, 115921, 126217, 162401, 172081, 188461,
+    252601, 278545, 294409, 314821, 334153, 340561, 399001, 410041, 449065,
+    488881, 512461,
+];
+
 pub mod mr {
     //! Miller Rabin's Test
 
@@ -156,13 +164,10 @@ pub mod fermat {
         }
         let m = MontgomeryMultiplication64::new(n);
         let mul = |x, y| m.mul(x, y);
-        let is_composite = |b| -> bool { pow_semigroup(&mul, b, n - 1) != 1 };
-        // [2, n - 1)
         b.iter()
             .map(|&b| b % n)
             .filter(|&b| 2 <= b && b < n - 1)
-            .all(|b| gcd(b, n) == 1 && !is_composite(b))
-        // strong probable prime.
+            .all(|b| gcd(b, n) == 1 && pow_semigroup(&mul, b, n - 1) == 1)
     }
 
     #[test]
@@ -173,6 +178,9 @@ pub mod fermat {
             assert!(is_p(&bases, *x));
         }
         for x in NP.into_iter() {
+            assert!(!is_p(&bases, *x));
+        }
+        for x in super::CARMICHAEL_NUMS.iter() {
             assert!(!is_p(&bases, *x));
         }
     }

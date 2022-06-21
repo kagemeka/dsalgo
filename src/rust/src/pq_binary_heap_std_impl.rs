@@ -1,4 +1,4 @@
-use crate::priority_queue::{MinimumQueue, Pop, Push};
+use crate::pq::{MinimumQueue, Pop, Push};
 
 impl<T: std::cmp::Ord> Push
     for std::collections::BinaryHeap<std::cmp::Reverse<T>>

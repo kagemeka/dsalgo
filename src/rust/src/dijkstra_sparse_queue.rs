@@ -1,4 +1,4 @@
-use crate::priority_queue::{MinimumQueue, Pop, Push};
+use crate::pq::{MinimumQueue, Pop, Push};
 
 pub trait DijkstraSparseQueue:
     MinimumQueue + Push<T = (u64, usize)> + Pop<T = (u64, usize)> + Default

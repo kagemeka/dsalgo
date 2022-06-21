@@ -1,103 +1,14 @@
 from __future__ import annotations
 
 import math
-import random
-import re
 import typing
+from dsalgo.psieve import erat_ps
+import unittest
+import random
 
+random.seed(1 << 10)
 
-def is_prime(n: int) -> bool:
-    # naive test
-    ...
-
-
-def sieve_of_eratosthenes(sieve_size: int) -> list[bool]:
-    assert sieve_size > 1
-    is_prime = [True] * sieve_size
-    is_prime[0] = is_prime[1] = False
-    for i in range(2, sieve_size):
-        if i * i >= sieve_size:
-            break
-        if not is_prime[i]:
-            continue
-        for j in range(i * i, sieve_size, i):
-            is_prime[j] = False
-    return is_prime
-
-
-def is_prime_table(size: int) -> list[bool]:
-    return sieve_of_eratosthenes(size)
-
-
-def trivial_primality(n: int) -> typing.Optional[bool]:
-    if n == 2:
-        return True
-    if n < 2 or n & 1 == 0:
-        return False
-    return None
-
-
-def mr(n: int) -> bool:
-    MR_BASES = (
-        (2, 7, 61),  # < 2^32
-        (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37),  # < 2^64
-        (2, 325, 9375, 28178, 450775, 9780504, 1795265022),  # < 2^64
-    )
-
-    bl = trivial_primality(n)
-    if bl is not None:
-        return bl
-
-    def is_c(b: int) -> bool:
-        assert n >= 3
-        r, d = 0, n - 1
-        while d & 1 == 0:
-            r += 1
-            d >>= 1
-        # n - 1 = d2^r
-        x = pow(b, d, n)
-        if x == 1:
-            return False
-        for _ in range(r):
-            if x == n - 1:
-                return False
-            x = x * x % n
-        return True
-
-    return all(not is_c(b) for b in MR_BASES)
-
-
-def fermat_test(n: int, check_times: int = 100) -> bool:
-    assert n >= 1
-    if n == 1:
-        return False
-    if n == 2:
-        return True
-
-    def n_is_composite(base: int) -> bool:
-        nonlocal n
-        if math.gcd(n, base) != 1:
-            return True
-        if pow(base, n - 1, n) != 1:
-            return True
-        return False
-
-    checked_bases = set()
-
-    for _ in range(check_times):
-        base = random.randint(2, n - 1)
-        if base in checked_bases:
-            continue
-        if n_is_composite(base):  # the base is called witness.
-            return False
-        checked_bases.add(base)
-
-    # might be pseudo prime like Carmichael number.
-    # if not prime actually, each checked base is called liar.
-    return True
-
-
-CARMICHAEL_NUMBERS: typing.Final[list[int]] = [
+CARMICHAEL_NUMS: typing.Final[list[int]] = [
     561,
     1105,
     1729,
@@ -132,3 +43,159 @@ CARMICHAEL_NUMBERS: typing.Final[list[int]] = [
     488881,
     512461,
 ]
+
+_PRIMES = [2, 998_244_353, 1_000_000_007]
+_NON_PRIEMS = [0, 1, 561, 512_461]
+
+
+def trial_division(n: int) -> bool:
+    # naive test
+    ...
+
+
+def is_p_t(sz: int) -> list[bool]:
+    is_p = [False] * sz
+    for p in erat_ps(sz):
+        is_p[p] = True
+    return is_p
+
+
+def trivial_primality(n: int) -> typing.Optional[bool]:
+    if n == 2:
+        return True
+    if n < 2 or n & 1 == 0:
+        return False
+    return None
+
+
+def mr(n: int) -> bool:
+    # miller rabin's test
+    MR_BASES = (
+        (2, 7, 61),  # < 2^32
+        (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37),  # < 2^64
+        (2, 325, 9375, 28178, 450775, 9780504, 1795265022),  # < 2^64
+    )
+
+    bl = trivial_primality(n)
+    if bl is not None:
+        return bl
+
+    s = ((n - 1) & (1 - n)).bit_length() - 1
+    d = (n - 1) >> s
+    # n - 1 = d2^s
+
+    def is_c(b: int) -> bool:
+        x = pow(b, d, n)
+        if x == 1:
+            return False
+        for _ in range(s):
+            if x == n - 1:
+                return False
+            x = x * x % n
+        return True
+
+    b = (a % n for a in MR_BASES[2])
+    return all(not is_c(a) for a in b if 2 <= a and a < n - 1)
+
+
+class TestMR(unittest.TestCase):
+    def test(self) -> None:
+        for x in _PRIMES:
+            assert mr(x)
+        for x in _NON_PRIEMS:
+            assert not mr(x)
+
+
+def fermat(b: typing.Iterable[int], n: int) -> bool:
+    # fermat's test
+    bl = trivial_primality(n)
+    if bl is not None:
+        return bl
+    b = (a % n for a in b)
+    return all(
+        math.gcd(n, a) == 1 and pow(a, n - 1, n) == 1
+        for a in b
+        if 2 <= a and a < n - 1
+    )
+    # constraint by also gcd to answer for carmichael nums.
+
+
+class TestFermat(unittest.TestCase):
+    def test(self) -> None:
+        import random
+
+        bases = [random.randint(0, (1 << 64) - 1) for _ in range(10)]
+
+        for x in _PRIMES:
+            assert fermat(bases, x)
+        for x in _NON_PRIEMS:
+            assert not fermat(bases, x)
+
+
+def solovay_strassen() -> bool:
+    ...
+
+
+def pepin() -> bool:
+    ...
+
+
+def proth_theorem() -> bool:
+    ...
+
+
+def miller_rabin_solovay_strassen() -> bool:
+    ...
+
+
+def pocklington() -> bool:
+    ...
+
+
+def wilson_theorem() -> bool:
+    ...
+
+
+def lucas() -> bool:
+    ...
+
+
+def lucas_lehmer() -> bool:
+    ...
+
+
+def lucas_lehmer_reisel() -> bool:
+    ...
+
+
+def frobenius() -> bool:
+    ...
+
+
+def elliptic_curve() -> bool:
+    ...
+
+
+def baillie_psw() -> bool:
+    ...
+
+
+# agrawal, kayal, sexena test
+def aks() -> bool:
+    ...
+
+
+def adlheman_pomerance_rumely() -> bool:
+    ...
+
+
+def atkin_morain_elliptic_curve() -> bool:
+    ...
+
+
+if __name__ == "__main__":
+    import doctest
+
+    unittest.main()
+
+    doctest.testmod(verbose=True)
