@@ -1,4 +1,5 @@
 package dsalgo
+
 // import "math"
 
 func BitLengthNaive(n int) int {
@@ -10,4 +11,4 @@ func BitLengthNaive(n int) int {
 	return l
 }
 
-func PopCount(n int) int
+// func PopCount(n int) int

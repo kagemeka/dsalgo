@@ -75,6 +75,10 @@ pub mod newton {
             assert_eq!(x as u64, 227219563); // 227219563.854...
         }
     }
+
+    // TODO:
+    /// newton's method for 2D function
+    pub fn newton2d() {}
 }
 
 pub mod isqrt {
@@ -211,6 +215,6 @@ pub mod isqrt {
     }
 }
 
-// TODO:
-/// newton's method for 2D function
-pub fn newton2d() {}
+pub mod ikthrt {
+    //! integer kth root
+}
