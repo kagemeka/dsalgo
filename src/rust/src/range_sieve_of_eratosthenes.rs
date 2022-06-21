@@ -1,4 +1,4 @@
-use crate::{find_prime_numbers::find_prime_numbers, floor_sqrt::floor_sqrt};
+use crate::{find_prime_numbers::find_prime_numbers, isqrt};
 pub struct RangeSieveOfEratosthenes {
     primes: Vec<u64>,
     less_than: u64,
@@ -7,7 +7,7 @@ pub struct RangeSieveOfEratosthenes {
 impl RangeSieveOfEratosthenes {
     pub fn new(less_than: u64) -> Self {
         Self {
-            primes: find_prime_numbers(floor_sqrt(less_than) as u32 + 1)
+            primes: find_prime_numbers(isqrt::floor(less_than) as u32 + 1)
                 .into_iter()
                 .map(|p| p as u64)
                 .collect(),
@@ -46,7 +46,7 @@ impl RangeSieveOfEratosthenes {
             if from >= hi {
                 break;
             }
-            from = std::cmp::max(from, (lo + p - 1) / p * p);
+            from = from.max((lo + p - 1) / p * p);
             if from & 1 == 0 {
                 from += p;
             }

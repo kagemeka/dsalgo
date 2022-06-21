@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-import dsalgo.algebraic_structure
+import dsalgo.algstr
 import dsalgo.euler_tour
 import dsalgo.hld
 import dsalgo.sparse_table
@@ -92,7 +92,7 @@ def et_rmq(
     dep = dsalgo.euler_tour.compute_depth(to)
     to = dsalgo.euler_tour.to_nodes(to)
     first_idx = dsalgo.euler_tour.compute_first_index(to)
-    semigroup = dsalgo.algebraic_structure.Semigroup[typing.Tuple[int, int]](
+    semigroup = dsalgo.algstr.Semigroup[typing.Tuple[int, int]](
         operation=min
     )
     """

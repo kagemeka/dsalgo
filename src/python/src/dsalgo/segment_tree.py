@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-from dsalgo.algebraic_structure import Monoid
+from dsalgo.algstr import Monoid
 
 T = typing.TypeVar("T")
 S = typing.TypeVar("S")

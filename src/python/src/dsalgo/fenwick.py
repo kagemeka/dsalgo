@@ -8,7 +8,7 @@ from __future__ import annotations
 import typing
 import unittest
 
-from dsalgo.algebraic_structure import Group, Monoid
+from dsalgo.algstr import Group, Monoid
 
 S = typing.TypeVar("S")
 
@@ -47,24 +47,25 @@ class Fw(typing.Generic[S]):
             i -= i & -i
         return v
 
-
     def _max(self, f: typing.Callable[[S], bool], l: int, v: S) -> int:
+        n = len(self)
+        d = 1 << n.bit_length()
+        i = 0
+        while True:
+            d >>= 1
+            if d == 0:
+                assert l <= i and i <= n
+                return i
+            if i + d > n:
+                continue
+            nv = self._g.op(v, self._d[i + d])
+            if i + d <= l or f(nv):
+                i += d
+                v = nv
 
     def max(self, f: typing.Callable[[S], bool]) -> int:
         # max i such that is_ok(fw[i]) is true.
-        n = len(self)
-        l = 1 << n.bit_length()  # length of covering nodes
-        v, r = self._g.e(), 0
-        while True:
-            l >>= 1
-            if l == 0:
-                return r
-            if r + l > n:
-                continue
-            nv = self._g.op(v, self._d[r + l])
-            if f(nv):
-                r += l
-                v = nv
+        return self._max(f, 0, self._g.e())
 
 
 class Abel(Fw[S]):
@@ -77,6 +78,31 @@ class Abel(Fw[S]):
         # reduce [l, r)
         return self._g.op(self._g.inv(self[l]), self[r])
 
+    def max_from(self, f: typing.Callable[[S], bool], l: int) -> int:
+        return self._max(f, l, self._g.inv(self[l]))
+
+    def min_from(self, f: typing.Callabel[[S], bool], r: int) -> int:
+        n = len(self)
+        assert 0 <= r <= n
+        if r == 0:
+            return 0
+        d = 1 << n.bit_length()
+        v = self[r]
+        if f(v):
+            return 0
+        i = 1
+        while True:
+            d >>= 1
+            if d == 0:
+                assert 0 <= i and i <= r
+                return i
+            if i + d > r:
+                continue
+            nv = self._g.op(self._g.inv(self[i + d - 1]), v)
+            if not f(nv):
+                i += d
+                v = nv
+
 
 class TestAbel(unittest.TestCase):
     def test(self) -> None:
@@ -88,7 +114,7 @@ class TestAbel(unittest.TestCase):
         assert fw[3] == 3
         fw[2] = 2
         fw[3] == 5
-        assert fw.get(1, 3) == 3
+        assert fw.get(1, 4) == 8
 
 
 class Abel2D(typing.Generic[S]):
@@ -113,11 +139,11 @@ class Abel2D(typing.Generic[S]):
     def shape(self) -> typing.Tuple[int, int]:
         return (len(self._d) - 1, len(self._d[0]) - 1)
 
-    def __setitem__(self, idx: typing.Tuple[int, int], v: S) -> None:
+    def __setitem__(self, ij: typing.Tuple[int, int], v: S) -> None:
         """
         operate v on a[i][j].
         """
-        i, j = idx
+        i, j = ij
         h, w = self.shape
         assert 0 <= i < h and 0 <= j < w
         i += 1
@@ -125,14 +151,13 @@ class Abel2D(typing.Generic[S]):
             self._d[i][j] = v
             i += i & -i
 
-    def __getitem__(self, idx: typing.Tuple[int, int]) -> S:
+    def __getitem__(self, ij: typing.Tuple[int, int]) -> S:
         """reduce range [0, i) & [0, j)"""
-        i, j = idx
+        i, j = ij
         v = self._g.e()
         while i > 0:
             v = self._g.op(v, self._d[i][j])
             i -= i & -i
-
         return v
 
     def get(self, i0: int, i1: int, j0: int, j1: int) -> S:

@@ -14,7 +14,7 @@ pub(crate) fn dp<T: PartialEq>(a: &[T], b: &[T]) -> Vec<Vec<usize>> {
                 l[i + 1][j + 1] = l[i][j] + 1;
                 continue;
             }
-            l[i + 1][j + 1] = std::cmp::max(l[i][j + 1], l[i + 1][j]);
+            l[i + 1][j + 1] = l[i][j + 1].max(l[i + 1][j]);
         }
     }
     l
@@ -26,7 +26,7 @@ pub fn len<T: PartialEq>(a: &[T], b: &[T]) -> usize {
 }
 
 /// compute lcs length with O(N) space.
-pub fn len_low_mem<T: PartialEq>(a: &[T], b: &[T]) -> usize {
+pub fn len_lowmem<T: PartialEq>(a: &[T], b: &[T]) -> usize {
     let m = b.len();
     let mut l = vec![0; m + 1];
     for x in a {
@@ -37,15 +37,15 @@ pub fn len_low_mem<T: PartialEq>(a: &[T], b: &[T]) -> usize {
             }
         }
         for j in 0..m {
-            l[j + 1] = std::cmp::max(l[j], l[j + 1]);
+            l[j + 1] = l[j].max(l[j + 1]);
         }
     }
     l[m]
 }
 
 /// restore one of the transtion histories.
-pub(crate) fn restore_indices(dp: &[Vec<usize>]) -> Vec<(usize, usize)> {
-    let mut indices = vec![];
+pub(crate) fn restore(dp: &[Vec<usize>]) -> Vec<(usize, usize)> {
+    let mut idx = vec![];
     let mut i = dp.len() - 1;
     let mut j = dp[0].len() - 1;
     while i > 0 && j > 0 {
@@ -60,14 +60,14 @@ pub(crate) fn restore_indices(dp: &[Vec<usize>]) -> Vec<(usize, usize)> {
         }
         i -= 1;
         j -= 1;
-        indices.push((i, j));
+        idx.push((i, j));
     }
-    indices.reverse();
-    indices
+    idx.reverse();
+    idx
 }
 
 pub fn struct_one<T: PartialEq + Clone>(a: &[T], b: &[T]) -> Vec<T> {
-    restore_indices(&dp(a, b))
+    restore(&dp(a, b))
         .into_iter()
         .map(|(i, _)| a[i].clone())
         .collect()
@@ -99,17 +99,17 @@ mod tests {
     }
 
     #[test]
-    fn test() {
+    fn test_len_lowmem() {
         let s = "axyb".chars().collect::<Vec<_>>();
         let t = "abyxb".chars().collect::<Vec<_>>();
-        assert_eq!(len_low_mem(&s, &t), 3);
+        assert_eq!(len_lowmem(&s, &t), 3);
     }
 
     #[test]
-    fn test_restore_indices() {
+    fn test_restore() {
         let s = "axyb".chars().collect::<Vec<_>>();
         let t = "abyxb".chars().collect::<Vec<_>>();
-        let indices = restore_indices(&dp(&s, &t));
+        let indices = restore(&dp(&s, &t));
         assert_eq!(
             indices,
             vec![(0, 0), (2, 2), (3, 4)]

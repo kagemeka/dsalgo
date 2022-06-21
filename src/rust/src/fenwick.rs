@@ -126,11 +126,12 @@ where
     where
         F: Fn(&G::S) -> bool,
     {
-        assert!(r <= self.size());
+        let n = self.size();
+        assert!(r <= n);
         if r == 0 {
             return 0;
         }
-        let mut d = (self.size() + 1).next_power_of_two();
+        let mut d = (n + 1).next_power_of_two();
         let mut v = self.get(r);
         if f(&v) {
             return 0;
@@ -255,6 +256,10 @@ where
 /// fenwick tree lazy for addition on int
 /// TODO: generalize to semiring
 pub struct FwLazyIntAdd {}
+
+// TODO: N-dim fenwick tree (recursive)
+
+// TODO: split test
 
 #[cfg(test)]
 mod tests {

@@ -3,9 +3,9 @@ from __future__ import annotations
 import dataclasses
 import typing
 
-import dsalgo.protocol
+import dsalgo.order
 
-K = typing.TypeVar("K", bound=dsalgo.protocol.Order)
+K = typing.TypeVar("K", bound=dsalgo.order.Order)
 V = typing.TypeVar("V")
 T = typing.TypeVar("T")
 
