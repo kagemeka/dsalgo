@@ -1,9 +1,6 @@
 //! euler tour teqnique
 
-use crate::{
-    tree_edges_to_graph::tree_edges_to_graph,
-    tree_parents::tree_parents,
-};
+use crate::{tree_edges_to_graph::tree_edges_to_graph, treeops::tree_parents};
 
 /// Undirected Tree Edges.
 pub type E = [(usize, usize)];

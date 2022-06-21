@@ -5,8 +5,7 @@ pub mod tree {
 
     use crate::{
         bitops::len::with_clz as bit_length,
-        tree_depths::tree_depths,
-        tree_parents::tree_parents,
+        treeops::{tree_depths, tree_parents},
     };
 
     pub struct Doubling {
@@ -23,6 +22,8 @@ pub mod tree {
             let d = tree_depths(&e, R);
             let k = bit_length(*d.iter().max().unwrap() as u64).max(1) as usize;
             let mut a = vec![vec![n; n]; k];
+            // TODO: make tree parents return Vec<usize>
+            // instead of Vec<Option<usize>> (p[root] = root)
             let mut p = tree_parents(&e, R);
             p[R] = Some(R);
             a[0] = p.iter().map(|&v| v.unwrap()).collect();
@@ -60,47 +61,42 @@ pub mod tree {
 
     use crate::{tree_edges_to_graph::tree_edges_to_graph, uf::*};
 
-    pub fn offline_tarjan(
-        tree_edges: &[(usize, usize)],
-        queries: &[(usize, usize)],
-        root: usize,
-    ) -> Vec<usize> {
+    /// tarjan's offline algorithm
+    pub fn tarjan(e: &[(usize, usize)], qs: &[(usize, usize)]) -> Vec<usize> {
         fn dfs(
             g: &Vec<Vec<usize>>,
             q: &Vec<Vec<(usize, usize)>>,
             visited: &mut Vec<bool>,
             uf: &mut UF,
-            ancestor: &mut Vec<usize>,
+            a: &mut Vec<usize>,
             lca: &mut Vec<usize>,
             u: usize,
         ) {
             visited[u] = true;
-            ancestor[u] = u;
+            a[u] = u;
             for &v in g[u].iter() {
                 if visited[v] {
                     continue;
                 }
-                dfs(
-                    g, q, visited, uf, ancestor, lca, v,
-                );
+                dfs(g, q, visited, uf, a, lca, v);
                 uf.unite(u, v);
-                ancestor[uf.root(u)] = u;
+                a[uf.root(u)] = u;
             }
             q[u].iter().filter(|&&(v, _)| visited[v]).for_each(|&(v, i)| {
-                lca[i] = ancestor[uf.root(v)];
+                lca[i] = a[uf.root(v)];
             });
         }
-        let n = tree_edges.len() + 1;
-        let graph = tree_edges_to_graph(tree_edges);
+        let n = e.len() + 1;
+        let graph = tree_edges_to_graph(e);
         let mut q = vec![vec![]; n];
-        for (i, &(u, v)) in queries.iter().enumerate() {
+        for (i, &(u, v)) in qs.iter().enumerate() {
             q[u].push((v, i));
             q[v].push((u, i));
         }
         let mut visited = vec![false; n];
         let mut uf = UF::new(n);
         let mut ancestor = vec![n; n];
-        let mut lca = vec![n; queries.len()];
+        let mut lca = vec![n; qs.len()];
         dfs(
             &graph,
             &q,
@@ -108,7 +104,7 @@ pub mod tree {
             &mut uf,
             &mut ancestor,
             &mut lca,
-            root,
+            0,
         );
         lca
     }
