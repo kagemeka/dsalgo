@@ -1,10 +1,7 @@
-use crate::{
-    find_prime_numbers::find_prime_numbers,
-    legendre_function::legendre_function,
-};
+use crate::{legendre_function::legendre_function, psieve::erat};
 
 pub fn prime_factorize_factorial_legendre(n: u32) -> Vec<(u32, u32)> {
-    find_prime_numbers(n + 1)
+    erat::ps(n as usize + 1)
         .into_iter()
         .map(|p| {
             (

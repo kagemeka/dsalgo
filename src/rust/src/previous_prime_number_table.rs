@@ -1,8 +1,8 @@
-use crate::is_prime_table::is_prime_table;
+use crate::is_prime_table::is_p_t;
 
 /// table[i] := largest prime number less or equal to i.
 pub fn previous_prime_table(size: usize) -> Vec<Option<u64>> {
-    let mut prev = is_prime_table(size)
+    let mut prev = is_p_t(size)
         .into_iter()
         .enumerate()
         .map(
