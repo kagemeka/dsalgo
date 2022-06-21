@@ -1,7 +1,7 @@
 use crate::{
     adjacency_list_graph::AdjacencyList,
     dijkstra_sparse_queue::DijkstraSparseQueue,
-    graph_edge_trait::{From, To, Weight},
+    graph::edge::{From, To, Weight},
     sssp_dijkstra_sparse::dijkstra_sparse,
 };
 

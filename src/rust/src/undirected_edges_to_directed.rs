@@ -1,4 +1,4 @@
-use crate::graph_edge_trait::{Reversed, ToDirected};
+use crate::graph::edge::{Reversed, ToDirected};
 
 pub fn edges_to_directed<UE, DE>(undirected_edges: Vec<UE>) -> Vec<DE>
 where

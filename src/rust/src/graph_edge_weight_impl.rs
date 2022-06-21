@@ -1,4 +1,4 @@
-use crate::graph_edge_trait::Weight;
+use crate::graph::edge::Weight;
 
 impl Weight<Self> for u64 {
     fn weight(&self) -> &Self { self }

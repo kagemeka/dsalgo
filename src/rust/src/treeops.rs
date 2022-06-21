@@ -1,10 +1,5 @@
 use crate::tree_edges_to_graph::tree_edges_to_graph;
 
-/// we don't check if the given edges as a whole making a tree or not.
-/// because the algorithm might be expensive even if O(N).
-/// if not graph, the processes is undefined.
-/// similary, we assure that the default data length
-/// is equial to the number of vertices.
 pub fn tree_dfs<T, F>(
     tree_edges: &[(usize, usize)],
     root: usize,

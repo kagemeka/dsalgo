@@ -1,4 +1,4 @@
-use crate::graph_edge_trait::From;
+use crate::graph::edge::From;
 
 // TODO: rename Adjlist
 #[derive(Debug)]

@@ -1,4 +1,4 @@
-use crate::graph_edge_trait::{From, To};
+use crate::graph::edge::{From, To};
 
 /// return edge ids.
 pub fn dfs_arborescense<E>(

@@ -1,6 +1,6 @@
 use crate::{
     depth_first_search_arborescence::dfs_arborescense,
-    graph_edge_trait::{From, Reversed, To, ToDirected},
+    graph::edge::{From, Reversed, To, ToDirected},
     undirected_edges_to_directed::edges_to_directed,
 };
 
