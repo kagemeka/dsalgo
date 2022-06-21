@@ -9,52 +9,52 @@ pub mod tree {
         tree_parents::tree_parents,
     };
 
-    pub struct LCABinaryLifting {
-        ancestors: Vec<Vec<usize>>,
-        depth: Vec<usize>,
+    pub struct Doubling {
+        a: Vec<Vec<usize>>, // ancestor
+        d: Vec<usize>,      // depth
     }
 
-    // TODO: fix root as 0
-    impl LCABinaryLifting {
-        pub fn new(tree_edges: &[(usize, usize)], root: usize) -> Self {
-            let n = tree_edges.len() + 1;
-            let depth = tree_depths(&tree_edges, root);
-            let k =
-                bit_length(*depth.iter().max().unwrap() as u64).max(1) as usize;
-            let mut ancestors = vec![vec![n; n]; k];
-            let mut parent = tree_parents(&tree_edges, root);
-            parent[root] = Some(root);
-            ancestors[0] = parent.iter().map(|&v| v.unwrap()).collect();
+    // TODO: split off doubling part as module.
+    impl Doubling {
+        pub fn new(e: &[(usize, usize)]) -> Self {
+            const R: usize = 0;
+            let n = e.len() + 1;
+
+            let d = tree_depths(&e, R);
+            let k = bit_length(*d.iter().max().unwrap() as u64).max(1) as usize;
+            let mut a = vec![vec![n; n]; k];
+            let mut p = tree_parents(&e, R);
+            p[R] = Some(R);
+            a[0] = p.iter().map(|&v| v.unwrap()).collect();
             for i in 0..k - 1 {
                 for j in 0..n {
-                    ancestors[i + 1][j] = ancestors[i][ancestors[i][j]];
+                    a[i + 1][j] = a[i][a[i][j]];
                 }
             }
-            Self { ancestors, depth }
+            Self { a, d }
         }
 
         pub fn get(&self, mut u: usize, mut v: usize) -> usize {
-            if self.depth[u] > self.depth[v] {
+            if self.d[u] > self.d[v] {
                 std::mem::swap(&mut u, &mut v);
             }
-            let d = self.depth[v] - self.depth[u];
+            let d = self.d[v] - self.d[u];
             for i in 0..bit_length(d as u64) as usize {
                 if d >> i & 1 == 1 {
-                    v = self.ancestors[i][v];
+                    v = self.a[i][v];
                 }
             }
             if v == u {
                 return u;
             }
-            for a in self.ancestors.iter().rev() {
-                let nu = a[u];
-                let nv = a[v];
+            for a in self.a.iter().rev() {
+                let (nu, nv) = (a[u], a[v]);
                 if nu != nv {
                     u = nu;
                     v = nv;
                 }
             }
-            self.ancestors[0][u]
+            self.a[0][u]
         }
     }
 

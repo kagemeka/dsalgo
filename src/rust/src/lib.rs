@@ -388,7 +388,6 @@ pub mod prefix_tree;
 pub mod preorder;
 pub mod previous_prime_number;
 pub mod previous_prime_number_table;
-pub mod primality;
 pub mod primality_test;
 pub mod prime;
 pub mod prime_counting_fast;
