@@ -1,3 +1,5 @@
+//! primality tests
+
 pub mod mr {
     //! Miller Rabin's Test
 
@@ -231,3 +233,43 @@ pub mod fermat {
         }
     }
 }
+
+pub mod adleman_pomerance_rumely {}
+
+pub mod aks {
+    //! Agrawal, Kayal, Sexena test
+
+    // TODO:
+}
+
+pub mod atkin_morain_elliptic_curve {}
+
+pub mod baillie_psw {}
+
+pub mod elliptic_curve {}
+
+pub mod frobenius {}
+
+pub mod goldwasser_kilian {}
+
+pub mod lucas {}
+
+pub mod lucas_lehmer {}
+
+pub mod lucas_lehmer_reisel {}
+
+pub mod miller {}
+
+pub mod pepin {}
+
+pub mod pocklington {}
+
+pub mod proth_theorem {}
+
+pub mod trial_division {
+    // TODO
+    // use prime factorize trial division.
+    // kind of factors is just one.
+}
+
+pub mod wilson_theorem {}
