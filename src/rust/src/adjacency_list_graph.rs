@@ -1,5 +1,6 @@
-use crate::graph_edge_trait::From;
+use crate::graph::edge::From;
 
+// TODO: rename Adjlist
 #[derive(Debug)]
 pub struct AdjacencyList<E> {
     pub(crate) edges: Vec<Vec<E>>,
@@ -63,11 +64,10 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::debug_print::debug_print;
     #[test]
     fn test() {
         let mut g = AdjacencyList::new(5);
         g[0].push((1, 1));
-        debug_print(&g);
+        dbg!(&g);
     }
 }

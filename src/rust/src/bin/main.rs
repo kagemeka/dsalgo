@@ -1,5 +1,5 @@
-use dsalgo::debug;
+use dsalgo::dbg;
 
 fn main() {
-    debug!(1usize.next_power_of_two());
+    dbg!(1usize.next_power_of_two());
 }

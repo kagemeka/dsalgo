@@ -1,6 +1,5 @@
-import unittest
-
 import typing
+import unittest
 
 
 def newton_method(

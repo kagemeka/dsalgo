@@ -1,4 +1,4 @@
-use crate::{algebraic_structure::*, floor_sqrt::floor_sqrt};
+use crate::{algebraic_structure::*, find_root::isqrt};
 
 pub struct SqrtDecomposition<G: Semigroup> {
     pub(crate) data: Vec<G::S>,
@@ -22,7 +22,7 @@ where
     fn from_iter<T: IntoIterator<Item = G::S>>(iter: T) -> Self {
         let data = iter.into_iter().collect::<Vec<_>>();
         let size = data.len();
-        let n = floor_sqrt(size as u64) as usize;
+        let n = isqrt::floor(size as u64) as usize;
         let buckets = (0..(size + n - 1) / n)
             .map(|j| {
                 // data[j * n..std::cmp::min((j + 1) * n, size)]
@@ -174,7 +174,7 @@ where
     }
 }
 
-use crate::{algebraic_structure_impl::*, range_get_query::RangeGetQuery};
+use crate::{algebraic_structure_impl::*, query::RangeGetQuery};
 
 impl<S, I> RangeGetQuery<I> for SqrtDecomposition<GroupApprox<S, I>>
 where

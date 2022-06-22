@@ -35,40 +35,39 @@ impl<U: Root + Size> Labels for U {
     /// same label -> same component.
     fn labels(&mut self) -> Vec<usize> {
         let n = self.size();
-        let mut label = vec![n; n];
+        let mut lb = vec![n; n];
         let mut l = 0;
         for i in 0..n {
             let r = self.root(i);
-            if label[r] == n {
-                label[r] = l;
+            if lb[r] == n {
+                lb[r] = l;
                 l += 1;
             }
-            label[i] = label[r];
+            lb[i] = lb[r];
         }
-        label
+        lb
     }
 }
 
+/// Union Find
 #[derive(Debug)]
-pub struct UF {
-    a: Vec<isize>, // neg-size or parent
-}
+pub struct UF(Vec<isize>); // root: neg-size, other: parent
 
 impl UF {
-    pub fn new(size: usize) -> Self { Self { a: vec![-1; size] } }
+    pub fn new(size: usize) -> Self { Self(vec![-1; size]) }
 }
 
 impl Size for UF {
-    fn size(&self) -> usize { self.a.len() }
+    fn size(&self) -> usize { self.0.len() }
 }
 
 impl Root for UF {
     fn root(&mut self, u: usize) -> usize {
-        if self.a[u] < 0 {
+        if self.0[u] < 0 {
             return u;
         }
-        self.a[u] = self.root(self.a[u] as usize) as isize;
-        self.a[u] as usize
+        self.0[u] = self.root(self.0[u] as usize) as isize;
+        self.0[u] as usize
     }
 }
 
@@ -79,11 +78,11 @@ impl Unite for UF {
         if u == v {
             return;
         }
-        if self.a[u] > self.a[v] {
+        if self.0[u] > self.0[v] {
             std::mem::swap(&mut u, &mut v);
         }
-        self.a[u] += self.a[v];
-        self.a[v] = u as isize;
+        self.0[u] += self.0[v];
+        self.0[v] = u as isize;
     }
 }
 
@@ -91,20 +90,21 @@ impl SizeOf for UF {
     /// size of the component containing u
     fn size_of(&mut self, u: usize) -> usize {
         let u = self.root(u);
-        -self.a[u] as usize
+        -self.0[u] as usize
     }
 }
 
 use crate::algebraic_structure::*;
 pub struct PotentialUF<G: AbelianGroup> {
     a: Vec<isize>, // neg-size or parent
-    rp: Vec<G::S>, // relative potential from parent
+    rp: Vec<G::S>, // root: identity, other: relative potential from parent
 }
 
 impl<G: AbelianGroup> Size for PotentialUF<G> {
     fn size(&self) -> usize { self.a.len() }
 }
 
+/// Potentialized (or Weighted) Union Find
 impl<G> PotentialUF<G>
 where
     G: AbelianGroup,
@@ -125,7 +125,7 @@ where
 
     /// potential v against u.
     pub fn diff(&mut self, u: usize, v: usize) -> Result<G::S, &'static str> {
-        if self.root(u) != self.root(v) {
+        if !self.same(u, v) {
             Err("different components")
         } else {
             Ok(G::op(

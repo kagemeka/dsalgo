@@ -1,6 +1,4 @@
-#ifndef COMBINATION_HPP
-#define COMBINATION_HPP
-
+#pragma once
 #include "./factorial_table.hpp"
 #include "./inverse_factorial_table.hpp"
 #include <cstdint>
@@ -8,22 +6,31 @@
 
 template <typename S>
 class combination {
-  std::vector<S> fact, inv_fact;
+  std::vector<S> f, if_;
 
 public:
-  combination(unsigned long int size) {
-    fact = factorial_table<S>(size);
-    inv_fact = inverse_factorial_table<S>(size);
+  combination(usize n) {
+    f = factorials<S>(n);
+    if_ = inv_factorials<S>(n);
   }
-  auto operator()(unsigned long int n, unsigned long int k) -> S {
+  auto operator()(usize n, usize k) -> S {
     if (n < k) return 0;
-    return fact[n] * inv_fact[k] * inv_fact[n - k];
+    return f[n] * if_[k] * if_[n - k];
   }
 
-  auto inverse(unsigned long int n, unsigned long int k) -> S {
-    if (n < k) return 0;
-    return inv_fact[n] * fact[k] * fact[n - k];
+  auto inv(usize n, usize k) -> S {
+    assert(k <= n);
+    return if_[n] * f[k] * if_[n - k];
   }
 };
 
-#endif // COMBINATION_HPP
+template <typename S>
+class homogeneous_product {
+  combination<S> choose;
+
+public:
+  homogeneous_product(usize size) : choose(size) {}
+  auto operator()(usize n, usize k) -> S {
+    return n == 0 ? 0 : choose(n + k - 1, k);
+  }
+};

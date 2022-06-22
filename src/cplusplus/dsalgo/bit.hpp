@@ -1,17 +1,28 @@
-
-template <typename T>
-auto bit_length(const T& n) -> int {
-  int l = 0;
-  while (1LL << l <= n) l++;
-  return l;
+#include "io.hpp"
+#include "types.hpp"
+#include <cassert>
+auto clz(u32 x) -> u32 { return __builtin_clz(x); }
+auto clz(u64 x) -> u32 { return __builtin_clzll(x); }
+auto clz(u128 x) -> u32 {
+  return x >> 64 == 0 ? 64 + clz((u64)x) : clz((u64)(x >> 64));
 }
+auto bitlen(u128 x) -> u32 { return 128 - clz(x); }
+auto msb(u128 x) -> usize {
+  assert(x != 0);
+  return bitlen(x) - 1;
+}
+auto popcnt(u64 x) -> u32 { return __builtin_popcountll(x); }
+auto popcnt(u128 x) -> u32 { return popcnt((u64)x) + popcnt((u64)(x >> 64)); }
 
-template <typename T>
-auto bit_count(T n) -> int {
-  int cnt = 0;
-  while (n) {
-    cnt += n & 1;
-    n >>= 1;
+auto ctz(u64 x) -> u32 { return __builtin_ctzll(x); }
+
+auto ctz(u128 x) -> u32 {
+  assert(false);
+  // this fails due to annoying bug.
+  // 64 == 64 is false!? wtf.
+  auto c = ctz((u64)x);
+  if (c == 64) {
+    c += ctz((u64)(x >> 64));
   }
-  return cnt;
+  return c;
 }

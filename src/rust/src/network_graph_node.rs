@@ -49,7 +49,6 @@ impl<T: std::fmt::Debug> std::fmt::Debug for Node<T> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::debug_print::debug_print;
     #[test]
     fn test() {
         #[derive(Debug)]
@@ -60,11 +59,11 @@ mod tests {
         let a = V::new_rc_refcell(Data { id: 1 });
         let b = V::new_rc_refcell(Data { id: 2 });
         V::connect(&a, &b);
-        debug_print(&a.borrow());
-        debug_print(&b.borrow());
+        dbg!(&a.borrow());
+        dbg!(&b.borrow());
 
         V::connect(&b, &a);
-        debug_print(&a.borrow());
-        debug_print(&b.borrow());
+        dbg!(&a.borrow());
+        dbg!(&b.borrow());
     }
 }

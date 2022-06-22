@@ -1,0 +1,24 @@
+{
+    "go.inferGopath": false,
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "*.ASM*": "hlasm",
+        "*.ASSEMBLE*": "hlasm",
+        "*.COB*": "cobol",
+        "*.COBCOPY*": "cobol",
+        "*.COBOL*": "cobol",
+        "*.COPY*": "cobol",
+        "*.COPYBOOK*": "cobol",
+        "*.HLA*": "hlasm",
+        "*.HLASM*": "hlasm",
+        "*.INC*": "pl1",
+        "*.INCLUDE*": "pl1",
+        "*.JCL*": "jcl",
+        "*.PL1*": "pl1",
+        "*.PLI*": "pl1",
+        "type_traits": "cpp",
+        "cassert": "cpp",
+        "iostream": "cpp",
+        "numeric": "cpp"
+    }
+}

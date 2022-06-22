@@ -1,11 +1,12 @@
-use crate::sieve_of_eratosthenes::sieve_of_eratosthenes;
+use crate::psieve::erat;
 
-pub fn prime_pi_table(size: usize) -> Vec<u32> {
-    let mut pi = vec![0; size];
-    for p in sieve_of_eratosthenes(size) {
-        pi[p as usize] += 1;
+/// prime pi table
+pub fn pi_t(sz: usize) -> Vec<u32> {
+    let mut pi = vec![0; sz];
+    for p in erat::ps(sz) {
+        pi[p as usize] = 1;
     }
-    for i in 0..size - 1 {
+    for i in 0..sz - 1 {
         pi[i + 1] += pi[i];
     }
 

@@ -1,4 +1,4 @@
-use crate::floor_sqrt::floor_sqrt;
+use crate::find_root::isqrt;
 
 /// [lo, hi]
 pub fn sum_of_multiples_count_range(limit: u64, lo: u64, mut hi: u64) -> u64 {
@@ -25,7 +25,7 @@ pub fn sum_of_multiples_count_range(limit: u64, lo: u64, mut hi: u64) -> u64 {
         debug_assert!(hi * hi <= limit);
         return s;
     }
-    debug_assert!(k == floor_sqrt(limit) + 1);
+    debug_assert!(k == isqrt::floor(limit) + 1);
     debug_assert!(lo <= k && k <= hi);
     for j in 1..=limit / k {
         let mut i_max = limit / j;

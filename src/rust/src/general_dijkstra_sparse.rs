@@ -1,6 +1,6 @@
 use crate::{
     dijkstra_sparse_queue::DijkstraSparseQueue,
-    graph_edge_trait::{To, Weight},
+    graph::edge::{To, Weight},
 };
 
 pub fn general_dijkstra_sparse<E, T, F, Q>(

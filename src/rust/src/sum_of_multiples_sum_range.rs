@@ -1,4 +1,4 @@
-use crate::{floor_sqrt::floor_sqrt, sum_of_multiples::sum_of_multiples};
+use crate::{find_root::isqrt, sum_of_multiples::sum_of_multiples};
 
 /// \sum_{i=lo}^{hi}{\sum_{i|j, j <= limit}{j}}
 /// sqrt split teqnique
@@ -24,7 +24,7 @@ pub fn sum_of_multiples_sum_range(limit: u64, lo: u64, mut hi: u64) -> u64 {
         debug_assert!(hi * hi <= limit);
         return s;
     }
-    debug_assert!(k == floor_sqrt(limit) + 1);
+    debug_assert!(k == isqrt::floor(limit) + 1);
     debug_assert!(lo <= k && k <= hi);
     // added for i=lo..k.
     // next, consider i=k..=hi.

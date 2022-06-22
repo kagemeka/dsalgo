@@ -4,7 +4,7 @@ import dataclasses
 import typing
 
 import dsalgo._util
-import dsalgo.protocol
+import dsalgo.order
 
 K = typing.TypeVar("K", bound=dsalgo.protocol.Order)
 V = typing.TypeVar("V")

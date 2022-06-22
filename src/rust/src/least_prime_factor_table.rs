@@ -1,8 +1,8 @@
-use crate::find_prime_numbers::find_prime_numbers;
+use crate::psieve::erat;
 
 pub fn least_prime_factor_table(size: usize) -> Vec<Option<u32>> {
     let mut lpf = vec![None; size];
-    for p in find_prime_numbers(size as u32) {
+    for p in erat::ps(size) {
         debug_assert!(lpf[p as usize].is_none());
         lpf[p as usize] = Some(p);
     }

@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import typing
 
-import dsalgo.protocol
+import dsalgo.order
 from dsalgo.type import T
 
-K = typing.TypeVar("K", bound=dsalgo.protocol.Order)
+K = typing.TypeVar("K", bound=dsalgo.order.Order)
 
 
 def binary_search(

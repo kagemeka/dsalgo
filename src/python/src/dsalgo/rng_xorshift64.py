@@ -1,6 +1,5 @@
-import unittest
-
 import typing
+import unittest
 
 
 def xorshift64(seed: int) -> int:

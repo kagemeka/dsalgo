@@ -3,12 +3,12 @@ from __future__ import annotations
 import copy
 import typing
 
-import dsalgo.algebraic_structure
+import dsalgo.algstr
 from dsalgo.type import S
 
 
 def sparse_table(
-    semigroup: dsalgo.algebraic_structure.Semigroup[S],
+    semigroup: dsalgo.algstr.Semigroup[S],
     arr: list[S],
 ) -> typing.Callable[[int, int], S]:
     n = len(arr)
@@ -33,7 +33,7 @@ def sparse_table(
 
 
 def sparse_table_2d(
-    semigroup: dsalgo.algebraic_structure.Semigroup[S],
+    semigroup: dsalgo.algstr.Semigroup[S],
     matrix: list[list[S]],
 ) -> typing.Callable[[int, int, int, int], S]:
     h = len(matrix)
@@ -93,7 +93,7 @@ def sparse_table_2d(
 
 
 def sparse_table_2d_fixed_window(
-    semigroup: dsalgo.algebraic_structure.Semigroup[S],
+    semigroup: dsalgo.algstr.Semigroup[S],
     matrix: list[list[S]],
     window_shape: tuple[int, int],
 ) -> typing.Callable[[int, int], S]:
@@ -148,7 +148,7 @@ def sparse_table_2d_fixed_window(
 
 
 def disjoint_sparse_table(
-    semigroup: dsalgo.algebraic_structure.Semigroup[S],
+    semigroup: dsalgo.algstr.Semigroup[S],
     arr: list[S],
 ) -> typing.Callable[[int, int], S]:
     n = len(arr)

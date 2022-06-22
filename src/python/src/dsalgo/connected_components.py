@@ -2,12 +2,12 @@ from __future__ import annotations
 
 
 def union_find(n: int, edges: list[tuple[int, int]]) -> list[int]:
-    import dsalgo.union_find
+    import dsalgo.uf
 
-    uf = dsalgo.union_find.UnionFind(n)
+    uf = dsalgo.uf.UnionFind(n)
     for u, v in edges:
         uf.unite(u, v)
-    return dsalgo.union_find.get_labels(uf)
+    return dsalgo.uf.get_labels(uf)
 
 
 def bfs(n: int, edges: list[tuple[int, int]]) -> list[int]:

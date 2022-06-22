@@ -1,4 +1,4 @@
-use crate::floor_sqrt::floor_sqrt;
+use crate::find_root::isqrt;
 
 /// \sum_{i=1}^n{i \cdot |multiples(i)|}
 pub fn sum_of_multiples_count_times_i_range(
@@ -28,7 +28,7 @@ pub fn sum_of_multiples_count_times_i_range(
         debug_assert!(hi * hi <= limit);
         return s;
     }
-    debug_assert!(k == floor_sqrt(limit) + 1);
+    debug_assert!(k == isqrt::floor(limit) + 1);
     debug_assert!(lo <= k && k <= hi);
     for j in 1..=limit / k {
         let mut i_max = limit / j;

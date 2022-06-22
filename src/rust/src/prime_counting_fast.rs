@@ -1,11 +1,11 @@
-use crate::floor_sqrt::floor_sqrt;
+use crate::find_root::isqrt;
 
 /// O(N^{3/4})
 pub fn prime_pi_fast(n: u64) -> u64 {
     if n < 2 {
         return 0;
     }
-    let sqrt = floor_sqrt(n) as usize;
+    let sqrt = isqrt::floor(n) as usize;
     let n = n as usize;
 
     // consider sieve of Eratosthenes' transitions.

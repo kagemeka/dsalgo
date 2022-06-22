@@ -1,4 +1,4 @@
-use crate::int_sqrt_binary_search::int_sqrt_binary_search;
+use crate::find_root::isqrt;
 
 /// for odd integer n
 /// n = ab (\exist a, b are odd)
@@ -12,7 +12,7 @@ pub fn fermat_factorization_method(n: u64) -> u64 {
     assert!(n & 1 == 1);
     let mut x2 = n;
     for y in 0..=n / 2 {
-        let x = int_sqrt_binary_search(x2);
+        let x = isqrt::floor(x2);
         if x * x == x2 {
             debug_assert!((x + y) * (x - y) == n);
             return x + y;

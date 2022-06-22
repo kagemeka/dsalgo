@@ -1,6 +1,6 @@
 use crate::{
     adjacency_list_graph::AdjacencyList,
-    graph_edge_trait::{From, To, Weight},
+    graph::edge::{From, To, Weight},
     negative_cycle::NegativeCycleError,
     spfa::spfa,
 };

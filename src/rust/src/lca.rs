@@ -1,106 +1,102 @@
 //! lowest common ancestor
 
 pub mod tree {
+    //! LCA for undirected tree.
 
     use crate::{
         bitops::len::with_clz as bit_length,
-        tree_depths::tree_depths,
-        tree_parents::tree_parents,
+        treeops::{tree_depths, tree_parents},
     };
 
-    pub struct LCABinaryLifting {
-        ancestors: Vec<Vec<usize>>,
-        depth: Vec<usize>,
+    pub struct Doubling {
+        a: Vec<Vec<usize>>, // ancestor
+        d: Vec<usize>,      // depth
     }
 
-    impl LCABinaryLifting {
-        pub fn new(tree_edges: &[(usize, usize)], root: usize) -> Self {
-            let n = tree_edges.len() + 1;
-            let depth = tree_depths(&tree_edges, root);
-            let k = std::cmp::max(
-                1,
-                bit_length(*depth.iter().max().unwrap() as u64),
-            ) as usize;
-            let mut ancestors = vec![vec![n; n]; k];
-            let mut parent = tree_parents(&tree_edges, root);
-            parent[root] = Some(root);
-            ancestors[0] = parent.iter().map(|&v| v.unwrap()).collect();
+    // TODO: split off doubling part as module.
+    impl Doubling {
+        pub fn new(e: &[(usize, usize)]) -> Self {
+            const R: usize = 0;
+            let n = e.len() + 1;
+
+            let d = tree_depths(&e, R);
+            let k = bit_length(*d.iter().max().unwrap() as u64).max(1) as usize;
+            let mut a = vec![vec![n; n]; k];
+            // TODO: make tree parents return Vec<usize>
+            // instead of Vec<Option<usize>> (p[root] = root)
+            let mut p = tree_parents(&e, R);
+            p[R] = Some(R);
+            a[0] = p.iter().map(|&v| v.unwrap()).collect();
             for i in 0..k - 1 {
                 for j in 0..n {
-                    ancestors[i + 1][j] = ancestors[i][ancestors[i][j]];
+                    a[i + 1][j] = a[i][a[i][j]];
                 }
             }
-            Self { ancestors, depth }
+            Self { a, d }
         }
 
         pub fn get(&self, mut u: usize, mut v: usize) -> usize {
-            if self.depth[u] > self.depth[v] {
+            if self.d[u] > self.d[v] {
                 std::mem::swap(&mut u, &mut v);
             }
-            let d = self.depth[v] - self.depth[u];
+            let d = self.d[v] - self.d[u];
             for i in 0..bit_length(d as u64) as usize {
                 if d >> i & 1 == 1 {
-                    v = self.ancestors[i][v];
+                    v = self.a[i][v];
                 }
             }
             if v == u {
                 return u;
             }
-            for a in self.ancestors.iter().rev() {
-                let nu = a[u];
-                let nv = a[v];
+            for a in self.a.iter().rev() {
+                let (nu, nv) = (a[u], a[v]);
                 if nu != nv {
                     u = nu;
                     v = nv;
                 }
             }
-            self.ancestors[0][u]
+            self.a[0][u]
         }
     }
 
     use crate::{tree_edges_to_graph::tree_edges_to_graph, uf::*};
 
-    pub fn offline_tarjan(
-        tree_edges: &[(usize, usize)],
-        queries: &[(usize, usize)],
-        root: usize,
-    ) -> Vec<usize> {
+    /// tarjan's offline algorithm
+    pub fn tarjan(e: &[(usize, usize)], qs: &[(usize, usize)]) -> Vec<usize> {
         fn dfs(
             g: &Vec<Vec<usize>>,
             q: &Vec<Vec<(usize, usize)>>,
             visited: &mut Vec<bool>,
             uf: &mut UF,
-            ancestor: &mut Vec<usize>,
+            a: &mut Vec<usize>,
             lca: &mut Vec<usize>,
             u: usize,
         ) {
             visited[u] = true;
-            ancestor[u] = u;
+            a[u] = u;
             for &v in g[u].iter() {
                 if visited[v] {
                     continue;
                 }
-                dfs(
-                    g, q, visited, uf, ancestor, lca, v,
-                );
+                dfs(g, q, visited, uf, a, lca, v);
                 uf.unite(u, v);
-                ancestor[uf.root(u)] = u;
+                a[uf.root(u)] = u;
             }
             q[u].iter().filter(|&&(v, _)| visited[v]).for_each(|&(v, i)| {
-                lca[i] = ancestor[uf.root(v)];
+                lca[i] = a[uf.root(v)];
             });
         }
-        let n = tree_edges.len() + 1;
-        let graph = tree_edges_to_graph(tree_edges);
+        let n = e.len() + 1;
+        let graph = tree_edges_to_graph(e);
         let mut q = vec![vec![]; n];
-        for (i, &(u, v)) in queries.iter().enumerate() {
+        for (i, &(u, v)) in qs.iter().enumerate() {
             q[u].push((v, i));
             q[v].push((u, i));
         }
         let mut visited = vec![false; n];
         let mut uf = UF::new(n);
         let mut ancestor = vec![n; n];
-        let mut lca = vec![n; queries.len()];
+        let mut lca = vec![n; qs.len()];
         dfs(
             &graph,
             &q,
@@ -108,43 +104,43 @@ pub mod tree {
             &mut uf,
             &mut ancestor,
             &mut lca,
-            root,
+            0,
         );
         lca
     }
 
-    use crate::heavy_light_decomposition::heavy_light_decompose;
+    use crate::hld::heavy_light_decompose;
 
     pub struct LCAHLD {
-        parent: Vec<Option<usize>>,
-        depth: Vec<usize>,
-        roots: Vec<usize>,
+        p: Vec<Option<usize>>, // parents
+        d: Vec<usize>,         // depths
+        r: Vec<usize>,         // roots
     }
 
     impl LCAHLD {
         pub fn new(tree_edges: &[(usize, usize)], root: usize) -> Self {
             Self {
-                parent: tree_parents(tree_edges, root),
-                depth: tree_depths(tree_edges, root),
-                roots: heavy_light_decompose(tree_edges, root),
+                p: tree_parents(tree_edges, root),
+                d: tree_depths(tree_edges, root),
+                r: heavy_light_decompose(tree_edges, root),
             }
         }
 
         pub fn get(&self, mut u: usize, mut v: usize) -> usize {
-            while self.roots[u] != self.roots[v] {
-                if self.depth[self.roots[u]] > self.depth[self.roots[v]] {
-                    std::mem::swap(&mut u, &mut v);
+            use std::mem::swap;
+            while self.r[u] != self.r[v] {
+                if self.d[self.r[u]] > self.d[self.r[v]] {
+                    swap(&mut u, &mut v);
                 }
-                v = self.parent[self.roots[v]].unwrap();
+                v = self.p[self.r[v]].unwrap();
             }
-            if self.depth[u] <= self.depth[v] { u } else { v }
+            if self.d[u] <= self.d[v] { u } else { v }
         }
     }
 
     use crate::{
-        euler_tour_indices::first_positions,
-        euler_tour_nodes::euler_tour_nodes,
-        range_minimum_query::RangeMinimumQuery,
+        ett::{first_positions, tour_nodes},
+        query::RangeMinimumQuery,
     };
 
     /// with euler tour and static range minimum query.
@@ -158,7 +154,7 @@ pub mod tree {
         where
             Q: std::iter::FromIterator<(usize, usize)>,
         {
-            let tour_nodes = euler_tour_nodes(tree_edges, root);
+            let tour_nodes = tour_nodes(tree_edges, root);
             let depth = tree_depths(tree_edges, root);
             let first_pos = first_positions(&tour_nodes);
             let depth =

@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import typing
 
-import dsalgo.protocol
+import dsalgo.order
 
-T = typing.TypeVar("T", bound=dsalgo.protocol.Order)
+T = typing.TypeVar("T", bound=dsalgo.order.Order)
 
 
 class BinaryMinHeap(typing.Generic[T]):

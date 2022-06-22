@@ -1,8 +1,9 @@
-use crate::find_prime_numbers::find_prime_numbers;
+use crate::psieve::erat;
 
-pub fn is_prime_table(size: usize) -> Vec<bool> {
-    let mut is_prime = vec![false; size];
-    for p in find_prime_numbers(size as u32) {
+/// is prime table
+pub fn is_p_t(sz: usize) -> Vec<bool> {
+    let mut is_prime = vec![false; sz];
+    for p in erat::ps(sz) {
         is_prime[p as usize] = true;
     }
     is_prime
@@ -13,7 +14,7 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        let is_prime = is_prime_table(20);
+        let is_prime = is_p_t(20);
         assert_eq!(
             is_prime,
             vec![

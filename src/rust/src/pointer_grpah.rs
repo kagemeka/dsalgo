@@ -75,7 +75,7 @@ impl<T, U> Edge<T, U> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{debug_print::debug_print, new_rc_refcell::new_rc_refcell};
+    use crate::new_rc_refcell::new_rc_refcell;
 
     #[test]
     fn test() {
@@ -83,12 +83,12 @@ mod tests {
 
         let a = V::new_rc_refcell(None);
         let b = V::new_rc_refcell(Some(1));
-        debug_print(&a.borrow());
+        dbg!(&a.borrow());
 
         V::connect(&a, &b, new_rc_refcell(1));
-        debug_print(&a.borrow());
-        debug_print(&b.borrow());
+        dbg!(&a.borrow());
+        dbg!(&b.borrow());
         *a.borrow().edges[0].value.borrow_mut() += 1;
-        debug_print(&a.borrow());
+        dbg!(&a.borrow());
     }
 }
