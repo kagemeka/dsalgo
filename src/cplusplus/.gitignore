@@ -1,5 +1,7 @@
+
 *.gch
 a.out
+main
 /build
 /Catch2
 /googletest
