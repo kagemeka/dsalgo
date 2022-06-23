@@ -6,7 +6,7 @@ use crate::{
         shortest_path_potential,
         ShortestPathPotentialEdge,
     },
-    sssp_dijkstra_sparse::dijkstra_sparse,
+    sssp_dijkstra_sparse_with_general::dijkstra_sparse,
 };
 
 pub fn johnson_sparse<E, Q>(

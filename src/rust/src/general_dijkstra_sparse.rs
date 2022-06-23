@@ -3,6 +3,8 @@ use crate::{
     graph::edge::{To, Weight},
 };
 
+// TODO: generalized dijkstra -> rename as extended dijkstra
+
 pub fn general_dijkstra_sparse<E, T, F, Q>(
     sparse_graph: &[Vec<E>],
     callback: &F,

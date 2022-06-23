@@ -2,7 +2,7 @@ use crate::{
     adjacency_list_graph::AdjacencyList,
     dijkstra_sparse_queue::DijkstraSparseQueue,
     graph::edge::{From, To, Weight},
-    sssp_dijkstra_sparse::dijkstra_sparse,
+    sssp_dijkstra_sparse_with_general::dijkstra_sparse,
 };
 
 /// return edge ids.

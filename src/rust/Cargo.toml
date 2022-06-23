@@ -27,5 +27,5 @@ include = []
 [dependencies]
 lazy_static = "1.4.0"
 rand = "0.8.5"
-# [workspace]
-# members = []
+[workspace]
+members = ["dsalgo_light"]
