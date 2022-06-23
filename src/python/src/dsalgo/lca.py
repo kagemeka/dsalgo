@@ -9,6 +9,31 @@ import dsalgo.sparse_table
 from dsalgo.tree_bfs import tree_bfs
 
 
+def _ue_to_g(n: int, e: typing.List[E]) -> typing.List[typing.List[int]]:
+    # undirected edges to adj list
+    g = [[] for _ in range(n)]
+    for u, v in e:
+        g[u].append(v)
+        g[v].append(u)
+    return g
+
+
+T = typing.TypeVar("T")
+ED = typing.Tuple[int, int, T]
+
+
+def _ued_to_g(
+    n: int,  # vertex size
+    e: typing.List[ED],
+) -> typing.List[typing.List[typing.Tuple[int, T]]]:
+    # undirected edges with data to adj list
+    g = [[] for _ in range(n)]
+    for u, v, d in e:
+        g[u].append((v, d))
+        g[v].append((u, d))
+    return g
+
+
 def doubling(
     e: typing.List[typing.Tuple[int, int]],
 ) -> typing.Callable[[int, int], int]:
@@ -43,42 +68,66 @@ def doubling(
 
 
 # tarjan's offline algorithm
-def tarjan(
-    e: list[tuple[int, int]],
-    r: int,
-    qs: list[tuple[int, int]],  # queries
-) -> list[int]:
-    import dsalgo.uf
-
-    n = len(e) + 1
-    g = [[] for _ in range(n)]
-    for u, v in e:
-        g[u].append(v)
-        g[v].append(u)
-    q = [[] for _ in range(n)]
-    for i, (u, v) in enumerate(qs):
-        q[u].append((v, i))
-        q[v].append((u, i))
-    vis = [False] * n
-    uf = dsalgo.uf.UnionFind(n)
-    a = [n] * n  # anc
+def tarjan_recurse(
+    g: typing.List[typing.List[int]],
+    qs: typing.List[typing.Tuple[int, int]],  # queries
+) -> typing.List[int]:
+    # tarjan's offline algorithm
+    n = len(g)
+    q = _ued_to_g(n, [(u, v, i) for i, (u, v) in enumerate(qs)])
+    uf = UF(n)
+    a = [-1] * n  # current ancestor
     lca = [n] * len(qs)
 
     def dfs(u: int) -> None:
-        vis[u] = True
         a[u] = u
         for v in g[u]:
-            if vis[v]:
+            if a[v] != -1:  # visited
                 continue
             dfs(v)
             uf.unite(u, v)
-            a[uf.find_root(u)] = u
+            a[uf.root(u)] = u
 
         for v, i in q[u]:
-            if vis[v]:
-                lca[i] = a[uf.find_root(v)]
+            if a[v] != -1:
+                lca[i] = a[uf.root(v)]
 
-    dfs(r)
+    dfs(0)
+    return lca
+
+
+def tarjan(
+    g: typing.List[typing.List[int]],  # undirected tree adj list
+    qs: typing.List[typing.Tuple[int, int]],  # queries
+) -> typing.List[int]:
+    # non recurse for performance.
+    n = len(g)
+    q = _ued_to_g(n, [(u, v, i) for i, (u, v) in enumerate(qs)])
+    uf = UF(n)
+    a = [-1] * n
+    lca = [n] * len(qs)
+    s = [0]
+    p = [-1] * n
+    while s:
+        u = s.pop()
+        if u >= 0:
+            s.append(~u)
+            a[u] = u
+            for v in g[u]:
+                if a[v] != -1:
+                    continue
+                p[v] = u
+                s.append(v)
+            continue
+        u = ~u
+        for v, i in q[u]:
+            if a[v] != -1:
+                lca[i] = a[uf.root(v)]
+        v = p[u]
+        if v != -1:
+            uf.unite(v, u)
+            a[uf.root(v)] = v
+
     return lca
 
 
@@ -92,9 +141,7 @@ def et_rmq(
     dep = dsalgo.euler_tour.compute_depth(to)
     to = dsalgo.euler_tour.to_nodes(to)
     first_idx = dsalgo.euler_tour.compute_first_index(to)
-    semigroup = dsalgo.algstr.Semigroup[typing.Tuple[int, int]](
-        operation=min
-    )
+    semigroup = dsalgo.algstr.Semigroup[typing.Tuple[int, int]](operation=min)
     """
     TODO: pass rmq constructor interface instead of define for each rmq method.
     - sparse table
