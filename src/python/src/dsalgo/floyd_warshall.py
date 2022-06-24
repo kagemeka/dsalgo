@@ -1,29 +1,27 @@
+# mypy: ignore-errors
+
 import typing
 
 import unittest
 
+
+INF = float("inf")
 T = typing.TypeVar("T")
 G = typing.List[typing.List[T]]
 
 
-def floyd_warshall(g: G, inf: T) -> G:
+def floyd_warshall(g: G) -> G:
     n = len(g)
     for k in range(n):
         for i in range(n):
-            d0 = g[i][k]
-            if d0 == inf:
-                continue
             for j in range(n):
-                d1 = g[k][j]
-                if d1 == inf or d0 + d1 >= g[i][j]:
-                    continue
-                g[i][j] = d0 + d1
+                g[i][j] = min(g[i][j], g[i][k] + g[k][j])
     return g
 
 
 class Tests(unittest.TestCase):
     def test(self) -> None:
-        inf = 1 << 60
+        inf = float("inf")
         g = [
             [0, 12, inf, inf, 18],
             [12, 0, 14, inf, inf],

@@ -109,7 +109,7 @@ pub mod tree {
         lca
     }
 
-    use crate::hld::heavy_light_decompose;
+    use crate::heavly_light_decomposition::heavy_light_decompose;
 
     pub struct LCAHLD {
         p: Vec<Option<usize>>, // parents
