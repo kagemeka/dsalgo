@@ -164,7 +164,7 @@ def johnson_sparse(
     return dists
 
 
-def desopo_papge(
+def desopo_pape(
     graph: list[list[tuple[int, int]]],
     src: int,
 ) -> list[int | None]:
