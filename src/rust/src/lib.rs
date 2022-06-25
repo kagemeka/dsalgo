@@ -381,6 +381,7 @@ pub mod perfect_numbers;
 pub mod ph_tree;
 pub mod pigeonhole_sort;
 pub mod pivot_tree;
+pub mod pocket_euler_totient;
 pub mod pocket_floyd_warshall;
 pub mod pocket_tree_bfs;
 pub mod pocket_tree_bfs_depth;
