@@ -191,7 +191,7 @@ pub mod find_root;
 pub mod finger_tree;
 pub mod flow;
 pub mod floyd_warshall;
-pub mod floyd_warshall_sssp;
+pub mod floyd_warshall_apsp;
 pub mod fold;
 pub mod ford_johnson_algorithm;
 pub mod formal_power_series;

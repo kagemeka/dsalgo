@@ -1,11 +1,10 @@
-type Mat<T> = Vec<Vec<T>>;
 type G<T> = Vec<Vec<T>>;
 
-pub fn floyd_warshall<T, F, H>(adj_mat: G<T>, f: &F, cb: &H) -> G<T>
+pub fn floyd_warshall<T, F, H>(adj_mat: G<T>, f: &F, cb: &mut H) -> G<T>
 where
     T: Clone,
     F: Fn(T, T, T) -> T,
-    H: Fn(usize, &G<T>),
+    H: FnMut(&G<T>),
 {
     let mut g = adj_mat;
     let n = g.len();
@@ -19,11 +18,7 @@ where
                 );
             }
         }
-        cb(k, &g);
+        cb(&g);
     }
     g
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
 }

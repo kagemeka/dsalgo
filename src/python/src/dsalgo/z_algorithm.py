@@ -1,18 +1,20 @@
-from __future__ import annotations
-
-from dsalgo.type import T
+import typing
 
 
-def z_algorithm(arr: list[T]) -> list[int]:
-    n = len(arr)
-    a = [0] * n
-    a[0] = n
-    left = right = -1
+T = typing.TypeVar("T")
+
+
+def z_algorithm(a: typing.Sequence[T]) -> typing.List[int]:
+    n = len(a)
+    lcp = [0] * n
+    l = 0
     for i in range(1, n):
-        if right >= i:
-            a[i] = min(a[i - left], right - i)
-        while i + a[i] < n and arr[i + a[i]] == arr[a[i]]:
-            a[i] += 1
-        if i + a[i] >= right:
-            left, right = i, i + a[i]
-    return a
+        r = l + lcp[l]
+        d = 0 if r <= i else min(lcp[i - l], r - i)
+        while i + d < n and a[i + d] == a[d]:
+            d += 1
+        lcp[i] = d
+        if i + d > r:
+            l = i
+    lcp[0] = n
+    return lcp

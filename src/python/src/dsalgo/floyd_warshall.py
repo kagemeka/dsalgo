@@ -6,11 +6,9 @@ import unittest
 
 
 T = typing.TypeVar("T")
-
-
 G = typing.List[typing.List[T]]
 F = typing.Callable[[T, T, T], T]
-Cb = typing.Callable[[int, G], None]
+Cb = typing.Callable[[G], None]
 
 
 def floyd_warshall(f: F, g: G, cb: typing.Optional[Cb] = None) -> G:
@@ -20,7 +18,7 @@ def floyd_warshall(f: F, g: G, cb: typing.Optional[Cb] = None) -> G:
             for j in range(n):
                 g[i][j] = f(g[i][j], g[i][k], g[k][j])
         if cb:
-            cb(k, g)
+            cb(g)
     return g
 
 
