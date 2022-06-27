@@ -587,6 +587,6 @@ pub mod wavelet_matrix;
 pub mod weighted_union_algorithm;
 pub mod x_tree;
 pub mod z_algorithm;
-pub mod z_algorithm_findall;
+pub mod z_algorithm_findall_substr;
 pub mod zero_one_bfs;
 // pub mod rerooting_dynamic;
