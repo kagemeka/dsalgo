@@ -12,9 +12,7 @@ extension Int: BinaryOperation {
   typealias F = Int
   typealias T = Int
   typealias I = Addition
-  func operate(_ op: Int) -> Int {
-    return self + op
-  }
+  func operate(_ op: Int) -> Int { return self + op }
 }
 
 protocol IdentityElement {
@@ -36,27 +34,19 @@ extension Modular: BinaryOperation {
   typealias F = Modular
   typealias T = Modular
   typealias I = Addition
-  func operate(_ op: Modular) -> Modular {
-    return op + self
-  }
+  func operate(_ op: Modular) -> Modular { return op + self }
 }
 
-extension Modular: AssociativeProperty
-where F == Modular, T == Modular {
+extension Modular: AssociativeProperty where F == Modular, T == Modular {
   func assertAssociative(first: Modular, second: Modular, third: Modular)
     -> Bool
-  {
-    return self.operate(first) == (second.operate(third)).operate(first)
-  }
+  { return self.operate(first) == (second.operate(third)).operate(first) }
 }
 
 extension Modular: IdentityElement
 where F == Modular, T == Modular, I == Addition {
-  static func identity() -> Self {
-    return Self.init(0)
-  }
-}
-// extension Modular: BinaryOperation {
+  static func identity() -> Self { return Self.init(0) }
+}  // extension Modular: BinaryOperation {
 //     typealias F = Modular
 //     typealias T = Modular
 //     typealias I = Multiplication

@@ -1,6 +1,4 @@
-protocol Modulus {
-  static var value: Int { get }
-}
+protocol Modulus { static var value: Int { get } }
 
 final class Modular<M> where M: Modulus {
   private var value: Int
@@ -9,25 +7,18 @@ final class Modular<M> where M: Modulus {
     self.value = Self.normalize(value)
   }
 
-  private static func normalize<T>(_ value: T) -> Int
-  where T: BinaryInteger {
+  private static func normalize<T>(_ value: T) -> Int where T: BinaryInteger {
     var value = Int(value) % M.value
-    if value < 0 {
-      value += M.value
-    }
+    if value < 0 { value += M.value }
     return value
   }
 }
 
-struct Mod1000000007: Modulus {
-  static let value = 1_000_000_007
-}
+struct Mod1000000007: Modulus { static let value = 1_000_000_007 }
 
 typealias Modular1000000007 = Modular<Mod1000000007>
 
-struct Mod998244353: Modulus {
-  static let value = 998_244_353
-}
+struct Mod998244353: Modulus { static let value = 998_244_353 }
 
 typealias Modular998244353 = Modular<Mod998244353>
 
@@ -46,8 +37,7 @@ struct DynamicMod: Modulus {
       assert(!isSet, "value is already set")
       assert(
         2 <= newValue && newValue < 1 << 31,
-        "2 <= value < 2^31 should be satisfied."
-      )
+        "2 <= value < 2^31 should be satisfied.")
       self.internalValue = newValue
       self.isSet = true
     }
@@ -58,9 +48,7 @@ struct DynamicMod: Modulus {
 typealias DynamicModular = Modular<DynamicMod>
 
 extension Modular: CustomStringConvertible {
-  var description: String {
-    return String(self.value)
-  }
+  var description: String { return String(self.value) }
 }
 
 extension Modular {
@@ -70,9 +58,7 @@ extension Modular {
 
   static func += (left: inout Modular, right: Modular) {
     left.value += right.value
-    if left.value >= M.value {
-      left.value -= M.value
-    }
+    if left.value >= M.value { left.value -= M.value }
   }
 
   static prefix func - (self: Modular) -> Modular {
