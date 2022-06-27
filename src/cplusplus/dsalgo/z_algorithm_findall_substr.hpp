@@ -1,5 +1,5 @@
+#pragma once
 #include "types.hpp"
-#include "z_algorithm.hpp"
 
 namespace z_algorithm_findall_substr {
   using namespace types;
