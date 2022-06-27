@@ -14,5 +14,5 @@ def kmp_table(a: typing.Sequence[T]) -> typing.List[int]:
             d = f[d - 1]
         if a[d] == a[i]:
             d += 1
-        f[i] = f[d - 1] if i + 1 < n and a[d] == a[i + 1] else d
+        f[i] = f[d - 1] if d != 0 and i + 1 < n and a[d] == a[i + 1] else d
     return f

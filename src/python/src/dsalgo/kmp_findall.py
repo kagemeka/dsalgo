@@ -8,15 +8,15 @@ A = typing.Sequence[T]
 
 def kmp_findall(a: A, pattern: A) -> typing.List[int]:
     # 0-indexed
-    b = pattern
-    n, m = len(a), len(b)
-    f = kmp_table(b)
+    p = pattern
+    n, m = len(a), len(p)
+    f = kmp_table(p)
     j = 0
     indices = []
     for i in range(n):
-        while j != 0 and b[j] != a[i]:
+        while j != 0 and p[j] != a[i]:
             j = f[j - 1]
-        if b[j] == a[i]:
+        if p[j] == a[i]:
             j += 1
         if j == m:
             indices.append(i - m + 1)

@@ -1,7 +1,4 @@
-pub fn z_algorithm<T>(a: &[T]) -> Vec<usize>
-where
-    T: PartialEq,
-{
+pub fn z_algorithm<T: PartialEq>(a: &[T]) -> Vec<usize> {
     let n = a.len();
     let mut lcp = vec![0; n];
     let mut l = 0;
