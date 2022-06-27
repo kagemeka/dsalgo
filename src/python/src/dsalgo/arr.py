@@ -2,10 +2,9 @@
 
 from __future__ import annotations
 
+import bisect
 import typing
 import unittest
-
-import bisect
 
 T = typing.TypeVar("T")
 

@@ -1,9 +1,7 @@
 # mypy: ignore-errors
 
 import typing
-
 import unittest
-
 
 T = typing.TypeVar("T")
 G = typing.List[typing.List[T]]

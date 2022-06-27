@@ -4,7 +4,6 @@ from __future__ import annotations
 import dataclasses
 import typing
 
-
 T = typing.TypeVar("T")
 
 

@@ -1,4 +1,5 @@
 import typing
+
 from dsalgo.kmp_table_0_indexed import kmp_table
 
 T = typing.TypeVar("T")

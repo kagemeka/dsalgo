@@ -1,8 +1,7 @@
 import unittest
 
-import numpy as np
-
 import nb.bitset
+import numpy as np
 
 
 class Test(unittest.TestCase):

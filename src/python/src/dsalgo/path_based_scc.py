@@ -1,4 +1,5 @@
 import typing
+
 from dsalgo.scc_topological_sort import toposort
 
 

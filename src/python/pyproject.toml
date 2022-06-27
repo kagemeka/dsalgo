@@ -27,8 +27,6 @@ maintainers = ["kagemeka <kagemeka1@gmail.com>"]
 name = "dsalgo"
 packages = [
   {include = "dsalgo", from = "src"},
-  {include = "dsalgo_numba", from = "src"},
-  {include = "dsalgo_numpy", from = "src"},
 ]
 readme = "README.md"
 repository = "https://github.com/kagemeka/dsalgo-python"

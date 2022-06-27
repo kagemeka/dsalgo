@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import typing
-from dsalgo.floyd_warshall import *
+
 from dsalgo._util import unwrap
+from dsalgo.floyd_warshall import *
 
 
 class NegativeCycleError(Exception):
