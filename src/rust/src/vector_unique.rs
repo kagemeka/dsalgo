@@ -1,7 +1,7 @@
-pub fn vector_unique<T: Ord>(mut values: Vec<T>) -> Vec<T> {
-    values.sort();
-    values.dedup();
-    values
+pub fn unique<T: Ord>(mut a: Vec<T>) -> Vec<T> {
+    a.sort();
+    a.dedup();
+    a
 }
 
 // TODO:

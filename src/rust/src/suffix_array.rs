@@ -1,6 +1,8 @@
+// TODO: change singature. ref -> owned.
 pub fn doubling(a: &Vec<usize>) -> Vec<usize> {
+    use crate::array_compression::ArrayCompression;
     let n = a.len();
-    let mut rank = crate::array_compression::compress(&a).keys;
+    let mut rank = ArrayCompression::once(a.to_vec());
     let mut k = 1usize;
     let mut key = vec![0; n];
     let mut sa = vec![0; n];
@@ -29,6 +31,7 @@ pub fn doubling(a: &Vec<usize>) -> Vec<usize> {
 }
 
 pub fn doubling_counting_sort(a: &Vec<usize>) -> Vec<usize> {
+    use crate::array_compression::ArrayCompression;
     let n = a.len();
     let counting_sort_key = |a: &Vec<usize>| -> Vec<usize> {
         let mut cnt = vec![0; n + 2];
@@ -45,7 +48,7 @@ pub fn doubling_counting_sort(a: &Vec<usize>) -> Vec<usize> {
         }
         key
     };
-    let mut rank = crate::array_compression::compress(&a).keys;
+    let mut rank = ArrayCompression::once(a.to_vec());
     let mut k = 1usize;
     let mut key = vec![0; n];
     let mut first = vec![0; n];
