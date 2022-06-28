@@ -633,7 +633,7 @@ pub mod int {
         fn from(value: usize) -> Self { Self::from(value as u64) }
     }
 
-    use crate::power::itself::PowMonoid;
+    use crate::power_monoid_itself::PowMonoid;
 
     impl<M> Modint<u64, M>
     where

@@ -17,26 +17,23 @@ where
     where
         T: MulInv<Output = T>,
     {
-        let fact = factorial_table::<T>(size);
-        let inv_fact = inverse_factorial_table::<T>(size);
-        Self { fact, inv_fact }
+        Self {
+            fact: factorial_table::<T>(size),
+            inv_fact: inverse_factorial_table::<T>(size),
+        }
     }
 
-    pub fn calc(&self, n: u64, k: u64) -> T {
+    pub fn calc(&self, n: usize, k: usize) -> T {
         if k > n {
             return 0.into();
         }
-        let n = n as usize;
-        let k = k as usize;
         self.fact[n].clone()
             * self.inv_fact[n - k].clone()
             * self.inv_fact[k].clone()
     }
 
-    pub fn inv(&self, n: u64, k: u64) -> T {
+    pub fn inv(&self, n: usize, k: usize) -> T {
         assert!(k <= n); // (n, k) := 0 if k > n, so the inverse is undefined.
-        let n = n as usize;
-        let k = k as usize;
         self.inv_fact[n].clone()
             * self.fact[k].clone()
             * self.fact[n - k].clone()
