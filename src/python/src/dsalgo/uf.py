@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-from dsalgo.algstr import Group
+from python.src.dsalgo.algebraic_structure import Group
 
 
 class UF:

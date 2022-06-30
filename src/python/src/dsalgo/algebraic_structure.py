@@ -29,9 +29,12 @@ class Group(Monoid[T]):
 
 @dataclasses.dataclass
 class Semiring(typing.Generic[T]):
-    ...
+    add: typing.Callable[[T, T], T]
+    zero: typing.Callable[[], T]
+    mul: typing.Callable[[T, T], T]
+    one: typing.Callable[[], T]
 
 
 @dataclasses.dataclass
 class Ring(Semiring[T]):
-    ...
+    add_inv: typing.Callable[[T], T]

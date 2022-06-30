@@ -1,20 +1,40 @@
 import typing
+import unittest
 
-import dsalgo.algstr
-from dsalgo.type import S
+from dsalgo.algebraic_structure import Group, Monoid, Semigroup
+
+T = typing.TypeVar("T")
 
 
-def define_power_func(
-    monoid: dsalgo.algstr.Monoid[S],
-) -> typing.Callable[[S, int], S]:
-    def pow(value: S, exponent: int) -> S:
-        assert exponent >= 0
-        if exponent == 0:
-            return monoid.identity()
-        x = pow(value, exponent >> 1)
-        x = monoid.operation(x, x)
-        if exponent & 1:
-            x = monoid.operation(x, value)
-        return x
+def power(g: Semigroup[T]) -> typing.Callable[[T, int], T]:
+    def f(x: T, n: int) -> T:
+        if n == 0:
+            return typing.cast(Monoid[T], g).e()
+        if n < 0:
+            x = typing.cast(Group[T], g).inv(x)
+            n = -n
+        y = x
+        n -= 1
+        while n:
+            if n & 1:
+                y = g.op(y, x)
+            x = g.op(x, x)
+            n >>= 1
+        return y
 
-    return pow
+    return f
+
+
+class Tests(unittest.TestCase):
+    def test(self) -> None:
+        g = Group[int](lambda x, y: x + y, lambda: 0, lambda x: -x)
+        f = power(g)
+        print(f(2, 100), 200)
+
+
+if __name__ == "__main__":
+    import doctest
+
+    unittest.main()
+
+    doctest.testmod(verbose=True)

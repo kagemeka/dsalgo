@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import typing
 
-import dsalgo.algstr
 import dsalgo.euler_tour
 import dsalgo.hld
 import dsalgo.sparse_table
+import python.src.dsalgo.algebraic_structure
 from dsalgo.tree_bfs import tree_bfs
 
 
@@ -141,7 +141,9 @@ def et_rmq(
     dep = dsalgo.euler_tour.compute_depth(to)
     to = dsalgo.euler_tour.to_nodes(to)
     first_idx = dsalgo.euler_tour.compute_first_index(to)
-    semigroup = dsalgo.algstr.Semigroup[typing.Tuple[int, int]](operation=min)
+    semigroup = dsalgo.algebraic_structure.Semigroup[typing.Tuple[int, int]](
+        operation=min
+    )
     """
     TODO: pass rmq constructor interface instead of define for each rmq method.
     - sparse table

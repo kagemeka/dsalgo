@@ -8,7 +8,7 @@ from __future__ import annotations
 import typing
 import unittest
 
-from dsalgo.algstr import Group, Monoid
+from python.src.dsalgo.algebraic_structure import Group, Monoid
 
 S = typing.TypeVar("S")
 
