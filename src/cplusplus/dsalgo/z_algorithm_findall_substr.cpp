@@ -4,10 +4,8 @@
 #include <string>
 
 auto main() -> int {
-  using namespace types;
-  using namespace z_algorithm_findall_substr;
   std::string s = "ababababc", t = "aba";
-  auto ind = z_algorithm_findall(s, t);
+  auto ind = z_algorithm_findall_substr(s, t);
   for (auto i : ind) {
     std::cout << i << '\n';
   }
