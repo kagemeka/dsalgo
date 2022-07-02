@@ -39,7 +39,7 @@ pub struct Modint<M>(
     std::marker::PhantomData<M>,
 );
 
-use std::ops::{Add, Div, Mul, Neg, Sub};
+use std::ops::*;
 
 use modulus::StaticGet;
 
@@ -127,6 +127,34 @@ impl<M: StaticGet> Div for Modint<M> {
     type Output = Self;
 
     fn div(self, rhs: Self) -> Self { self * rhs.mul_inv() }
+}
+
+impl<M: StaticGet> AddAssign for Modint<M>
+where
+    Self: Copy,
+{
+    fn add_assign(&mut self, rhs: Self) { *self = *self + rhs; }
+}
+
+impl<M: StaticGet> SubAssign for Modint<M>
+where
+    Self: Copy,
+{
+    fn sub_assign(&mut self, rhs: Self) { *self += -rhs; }
+}
+
+impl<M: StaticGet> MulAssign for Modint<M>
+where
+    Self: Copy,
+{
+    fn mul_assign(&mut self, rhs: Self) { *self = *self * rhs; }
+}
+
+impl<M: StaticGet> DivAssign for Modint<M>
+where
+    Self: Copy,
+{
+    fn div_assign(&mut self, rhs: Self) { *self *= *self * rhs.mul_inv(); }
 }
 
 impl<M: StaticGet> From<i64> for Modint<M> {

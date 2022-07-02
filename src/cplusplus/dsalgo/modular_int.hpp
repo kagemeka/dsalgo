@@ -10,7 +10,7 @@ class modular_int {
   constexpr static auto mod() -> T { return A::mod(); }
 
   template <typename U>
-  static auto norm(const U& x) -> T {
+  constexpr static auto norm(const U& x) -> T {
     return (x % mod() + mod()) % mod();
   }
 
