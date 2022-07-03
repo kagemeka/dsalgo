@@ -1,38 +1,35 @@
 #pragma once
+#include <array>
 
-#include <vector>
 using namespace std;
 
+template <int N>
 class bit_array {
   constexpr static int K = 6;
   constexpr static int M = (1 << K) - 1;
 
-  vector<ulong> d;
+  constexpr static int n = (N + M) >> K;
+  array<long, n> d;
   using Self = bit_array;
 
 public:
-  bit_array() : bit_array(0) {}
+  auto operator[](int i) const -> bool { return d[i >> K] >> (i & M) & 1; }
 
-  bit_array(int size) : d((size + M) >> K) {}
-
-  auto operator[](int i) -> int { return d[i >> K] >> (i & M) & 1; }
-
-  void set(int i, int value) {
+  void set(int i, bool value) {
     if ((*this)[i] != value) flip(i);
   }
 
   void flip(int i) { d[i >> K] ^= 1ul << (i & M); }
 
-  auto operator&(const Self& rhs) -> Self {
+  auto operator&(const Self& rhs) const -> Self {
     Self res(*this);
-    int n = min(res.d.size(), rhs.d.size());
     for (int i = 0; i < n; i++) {
       res.d[i] &= rhs.d[i];
     }
     return res;
   }
 
-  auto popcount() -> int {
+  [[nodiscard]] auto popcount() const -> int {
     int cnt = 0;
     for (auto& x : d) {
       cnt += __builtin_popcountll(x);
