@@ -21,6 +21,14 @@ public:
 
   void flip(int i) { d[i >> K] ^= 1ul << (i & M); }
 
+  auto operator|(const Self& rhs) const -> Self {
+    Self res(*this);
+    for (int i = 0; i < n; i++) {
+      res.d[i] |= rhs.d[i];
+    }
+    return res;
+  }
+
   auto operator&(const Self& rhs) const -> Self {
     Self res(*this);
     for (int i = 0; i < n; i++) {
