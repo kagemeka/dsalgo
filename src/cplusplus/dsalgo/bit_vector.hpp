@@ -11,32 +11,28 @@ class bit_vector {
   using Self = bit_vector;
 
 public:
-  bit_vector() : bit_vector(0) {}
+  bit_vector(): bit_vector(0) {}
 
-  bit_vector(int size) : d((size + M) >> K) {}
+  bit_vector(int size): d((size + M) >> K) {}
 
   auto operator[](int i) -> int { return d[i >> K] >> (i & M) & 1; }
 
   void set(int i, int value) {
-    if ((*this)[i] != value) flip(i);
+    if((*this)[i] != value) flip(i);
   }
 
   void flip(int i) { d[i >> K] ^= 1ul << (i & M); }
 
-  auto operator&(const Self& rhs) -> Self {
+  auto operator&(Self const& rhs) -> Self {
     Self res(*this);
     int n = min(res.d.size(), rhs.d.size());
-    for (int i = 0; i < n; i++) {
-      res.d[i] &= rhs.d[i];
-    }
+    for(int i = 0; i < n; i++) { res.d[i] &= rhs.d[i]; }
     return res;
   }
 
   auto popcount() -> int {
     int cnt = 0;
-    for (auto& x : d) {
-      cnt += __builtin_popcountll(x);
-    }
+    for(auto& x: d) { cnt += __builtin_popcountll(x); }
     return cnt;
   }
 };

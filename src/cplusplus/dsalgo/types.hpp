@@ -20,8 +20,6 @@ using f32 = float;
 using f64 = double;
 using f128 = __float128;
 
-template <typename T>
-using vec = vector<T>;
+template<typename T> using vec = vector<T>;
 
-template <typename T>
-using fn = function<T>;
+template<typename T> using fn = function<T>;

@@ -3,8 +3,7 @@
 #include "inverse_factorial_table.hpp"
 #include <cassert>
 
-template <typename S>
-class factorial_tables_frequent_ops {
+template<typename S> class factorial_tables_frequent_ops {
   std::vector<S> fact, inv_fact;
 
 public:
@@ -14,7 +13,7 @@ public:
   }
 
   auto p(int n, int k) -> S {
-    if (k < 0 || n < k) return 0;
+    if(k < 0 || n < k) return 0;
     return fact[n] * inv_fact[n - k];
   }
 

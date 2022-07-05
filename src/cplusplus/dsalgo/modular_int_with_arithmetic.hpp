@@ -1,76 +1,85 @@
 #pragma once
 #include <iostream>
 
-template <typename A> // Arithmetic
+template<typename A> // Arithmetic
 class modular_int {
   using T = typename std::decay<decltype(A::mod())>::type;
 
   T value;
   using Self = modular_int;
+
   constexpr static auto mod() -> T { return A::mod(); }
 
-  template <typename U>
-  constexpr static auto norm(const U& x) -> T {
+  template<typename U> constexpr static auto norm(const U& x) -> T {
     return (x % mod() + mod()) % mod();
   }
 
 public:
-  constexpr modular_int() : value() {}
+  constexpr modular_int(): value() {}
 
-  template <typename U>
-  modular_int(const U& x) {
-    value = norm(x);
-  }
+  template<typename U> modular_int(const U& x) { value = norm(x); }
 
   auto operator()() const -> const T& { return value; }
-  template <typename T>
-  explicit operator T() const {
+
+  template<typename T> explicit operator T() const {
     return static_cast<T>(value);
   }
 
   auto operator-() const -> Self { return Self(A::neg(value)); }
-  auto operator+=(const Self& rhs) -> Self& {
+
+  auto operator+=(Self const& rhs) -> Self& {
     value = A::add(value, rhs.value);
     return *this;
   }
-  auto operator-=(const Self& rhs) -> Self& { return *this += -rhs; }
+
+  auto operator-=(Self const& rhs) -> Self& { return *this += -rhs; }
+
   auto operator++() -> Self& { return *this += 1; }
+
   auto operator--() -> Self& { return *this -= 1; }
+
   auto operator++(int) -> Self {
     Self res(*this);
     *this += 1;
     return res;
   }
+
   auto operator--(int) -> Self {
     Self res(*this);
     *this -= 1;
     return res;
   }
-  auto operator*=(const Self& rhs) -> Self& {
+
+  auto operator*=(Self const& rhs) -> Self& {
     value = A::mul(value, rhs.value);
     return *this;
   }
 
   [[nodiscard]] auto inv() const -> Self { return Self(A::inv(value)); }
 
-  auto operator/=(const Self& rhs) -> Self& { return *this *= rhs.inv(); }
+  auto operator/=(Self const& rhs) -> Self& { return *this *= rhs.inv(); }
 
-  friend auto operator+(const Self& lhs, const Self& rhs) -> Self {
+  friend auto operator+(Self const& lhs, Self const& rhs) -> Self {
     return Self(lhs) += rhs;
   }
-  friend auto operator-(const Self& lhs, const Self& rhs) -> Self {
+
+  friend auto operator-(Self const& lhs, Self const& rhs) -> Self {
     return Self(lhs) -= rhs;
   }
-  friend auto operator*(const Self& lhs, const Self& rhs) -> Self {
+
+  friend auto operator*(Self const& lhs, Self const& rhs) -> Self {
     return Self(lhs) *= rhs;
   }
-  friend auto operator/(const Self& lhs, const Self& rhs) -> Self {
+
+  friend auto operator/(Self const& lhs, Self const& rhs) -> Self {
     return Self(lhs) /= rhs;
   }
-  friend auto operator==(const Self& lhs, const Self& rhs) -> bool {
+
+  friend auto operator==(Self const& lhs, Self const& rhs) -> bool {
     return lhs.value == rhs.value;
   }
-  friend auto operator!=(const Self& lhs, const Self& rhs) -> bool {
+
+  friend auto operator!=(Self const& lhs, Self const& rhs) -> bool {
     return lhs.value != rhs.value;
   }
 
@@ -80,7 +89,8 @@ public:
     x.value = norm(v);
     return stream;
   }
-  friend auto operator<<(std::ostream& stream, const Self& x) -> std::ostream& {
+
+  friend auto operator<<(std::ostream& stream, Self const& x) -> std::ostream& {
     return stream << x.value;
   }
 };

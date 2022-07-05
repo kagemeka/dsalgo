@@ -22,8 +22,7 @@ namespace dsalgo {
     using f64 = double;
     using f128 = __float128;
 
-    template <typename T>
-    using vec = std::vector<T>;
+    template<typename T> using vec = std::vector<T>;
 
   } // namespace rust_types
 } // namespace dsalgo
