@@ -11,15 +11,15 @@ template<typename M> struct modint {
 
   constexpr static auto m() -> T { return M::get(); }
 
-  template<typename U> constexpr static auto norm(U x) -> T {
-    T v = static_cast<T>(x);
+  template<typename U> constexpr static auto norm(const U& x) -> T {
+    T v = x;
     if(v < -m() || m() <= v) v %= m();
     return v + (v < 0) * m();
   }
 
   constexpr modint(): value() {}
 
-  template<typename U> modint(U x): value(norm(x)) {}
+  template<typename U> modint(const U& x): value(norm(x)) {}
 
   auto operator()() -> const T& { return value; }
 
@@ -65,19 +65,19 @@ template<typename M> struct modint {
     return res;
   }
 
-  friend auto operator+(Self& lhs, Self& rhs) -> Self {
+  friend auto operator+(Self const& lhs, Self const& rhs) -> Self {
     return Self(lhs) += rhs;
   }
 
-  friend auto operator-(Self& lhs, Self& rhs) -> Self {
+  friend auto operator-(Self const& lhs, Self const& rhs) -> Self {
     return Self(lhs) -= rhs;
   }
 
-  friend auto operator*(Self& lhs, Self& rhs) -> Self {
+  friend auto operator*(Self const& lhs, Self const& rhs) -> Self {
     return Self(lhs) *= rhs;
   }
 
-  friend auto operator/(Self& lhs, Self& rhs) -> Self {
+  friend auto operator/(Self const& lhs, Self const& rhs) -> Self {
     return Self(lhs) /= rhs;
   }
 

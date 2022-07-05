@@ -9,7 +9,7 @@ where
     let mut g = adj_mat;
     let n = g.len();
     for k in 0..n {
-        for i in 0..n {
+        for i in 0..n   {
             for j in 0..n {
                 g[i][j] = f(
                     g[i][j].clone(),
