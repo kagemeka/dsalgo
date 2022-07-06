@@ -1,6 +1,5 @@
 // TODO:
 
-#include "kagemeka/std/array_compression.cpp"
 #include <algorithm>
 #include <functional>
 #include <numeric>

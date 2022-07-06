@@ -1,19 +1,14 @@
-// TODO:
 #pragma once
-#include "./rust_types.hpp"
+#include <vector>
+using namespace std;
 
-namespace dsalgo::find_divisors_naive {
-  using namespace rust_types;
-
-  template<typename T> auto find_divisors(T n) -> vec<T> {
-    vec<T> d(0);
-    for(T i = 1; i * i <= n; i++) {
-      if(n % i) { continue; }
-      d.push_back(i);
-      if(i * i != n) { d.push_back(n / i); }
-    }
-    sort(d.begin(), d.end());
-    return d;
+template<typename T> auto find_divisors(T n) -> vector<T> {
+  vector<T> d(0);
+  for(T i = 1; i * i <= n; i++) {
+    if(n % i) { continue; }
+    d.push_back(i);
+    if(i * i != n) { d.push_back(n / i); }
   }
-
-} // namespace dsalgo::find_divisors_naive
+  sort(d.begin(), d.end());
+  return d;
+}

@@ -3,16 +3,18 @@
 #include <cassert>
 #include <vector>
 
+using namespace std;
+
 template<typename T> class array_compression {
-  std::vector<T> values;
+  vector<T> values;
 
 public:
   template<typename A> array_compression(A a) {
-    values = unique(std::vector<T>(a.begin(), a.end()));
+    values = unique(vector<T>(a.begin(), a.end()));
   }
 
   auto operator()(T x) -> int {
-    int i = std::lower_bound(values.begin(), values.end(), x) - values.begin();
+    int i = lower_bound(values.begin(), values.end(), x) - values.begin();
     assert(i < (int)values.size() && values[i] == x);
     return i;
   }
@@ -21,7 +23,7 @@ public:
 
   template<typename A> static auto once(A a) -> std::vector<int> {
     auto f = array_compression(a);
-    std::vector<int> indices(a.size());
+    vector<int> indices(a.size());
     for(int i = 0; i < (int)a.size(); ++i) indices[i] = f(a[i]);
     return indices;
   }

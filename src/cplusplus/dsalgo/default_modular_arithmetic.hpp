@@ -21,7 +21,5 @@ public:
     return norm((long)a * b % mod());
   }
 
-  constexpr static auto inv(int a) -> int {
-    return modular_inverse_euclidean(mod(), norm(a));
-  }
+  constexpr static auto inv(int a) -> int { return modinv(mod(), norm(a)); }
 };
