@@ -17,7 +17,6 @@ pub fn euler_totient(mut n: u64) -> u64 {
     }
     c
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -30,10 +29,7 @@ mod tests {
             24, 36, 28, 58, 16, 60, 30, 36, 32, 48, 20, 66, 32, 44,
         ];
         for i in 0..ans.len() {
-            assert_eq!(
-                euler_totient(i as u64 + 1),
-                ans[i]
-            );
+            assert_eq!(euler_totient(i as u64 + 1), ans[i]);
         }
     }
 }

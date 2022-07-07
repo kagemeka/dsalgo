@@ -1,9 +1,7 @@
 use crate::{
-    algebraic_structure::*,
-    binary_function::*,
+    algebraic_structure::*, binary_function::*,
     bitops::len::with_clz as bit_len,
 };
-
 #[derive(Debug)]
 pub struct SegtreeLazy<Sg, Fg, M>
 where
@@ -17,7 +15,6 @@ where
     pub(crate) lz: Vec<Fg::S>, // lazy operators
     _phantom: std::marker::PhantomData<M>,
 }
-
 impl<Sg, Fg, M> SegtreeLazy<Sg, Fg, M>
 where
     Sg: Monoid,
@@ -41,7 +38,6 @@ where
         for i in (1..n).rev() {
             seg.update(i);
         }
-
         seg
     }
 
@@ -51,10 +47,7 @@ where
 
     /// merge child values and replace with it.
     fn update(&mut self, i: usize) {
-        self.d[i] = Sg::op(
-            self.d[i << 1].clone(),
-            self.d[i << 1 | 1].clone(),
-        );
+        self.d[i] = Sg::op(self.d[i << 1].clone(), self.d[i << 1 | 1].clone());
     }
 
     /// apply operator f to node i.
@@ -147,7 +140,6 @@ where
         r += n;
         self.propagate_above(l);
         self.propagate_above(r);
-
         let mut vl = Sg::e();
         let mut vr = Sg::e();
         while l < r {
@@ -222,10 +214,7 @@ where
         loop {
             debug_assert!(i >= 1);
             i >>= i.trailing_zeros();
-            let nv = Sg::op(
-                self.d[i - 1].clone(),
-                v.clone(),
-            );
+            let nv = Sg::op(self.d[i - 1].clone(), v.clone());
             if !is_ok(&nv) {
                 break;
             }
@@ -239,10 +228,7 @@ where
             debug_assert!(i >= 1);
             self.propagate(i - 1);
             i <<= 1;
-            let nv = Sg::op(
-                self.d[i - 1].clone(),
-                v.clone(),
-            );
+            let nv = Sg::op(self.d[i - 1].clone(), v.clone());
             if !is_ok(&nv) {
                 continue;
             }
@@ -286,12 +272,7 @@ where
     }
 
     fn _reduce_recurse(
-        &mut self,
-        l: usize,
-        r: usize,
-        cl: usize,
-        cr: usize,
-        i: usize,
+        &mut self, l: usize, r: usize, cl: usize, cr: usize, i: usize,
     ) -> Sg::S {
         if cr <= l || r <= cl {
             return Sg::e();
@@ -312,23 +293,11 @@ where
         G: Fn(&Sg::S) -> bool,
     {
         assert!(l <= self.size);
-        self._max_right_recurse(
-            is_ok,
-            l,
-            0,
-            self.n(),
-            &mut Sg::e(),
-            1,
-        )
+        self._max_right_recurse(is_ok, l, 0, self.n(), &mut Sg::e(), 1)
     }
 
     fn _max_right_recurse<G>(
-        &mut self,
-        is_ok: &G,
-        l: usize,
-        cl: usize,
-        cr: usize,
-        v: &mut Sg::S,
+        &mut self, is_ok: &G, l: usize, cl: usize, cr: usize, v: &mut Sg::S,
         i: usize,
     ) -> usize
     where
@@ -362,23 +331,11 @@ where
         G: Fn(&Sg::S) -> bool,
     {
         assert!(r <= self.size);
-        self._min_left_recurse(
-            is_ok,
-            r,
-            0,
-            self.n(),
-            &mut Sg::e(),
-            1,
-        )
+        self._min_left_recurse(is_ok, r, 0, self.n(), &mut Sg::e(), 1)
     }
 
     fn _min_left_recurse<G>(
-        &mut self,
-        is_ok: &G,
-        r: usize,
-        cl: usize,
-        cr: usize,
-        v: &mut Sg::S,
+        &mut self, is_ok: &G, r: usize, cl: usize, cr: usize, v: &mut Sg::S,
         i: usize,
     ) -> usize
     where
@@ -404,7 +361,6 @@ where
         self._min_left_recurse(is_ok, r, cl, c, v, i << 1)
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -415,133 +371,57 @@ mod tests {
             pub sum: i32,
             pub len: usize,
         }
-
         struct RARS<T>(std::marker::PhantomData<T>);
-
         impl BinaryOp for RARS<Data> {
             type S = Data;
 
             fn op(a: Self::S, b: Self::S) -> Self::S {
-                Data {
-                    sum: a.sum + b.sum,
-                    len: a.len + b.len,
-                }
+                Data { sum: a.sum + b.sum, len: a.len + b.len }
             }
         }
-
         impl Associative for RARS<Data> {}
-
         impl Identity for RARS<Data> {
             fn e() -> Self::S { Data { sum: 0, len: 0 } }
         }
-
         use crate::{
-            algebraic_structure_impl::GroupApprox,
-            group_theory_id::Additive,
+            algebraic_structure_impl::GroupApprox, group_theory_id::Additive,
         };
-
         struct Map;
-
         impl BinaryFunc for RARS<Map> {
             type Cod = Data;
             type L = i32;
             type R = Data;
 
             fn f(op: Self::L, x: Self::R) -> Self::Cod {
-                Data {
-                    sum: x.sum + op * x.len as i32,
-                    len: x.len,
-                }
+                Data { sum: x.sum + op * x.len as i32, len: x.len }
             }
         }
-
         let a = vec![Data { sum: 0, len: 1 }; 10];
         let mut seg = SegtreeLazy::<
             RARS<Data>,
             GroupApprox<i32, Additive>,
             RARS<Map>,
         >::new(a);
-
-        assert_eq!(
-            seg.reduce(0, 10),
-            Data { sum: 0, len: 10 }
-        );
+        assert_eq!(seg.reduce(0, 10), Data { sum: 0, len: 10 });
         seg.apply(0, 5, 2);
-
-        assert_eq!(
-            seg.reduce(2, 6),
-            Data { sum: 6, len: 4 }
-        );
-
-        assert_eq!(
-            seg.reduce_recurse(2, 6),
-            Data { sum: 6, len: 4 }
-        );
-
-        assert_eq!(
-            seg.reduce(0, 10),
-            Data { sum: 10, len: 10 }
-        );
-        assert_eq!(
-            seg.reduce_recurse(0, 10),
-            Data { sum: 10, len: 10 }
-        );
-        assert_eq!(
-            seg.max_right(&|x: &Data| x.sum <= 3, 4),
-            10
-        );
-        assert_eq!(
-            seg.max_right_recurse(&|x: &Data| x.sum <= 3, 4),
-            10
-        );
-        assert_eq!(
-            seg.max_right(&|x: &Data| x.sum <= 3, 2),
-            3
-        );
-        assert_eq!(
-            seg.max_right_recurse(&|x: &Data| x.sum <= 3, 2),
-            3
-        );
-        assert_eq!(
-            seg.min_left(&|x: &Data| x.sum <= 3, 4),
-            3
-        );
-        assert_eq!(
-            seg.min_left_recurse(&|x: &Data| x.sum <= 3, 4),
-            3
-        );
-        assert_eq!(
-            seg.min_left(&|x: &Data| x.sum <= 3, 10),
-            4
-        );
-        assert_eq!(
-            seg.min_left_recurse(&|x: &Data| x.sum <= 3, 10),
-            4
-        );
-        assert_eq!(
-            seg.min_left(&|x: &Data| x.sum < 0, 10),
-            10
-        );
-        assert_eq!(
-            seg.min_left_recurse(&|x: &Data| x.sum < 0, 10),
-            10
-        );
-
+        assert_eq!(seg.reduce(2, 6), Data { sum: 6, len: 4 });
+        assert_eq!(seg.reduce_recurse(2, 6), Data { sum: 6, len: 4 });
+        assert_eq!(seg.reduce(0, 10), Data { sum: 10, len: 10 });
+        assert_eq!(seg.reduce_recurse(0, 10), Data { sum: 10, len: 10 });
+        assert_eq!(seg.max_right(&|x: &Data| x.sum <= 3, 4), 10);
+        assert_eq!(seg.max_right_recurse(&|x: &Data| x.sum <= 3, 4), 10);
+        assert_eq!(seg.max_right(&|x: &Data| x.sum <= 3, 2), 3);
+        assert_eq!(seg.max_right_recurse(&|x: &Data| x.sum <= 3, 2), 3);
+        assert_eq!(seg.min_left(&|x: &Data| x.sum <= 3, 4), 3);
+        assert_eq!(seg.min_left_recurse(&|x: &Data| x.sum <= 3, 4), 3);
+        assert_eq!(seg.min_left(&|x: &Data| x.sum <= 3, 10), 4);
+        assert_eq!(seg.min_left_recurse(&|x: &Data| x.sum <= 3, 10), 4);
+        assert_eq!(seg.min_left(&|x: &Data| x.sum < 0, 10), 10);
+        assert_eq!(seg.min_left_recurse(&|x: &Data| x.sum < 0, 10), 10);
         seg.set(2, Data { sum: -1, len: 1 });
-
-        assert_eq!(
-            seg.reduce(0, 10),
-            Data { sum: 7, len: 10 }
-        );
-        assert_eq!(
-            seg.reduce_recurse(0, 10),
-            Data { sum: 7, len: 10 }
-        );
-
+        assert_eq!(seg.reduce(0, 10), Data { sum: 7, len: 10 });
+        assert_eq!(seg.reduce_recurse(0, 10), Data { sum: 7, len: 10 });
         seg.apply_recurse(1, 7, 3);
-        assert_eq!(
-            seg.reduce(0, 10),
-            Data { sum: 25, len: 10 }
-        );
+        assert_eq!(seg.reduce(0, 10), Data { sum: 25, len: 10 });
     }
 }

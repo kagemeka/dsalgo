@@ -5,17 +5,14 @@ pub trait GCD {
     type T;
     fn gcd(_: Self::T, _: Self::T) -> Self::T;
 }
-
 pub mod int {
     //! greatest common divisor on integer gcd(a, b)
     //! a, b \in \Z.
     //! 0 := identity element and empty product here.
     //! gcd(0, 0) := 0
     //! \prod_{\emptyset} := 0
-
     pub trait Base: Default + PartialEq + Copy {}
     impl<T> Base for T where T: Default + PartialEq + Copy {}
-
     pub fn euclid<T>(mut a: T, mut b: T) -> T
     where
         T: Base + PartialOrd + std::ops::SubAssign,
@@ -32,7 +29,6 @@ pub mod int {
             a -= b;
         }
     }
-
     pub fn euclidean<T>(mut a: T, mut b: T) -> T
     where
         T: Base + std::ops::RemAssign,
@@ -44,14 +40,12 @@ pub mod int {
         }
         a
     }
-
     pub fn euclidean_recurse<T>(a: T, b: T) -> T
     where
         T: Base + std::ops::Rem<Output = T>,
     {
         if b == T::default() { a } else { euclidean_recurse(b, a % b) }
     }
-
     pub fn euclidean_signed<T>(a: T, b: T) -> T
     where
         T: Base + std::ops::RemAssign + PartialOrd + std::ops::Neg<Output = T>,
@@ -62,34 +56,25 @@ pub mod int {
         }
         g
     }
-
     pub fn gcd_reduce<T, I>(iter: I) -> T
     where
         I: Iterator<Item = T>,
         T: Base + std::ops::RemAssign + PartialOrd,
     {
-        iter.fold(T::default(), |a, b| {
-            euclidean(a, b)
-        })
+        iter.fold(T::default(), |a, b| euclidean(a, b))
     }
-
     // TODO: not implemented
     pub fn by_prime_factorize() {}
-
     // TODO: not implemented
     pub fn lehmer() {}
-
     // TODO: not implemented
     pub fn binary_gcd() {}
-
     // TODO: not implemented
     /// with Thomae's Function
     pub fn thomae() {}
-
     #[cfg(test)]
     mod tests {
         use super::*;
-
         const CASES: &[(&[i32], i32)] = &[
             (&[], 0),
             (&[0], 0),
@@ -103,7 +88,6 @@ pub mod int {
             (&[10, 5], 5),
             (&[0, 10], 10),
         ];
-
         fn test_2<F>(gcd: &F, a: i32, b: i32, expected: i32)
         where
             F: Fn(i32, i32) -> i32,
@@ -114,7 +98,6 @@ pub mod int {
             }
             assert_eq!(g, expected);
         }
-
         #[test]
         fn test_euclidean() {
             for &(v, ans) in CASES {
@@ -124,29 +107,19 @@ pub mod int {
                 test_2(&euclidean, v[0], v[1], ans);
             }
         }
-
         #[test]
         fn test_euclidean_recurse() {
             for &(v, ans) in CASES {
                 if v.len() != 2 {
                     continue;
                 }
-                test_2(
-                    &euclidean_recurse,
-                    v[0],
-                    v[1],
-                    ans,
-                );
+                test_2(&euclidean_recurse, v[0], v[1], ans);
             }
         }
-
         #[test]
         fn test_reduce() {
             for &(values, ans) in CASES {
-                assert_eq!(
-                    gcd_reduce(values.iter().cloned()).abs(),
-                    ans
-                );
+                assert_eq!(gcd_reduce(values.iter().cloned()).abs(), ans);
             }
         }
     }

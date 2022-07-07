@@ -1,5 +1,4 @@
 use crate::find_divisors_naive::find_divisors_naive;
-
 /// \lcm(a_0, ...a_{n-1}) = `lcm`
 pub fn gcds_for_lcm(n: usize, lcm: u64) -> Vec<u64> {
     match n {
@@ -16,7 +15,6 @@ pub fn gcds_for_lcm(n: usize, lcm: u64) -> Vec<u64> {
         },
     }
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

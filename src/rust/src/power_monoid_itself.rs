@@ -1,5 +1,4 @@
 use crate::{algebraic_structure::itself::*, power_monoid::pow_monoid};
-
 pub trait PowMonoid<I>: Monoid<I>
 where
     Self: Clone,
@@ -8,5 +7,4 @@ where
         pow_monoid(&Self::op, &Self::e, self, exp)
     }
 }
-
 impl<S: Monoid<I> + Clone, I> PowMonoid<I> for S {}

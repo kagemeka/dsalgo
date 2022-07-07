@@ -1,28 +1,15 @@
 use crate::power::pow_monoid;
-
 /// pow for u32
 /// why not only u64?
 /// because it's expensive to cast as u128.
 pub fn pow(m: u32, base: u64, exp: u64) -> u32 {
     let modulus = m as u64;
-    pow_monoid(
-        &|x, y| x * y % modulus,
-        &|| 1,
-        base % modulus,
-        exp,
-    ) as u32
+    pow_monoid(&|x, y| x * y % modulus, &|| 1, base % modulus, exp) as u32
 }
-
 pub fn pow_64(m: u64, base: u128, exp: u64) -> u64 {
     let modulus = m as u128;
-    pow_monoid(
-        &|x, y| x * y % modulus,
-        &|| 1,
-        base % modulus,
-        exp,
-    ) as u64
+    pow_monoid(&|x, y| x * y % modulus, &|| 1, base % modulus, exp) as u64
 }
-
 /// avoid overflow on u128.
 /// pow for addition.
 /// under u64 -> it's enough to cast as u128.
@@ -37,35 +24,27 @@ pub fn mul_doubling(mut a: u128, mut b: u128, m: u128) -> u128 {
     }
     res
 }
-
 // TODO:
 pub fn primitive_root() {}
-
 pub mod modulus {
     pub trait StaticGet {
         type T;
         fn get() -> Self::T;
     }
-
     pub trait StaticSet {
         type T;
         fn set(value: Self::T);
     }
-
     pub trait DynGet {
         type T;
         fn get(&self) -> Self::T;
     }
-
     pub trait DynSet {
         type T;
         fn set(&mut self, value: Self::T);
     }
-
     pub trait Id {}
-
     impl<T> Id for T {}
-
     macro_rules! define_static_mod {
         (
             $name:ident,
@@ -78,7 +57,6 @@ pub mod modulus {
                 Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash,
             )]
             pub struct $name<Id>(std::marker::PhantomData<Id>);
-
             impl<Id> $name<Id> {
                 fn cell() -> &'static $atomic_uint {
                     // VALUE type needs Sync + 'static
@@ -86,20 +64,17 @@ pub mod modulus {
                     // std::sync::Mutex is not 'static
                     // only atomic types can be.
                     // or we can use external crate like `lazy_static`.
-
                     // why not defining as associated const variable?
                     // -> const variables are immutabe in any situation.
                     static CELL: $atomic_uint = <$atomic_uint>::new(0);
                     &CELL
                 }
             }
-
             impl<Id> StaticGet for $name<Id> {
                 type T = $uint;
 
                 fn get() -> Self::T { Self::cell().load($atomic_ordering_load) }
             }
-
             impl<Id> StaticSet for $name<Id> {
                 type T = $uint;
 
@@ -119,11 +94,9 @@ pub mod modulus {
             );
         };
     }
-
     use std::sync::atomic::{AtomicU32, AtomicU64};
     define_static_mod!(StaticMod32, u32, AtomicU32);
     define_static_mod!(StaticMod64, u64, AtomicU64);
-
     // TODO: change later. not compile on AtCoder.
     // macro_rules! define_const_mod {
     //     ($name:ident, $uint:ty) => {
@@ -131,18 +104,14 @@ pub mod modulus {
     //             Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash,
     //         )]
     //         pub struct $name<const MOD: $uint>;
-
     //         impl<const MOD: $uint> StaticGet for $name<MOD> {
     //             type T = $uint;
-
     //             fn get() -> Self::T { MOD }
     //         }
     //     };
     // }
-
     // define_const_mod!(ConstMod64, u64);
     // define_const_mod!(ConstMod32, u32);
-
     /// old version for online judges.
     macro_rules! define_const_mod_old {
         ($name:ident, $uint:ty, $value:expr) => {
@@ -150,7 +119,6 @@ pub mod modulus {
                 Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash,
             )]
             pub struct $name;
-
             impl StaticGet for $name {
                 type T = $uint;
 
@@ -158,55 +126,38 @@ pub mod modulus {
             }
         };
     }
-
-    define_const_mod_old!(
-        Mod998_244_353,
-        u32,
-        998_244_353
-    );
-    define_const_mod_old!(
-        Mod1_000_000_007,
-        u32,
-        1_000_000_007
-    );
-
+    define_const_mod_old!(Mod998_244_353, u32, 998_244_353);
+    define_const_mod_old!(Mod1_000_000_007, u32, 1_000_000_007);
     /// T is gonna be u64 or u32
     #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct DynMod<T>(T);
-
     impl<T> DynMod<T> {
         pub fn new(value: T) -> Self { Self(value) }
     }
-
     impl<T: Copy> DynGet for DynMod<T> {
         type T = T;
 
         fn get(&self) -> Self::T { self.0 }
     }
-
     impl<T> DynSet for DynMod<T> {
         type T = T;
 
         fn set(&mut self, value: Self::T) { self.0 = value }
     }
-
     #[cfg(test)]
     mod tests {
         use super::*;
         // TODO: change later. not compile on AtCoder.
-
         // #[test]
         // fn test_const_mod() {
         //     type Mod = ConstMod32<1_000_000_007>;
         //     assert_eq!(Mod::get(), 1_000_000_007);
         // }
-
         #[test]
         fn test_const_mod_old() {
             type Mod = Mod1_000_000_007;
             assert_eq!(Mod::get(), 1_000_000_007);
         }
-
         #[test]
         fn test_static_mod() {
             struct Id;
@@ -219,7 +170,6 @@ pub mod modulus {
         #[test]
         fn test_dyn_mod() {
             type Mod = DynMod<u32>;
-
             let mut m = Mod::new(998_244_353);
             assert_eq!(m.get(), 998_244_353);
             m.set(1_000_000_007);
@@ -227,16 +177,12 @@ pub mod modulus {
         }
     }
 }
-
 pub mod arithmetic {
     //! reference
     //! https://en.wikipedia.org/wiki/Modular_arithmetic#Properties
-
     pub trait Static {
         type T;
-
         fn modulus() -> Self::T;
-
         fn add(lhs: Self::T, rhs: Self::T) -> Self::T;
         fn neg(x: Self::T) -> Self::T;
         fn sub(lhs: Self::T, rhs: Self::T) -> Self::T {
@@ -248,11 +194,9 @@ pub mod arithmetic {
             Self::mul(lhs, Self::inv(rhs))
         }
     }
-
     pub trait Dyn {
         type T;
         fn modulus(&self) -> Self::T;
-
         fn add(&self, lhs: Self::T, rhs: Self::T) -> Self::T;
         fn neg(&self, x: Self::T) -> Self::T;
         fn sub(&self, lhs: Self::T, rhs: Self::T) -> Self::T {
@@ -264,9 +208,7 @@ pub mod arithmetic {
             self.mul(lhs, self.inv(rhs))
         }
     }
-
     use crate::modular::{inv::extgcd as invert, modulus::StaticGet};
-
     /// why `default`?
     /// because there exists other modular arithmetic implementations.
     /// e.g. Montgomery Multiplication, or Burrett Reduction.
@@ -276,7 +218,6 @@ pub mod arithmetic {
     pub struct DefaultStatic<T, M: StaticGet<T = T>>(
         std::marker::PhantomData<(T, M)>,
     );
-
     macro_rules! impl_default_static {
         ($uint:ty, $mul_cast_uint:ty) => {
             impl<M: StaticGet<T = $uint>> Static for DefaultStatic<$uint, M> {
@@ -313,52 +254,40 @@ pub mod arithmetic {
             }
         };
     }
-
     impl_default_static!(u32, u64);
     impl_default_static!(u64, u128);
-
     // TODO: change later. still not compile on AtCoder.
     // use crate::modular::modulus::ConstMod32;
-
     // #[allow(dead_code)]
     // pub type Modular1_000_000_007 =
     //     DefaultStatic<u32, ConstMod32<1_000_000_007>>;
-
     // #[allow(dead_code)]
     // pub type Modular998_244_353 =
     //     DefaultStatic<u32, ConstMod32<998_244_353>>;
-
     use crate::modular::modulus::{Mod1_000_000_007, Mod998_244_353};
-
     #[allow(dead_code)]
     pub type Modular1_000_000_007 = DefaultStatic<u32, Mod1_000_000_007>;
-
     #[allow(dead_code)]
     pub type Modular998_244_353 = DefaultStatic<u32, Mod998_244_353>;
-
     #[cfg(test)]
     mod tests {
         use super::*;
         #[test]
         fn test() {
             use crate::modular::int::Modint;
-
             type Mint = Modint<u32, Modular1_000_000_007>;
             let a = Mint::from(1_000_000_008);
             assert_eq!(a.value(), 1);
         }
     }
 }
-
 pub mod inv {
     //! well-known modular inverse algorithms.
-
     /// inverse by Fermat's Little Theorem.
     /// for prime modulus.
     pub fn fermat() {
         // TODO:
     }
-
     /// inverse by Euler's Theorem.
     pub fn euler() {
         // TODO:
@@ -367,9 +296,7 @@ pub mod inv {
         // or compute inverse with totient function.
         // related: carmichael_function.rs
     }
-
     use crate::ext_euclid::mod_gcd_inv;
-
     /// inverse by Extended Euclidean Algorithm.
     pub fn extgcd(modulus: u64, element: u64) -> Result<u64, &'static str> {
         let (gcd, inv) = mod_gcd_inv(modulus, element);
@@ -380,10 +307,8 @@ pub mod inv {
         }
     }
 }
-
 pub mod int {
     use crate::modular::arithmetic::Static as Arithmetic;
-
     /// static modular element.
     /// modular element is only static.
     /// because all instances should be in the same arithmetic context.
@@ -397,7 +322,6 @@ pub mod int {
     {
         value: M::T,
     }
-
     impl<T, M> std::fmt::Display for Modint<T, M>
     where
         M: Arithmetic<T = T>,
@@ -407,7 +331,6 @@ pub mod int {
             write!(f, "{}", self.value)
         }
     }
-
     impl<M: Arithmetic<T = u64>> Modint<u64, M> {
         pub fn new(mut v: u64) -> Self {
             if v >= M::modulus() {
@@ -416,7 +339,6 @@ pub mod int {
             Modint { value: v }
         }
     }
-
     impl<M: Arithmetic<T = u32>> Modint<u32, M> {
         pub fn new(mut v: u32) -> Self {
             if v >= M::modulus() {
@@ -425,7 +347,6 @@ pub mod int {
             Modint { value: v }
         }
     }
-
     impl<T, M> Modint<T, M>
     where
         M: Arithmetic<T = T>,
@@ -435,10 +356,8 @@ pub mod int {
         pub fn value(&self) -> M::T { self.value }
 
         // pub fn new(value: M::T) -> Self { Self { value } }
-
         pub fn modulus() -> M::T { M::modulus() }
     }
-
     impl<T, M> std::ops::Add for Modint<T, M>
     where
         M: Arithmetic<T = T>,
@@ -451,7 +370,6 @@ pub mod int {
             self
         }
     }
-
     impl<T, M> std::ops::AddAssign for Modint<T, M>
     where
         M: Arithmetic<T = T> + Copy,
@@ -459,7 +377,6 @@ pub mod int {
     {
         fn add_assign(&mut self, rhs: Self) { *self = *self + rhs; }
     }
-
     impl<T, M> std::ops::Sub for Modint<T, M>
     where
         M: Arithmetic<T = T>,
@@ -472,7 +389,6 @@ pub mod int {
             self
         }
     }
-
     impl<T, M> std::ops::SubAssign for Modint<T, M>
     where
         M: Arithmetic<T = T> + Copy,
@@ -480,7 +396,6 @@ pub mod int {
     {
         fn sub_assign(&mut self, rhs: Self) { *self = *self - rhs; }
     }
-
     impl<T, M> std::ops::Neg for Modint<T, M>
     where
         M: Arithmetic<T = T>,
@@ -493,7 +408,6 @@ pub mod int {
             self
         }
     }
-
     impl<T, M> std::ops::Mul for Modint<T, M>
     where
         M: Arithmetic<T = T>,
@@ -506,7 +420,6 @@ pub mod int {
             self
         }
     }
-
     impl<T, M> std::ops::MulAssign for Modint<T, M>
     where
         M: Arithmetic<T = T> + Copy,
@@ -514,7 +427,6 @@ pub mod int {
     {
         fn mul_assign(&mut self, rhs: Self) { *self = *self * rhs; }
     }
-
     impl<T, M> std::ops::Div for Modint<T, M>
     where
         M: Arithmetic<T = T>,
@@ -527,7 +439,6 @@ pub mod int {
             self
         }
     }
-
     impl<T, M> std::ops::DivAssign for Modint<T, M>
     where
         M: Arithmetic<T = T> + Copy,
@@ -535,7 +446,6 @@ pub mod int {
     {
         fn div_assign(&mut self, rhs: Self) { *self = *self / rhs; }
     }
-
     impl<T, M> Modint<T, M>
     where
         M: Arithmetic<T = T> + Copy,
@@ -546,21 +456,18 @@ pub mod int {
             self
         }
     }
-
     impl<M> From<i32> for Modint<u32, M>
     where
         M: Arithmetic<T = u32>,
     {
         fn from(value: i32) -> Self { Self::from(value as i64) }
     }
-
     impl<M> From<i32> for Modint<u64, M>
     where
         M: Arithmetic<T = u64>,
     {
         fn from(value: i32) -> Self { Self::from(value as i64) }
     }
-
     impl<M> From<i64> for Modint<u32, M>
     where
         M: Arithmetic<T = u32>,
@@ -576,7 +483,6 @@ pub mod int {
             Self::new(value as u32)
         }
     }
-
     impl<M> From<i64> for Modint<u64, M>
     where
         M: Arithmetic<T = u64>,
@@ -606,7 +512,6 @@ pub mod int {
             Self::new(value)
         }
     }
-
     impl<M> From<u64> for Modint<u32, M>
     where
         M: Arithmetic<T = u32>,
@@ -625,16 +530,13 @@ pub mod int {
     {
         fn from(value: usize) -> Self { Self::from(value as u64) }
     }
-
     impl<M> From<usize> for Modint<u64, M>
     where
         M: Arithmetic<T = u64>,
     {
         fn from(value: usize) -> Self { Self::from(value as u64) }
     }
-
     use crate::power_monoid_itself::PowMonoid;
-
     impl<M> Modint<u64, M>
     where
         M: Arithmetic<T = u64>,
@@ -642,7 +544,6 @@ pub mod int {
     {
         pub fn pow(self, exponent: u64) -> Self { self.pow_monoid(exponent) }
     }
-
     impl<M> Modint<u32, M>
     where
         M: Arithmetic<T = u32>,
@@ -650,9 +551,7 @@ pub mod int {
     {
         pub fn pow(self, exponent: u64) -> Self { self.pow_monoid(exponent) }
     }
-
     use crate::{binary_function::itself::*, group_theory_id::*, ops::MulInv};
-
     impl<T, M> BinaryOp<Multiplicative> for Modint<T, M>
     where
         M: Arithmetic<T = T>,
@@ -660,26 +559,22 @@ pub mod int {
     {
         fn op(lhs: Self, rhs: Self) -> Self { lhs * rhs }
     }
-
     impl<M> Identity<Multiplicative> for Modint<u64, M>
     where
         M: Arithmetic<T = u64>,
     {
         fn e() -> Self { 1.into() }
     }
-
     impl<M> Identity<Multiplicative> for Modint<u32, M>
     where
         M: Arithmetic<T = u32>,
     {
         fn e() -> Self { 1.into() }
     }
-
     impl<T, M> Associative<Multiplicative> for Modint<T, M> where
         M: Arithmetic<T = T>
     {
     }
-
     impl<M> MulInv for Modint<u64, M>
     where
         M: Arithmetic<T = u64> + Copy,
@@ -688,7 +583,6 @@ pub mod int {
 
         fn mul_inv(self) -> Self::Output { self.inv() }
     }
-
     impl<M> MulInv for Modint<u32, M>
     where
         M: Arithmetic<T = u32> + Copy,
@@ -697,7 +591,6 @@ pub mod int {
 
         fn mul_inv(self) -> Self::Output { self.inv() }
     }
-
     // TODO:
     #[cfg(test)]
     mod tests {
@@ -705,7 +598,6 @@ pub mod int {
         fn test() {}
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -713,9 +605,6 @@ mod tests {
     fn test_mul_doubling_128() {
         let a = 1234567890123456789u128;
         let m = 1u128 << 100;
-        assert_eq!(
-            mul_doubling(a, a, m),
-            a * a % m,
-        );
+        assert_eq!(mul_doubling(a, a, m), a * a % m,);
     }
 }

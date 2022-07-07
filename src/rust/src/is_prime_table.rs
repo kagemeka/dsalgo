@@ -1,5 +1,4 @@
 use crate::psieve::erat;
-
 /// is prime table
 pub fn is_p_t(sz: usize) -> Vec<bool> {
     let mut is_prime = vec![false; sz];
@@ -8,20 +7,15 @@ pub fn is_p_t(sz: usize) -> Vec<bool> {
     }
     is_prime
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn test() {
         let is_prime = is_p_t(20);
-        assert_eq!(
-            is_prime,
-            vec![
-                false, false, true, true, false, true, false, true, false,
-                false, false, true, false, true, false, false, false, true,
-                false, true
-            ],
-        );
+        assert_eq!(is_prime, vec![
+            false, false, true, true, false, true, false, true, false, false,
+            false, true, false, true, false, false, false, true, false, true
+        ],);
     }
 }

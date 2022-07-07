@@ -11,11 +11,9 @@ macro_rules! collection {
         Iterator::collect(IntoIterator::into_iter([$($v,)*]))
     }};
 }
-
 #[cfg(test)]
 mod tests {
     use std::collections::BTreeMap;
-
     #[test]
     fn test() {
         let a: BTreeMap<String, usize> =

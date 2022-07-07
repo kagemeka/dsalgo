@@ -1,5 +1,4 @@
 use crate::find_root::isqrt;
-
 /// Compute \pi(n)
 /// O(N^{3/4}/log{N})
 /// reference
@@ -102,10 +101,8 @@ pub fn prime_pi_fast_optimized(n: u64) -> u64 {
         }
         large[0] += t - (e - k) * (pi + k - 1);
     }
-
     large[0] as u64 + 1
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

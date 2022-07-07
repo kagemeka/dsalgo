@@ -5,7 +5,6 @@ use crate::{
     static_matrix::Matrix,
     static_matrix_trait::{ElementType, Shape},
 };
-
 /// T should be semiring.
 impl<P> Mul for Matrix<P>
 where

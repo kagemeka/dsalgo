@@ -1,5 +1,4 @@
 use crate::negative_cycle::NegativeCycleError;
-
 pub fn floyd_warshall(
     weight_matrix: Vec<Vec<Option<i64>>>,
 ) -> Result<Vec<Vec<Option<i64>>>, NegativeCycleError> {
@@ -30,11 +29,9 @@ pub fn floyd_warshall(
         Ok(g)
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
-
     #[test]
     fn test_positive() {
         let g = vec![
@@ -46,19 +43,13 @@ mod tests {
         assert_eq!(
             floyd_warshall(g),
             Ok(vec![
-                vec![
-                    Some(0),
-                    Some(1),
-                    Some(3),
-                    Some(4)
-                ],
+                vec![Some(0), Some(1), Some(3), Some(4)],
                 vec![None, Some(0), Some(2), Some(3)],
                 vec![None, None, Some(0), Some(1)],
                 vec![None, None, Some(7), Some(0)],
             ]),
         )
     }
-
     #[test]
     fn test_negative() {
         let g = vec![
@@ -70,12 +61,7 @@ mod tests {
         assert_eq!(
             floyd_warshall(g),
             Ok(vec![
-                vec![
-                    Some(0),
-                    Some(1),
-                    Some(-5),
-                    Some(-4)
-                ],
+                vec![Some(0), Some(1), Some(-5), Some(-4)],
                 vec![None, Some(0), Some(2), Some(3)],
                 vec![None, None, Some(0), Some(1)],
                 vec![None, None, Some(7), Some(0)],
@@ -90,9 +76,6 @@ mod tests {
             vec![None, None, None, Some(1)],
             vec![None, None, Some(-7), None],
         ];
-        assert_eq!(
-            floyd_warshall(g),
-            Err(NegativeCycleError::new()),
-        )
+        assert_eq!(floyd_warshall(g), Err(NegativeCycleError::new()),)
     }
 }

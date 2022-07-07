@@ -3,7 +3,6 @@ pub struct Iter<T, F, I> {
     f: F,
     cur: Option<T>,
 }
-
 impl<T, F, I> Iterator for Iter<T, F, I>
 where
     T: Clone,
@@ -25,7 +24,6 @@ where
         Some(cur)
     }
 }
-
 pub fn accumulate<T, F, I>(f: F, mut iter: I) -> Iter<T, F, I>
 where
     T: Clone,
@@ -35,17 +33,13 @@ where
     let cur = iter.next();
     Iter { iter, f, cur }
 }
-
 // TODO
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn test() {
-        let mut iter = accumulate(
-            |a, b| a + b,
-            (0..4).into_iter(),
-        );
+        let mut iter = accumulate(|a, b| a + b, (0..4).into_iter());
         assert_eq!(iter.next(), Some(0));
         assert_eq!(iter.next(), Some(1));
         assert_eq!(iter.next(), Some(3));

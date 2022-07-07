@@ -1,13 +1,11 @@
 use std::iter::FromIterator;
 
 use crate::algebraic_structure::*;
-
 /// Segment Tree
 pub struct Segtree<M: Monoid> {
     pub(crate) size: usize,
     pub(crate) data: Vec<M::S>,
 }
-
 impl<M> std::iter::FromIterator<M::S> for Segtree<M>
 where
     M: Monoid,
@@ -27,13 +25,11 @@ where
         seg
     }
 }
-
 impl<M: Monoid> Segtree<M> {
     pub fn size(&self) -> usize { self.size }
 
     pub(crate) fn n(&self) -> usize { self.data.len() >> 1 }
 }
-
 impl<M> Segtree<M>
 where
     M: Monoid,
@@ -47,10 +43,8 @@ where
     }
 
     fn update(&mut self, i: usize) {
-        self.data[i] = M::op(
-            self.data[i << 1].clone(),
-            self.data[i << 1 | 1].clone(),
-        );
+        self.data[i] =
+            M::op(self.data[i << 1].clone(), self.data[i << 1 | 1].clone());
     }
 
     pub fn set(&mut self, mut i: usize, x: M::S) {
@@ -93,7 +87,6 @@ where
         M::op(vl, vr)
     }
 }
-
 impl<M> Segtree<M>
 where
     M: Monoid,
@@ -105,12 +98,7 @@ where
     }
 
     fn _reduce_recurse(
-        &self,
-        l: usize,
-        r: usize,
-        cur_l: usize,
-        cur_r: usize,
-        i: usize,
+        &self, l: usize, r: usize, cur_l: usize, cur_r: usize, i: usize,
     ) -> M::S {
         if cur_r <= l || r <= cur_l {
             return M::e();
@@ -125,7 +113,6 @@ where
         )
     }
 }
-
 /// indexing
 impl<M> std::ops::Index<usize> for Segtree<M>
 where
@@ -138,7 +125,6 @@ where
         &self.data[i + self.n()]
     }
 }
-
 impl<M> From<&[M::S]> for Segtree<M>
 where
     M: Monoid,
@@ -146,7 +132,6 @@ where
 {
     fn from(slice: &[M::S]) -> Self { Self::from_iter(slice.iter().cloned()) }
 }
-
 impl<M> Segtree<M>
 where
     M: Monoid,
@@ -204,10 +189,7 @@ where
         debug_assert_ne!(i, 0);
         loop {
             i >>= i.trailing_zeros(); // upstream
-            let nv = M::op(
-                self.data[i - 1].clone(),
-                v.clone(),
-            );
+            let nv = M::op(self.data[i - 1].clone(), v.clone());
             if !is_ok(&nv) {
                 break;
             }
@@ -219,10 +201,7 @@ where
         }
         while i < n {
             i <<= 1;
-            let nv = M::op(
-                self.data[i - 1].clone(),
-                v.clone(),
-            );
+            let nv = M::op(self.data[i - 1].clone(), v.clone());
             if !is_ok(&nv) {
                 continue;
             }
@@ -232,7 +211,6 @@ where
         i - n
     }
 }
-
 impl<M> Segtree<M>
 where
     M: Monoid,
@@ -243,26 +221,14 @@ where
         F: Fn(&M::S) -> bool,
     {
         assert!(l <= self.size);
-        self._max_right_recurse(
-            is_ok,
-            l,
-            0,
-            self.n(),
-            &mut M::e(),
-            1,
-        )
+        self._max_right_recurse(is_ok, l, 0, self.n(), &mut M::e(), 1)
     }
 
     /// find max right satisfying current_left <= right <= current_right.
     /// if current_right <= left, return left
     /// if current_left >= self.size, return self.size
     fn _max_right_recurse<F>(
-        &self,
-        is_ok: &F,
-        l: usize,
-        cur_l: usize,
-        cur_r: usize,
-        v: &mut M::S,
+        &self, is_ok: &F, l: usize, cur_l: usize, cur_r: usize, v: &mut M::S,
         i: usize,
     ) -> usize
     where
@@ -287,14 +253,7 @@ where
         if res < c || res == self.size {
             return res;
         }
-        self._max_right_recurse(
-            is_ok,
-            l,
-            c,
-            cur_r,
-            v,
-            i << 1 | 1,
-        )
+        self._max_right_recurse(is_ok, l, c, cur_r, v, i << 1 | 1)
     }
 
     pub fn min_left_recurse<F>(&self, is_ok: &F, r: usize) -> usize
@@ -302,23 +261,11 @@ where
         F: Fn(&M::S) -> bool,
     {
         assert!(r <= self.size);
-        self._min_left_recurse(
-            is_ok,
-            r,
-            0,
-            self.n(),
-            &mut M::e(),
-            1,
-        )
+        self._min_left_recurse(is_ok, r, 0, self.n(), &mut M::e(), 1)
     }
 
     fn _min_left_recurse<F>(
-        &self,
-        is_ok: &F,
-        r: usize,
-        cur_l: usize,
-        cur_r: usize,
-        v: &mut M::S,
+        &self, is_ok: &F, r: usize, cur_l: usize, cur_r: usize, v: &mut M::S,
         i: usize,
     ) -> usize
     where
@@ -336,23 +283,14 @@ where
             return cur_r;
         }
         let c = (cur_l + cur_r) >> 1;
-        let res = self._min_left_recurse(
-            is_ok,
-            r,
-            c,
-            cur_r,
-            v,
-            i << 1 | 1,
-        );
+        let res = self._min_left_recurse(is_ok, r, c, cur_r, v, i << 1 | 1);
         if res > c {
             return res;
         }
         self._min_left_recurse(is_ok, r, cur_l, c, v, i << 1)
     }
 }
-
 use crate::{algebraic_structure_impl::*, query::RangeGetQuery};
-
 impl<S, I> RangeGetQuery<I> for Segtree<GroupApprox<S, I>>
 where
     GroupApprox<S, I>: Monoid<S = S>,
@@ -362,13 +300,11 @@ where
 
     fn get_range(&mut self, l: usize, r: usize) -> Self::T { self.reduce(l, r) }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::group_theory_id::Additive;
     type Seg = Segtree<GroupApprox<usize, Additive>>;
-
     #[test]
     fn test_basic() {
         let mut seg = Seg::new(10, || 0);
@@ -378,14 +314,12 @@ mod tests {
         seg.set(5, 10);
         assert_eq!(seg.reduce(0, 10), 10);
     }
-
     #[test]
     fn test_indexing() {
         let mut seg = Seg::new(10, || 0);
         seg.set(5, 10);
         assert_eq!(seg[5], 10);
     }
-
     #[test]
     fn test_reduce_recurse() {
         let mut seg = Seg::new(10, || 0);
@@ -395,7 +329,6 @@ mod tests {
         seg.set(5, 10);
         assert_eq!(seg.reduce_recurse(0, 10), 10);
     }
-
     #[test]
     fn test_binary_search() {
         // use crate::monoid::Monoid;
@@ -407,46 +340,22 @@ mod tests {
         assert_eq!(seg.max_right(is_ok, 10), 10);
         assert_eq!(seg.max_right(is_ok, 5), 5);
         assert_eq!(seg.max_right(is_ok, 6), 10);
-
         assert_eq!(seg.min_left(is_ok, 10), 6);
         assert_eq!(seg.min_left(is_ok, 5), 0);
         assert_eq!(seg.min_left(is_ok, 6), 6);
     }
-
     #[test]
     fn test_binary_search_recurse() {
         let mut seg = Seg::new(10, || 0);
         assert_eq!(seg.reduce(0, 10), 0);
         seg.set(5, 10);
         let is_ok = &|sum: &usize| *sum < 10;
-        assert_eq!(
-            seg.max_right_recurse(is_ok, 0),
-            5
-        );
-        assert_eq!(
-            seg.max_right_recurse(is_ok, 10),
-            10
-        );
-        assert_eq!(
-            seg.max_right_recurse(is_ok, 5),
-            5
-        );
-        assert_eq!(
-            seg.max_right_recurse(is_ok, 6),
-            10
-        );
-
-        assert_eq!(
-            seg.min_left_recurse(is_ok, 10),
-            6
-        );
-        assert_eq!(
-            seg.min_left_recurse(is_ok, 5),
-            0
-        );
-        assert_eq!(
-            seg.min_left_recurse(is_ok, 6),
-            6
-        );
+        assert_eq!(seg.max_right_recurse(is_ok, 0), 5);
+        assert_eq!(seg.max_right_recurse(is_ok, 10), 10);
+        assert_eq!(seg.max_right_recurse(is_ok, 5), 5);
+        assert_eq!(seg.max_right_recurse(is_ok, 6), 10);
+        assert_eq!(seg.min_left_recurse(is_ok, 10), 6);
+        assert_eq!(seg.min_left_recurse(is_ok, 5), 0);
+        assert_eq!(seg.min_left_recurse(is_ok, 6), 6);
     }
 }

@@ -2,7 +2,6 @@
 pub struct AdjacencyMatrix<T> {
     pub(crate) data: Vec<Vec<T>>,
 }
-
 impl<T> AdjacencyMatrix<T> {
     pub fn size(&self) -> usize { self.data.len() }
 
@@ -30,7 +29,6 @@ impl<T> AdjacencyMatrix<T> {
         }
     }
 }
-
 impl<T> std::ops::Index<(usize, usize)> for AdjacencyMatrix<T> {
     type Output = T;
 
@@ -38,13 +36,11 @@ impl<T> std::ops::Index<(usize, usize)> for AdjacencyMatrix<T> {
         &self.data[u][v]
     }
 }
-
 impl<T> std::ops::IndexMut<(usize, usize)> for AdjacencyMatrix<T> {
     fn index_mut(&mut self, (u, v): (usize, usize)) -> &mut Self::Output {
         &mut self.data[u][v]
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -2,7 +2,6 @@ use crate::{
     fermat_factorization_method::fermat_factorization_method,
     make_sparse_histogram::make_sparse_histogram,
 };
-
 fn prime_factorize_flat_fermat(mut n: u64) -> Vec<u64> {
     assert!(n > 0);
     let mut res = vec![];
@@ -23,14 +22,12 @@ fn prime_factorize_flat_fermat(mut n: u64) -> Vec<u64> {
     }
     res
 }
-
 pub fn prime_factorize_fermat(n: u64) -> Vec<(u64, u8)> {
     make_sparse_histogram(prime_factorize_flat_fermat(n))
         .into_iter()
         .map(|(p, c)| (p, c as u8))
         .collect()
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

@@ -1,6 +1,5 @@
 pub fn desopo_pape<T>(
-    adj_list: &[Vec<(usize, T)>],
-    src: usize,
+    adj_list: &[Vec<(usize, T)>], src: usize,
 ) -> Vec<Option<T>>
 where
     T: Ord + std::ops::Add<Output = T> + Copy + Default,
@@ -12,14 +11,12 @@ where
     dist[src] = Some(T::default());
     let mut q = VecDeque::new();
     q.push_back(src);
-
     #[derive(PartialEq, Clone, Copy)]
     enum State {
         OnStack,
         Popped,
         None,
     }
-
     let mut state = vec![State::None; n];
     while let Some(u) = q.pop_front() {
         state[u] = State::Popped;

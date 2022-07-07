@@ -1,9 +1,7 @@
 //! special case of dual unbounded knapsack table just.
 //! that all weights are 1.
-
 pub fn subset_sum_min_count_table(
-    values: &[u64],
-    size: usize,
+    values: &[u64], size: usize,
 ) -> Vec<Option<u64>> {
     let mut at_least = vec![None; size];
     at_least[0] = Some(0);
@@ -21,10 +19,8 @@ pub fn subset_sum_min_count_table(
     }
     at_least
 }
-
 pub fn subset_sum_min_count_table_2(
-    values: &[u64],
-    size: usize,
+    values: &[u64], size: usize,
 ) -> Vec<Option<u64>> {
     let mut at_least = vec![None; size];
     at_least[0] = Some(0);
@@ -46,7 +42,6 @@ pub fn subset_sum_min_count_table_2(
     }
     at_least
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

@@ -1,10 +1,8 @@
 //! static range query for group like.
-
 use crate::algebraic_structure::*;
 pub struct CumulativeArray<G: Monoid> {
     s: Vec<G::S>,
 }
-
 impl<G: Monoid> CumulativeArray<G>
 where
     G::S: Clone,
@@ -16,7 +14,6 @@ where
         for i in 0..size {
             s[i + 1] = G::op(s[i].clone(), s[i + 1].clone());
         }
-
         Self { s }
     }
 
@@ -29,13 +26,9 @@ where
         G: Group,
     {
         assert!(l < r && r <= self.size());
-        G::op(
-            G::inv(self.reduce_lt(l)),
-            self.reduce_lt(r),
-        )
+        G::op(G::inv(self.reduce_lt(l)), self.reduce_lt(r))
     }
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

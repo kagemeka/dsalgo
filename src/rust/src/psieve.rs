@@ -1,8 +1,6 @@
 //! prime sieve algorithms
-
 pub mod erat {
     //! sieve of eratosthenes
-
     /// prime numbers with sieve size.
     pub fn ps(sz: usize) -> Vec<u32> {
         let mut a = Vec::with_capacity(sz >> 4);
@@ -21,25 +19,18 @@ pub mod erat {
         }
         a
     }
-
     #[test]
     fn test_erat() {
-        assert_eq!(
-            ps(50),
-            vec![
-                2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47
-            ],
-        )
+        assert_eq!(ps(50), vec![
+            2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47
+        ],)
     }
-
     use crate::find_root::isqrt;
-
     /// range sieve
     pub struct RS {
         ps: Vec<u64>,
         lt: u64, // less than
     }
-
     impl RS {
         pub fn new(lt: u64) -> Self {
             Self {
@@ -91,37 +82,30 @@ pub mod erat {
                     is_p[j] = false;
                 }
             }
-            a.extend(
-                is_p.into_iter().enumerate().filter_map(|(i, is_p)| {
-                    if is_p { Some(l + (i << 1) as u64) } else { None }
-                }),
-            );
+            a.extend(is_p.into_iter().enumerate().filter_map(|(i, is_p)| {
+                if is_p { Some(l + (i << 1) as u64) } else { None }
+            }));
             a
         }
     }
     #[test]
     fn test_rs() {
         let gen = RS::new(1 << 10);
-        assert_eq!(
-            gen.ps(100, 500),
-            vec![
-                101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157,
-                163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227,
-                229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283,
-                293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367,
-                373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439,
-                443, 449, 457, 461, 463, 467, 479, 487, 491, 499,
-            ],
-        );
+        assert_eq!(gen.ps(100, 500), vec![
+            101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163,
+            167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233,
+            239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311,
+            313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389,
+            397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463,
+            467, 479, 487, 491, 499,
+        ],);
     }
-
     /// Low Memory Genrator
     pub struct LMG {
         it: std::vec::IntoIter<u64>,
         rs: RS,
         ranges: std::vec::IntoIter<(u64, u64)>,
     }
-
     impl LMG {
         /// [lo, hi)
         pub fn new(mut lo: u64, mut hi: u64) -> Self {
@@ -140,7 +124,6 @@ pub mod erat {
             for i in (lo..hi).step_by(sz) {
                 ranges.push((i, hi.min(i + sz as u64)));
             }
-
             Self {
                 it: vec![].into_iter(),
                 rs: RS::new(hi as u64),
@@ -148,7 +131,6 @@ pub mod erat {
             }
         }
     }
-
     impl Iterator for LMG {
         type Item = u64;
 
@@ -165,7 +147,6 @@ pub mod erat {
             None
         }
     }
-
     #[cfg(test)]
     mod tests {
         use super::*;
@@ -178,7 +159,6 @@ pub mod erat {
         }
     }
 }
-
 pub mod linear {
     /// compute least prime factor table and prime numbers list.
     pub fn ps(size: usize) -> (Vec<Option<u32>>, Vec<u32>) {
@@ -199,7 +179,6 @@ pub mod linear {
         }
         (lpf, a)
     }
-
     #[cfg(test)]
     mod tests {
         use super::*;
@@ -216,22 +195,17 @@ pub mod linear {
         }
     }
 }
-
 pub mod atkin {
     //! sieve of atkin
 }
-
 pub mod erat_lndr {
     //! eratosthenes and legendre sieve.
 }
-
 pub mod euler {
     //! sieve of euler
 }
-
 pub mod sunda {
     //! sieve of sundaram
-
     /// prime numbers less than
     pub fn ps(lt: u32) -> Vec<u32> {
         let mut a = vec![];
@@ -251,7 +225,6 @@ pub mod sunda {
         }
         a
     }
-
     #[cfg(test)]
     mod tests {
         use super::*;

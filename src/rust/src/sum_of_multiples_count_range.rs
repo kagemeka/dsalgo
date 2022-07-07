@@ -1,5 +1,4 @@
 use crate::find_root::isqrt;
-
 /// [lo, hi]
 pub fn sum_of_multiples_count_range(limit: u64, lo: u64, mut hi: u64) -> u64 {
     // similar to sum of multiples sum.
@@ -39,25 +38,15 @@ pub fn sum_of_multiples_count_range(limit: u64, lo: u64, mut hi: u64) -> u64 {
     }
     s
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
     fn test() {
         use super::*;
-        assert_eq!(
-            sum_of_multiples_count_range(4, 1, 4),
-            8
-        );
+        assert_eq!(sum_of_multiples_count_range(4, 1, 4), 8);
         // 4 + 2 + 1 + 1 = 8
-        assert_eq!(
-            sum_of_multiples_count_range(10, 3, 5),
-            7
-        );
+        assert_eq!(sum_of_multiples_count_range(10, 3, 5), 7);
         // 3 + 2 + 2 = 7
-        assert_eq!(
-            sum_of_multiples_count_range(10, 1, 2),
-            15
-        );
+        assert_eq!(sum_of_multiples_count_range(10, 1, 2), 15);
     }
 }

@@ -1,8 +1,6 @@
 use crate::find_divisor_pollard_rho_repeat_brent::*;
-
 pub fn prime_factorize_flat_pollard_rho<F>(
-    is_prime: &F,
-    mut n: u64,
+    is_prime: &F, mut n: u64,
 ) -> Result<Vec<u64>, &'static str>
 where
     F: Fn(u64) -> bool,
@@ -28,7 +26,6 @@ where
     res.extend(prime_factorize_flat_pollard_rho(is_prime, n / d)?);
     Ok(res)
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

@@ -16,7 +16,6 @@ pub fn kmp_table<T: PartialEq>(a: &[T]) -> Vec<isize> {
     }
     f
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -24,31 +23,14 @@ mod tests {
     fn test() {
         // refs: en-wiki
         let cases = [
-            (
-                "abcdabd",
-                vec![-1, 0, 0, 0, -1, 0, 2, 0],
-            ),
-            (
-                "abacababc",
-                vec![
-                    -1, 0, -1, 1, -1, 0, -1, 3, 2, 0,
-                ],
-            ),
-            (
-                "abacababa",
-                vec![
-                    -1, 0, -1, 1, -1, 0, -1, 3, -1, 3,
-                ],
-            ),
-            (
-                "participate in parachute",
-                vec![
-                    -1, 0, 0, 0, 0, 0, 0, -1, 0, 2, 0, 0, 0, 0, 0, -1, 0, 0, 3,
-                    0, 0, 0, 0, 0, 0,
-                ],
-            ),
+            ("abcdabd", vec![-1, 0, 0, 0, -1, 0, 2, 0]),
+            ("abacababc", vec![-1, 0, -1, 1, -1, 0, -1, 3, 2, 0]),
+            ("abacababa", vec![-1, 0, -1, 1, -1, 0, -1, 3, -1, 3]),
+            ("participate in parachute", vec![
+                -1, 0, 0, 0, 0, 0, 0, -1, 0, 2, 0, 0, 0, 0, 0, -1, 0, 0, 3, 0,
+                0, 0, 0, 0, 0,
+            ]),
         ];
-
         for (s, ans) in cases {
             let s = s.chars().collect::<Vec<_>>();
             assert_eq!(kmp_table(&s), ans);

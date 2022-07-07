@@ -4,20 +4,14 @@ use std::{
 };
 
 use crate::new_rc_refcell::new_rc_refcell;
-
 pub struct Node<T> {
     pub value: T,
     pub from: Vec<Weak<RefCell<Node<T>>>>,
     pub to: Vec<Rc<RefCell<Node<T>>>>,
 }
-
 impl<T> Node<T> {
     pub(crate) fn new(value: T) -> Self {
-        Self {
-            value,
-            from: Vec::new(),
-            to: Vec::new(),
-        }
+        Self { value, from: Vec::new(), to: Vec::new() }
     }
 
     pub fn new_rc_refcell(value: T) -> Rc<RefCell<Self>> {
@@ -29,7 +23,6 @@ impl<T> Node<T> {
         rhs.borrow_mut().from.push(Rc::downgrade(lhs));
     }
 }
-
 impl<T: std::fmt::Debug> std::fmt::Debug for Node<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(
@@ -45,7 +38,6 @@ impl<T: std::fmt::Debug> std::fmt::Debug for Node<T> {
         )
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -61,7 +53,6 @@ mod tests {
         V::connect(&a, &b);
         dbg!(&a.borrow());
         dbg!(&b.borrow());
-
         V::connect(&b, &a);
         dbg!(&a.borrow());
         dbg!(&b.borrow());

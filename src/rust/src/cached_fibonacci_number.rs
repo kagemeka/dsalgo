@@ -1,7 +1,6 @@
 pub struct CachedFibonacci<T> {
     fib: Vec<Option<T>>,
 }
-
 impl<T> CachedFibonacci<T> {
     pub fn new() -> Self { Self { fib: vec![] } }
 
@@ -10,10 +9,7 @@ impl<T> CachedFibonacci<T> {
         T: From<u64> + Clone + std::ops::Add<Output = T>,
     {
         if self.fib.len() <= n {
-            self.fib.extend(vec![
-                None;
-                n + 1 - self.fib.len()
-            ]);
+            self.fib.extend(vec![None; n + 1 - self.fib.len()]);
         }
         if self.fib[n].is_some() {
             return self.fib[n].clone().unwrap();
@@ -28,7 +24,6 @@ impl<T> CachedFibonacci<T> {
         self.fib[n].clone().unwrap()
     }
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

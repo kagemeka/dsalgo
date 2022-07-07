@@ -1,6 +1,5 @@
 pub fn is_achievable_subset_sum_multiple_same_values(
-    value_count_paris: &[(u64, u64)],
-    target: u64,
+    value_count_paris: &[(u64, u64)], target: u64,
 ) -> bool {
     let target = target as usize;
     let mut at_least = vec![None; target + 1];
@@ -25,7 +24,6 @@ pub fn is_achievable_subset_sum_multiple_same_values(
     }
     at_least[target].is_some()
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

@@ -1,5 +1,4 @@
 use crate::bitops::len::with_clz_128 as bit_length_128;
-
 /// mainly used for initializing prime_numbers vec with capacity.
 pub fn prime_pi_approx_ln(n: u128) -> u128 {
     if n < 2 {

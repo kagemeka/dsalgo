@@ -1,5 +1,4 @@
 // TODO: refactor
-
 pub fn least_prime_factor(n: usize) -> Vec<usize> {
     assert!(n >= 2);
     let mut s: Vec<usize> = (0..n).collect();
@@ -18,7 +17,6 @@ pub fn least_prime_factor(n: usize) -> Vec<usize> {
     }
     s
 }
-
 pub fn greatest_prime_factor(n: usize) -> Vec<usize> {
     assert!(n >= 2);
     let mut s: Vec<usize> = (0..n).collect();
@@ -35,17 +33,14 @@ pub fn greatest_prime_factor(n: usize) -> Vec<usize> {
     }
     s
 }
-
 pub fn sieve_of_eratosthenes(n: usize) -> Vec<bool> {
     let lpf = least_prime_factor(n);
     (0..n).map(|i| i >= 2 && i == lpf[i as usize]).collect()
 }
-
 pub fn find_prime_numbers(n: usize) -> Vec<usize> {
     let is_prime = sieve_of_eratosthenes(n);
     (0..n).filter(|i| is_prime[*i as usize]).collect()
 }
-
 pub fn prime_factorize(
     mut n: usize,
 ) -> std::collections::BTreeMap<usize, usize> {
@@ -66,19 +61,16 @@ pub fn prime_factorize(
     }
     cnt
 }
-
 pub struct PrimeFactorizeLPF {
     lpf: Vec<usize>,
 }
-
 impl PrimeFactorizeLPF {
     pub fn new(n: usize) -> Self {
         PrimeFactorizeLPF { lpf: least_prime_factor(n) }
     }
 
     pub fn factorize(
-        &self,
-        mut n: usize,
+        &self, mut n: usize,
     ) -> std::collections::BTreeMap<usize, usize> {
         let mut cnt = std::collections::BTreeMap::new();
         while n > 1 {
@@ -89,7 +81,6 @@ impl PrimeFactorizeLPF {
         cnt
     }
 }
-
 pub fn count_prime_factors(n: usize) -> Vec<usize> {
     let mut cnt = vec![0; n as usize];
     for p in find_prime_numbers(n).into_iter().map(|x| x as usize) {
@@ -99,79 +90,51 @@ pub fn count_prime_factors(n: usize) -> Vec<usize> {
     }
     cnt
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
-
     #[test]
     fn test_greatest_prime_factor() {
         let gpf = greatest_prime_factor(100);
         assert_eq!(gpf[51], 17);
-        assert_eq!(
-            gpf.into_iter().take(10).collect::<Vec<_>>(),
-            vec![0, 0, 2, 3, 2, 5, 3, 7, 2, 3],
-        );
+        assert_eq!(gpf.into_iter().take(10).collect::<Vec<_>>(), vec![
+            0, 0, 2, 3, 2, 5, 3, 7, 2, 3
+        ],);
     }
-
     #[test]
     fn test_sieve_of_eratosthenes() {
         let s = sieve_of_eratosthenes(1 << 10);
-        assert_eq!(
-            s.into_iter().take(10).collect::<Vec<_>>(),
-            vec![
-                false, false, true, true, false, true, false, true, false,
-                false
-            ],
-        );
+        assert_eq!(s.into_iter().take(10).collect::<Vec<_>>(), vec![
+            false, false, true, true, false, true, false, true, false, false
+        ],);
     }
-
     #[test]
     fn test_find_prime_numbers() {
         let primes = find_prime_numbers(1 << 10);
-        assert_eq!(
-            primes.into_iter().take(10).collect::<Vec<_>>(),
-            vec![
-                2, 3, 5, 7, 11, 13, 17, 19, 23, 29
-            ],
-        );
+        assert_eq!(primes.into_iter().take(10).collect::<Vec<_>>(), vec![
+            2, 3, 5, 7, 11, 13, 17, 19, 23, 29
+        ],);
     }
-
     #[test]
     fn test_prime_factorize_lpf() {
         let lpf = PrimeFactorizeLPF::new(1 << 10);
         use std::{array::IntoIter, collections::BTreeMap, iter::FromIterator};
         assert_eq!(
             lpf.factorize(105),
-            BTreeMap::from_iter(IntoIter::new([
-                (3, 1),
-                (5, 1),
-                (7, 1)
-            ])),
+            BTreeMap::from_iter(IntoIter::new([(3, 1), (5, 1), (7, 1)])),
         );
     }
-
     #[test]
     fn test_prime_factorize() {
         use std::{array::IntoIter, collections::BTreeMap, iter::FromIterator};
         assert_eq!(
             prime_factorize(105),
-            BTreeMap::from_iter(IntoIter::new([
-                (3, 1),
-                (5, 1),
-                (7, 1)
-            ])),
+            BTreeMap::from_iter(IntoIter::new([(3, 1), (5, 1), (7, 1)])),
         );
     }
-
     #[test]
     fn test_count_prime_factors() {
         let cnt = count_prime_factors(16);
-        assert_eq!(
-            cnt,
-            vec![
-                0, 0, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 2, 2
-            ]
-        );
+        assert_eq!(cnt, vec![0, 0, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 2, 2]);
     }
 }

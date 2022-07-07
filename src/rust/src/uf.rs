@@ -1,36 +1,28 @@
 //! Disjoint-Set-Union (DSU) or Union-Find (UF).
-
 pub trait Root {
     fn root(&mut self, u: usize) -> usize;
 }
-
 #[allow(private_in_public)]
 trait Size {
     fn size(&self) -> usize;
 }
-
 pub trait Unite {
     fn unite(&mut self, u: usize, v: usize);
 }
-
 pub trait SizeOf {
     fn size_of(&mut self, u: usize) -> usize;
 }
-
 pub trait Same {
     fn same(&mut self, u: usize, v: usize) -> bool;
 }
-
 impl<U: Root> Same for U {
     fn same(&mut self, u: usize, v: usize) -> bool {
         self.root(u) == self.root(v)
     }
 }
-
 pub trait Labels {
     fn labels(&mut self) -> Vec<usize>;
 }
-
 impl<U: Root + Size> Labels for U {
     /// same label -> same component.
     fn labels(&mut self) -> Vec<usize> {
@@ -48,19 +40,15 @@ impl<U: Root + Size> Labels for U {
         lb
     }
 }
-
 /// Union Find
 #[derive(Debug)]
 pub struct UF(Vec<isize>); // root: neg-size, other: parent
-
 impl UF {
     pub fn new(size: usize) -> Self { Self(vec![-1; size]) }
 }
-
 impl Size for UF {
     fn size(&self) -> usize { self.0.len() }
 }
-
 impl Root for UF {
     fn root(&mut self, u: usize) -> usize {
         if self.0[u] < 0 {
@@ -70,7 +58,6 @@ impl Root for UF {
         self.0[u] as usize
     }
 }
-
 impl Unite for UF {
     fn unite(&mut self, u: usize, v: usize) {
         let mut u = self.root(u);
@@ -85,7 +72,6 @@ impl Unite for UF {
         self.0[v] = u as isize;
     }
 }
-
 impl SizeOf for UF {
     /// size of the component containing u
     fn size_of(&mut self, u: usize) -> usize {
@@ -93,17 +79,14 @@ impl SizeOf for UF {
         -self.0[u] as usize
     }
 }
-
 use crate::algebraic_structure::*;
 pub struct PotentialUF<G: AbelianGroup> {
     a: Vec<isize>, // neg-size or parent
     rp: Vec<G::S>, // root: identity, other: relative potential from parent
 }
-
 impl<G: AbelianGroup> Size for PotentialUF<G> {
     fn size(&self) -> usize { self.a.len() }
 }
-
 /// Potentialized (or Weighted) Union Find
 impl<G> PotentialUF<G>
 where
@@ -111,10 +94,7 @@ where
     G::S: Clone,
 {
     pub fn new(size: usize) -> Self {
-        Self {
-            a: vec![-1; size],
-            rp: (0..size).map(|_| G::e()).collect(),
-        }
+        Self { a: vec![-1; size], rp: (0..size).map(|_| G::e()).collect() }
     }
 
     /// relative potential from the root.
@@ -128,10 +108,7 @@ where
         if !self.same(u, v) {
             Err("different components")
         } else {
-            Ok(G::op(
-                G::inv(self.h(u)),
-                self.h(v),
-            ))
+            Ok(G::op(G::inv(self.h(u)), self.h(v)))
         }
     }
 
@@ -143,10 +120,7 @@ where
     ) where
         G::S: PartialEq,
     {
-        let mut d = G::op(
-            G::op(self.h(u), d),
-            G::inv(self.h(v).clone()),
-        );
+        let mut d = G::op(G::op(self.h(u), d), G::inv(self.h(v).clone()));
         u = self.root(u);
         v = self.root(v);
         if u == v {
@@ -162,7 +136,6 @@ where
         self.rp[v] = d;
     }
 }
-
 impl<G> Root for PotentialUF<G>
 where
     G: AbelianGroup,
@@ -174,14 +147,10 @@ where
         }
         let p = self.a[u] as usize;
         self.a[u] = self.root(p) as isize;
-        self.rp[u] = G::op(
-            self.rp[u].clone(),
-            self.rp[p].clone(),
-        );
+        self.rp[u] = G::op(self.rp[u].clone(), self.rp[p].clone());
         self.a[u] as usize
     }
 }
-
 impl<G> SizeOf for PotentialUF<G>
 where
     G: AbelianGroup,
@@ -195,13 +164,10 @@ where
         -self.a[u] as usize
     }
 }
-
 // TODO:
 pub struct RollbackUF {}
-
 // TODO:
 pub struct PersitentUF {}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -212,7 +178,6 @@ mod tests {
         uf.unite(3, 9);
         assert_eq!(uf.size_of(3), 2);
     }
-
     #[test]
     fn test_potential_uf() {
         use crate::{algebraic_structure_impl::*, group_theory_id::Additive};

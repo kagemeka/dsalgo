@@ -25,7 +25,6 @@ where
     res.push((value, count));
     res
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

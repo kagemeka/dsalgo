@@ -1,5 +1,4 @@
 type G = Vec<Vec<usize>>;
-
 pub(crate) fn transpose(g: G) -> G {
     let n = g.len();
     let mut t = vec![vec![]; n];

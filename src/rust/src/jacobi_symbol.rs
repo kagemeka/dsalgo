@@ -18,7 +18,6 @@ pub fn jacobi_symbol(modulus: u64, mut a: u64) -> i8 {
     }
     if n != 1 { 0 } else { symbol }
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

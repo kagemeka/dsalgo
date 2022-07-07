@@ -1,10 +1,8 @@
 use crate::uf::*;
-
 // TODO: make edge type generic.
 /// O(E\log{E})
 pub fn mst_kruskcal(
-    v_size: usize,
-    undirected_edges: Vec<(usize, usize, i64)>,
+    v_size: usize, undirected_edges: Vec<(usize, usize, i64)>,
 ) -> Vec<usize> {
     let mut uf = UF::new(v_size);
     let mut edges: Vec<(usize, (usize, usize, i64))> =
@@ -21,7 +19,6 @@ pub fn mst_kruskcal(
     debug_assert!(added.len() == v_size - 1);
     added
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

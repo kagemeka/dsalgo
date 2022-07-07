@@ -5,7 +5,6 @@ pub fn divisors_count_from_prime_factors(prime_factors: &[(u64, u8)]) -> u64 {
     }
     count
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
@@ -13,9 +12,9 @@ mod tests {
         use super::*;
         use crate::prime_factorize_trial_division::*;
         assert_eq!(
-            divisors_count_from_prime_factors(
-                &prime_factorize_trial_division(24)
-            ),
+            divisors_count_from_prime_factors(&prime_factorize_trial_division(
+                24
+            )),
             4 * 2,
         );
     }

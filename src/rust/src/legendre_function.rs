@@ -6,7 +6,6 @@ pub fn legendre_function(mut n: u64, p: u64) -> u64 {
     }
     cnt
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

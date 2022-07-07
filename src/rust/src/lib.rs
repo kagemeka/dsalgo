@@ -1,5 +1,4 @@
 #![feature(once_cell)]
-
 // #![allow(dead_code)]
 pub mod a_star_search;
 pub mod aa_tree;

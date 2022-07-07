@@ -11,7 +11,6 @@ where
     }
     graph
 }
-
 pub fn tree_edges_to_graph(tree_edges: &[(usize, usize)]) -> Vec<Vec<usize>> {
     tree_edges_with_data_to_graph(
         tree_edges

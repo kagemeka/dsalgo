@@ -1,5 +1,4 @@
 pub struct ArrayCompression<T>(Vec<T>);
-
 impl<T: Ord + Clone> ArrayCompression<T> {
     pub fn new(a: Vec<T>) -> Self { Self(crate::vector_unique::unique(a)) }
 
@@ -23,10 +22,8 @@ mod tests {
         assert_eq!(f.encode(&10), 4);
         assert_eq!(f.inv(0), -1);
         // f.encode(&5); // error
-
-        assert_eq!(
-            ArrayCompression::once(arr.to_vec()),
-            vec![3, 2, 1, 0, 2, 4]
-        );
+        assert_eq!(ArrayCompression::once(arr.to_vec()), vec![
+            3, 2, 1, 0, 2, 4
+        ]);
     }
 }

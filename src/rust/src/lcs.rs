@@ -1,6 +1,5 @@
 //! Longest Common Subsequence
 //! not confused with Longest Common Substring
-
 /// compute dp table.
 #[allow(dead_code)]
 pub(crate) fn dp<T: PartialEq>(a: &[T], b: &[T]) -> Vec<Vec<usize>> {
@@ -19,12 +18,10 @@ pub(crate) fn dp<T: PartialEq>(a: &[T], b: &[T]) -> Vec<Vec<usize>> {
     }
     l
 }
-
 /// lcs length.
 pub fn len<T: PartialEq>(a: &[T], b: &[T]) -> usize {
     dp(a, b)[a.len()][b.len()]
 }
-
 /// compute lcs length with O(N) space.
 pub fn len_lowmem<T: PartialEq>(a: &[T], b: &[T]) -> usize {
     let m = b.len();
@@ -42,7 +39,6 @@ pub fn len_lowmem<T: PartialEq>(a: &[T], b: &[T]) -> usize {
     }
     l[m]
 }
-
 /// restore one of the transtion histories.
 pub(crate) fn restore(dp: &[Vec<usize>]) -> Vec<(usize, usize)> {
     let mut idx = vec![];
@@ -65,14 +61,12 @@ pub(crate) fn restore(dp: &[Vec<usize>]) -> Vec<(usize, usize)> {
     idx.reverse();
     idx
 }
-
 pub fn struct_one<T: PartialEq + Clone>(a: &[T], b: &[T]) -> Vec<T> {
     restore(&dp(a, b))
         .into_iter()
         .map(|(i, _)| a[i].clone())
         .collect()
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -90,40 +84,30 @@ mod tests {
         ];
         assert_eq!(lcs, ans);
     }
-
     #[test]
     fn test_len() {
         let s = "axyb".chars().collect::<Vec<_>>();
         let t = "abyxb".chars().collect::<Vec<_>>();
         assert_eq!(len(&s, &t), 3);
     }
-
     #[test]
     fn test_len_lowmem() {
         let s = "axyb".chars().collect::<Vec<_>>();
         let t = "abyxb".chars().collect::<Vec<_>>();
         assert_eq!(len_lowmem(&s, &t), 3);
     }
-
     #[test]
     fn test_restore() {
         let s = "axyb".chars().collect::<Vec<_>>();
         let t = "abyxb".chars().collect::<Vec<_>>();
         let indices = restore(&dp(&s, &t));
-        assert_eq!(
-            indices,
-            vec![(0, 0), (2, 2), (3, 4)]
-        );
+        assert_eq!(indices, vec![(0, 0), (2, 2), (3, 4)]);
         // ayb
     }
-
     #[test]
     fn test_struct_one() {
         let s = "axyb".chars().collect::<Vec<_>>();
         let t = "abyxb".chars().collect::<Vec<_>>();
-        assert_eq!(
-            struct_one(&s, &t),
-            vec!['a', 'y', 'b']
-        );
+        assert_eq!(struct_one(&s, &t), vec!['a', 'y', 'b']);
     }
 }

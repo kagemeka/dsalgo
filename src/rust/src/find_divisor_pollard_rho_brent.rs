@@ -1,17 +1,14 @@
 use crate::{
-    abs_diff::abs_diff,
-    bitops::len::with_clz as bit_length,
+    abs_diff::abs_diff, bitops::len::with_clz as bit_length,
     gcd::int::euclidean as gcd,
     montgomery_modular_multiplication_64::MontgomeryMultiplication64,
 };
-
 /// reference
 /// - ja wiki
 /// using brent's cycle detection algorithm to find a divisor.
 /// faster than floyd's method.
 pub fn find_divisor_pollard_rho_brent<F>(
-    n: u64,
-    prng_next: &F,
+    n: u64, prng_next: &F,
 ) -> Result<u64, &'static str>
 where
     F: Fn(u64) -> u64,
@@ -46,7 +43,6 @@ where
     }
     if g == n { Err("failed to find a divisor") } else { Ok(g) }
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

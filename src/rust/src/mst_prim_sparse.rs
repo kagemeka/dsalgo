@@ -1,10 +1,8 @@
 // TODO
 // use generic minimum queue
 // use generic edge type
-
 pub fn mst_prim_sparse(
-    v_size: usize,
-    undirected_edges: &[(usize, usize, i64)],
+    v_size: usize, undirected_edges: &[(usize, usize, i64)],
 ) -> Vec<usize> {
     use std::cmp::Reverse;
     let mut g = vec![vec![]; v_size];
@@ -12,7 +10,6 @@ pub fn mst_prim_sparse(
         g[u].push((v, w, i));
         g[v].push((u, w, i));
     }
-
     let mut hq = std::collections::BinaryHeap::new();
     hq.push((Reverse(0), 0)); // weight, to
     let mut eid_to: Vec<Option<usize>> = vec![None; v_size];
@@ -35,7 +32,6 @@ pub fn mst_prim_sparse(
     }
     eid_to.into_iter().filter_map(|e| e).collect()
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

@@ -13,23 +13,19 @@ where
     }
     p
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
     fn test() {
         use super::*;
         let p = pascal_triangle::<u64>(6);
-        assert_eq!(
-            p,
-            vec![
-                vec![1],
-                vec![1, 1],
-                vec![1, 2, 1],
-                vec![1, 3, 3, 1],
-                vec![1, 4, 6, 4, 1],
-                vec![1, 5, 10, 10, 5, 1],
-            ]
-        );
+        assert_eq!(p, vec![
+            vec![1],
+            vec![1, 1],
+            vec![1, 2, 1],
+            vec![1, 3, 3, 1],
+            vec![1, 4, 6, 4, 1],
+            vec![1, 5, 10, 10, 5, 1],
+        ]);
     }
 }

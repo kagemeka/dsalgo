@@ -3,10 +3,8 @@ use crate::{
     general_dijkstra_sparse::general_dijkstra_sparse,
     graph::edge::{To, Weight},
 };
-
 pub fn dijkstra_sparse_parents<E, Q>(
-    sparse_graph: &[Vec<E>],
-    src: usize,
+    sparse_graph: &[Vec<E>], src: usize,
 ) -> Vec<Option<usize>>
 where
     E: To<V = usize> + Weight<u64>,
@@ -26,7 +24,6 @@ where
     )
     .1
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

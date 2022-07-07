@@ -1,13 +1,10 @@
 const K: usize = 6; // chunk size = 2^K
 const M: usize = (1 << K) - 1;
-
 fn bucket(index: usize) -> usize { index >> K }
 fn point(index: usize) -> usize { index & M }
 fn value(index: usize) -> usize { 1 << point(index) }
-
 #[derive(Clone)]
 pub struct BitArray(Vec<usize>);
-
 impl BitArray {
     pub fn new(size: usize) -> Self { BitArray(vec![0; (size + M) >> K]) }
 
@@ -21,7 +18,6 @@ impl BitArray {
         self.0[bucket(i)] >> point(i) & 1 == 1
     }
 }
-
 impl From<&[bool]> for BitArray {
     fn from(is_set: &[bool]) -> Self {
         let mut a = BitArray::new(is_set.len());
@@ -34,15 +30,12 @@ impl From<&[bool]> for BitArray {
     }
 }
 use std::ops::*;
-
 fn min_len(lhs: &BitArray, rhs: &BitArray) -> usize {
     lhs.0.len().min(rhs.0.len())
 }
-
 fn max_len(lhs: &BitArray, rhs: &BitArray) -> usize {
     lhs.0.len().max(rhs.0.len())
 }
-
 impl BitAnd for BitArray {
     type Output = Self;
 
@@ -53,16 +46,13 @@ impl BitAnd for BitArray {
         self
     }
 }
-
 impl BitArray {
     pub fn popcount(&self) -> u64 {
         self.0.iter().map(|x| x.count_ones() as u64).sum()
     }
 }
-
 // TODO:
 // &, |,  <<, >>, ==
-
 #[cfg(test)]
 mod tests {
     #[test]

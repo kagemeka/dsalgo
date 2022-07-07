@@ -2,12 +2,9 @@ use crate::{
     graph_edge_trait::{To, Weight},
     priority_queue_trait::{Pop, Push},
 };
-
 /// T is a numeric type.
 pub fn dijkstra<Q, T, E, F>(
-    adj_list: &[Vec<E>],
-    src: usize,
-    callback: &mut F,
+    adj_list: &[Vec<E>], src: usize, callback: &mut F,
 ) -> Vec<Option<T>>
 where
     Q: Push<T = (T, usize)> + Pop<T = Option<(T, usize)>> + Default,

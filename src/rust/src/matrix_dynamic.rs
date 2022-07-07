@@ -1,12 +1,10 @@
 pub trait DynamicShape {
     fn shape(&self) -> crate::matrix::Shape;
 }
-
 #[derive(Clone, PartialEq)]
 pub struct DynamicShapedMatrix<T> {
     data: Vec<Vec<T>>,
 }
-
 impl<T: std::fmt::Debug> std::fmt::Debug for DynamicShapedMatrix<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let format_str = self
@@ -18,7 +16,6 @@ impl<T: std::fmt::Debug> std::fmt::Debug for DynamicShapedMatrix<T> {
         write!(f, "{}", format_str)
     }
 }
-
 impl<T> From<Vec<Vec<T>>> for DynamicShapedMatrix<T> {
     fn from(data: Vec<Vec<T>>) -> Self {
         let height = data.len();
@@ -31,25 +28,19 @@ impl<T> From<Vec<Vec<T>>> for DynamicShapedMatrix<T> {
         Self { data }
     }
 }
-
 impl<T> DynamicShapedMatrix<T> {
     pub fn new(height: usize, width: usize) -> DynamicShapedMatrix<T>
     where
         T: Default + Clone,
     {
-        DynamicShapedMatrix {
-            data: vec![vec![T::default(); width]; height],
-        }
+        DynamicShapedMatrix { data: vec![vec![T::default(); width]; height] }
     }
 
     pub fn shape(&self) -> crate::matrix::Shape {
         let (height, width) = if self.data.len() == 0 {
             (0, 0)
         } else {
-            (
-                self.data.len(),
-                self.data[0].len(),
-            )
+            (self.data.len(), self.data[0].len())
         };
         crate::matrix::Shape { height, width }
     }
@@ -97,7 +88,6 @@ impl<T> DynamicShapedMatrix<T> {
         self.reverse().transpose()
     }
 }
-
 impl<T> std::ops::Index<(usize, usize)> for DynamicShapedMatrix<T> {
     type Output = T;
 
@@ -105,13 +95,11 @@ impl<T> std::ops::Index<(usize, usize)> for DynamicShapedMatrix<T> {
         &self.data[index.0][index.1]
     }
 }
-
 impl<T> std::ops::IndexMut<(usize, usize)> for DynamicShapedMatrix<T> {
     fn index_mut(&mut self, index: (usize, usize)) -> &mut Self::Output {
         &mut self.data[index.0][index.1]
     }
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
@@ -146,7 +134,6 @@ mod tests {
                 vec![0, 0, 0],
             ])
         );
-
         for row in 0..height {
             for col in 0..width {
                 matrix[(row, col)] = row * width + col;

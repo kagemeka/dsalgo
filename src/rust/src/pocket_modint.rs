@@ -2,22 +2,18 @@ pub mod modulus {
     pub trait StaticGet {
         fn get() -> u32;
     }
-
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct Mod1_000_000_007;
     impl StaticGet for Mod1_000_000_007 {
         fn get() -> u32 { 1_000_000_007 }
     }
-
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct Mod998_244_353;
     impl StaticGet for Mod998_244_353 {
         fn get() -> u32 { 998_244_353 }
     }
-
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct StaticMod;
-
     use std::sync::atomic::{AtomicU32, Ordering::SeqCst};
     impl StaticMod {
         fn cell() -> &'static AtomicU32 {
@@ -27,24 +23,17 @@ pub mod modulus {
 
         pub fn set(value: u32) { Self::cell().store(value, SeqCst); }
     }
-
     impl StaticGet for StaticMod {
         fn get() -> u32 { Self::cell().load(SeqCst) }
     }
 }
-
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-pub struct Modint<M>(
-    pub u32,
-    std::marker::PhantomData<M>,
-);
-
+pub struct Modint<M>(pub u32, std::marker::PhantomData<M>);
 use std::ops::*;
 
 use modulus::StaticGet;
 
 use crate::multiplicative_inverse::MulInv;
-
 impl<M: StaticGet> Modint<M> {
     pub fn modulus() -> u32 { M::get() }
 
@@ -55,7 +44,6 @@ impl<M: StaticGet> Modint<M> {
         Self(v, std::marker::PhantomData)
     }
 }
-
 impl<M: StaticGet> Add for Modint<M> {
     type Output = Self;
 
@@ -67,7 +55,6 @@ impl<M: StaticGet> Add for Modint<M> {
         self
     }
 }
-
 impl<M: StaticGet> Neg for Modint<M> {
     type Output = Self;
 
@@ -78,7 +65,6 @@ impl<M: StaticGet> Neg for Modint<M> {
         self
     }
 }
-
 impl<M: StaticGet> Mul for Modint<M> {
     type Output = Self;
 
@@ -93,7 +79,6 @@ impl<M: StaticGet> Mul for Modint<M> {
         self
     }
 }
-
 impl<M: StaticGet> MulInv for Modint<M> {
     type Output = Self;
 
@@ -116,47 +101,40 @@ impl<M: StaticGet> MulInv for Modint<M> {
         self
     }
 }
-
 impl<M: StaticGet> Sub for Modint<M> {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self { self + -rhs }
 }
-
 impl<M: StaticGet> Div for Modint<M> {
     type Output = Self;
 
     fn div(self, rhs: Self) -> Self { self * rhs.mul_inv() }
 }
-
 impl<M: StaticGet> AddAssign for Modint<M>
 where
     Self: Copy,
 {
     fn add_assign(&mut self, rhs: Self) { *self = *self + rhs; }
 }
-
 impl<M: StaticGet> SubAssign for Modint<M>
 where
     Self: Copy,
 {
     fn sub_assign(&mut self, rhs: Self) { *self += -rhs; }
 }
-
 impl<M: StaticGet> MulAssign for Modint<M>
 where
     Self: Copy,
 {
     fn mul_assign(&mut self, rhs: Self) { *self = *self * rhs; }
 }
-
 impl<M: StaticGet> DivAssign for Modint<M>
 where
     Self: Copy,
 {
     fn div_assign(&mut self, rhs: Self) { *self *= *self * rhs.mul_inv(); }
 }
-
 impl<M: StaticGet> From<i64> for Modint<M> {
     fn from(mut v: i64) -> Self {
         let m = M::get() as i64;
@@ -169,7 +147,6 @@ impl<M: StaticGet> From<i64> for Modint<M> {
         Self::new(v as u32)
     }
 }
-
 impl<M: StaticGet> From<u64> for Modint<M> {
     fn from(mut v: u64) -> Self {
         let m = M::get() as u64;

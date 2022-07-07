@@ -1,6 +1,5 @@
 pub fn connected_components_bfs(
-    v_size: usize,
-    undirected_edges: &[(usize, usize)],
+    v_size: usize, undirected_edges: &[(usize, usize)],
 ) -> Vec<usize> {
     let mut g = vec![vec![]; v_size];
     for &(u, v) in undirected_edges.iter() {
@@ -29,7 +28,6 @@ pub fn connected_components_bfs(
     }
     labels
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

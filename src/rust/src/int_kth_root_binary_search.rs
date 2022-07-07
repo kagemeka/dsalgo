@@ -23,24 +23,15 @@ pub fn int_kth_root_binary_search(n: u64, k: u8) -> u64 {
     }
     lo
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
     fn test() {
         use super::*;
         use crate::test_int_kth_root::{
-            test_int_kth_root,
-            CASES_ITERATIVE,
-            CASES_LINEAR,
+            test_int_kth_root, CASES_ITERATIVE, CASES_LINEAR,
         };
-        test_int_kth_root(
-            &int_kth_root_binary_search,
-            CASES_ITERATIVE,
-        );
-        test_int_kth_root(
-            &int_kth_root_binary_search,
-            CASES_LINEAR,
-        );
+        test_int_kth_root(&int_kth_root_binary_search, CASES_ITERATIVE);
+        test_int_kth_root(&int_kth_root_binary_search, CASES_LINEAR);
     }
 }

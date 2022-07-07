@@ -1,10 +1,8 @@
 //! strongly connected components
-
 /// directed sparse graph. it not necessarily be simple.
 pub type G = Vec<Vec<usize>>;
 /// label
 pub type L = Vec<usize>;
-
 fn trans(g: G) -> G {
     let n = g.len();
     let mut t = vec![vec![]; n];
@@ -23,12 +21,7 @@ pub fn kosaraju(g: G) -> L {
         l: L,
     }
     let n = g.len();
-    let mut d = D {
-        g,
-        vis: vec![false; n],
-        q: vec![],
-        l: vec![n; n],
-    };
+    let mut d = D { g, vis: vec![false; n], q: vec![], l: vec![n; n] };
     fn dfs(d: &mut D, u: usize) {
         d.vis[u] = true;
         for v in d.g[u].clone() {
@@ -61,12 +54,10 @@ pub fn kosaraju(g: G) -> L {
     }
     d.l
 }
-
 fn toposort(lb: L) -> L {
     let k = *lb.iter().max().unwrap();
     lb.into_iter().map(|l| k - l).collect::<Vec<_>>()
 }
-
 /// with tarjan's lowlink algorithm.
 pub fn tarjan(g: G) -> L {
     struct D {
@@ -88,7 +79,6 @@ pub fn tarjan(g: G) -> L {
         lb: vec![n; n],
         l: 0,
     };
-
     fn labeling(d: &mut D, u: usize) {
         d.ord[u] = d.o;
         d.o += 1;
@@ -115,7 +105,6 @@ pub fn tarjan(g: G) -> L {
         }
         d.l += 1;
     }
-
     for i in 0..n {
         if d.ord[i] == n {
             labeling(&mut d, i);
@@ -123,10 +112,8 @@ pub fn tarjan(g: G) -> L {
     }
     toposort(d.lb)
 }
-
 // TODO:
 // tarjan non recurse
-
 /// essentially same as Tarjan's Lowlink algorithm
 pub fn path_based(g: G) -> L {
     struct D {
@@ -148,7 +135,6 @@ pub fn path_based(g: G) -> L {
         lb: vec![n; n],
         l: 0,
     };
-
     fn labeling(d: &mut D, u: usize) {
         d.ord[u] = d.o;
         d.o += 1;
@@ -177,7 +163,6 @@ pub fn path_based(g: G) -> L {
         d.l += 1;
         d.sl.pop();
     }
-
     for i in 0..n {
         if d.ord[i] == n {
             labeling(&mut d, i);
@@ -185,14 +170,11 @@ pub fn path_based(g: G) -> L {
     }
     toposort(d.lb)
 }
-
 // TODO:
 // path based non recurse
-
 // TODO:
 /// reachability based
 pub fn reachable_based() {}
-
 // TODO
 #[cfg(test)]
 mod tests {

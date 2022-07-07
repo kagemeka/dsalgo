@@ -1,5 +1,4 @@
 use crate::psieve::erat;
-
 /// prime pi table
 pub fn pi_t(sz: usize) -> Vec<u32> {
     let mut pi = vec![0; sz];
@@ -9,6 +8,5 @@ pub fn pi_t(sz: usize) -> Vec<u32> {
     for i in 0..sz - 1 {
         pi[i + 1] += pi[i];
     }
-
     pi
 }

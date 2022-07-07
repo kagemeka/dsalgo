@@ -4,12 +4,9 @@ use crate::{
     graph::edge::{From, To, Weight},
     sssp_dijkstra_sparse_with_general::dijkstra_sparse,
 };
-
 /// return edge ids.
 pub fn dijkstra_arborescense<E, Q>(
-    v_size: usize,
-    directed_edges: &[E],
-    root: usize,
+    v_size: usize, directed_edges: &[E], root: usize,
 ) -> Vec<usize>
 where
     E: From<V = usize> + To<V = usize> + Weight<u64> + Clone,
@@ -17,7 +14,6 @@ where
 {
     let g = AdjacencyList::from((v_size, directed_edges.to_vec()));
     let dist = dijkstra_sparse::<_, Q>(g.edges(), root);
-
     let mut visited = vec![false; v_size];
     visited[root] = true;
     let mut added = vec![];
@@ -36,7 +32,6 @@ where
     debug_assert_eq!(added.len(), v_size - 1);
     added
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

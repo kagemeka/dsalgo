@@ -18,17 +18,12 @@ pub fn levenstein_distance<T: PartialEq>(a: &[T], b: &[T]) -> usize {
                 // because dist[i][j] - 1 <= dist[i][j + 1], dist[i + 1][j].
                 // (easy to prove with mathematical induction.)
             }
-            dist[i + 1][j + 1] = [
-                dist[i][j + 1],
-                dist[i + 1][j],
-                dist[i][j],
-            ]
-            .iter()
-            .min()
-            .unwrap()
+            dist[i + 1][j + 1] = [dist[i][j + 1], dist[i + 1][j], dist[i][j]]
+                .iter()
+                .min()
+                .unwrap()
                 + 1;
         }
     }
-
     dist[n][m]
 }

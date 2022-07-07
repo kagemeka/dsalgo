@@ -1,11 +1,9 @@
 // TODO: refactor
-
 #[derive(Debug)]
 pub struct LowlinkResult {
     pub orders: Vec<usize>,
     pub low_orders: Vec<usize>,
 }
-
 impl LowlinkResult {
     pub fn get_lowlinks(data: &LowlinkResult) -> Vec<usize> {
         let n = data.orders.len();

@@ -6,7 +6,6 @@ impl<T: Ord> Push for Q<T> {
 
     fn push(&mut self, x: T) { Self::push(self, Reverse(x)); }
 }
-
 impl<T: Ord> Pop for Q<T> {
     type T = Option<T>;
 

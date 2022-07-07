@@ -1,6 +1,5 @@
 // pub fn rerooting_dp<S>(
 // use crate::abstract_structs::Monoid;
-
 // /// Monoid<S> is Commutative.
 // /// map: F x S -> S is homomorphism.
 // pub fn rerooting<S: Clone, F>(

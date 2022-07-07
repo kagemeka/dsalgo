@@ -1,5 +1,4 @@
 //! extended euclidean algorithms
-
 pub fn extgcd_recurse(a: i64, b: i64) -> (u64, i64, i64) {
     if b == 0 {
         return if a < 0 { ((-a) as u64, -1, 0) } else { (a as u64, 1, 0) };
@@ -7,7 +6,6 @@ pub fn extgcd_recurse(a: i64, b: i64) -> (u64, i64, i64) {
     let (g, s, t) = extgcd_recurse(b, a % b);
     (g, t, s - a / b * t)
 }
-
 pub fn extgcd(mut a: i64, mut b: i64) -> (u64, i64, i64) {
     let (mut x00, mut x01, mut x10, mut x11) = (1, 0, 0, 1);
     while b != 0 {
@@ -26,7 +24,6 @@ pub fn extgcd(mut a: i64, mut b: i64) -> (u64, i64, i64) {
     }
     (a as u64, x00, x10)
 }
-
 /// compute g := \gcd(modulus, n),
 /// and modular inverse of n/g in Z_{modulus/g}.
 /// we convert parameters to i64 internally.
@@ -39,7 +36,6 @@ pub fn mod_gcd_inv(modulus: u64, n: u64) -> (u64, u64) {
     while b != 0 {
         // (x00, x01) = (x01, x00 - a / b * x01);
         // (a, b) = (b, a % b);
-
         x00 -= a / b * x01;
         std::mem::swap(&mut x00, &mut x01);
         a %= b;
@@ -53,7 +49,6 @@ pub fn mod_gcd_inv(modulus: u64, n: u64) -> (u64, u64) {
     debug_assert!(0 <= x00 && x00 < u);
     (gcd, x00 as u64)
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -66,13 +61,9 @@ mod tests {
         // gcd(111, 30) = 3
         // 111 / 3 = 37, 30 / 3 = 10, 10^{-1} \equiv 26 \mod 37
     }
-
     #[test]
     fn test_extgcd() {
-        assert_eq!(
-            extgcd_recurse(-30, 111),
-            (3, 11, 3)
-        );
+        assert_eq!(extgcd_recurse(-30, 111), (3, 11, 3));
         assert_eq!(extgcd_recurse(0, 0), (0, 1, 0));
         assert_eq!(extgcd(-30, 111), (3, 11, 3));
         assert_eq!(extgcd(111, 30), (3, 3, -11));

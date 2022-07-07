@@ -1,9 +1,7 @@
 use crate::connected_components::connected_components_uf;
-
 /// O(E\log{V})
 pub fn mst_boruvka(
-    v_size: usize,
-    undirected_edges: &[(usize, usize, i64)],
+    v_size: usize, undirected_edges: &[(usize, usize, i64)],
 ) -> Vec<usize> {
     let m = undirected_edges.len();
     let mut is_added = vec![false; m];
@@ -50,7 +48,6 @@ pub fn mst_boruvka(
     }
     added_eids
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

@@ -1,12 +1,10 @@
 pub fn path_based(adj_list: &[Vec<usize>]) -> Vec<usize> {
     let g = adj_list;
     let n = g.len();
-
     let mut order = vec![n; n];
     let mut labels = vec![n; n];
     let mut o = 0;
     let mut l = 0;
-
     let mut st = vec![];
     let mut st_low = vec![];
     let mut st_dfs: Vec<isize> = (0..n as isize).rev().collect();

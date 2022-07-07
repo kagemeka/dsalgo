@@ -1,14 +1,10 @@
 use crate::least_prime_factor_table::least_prime_factor_table;
-
 pub struct PrimeFactorizeLPF {
     lpf: Vec<Option<u32>>,
 }
-
 impl PrimeFactorizeLPF {
     pub fn new(size: usize) -> Self {
-        Self {
-            lpf: least_prime_factor_table(size),
-        }
+        Self { lpf: least_prime_factor_table(size) }
     }
 
     pub fn factorize(&self, mut n: u32) -> Vec<(u32, u32)> {
@@ -35,7 +31,6 @@ impl PrimeFactorizeLPF {
         factors
     }
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

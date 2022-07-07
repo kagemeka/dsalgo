@@ -1,5 +1,4 @@
 use crate::prime_factorize_trial_division::prime_factorize_trial_division;
-
 // TODO: use faster factorization algorithm.
 pub fn mobius_function(n: u64) -> i8 {
     assert!(n > 0);
@@ -15,7 +14,6 @@ pub fn mobius_function(n: u64) -> i8 {
     }
     u
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

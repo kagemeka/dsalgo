@@ -1,5 +1,4 @@
 pub struct BinaryMinHeap<T>(Vec<T>);
-
 impl<T> BinaryMinHeap<T> {
     pub fn new() -> Self { Self(vec![]) }
 
@@ -50,7 +49,6 @@ impl<T> BinaryMinHeap<T> {
         x
     }
 }
-
 impl<T> Default for BinaryMinHeap<T> {
     fn default() -> Self { Self::new() }
 }

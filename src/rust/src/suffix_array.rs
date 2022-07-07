@@ -29,7 +29,6 @@ pub fn doubling(a: &Vec<usize>) -> Vec<usize> {
     }
     sa
 }
-
 pub fn doubling_counting_sort(a: &Vec<usize>) -> Vec<usize> {
     use crate::array_compression::ArrayCompression;
     let n = a.len();
@@ -76,7 +75,6 @@ pub fn doubling_counting_sort(a: &Vec<usize>) -> Vec<usize> {
                 rank[sa[i + 1]] += 1;
             }
         }
-
         k <<= 1;
         if k >= n {
             break;
@@ -84,7 +82,6 @@ pub fn doubling_counting_sort(a: &Vec<usize>) -> Vec<usize> {
     }
     sa
 }
-
 pub fn sais_recurse(a: &Vec<usize>) -> Vec<usize> {
     assert!(a.len() > 0);
     let mn = *a.iter().min().unwrap();
@@ -107,11 +104,9 @@ pub fn sais_recurse(a: &Vec<usize>) -> Vec<usize> {
     for &x in a.iter() {
         bucket[x] += 1;
     }
-
     let induce = |lms: &Vec<usize>| -> Vec<usize> {
         let mut sa = vec![n; n];
         let mut sa_idx = bucket.clone();
-
         for i in 0..m - 1 {
             sa_idx[i + 1] += sa_idx[i];
         }
@@ -119,7 +114,6 @@ pub fn sais_recurse(a: &Vec<usize>) -> Vec<usize> {
             sa_idx[a[i]] -= 1;
             sa[sa_idx[a[i]]] = i;
         }
-
         sa_idx = bucket.clone();
         let mut s = 0usize;
         for i in 0..m {
@@ -136,7 +130,6 @@ pub fn sais_recurse(a: &Vec<usize>) -> Vec<usize> {
                 sa_idx[a[i]] += 1;
             }
         }
-
         sa_idx = bucket.clone();
         for i in 0..m - 1 {
             sa_idx[i + 1] += sa_idx[i];
@@ -153,7 +146,6 @@ pub fn sais_recurse(a: &Vec<usize>) -> Vec<usize> {
         }
         sa
     };
-
     let sa = induce(&lms);
     let mut lms_idx = Vec::with_capacity(n);
     let mut rank = vec![n; n];
@@ -195,23 +187,14 @@ pub fn sais_recurse(a: &Vec<usize>) -> Vec<usize> {
     let sa = induce(&lms);
     sa[1..].to_vec()
 }
-
 #[cfg(test)]
 mod tests {
-
     #[test]
     fn suffix_array() {
-        let s = vec![
-            1, 1, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 2, 2, 0, 0,
-        ];
-        let answer = vec![
-            15, 14, 10, 6, 2, 11, 7, 3, 1, 0, 13, 12, 9, 5, 8, 4,
-        ];
+        let s = vec![1, 1, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 2, 2, 0, 0];
+        let answer = vec![15, 14, 10, 6, 2, 11, 7, 3, 1, 0, 13, 12, 9, 5, 8, 4];
         assert_eq!(super::sais_recurse(&s), answer,);
-        assert_eq!(
-            super::doubling_counting_sort(&s),
-            answer,
-        );
+        assert_eq!(super::doubling_counting_sort(&s), answer,);
         assert_eq!(super::doubling(&s), answer,);
     }
 }

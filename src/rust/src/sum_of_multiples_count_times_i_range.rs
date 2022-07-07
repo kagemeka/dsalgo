@@ -1,10 +1,7 @@
 use crate::find_root::isqrt;
-
 /// \sum_{i=1}^n{i \cdot |multiples(i)|}
 pub fn sum_of_multiples_count_times_i_range(
-    limit: u64,
-    lo: u64,
-    mut hi: u64,
+    limit: u64, lo: u64, mut hi: u64,
 ) -> u64 {
     // similar to sum of multiples sum.
     if limit < hi {
@@ -42,7 +39,6 @@ pub fn sum_of_multiples_count_times_i_range(
     }
     s
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
@@ -56,10 +52,7 @@ mod tests {
             sum_of_multiples_count_times_i_range(10, 3, 5),
             3 * 3 + 4 * 2 + 5 * 2
         );
-        println!(
-            "{}",
-            sum_of_multiples_count_times_i_range(10, 1, 2)
-        );
+        println!("{}", sum_of_multiples_count_times_i_range(10, 1, 2));
         assert_eq!(
             sum_of_multiples_count_times_i_range(10, 1, 2),
             1 * 10 + 2 * 5

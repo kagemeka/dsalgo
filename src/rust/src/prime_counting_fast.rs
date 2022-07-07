@@ -1,5 +1,4 @@
 use crate::find_root::isqrt;
-
 /// O(N^{3/4})
 pub fn prime_pi_fast(n: u64) -> u64 {
     if n < 2 {
@@ -7,7 +6,6 @@ pub fn prime_pi_fast(n: u64) -> u64 {
     }
     let sqrt = isqrt::floor(n) as usize;
     let n = n as usize;
-
     // consider sieve of Eratosthenes' transitions.
     // S(j, p) := number of trues in [2, j] after sieving with prime p.
     let mut small = vec![0; sqrt + 1]; // small[j] = S(j, p)
@@ -18,7 +16,6 @@ pub fn prime_pi_fast(n: u64) -> u64 {
         small[i] = i - 1;
         large[i] = n / i - 1;
     }
-
     for i in 2..=sqrt {
         if small[i] == small[i - 1] {
             continue;
@@ -28,9 +25,7 @@ pub fn prime_pi_fast(n: u64) -> u64 {
         // for j > sqrt(n), update large[inv] such that j = [N/inv].
         // for j <= sqrt(n), update small[j].
         let pi = small[i - 1]; // S(p - 1, p - 1) = pi(p - 1).
-
         // compute S(j, i) -= S(j/i, i - 1) - pi
-
         // for large
         // large[n/j] -= large[n/(j/i)] - pi = large[(n/j)i] - pi
         // large[k] -= large[ki] - pi
@@ -44,7 +39,6 @@ pub fn prime_pi_fast(n: u64) -> u64 {
         for k in border + 1..=sqrt.min(n_i / i) {
             large[k] -= small[n_i / k] - pi;
         }
-
         // for small
         // just small[j] -= small[j/i] - pi (i*i <= j <= sqrt)
         // be careful of updating in reverse order because of in-place.
@@ -58,7 +52,6 @@ pub fn prime_pi_fast(n: u64) -> u64 {
     }
     large[1] as u64
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

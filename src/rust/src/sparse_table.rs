@@ -1,13 +1,10 @@
 //! sparse table
-
 use std::iter::FromIterator;
 
 use crate::{algebraic_structure::*, binary_function::*};
-
 pub struct SparseTable<G: Semigroup> {
     data: Vec<Vec<G::S>>,
 }
-
 impl<G> std::iter::FromIterator<G::S> for SparseTable<G>
 where
     G: Semigroup + Idempotence + Commutative,
@@ -39,7 +36,6 @@ where
         Self { data }
     }
 }
-
 impl<G> SparseTable<G>
 where
     G: Semigroup + Idempotence + Commutative,
@@ -57,15 +53,10 @@ where
             return self.data[0][l].clone();
         }
         let i = (r - l).next_power_of_two().trailing_zeros() as usize - 1;
-        G::op(
-            self.data[i][l].clone(),
-            self.data[i][r - (1 << i)].clone(),
-        )
+        G::op(self.data[i][l].clone(), self.data[i][r - (1 << i)].clone())
     }
 }
-
 use crate::{algebraic_structure_impl::*, query::RangeGetQuery};
-
 impl<S, I> RangeGetQuery<I> for SparseTable<GroupApprox<S, I>>
 where
     GroupApprox<S, I>: Semigroup<S = S> + Idempotence + Commutative,
@@ -75,13 +66,10 @@ where
 
     fn get_range(&mut self, l: usize, r: usize) -> Self::T { self.reduce(l, r) }
 }
-
 use crate::bitops::len::with_clz as bit_length;
-
 pub struct DisjointSparseTable<G: Semigroup> {
     data: Vec<Vec<G::S>>,
 }
-
 impl<G> std::iter::FromIterator<G::S> for DisjointSparseTable<G>
 where
     G: Semigroup + Commutative,
@@ -100,20 +88,14 @@ where
             for p in (1 << i..=size).step_by(2 << i) {
                 for d in 1..(1 << i) {
                     let j = p - d;
-                    row[j - 1] = G::op(
-                        row[j - 1].clone(),
-                        row[j].clone(),
-                    );
+                    row[j - 1] = G::op(row[j - 1].clone(), row[j].clone());
                 }
                 for d in 0..(1 << i) - 1 {
                     let j = p + d;
                     if j + 1 >= size {
                         break;
                     }
-                    row[j + 1] = G::op(
-                        row[j].clone(),
-                        row[j + 1].clone(),
-                    );
+                    row[j + 1] = G::op(row[j].clone(), row[j + 1].clone());
                 }
             }
             data.push(row);
@@ -121,7 +103,6 @@ where
         Self { data }
     }
 }
-
 impl<G> DisjointSparseTable<G>
 where
     G: Semigroup + Commutative,
@@ -156,13 +137,9 @@ where
         // k <= l < r or l < r < k.
         // so the query cannot be dealed with j-th row.
         // then, check {j-1}-th bit next...
-        G::op(
-            self.data[i][l].clone(),
-            self.data[i][r].clone(),
-        )
+        G::op(self.data[i][l].clone(), self.data[i][r].clone())
     }
 }
-
 impl<S, I> RangeGetQuery<I> for DisjointSparseTable<GroupApprox<S, I>>
 where
     GroupApprox<S, I>: Semigroup<S = S> + Commutative,
@@ -172,26 +149,22 @@ where
 
     fn get_range(&mut self, l: usize, r: usize) -> Self::T { self.reduce(l, r) }
 }
-
 // TODO:
 // reference
 // https://github.com/maspypy/library/blob/main/ds/xor_sparsetable.hpp
 pub mod xor_sparse_table {}
-
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn test_sparse_table() {
         use crate::group_theory_id::Min;
-
         let arr: Vec<usize> = vec![0, 4, 2, 8, 5, 1];
         let sp = SparseTable::<GroupApprox<usize, Min>>::new(&arr);
         assert_eq!(sp.reduce(0, 4), 0);
         assert_eq!(sp.reduce(3, 4), 8);
         assert_eq!(sp.reduce(1, 6), 1);
     }
-
     #[test]
     fn test_disjoint_sparse_table() {
         use crate::group_theory_id::Min;

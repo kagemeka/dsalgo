@@ -9,7 +9,6 @@ where
     }
     n
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

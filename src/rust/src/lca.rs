@@ -1,24 +1,19 @@
 //! lowest common ancestor
-
 pub mod tree {
     //! LCA for undirected tree.
-
     use crate::{
         bitops::len::with_clz as bit_length,
         treeops::{tree_depths, tree_parents},
     };
-
     pub struct Doubling {
         a: Vec<Vec<usize>>, // ancestor
         d: Vec<usize>,      // depth
     }
-
     // TODO: split off doubling part as module.
     impl Doubling {
         pub fn new(e: &[(usize, usize)]) -> Self {
             const R: usize = 0;
             let n = e.len() + 1;
-
             let d = tree_depths(&e, R);
             let k = bit_length(*d.iter().max().unwrap() as u64).max(1) as usize;
             let mut a = vec![vec![n; n]; k];
@@ -58,19 +53,13 @@ pub mod tree {
             self.a[0][u]
         }
     }
-
     use crate::{tree_edges_to_graph::tree_edges_to_graph, uf::*};
-
     /// tarjan's offline algorithm
     pub fn tarjan(e: &[(usize, usize)], qs: &[(usize, usize)]) -> Vec<usize> {
         fn dfs(
-            g: &Vec<Vec<usize>>,
-            q: &Vec<Vec<(usize, usize)>>,
-            visited: &mut Vec<bool>,
-            uf: &mut UF,
-            a: &mut Vec<usize>,
-            lca: &mut Vec<usize>,
-            u: usize,
+            g: &Vec<Vec<usize>>, q: &Vec<Vec<(usize, usize)>>,
+            visited: &mut Vec<bool>, uf: &mut UF, a: &mut Vec<usize>,
+            lca: &mut Vec<usize>, u: usize,
         ) {
             visited[u] = true;
             a[u] = u;
@@ -97,26 +86,15 @@ pub mod tree {
         let mut uf = UF::new(n);
         let mut ancestor = vec![n; n];
         let mut lca = vec![n; qs.len()];
-        dfs(
-            &graph,
-            &q,
-            &mut visited,
-            &mut uf,
-            &mut ancestor,
-            &mut lca,
-            0,
-        );
+        dfs(&graph, &q, &mut visited, &mut uf, &mut ancestor, &mut lca, 0);
         lca
     }
-
     use crate::heavly_light_decomposition::heavy_light_decompose;
-
     pub struct LCAHLD {
         p: Vec<Option<usize>>, // parents
         d: Vec<usize>,         // depths
         r: Vec<usize>,         // roots
     }
-
     impl LCAHLD {
         pub fn new(tree_edges: &[(usize, usize)], root: usize) -> Self {
             Self {
@@ -137,18 +115,15 @@ pub mod tree {
             if self.d[u] <= self.d[v] { u } else { v }
         }
     }
-
     use crate::{
         ett::{first_positions, tour_nodes},
         query::RangeMinimumQuery,
     };
-
     /// with euler tour and static range minimum query.
     pub struct EulerTourRMQ<Q> {
         first_pos: Vec<usize>,
         rmq: Q,
     }
-
     impl<Q> EulerTourRMQ<Q> {
         pub fn new(tree_edges: &[(usize, usize)], root: usize) -> Self
         where
@@ -176,34 +151,22 @@ pub mod tree {
             self.rmq.range_minimum(left, right + 1).1
         }
     }
-
     use crate::{
-        algebraic_structure_impl::*,
-        group_theory_id::Min,
-        segtree::Segtree,
+        algebraic_structure_impl::*, group_theory_id::Min, segtree::Segtree,
     };
-
     type CommonG = GroupApprox<(usize, usize), Min>;
-
     #[allow(dead_code)]
     type ETRMQSeg = EulerTourRMQ<Segtree<CommonG>>;
-
     use crate::sparse_table::SparseTable;
-
     #[allow(dead_code)]
     type ETRMQSpT = EulerTourRMQ<SparseTable<CommonG>>;
-
     use crate::sqrt_decomposition::SqrtDecomposition;
-
     #[allow(dead_code)]
     type ETRMQSqD = EulerTourRMQ<SqrtDecomposition<CommonG>>;
-
     use crate::sparse_table::DisjointSparseTable;
-
     #[allow(dead_code)]
     type ETRMQDSpT = EulerTourRMQ<DisjointSparseTable<CommonG>>;
 }
-
 // TODO:
 pub mod dyn_tree {
     //! LCA for dynamic tree.
@@ -216,7 +179,6 @@ pub mod dyn_tree {
     // also, by using dynamic binary search tree like (lazy?) splay tree,
     // we might be able to add a node in addition to removing a node.
 }
-
 // TODO:
 pub mod dag {
     //! LCA on a DAG.

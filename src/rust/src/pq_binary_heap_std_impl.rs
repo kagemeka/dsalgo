@@ -1,5 +1,4 @@
 use crate::priority_queue::{MinimumQueue, Pop, Push};
-
 impl<T: std::cmp::Ord> Push
     for std::collections::BinaryHeap<std::cmp::Reverse<T>>
 {
@@ -7,7 +6,6 @@ impl<T: std::cmp::Ord> Push
 
     fn push(&mut self, x: Self::T) { Self::push(self, std::cmp::Reverse(x)); }
 }
-
 impl<T: std::cmp::Ord> Pop
     for std::collections::BinaryHeap<std::cmp::Reverse<T>>
 {
@@ -21,7 +19,6 @@ impl<T: std::cmp::Ord> Pop
         }
     }
 }
-
 impl<T: std::cmp::Ord> MinimumQueue
     for std::collections::BinaryHeap<std::cmp::Reverse<T>>
 {

@@ -1,11 +1,8 @@
 pub mod max {
     //! maximum flow problem
-
     /// O(V^2 + VE^2)
     pub fn edmonds_karp(
-        g: &Vec<Vec<(usize, u64)>>,
-        src: usize,
-        sink: usize,
+        g: &Vec<Vec<(usize, u64)>>, src: usize, sink: usize,
     ) -> u64 {
         let n = g.len();
         let mut rf = vec![vec![0; n]; n];
@@ -22,11 +19,8 @@ pub mod max {
                 };
             }
         }
-
         fn find_path(
-            rf: &Vec<Vec<u64>>,
-            g: &mut Vec<Vec<usize>>,
-            src: usize,
+            rf: &Vec<Vec<u64>>, g: &mut Vec<Vec<usize>>, src: usize,
             sink: usize,
         ) -> Vec<usize> {
             let n = g.len();
@@ -52,11 +46,8 @@ pub mod max {
             }
             path
         }
-
         fn augment_flow(
-            rf: &mut Vec<Vec<u64>>,
-            g: &mut Vec<Vec<usize>>,
-            path: &Vec<usize>,
+            rf: &mut Vec<Vec<u64>>, g: &mut Vec<Vec<usize>>, path: &Vec<usize>,
         ) -> u64 {
             let mut flow = std::u64::MAX;
             for i in 0..path.len() - 1 {
@@ -73,7 +64,6 @@ pub mod max {
             }
             flow
         }
-
         let mut flow = 0;
         loop {
             let path = find_path(&rf, &mut g, src, sink);
@@ -85,12 +75,9 @@ pub mod max {
         }
         flow
     }
-
     /// O(V^2 + Ef)
     pub fn ford_fulkerson(
-        g: &Vec<Vec<(usize, u64)>>,
-        src: usize,
-        sink: usize,
+        g: &Vec<Vec<(usize, u64)>>, src: usize, sink: usize,
     ) -> u64 {
         let n = g.len();
         let mut rf = vec![vec![0; n]; n];
@@ -107,14 +94,9 @@ pub mod max {
                 };
             }
         }
-
         fn augment_flow(
-            sink: usize,
-            rf: &mut Vec<Vec<u64>>,
-            g: &mut Vec<Vec<usize>>,
-            visited: &mut Vec<bool>,
-            u: usize,
-            flow_in: u64,
+            sink: usize, rf: &mut Vec<Vec<u64>>, g: &mut Vec<Vec<usize>>,
+            visited: &mut Vec<bool>, u: usize, flow_in: u64,
         ) -> u64 {
             visited[u] = true;
             if u == sink {
@@ -150,7 +132,6 @@ pub mod max {
             }
             flow
         }
-
         // let mut visited = vec![false; n];
         let mut flow = 0;
         loop {
@@ -171,7 +152,6 @@ pub mod max {
         }
         flow
     }
-
     /// O(V^2E)
     pub fn dinic(g: &Vec<Vec<(usize, u64)>>, src: usize, sink: usize) -> u64 {
         let n = g.len();
@@ -205,14 +185,9 @@ pub mod max {
             }
             level
         };
-
         fn flow_to_sink(
-            sink: usize,
-            rf: &mut Vec<Vec<u64>>,
-            g: &mut Vec<Vec<usize>>,
-            level: &Vec<usize>,
-            u: usize,
-            mut flow_in: u64,
+            sink: usize, rf: &mut Vec<Vec<u64>>, g: &mut Vec<Vec<usize>>,
+            level: &Vec<usize>, u: usize, mut flow_in: u64,
         ) -> u64 {
             if u == sink {
                 return flow_in;
@@ -246,67 +221,43 @@ pub mod max {
             }
             flow_out
         }
-
         let mut flow = 0;
         loop {
             let level = update_level(&g);
             if level[sink] == n {
                 break;
             }
-            flow += flow_to_sink(
-                sink,
-                &mut rf,
-                &mut g,
-                &level,
-                src,
-                std::u64::MAX,
-            );
+            flow +=
+                flow_to_sink(sink, &mut rf, &mut g, &level, src, std::u64::MAX);
         }
         flow
     }
-
     /// binary blocking flow
     pub fn binary_blocking() {}
-
     pub fn blnpsssw_bllsssw() {}
-
     /// chen kyng liu peng gutenberg sachdeva's algorithm
     pub fn cklpgs() {}
-
     pub fn gao_liu_peng() {}
-
     pub fn kathuria_liu_sidford() {}
-
     /// dinic dynamic tree
     pub fn dinic_dyntree() {}
-
     /// MPM(MKM) algorithm
     pub fn mpm() {}
-
     pub fn mkm() { mpm(); }
-
     pub mod push_relabel {
         pub fn normal() {}
-
         pub fn general() {}
-
         pub fn dyntree() {}
-
         pub fn fifo_vertex() {}
-
         pub fn dist_vertex() {}
     }
-
     /// King, Rao, Tarjan's algorithm
     pub fn krt() {}
-
     /// James Orlin + KRT
     pub fn orlin() {}
 }
-
 pub mod mincost {
     //! MCFP, minimum cost flow problem
-
     pub fn primal_dual() {}
     // TODO
 
@@ -330,7 +281,6 @@ pub mod mincost {
 
     // }
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

@@ -1,4 +1,4 @@
-        pub fn binary_search<T, F>(is_ok: &F, monotonic_sequence: &[T]) -> usize
+pub fn binary_search<T, F>(is_ok: &F, monotonic_sequence: &[T]) -> usize
 where
     F: Fn(&T) -> bool,
 {
@@ -14,7 +14,6 @@ where
     }
     ok as usize
 }
-
 pub fn binary_search_another<T, F>(is_ok: &F, monotonic_sequence: &[T]) -> usize
 where
     F: Fn(&T) -> bool,
@@ -31,41 +30,21 @@ where
     }
     hi_ok
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn test() {
         let v = (0..10).collect::<Vec<_>>();
-        assert_eq!(
-            binary_search(&|x: &i32| x >= &5, &v),
-            5
-        );
-        assert_eq!(
-            binary_search(&|x: &i32| x >= &10, &v),
-            10
-        );
-        assert_eq!(
-            binary_search(&|x: &i32| x >= &11, &v),
-            10
-        );
+        assert_eq!(binary_search(&|x: &i32| x >= &5, &v), 5);
+        assert_eq!(binary_search(&|x: &i32| x >= &10, &v), 10);
+        assert_eq!(binary_search(&|x: &i32| x >= &11, &v), 10);
     }
-
     #[test]
     fn test_another() {
         let v = (0..10).collect::<Vec<_>>();
-        assert_eq!(
-            binary_search_another(&|x: &i32| x >= &5, &v),
-            5
-        );
-        assert_eq!(
-            binary_search_another(&|x: &i32| x >= &10, &v),
-            10
-        );
-        assert_eq!(
-            binary_search_another(&|x: &i32| x >= &11, &v),
-            10
-        );
+        assert_eq!(binary_search_another(&|x: &i32| x >= &5, &v), 5);
+        assert_eq!(binary_search_another(&|x: &i32| x >= &10, &v), 10);
+        assert_eq!(binary_search_another(&|x: &i32| x >= &11, &v), 10);
     }
 }

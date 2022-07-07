@@ -3,9 +3,7 @@
 /// what meant by pow_2_power_of_2 ?
 /// -> base = 2^k (power of 2), and mod = base^2 (pow 2)
 pub fn karatsuba_mul_quotient_pow_2_power_of_2(
-    k: u8,
-    x: u128,
-    y: u128,
+    k: u8, x: u128, y: u128,
 ) -> u128 {
     assert!(k <= 63);
     let base = 1 << k;
@@ -20,7 +18,6 @@ pub fn karatsuba_mul_quotient_pow_2_power_of_2(
     c2 + ((c1 + (c0 >> k)) >> k)
     // = c2 + (((c1 << k) + c0) >> (k << 1)), but c1 << k can overfloXw
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

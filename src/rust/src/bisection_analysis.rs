@@ -1,10 +1,6 @@
 /// generalized bisection method in analysis.
 pub fn bisect<T, B, F>(
-    calc_middle: &B,
-    is_ok: &F,
-    trivial_ng: T,
-    trivial_ok: T,
-    max_epohcs: usize,
+    calc_middle: &B, is_ok: &F, trivial_ng: T, trivial_ok: T, max_epohcs: usize,
 ) -> T
 where
     B: Fn(T, T) -> T,
@@ -26,7 +22,6 @@ where
     }
     ok
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

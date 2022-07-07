@@ -1,7 +1,6 @@
 pub fn kosaraju(adj_list: Vec<Vec<usize>>) -> Vec<usize> {
     let mut g = adj_list;
     let n = g.len();
-
     let mut visited = vec![false; n];
     let mut labels = vec![n; n];
     let mut que = vec![];
@@ -30,7 +29,6 @@ pub fn kosaraju(adj_list: Vec<Vec<usize>>) -> Vec<usize> {
     }
     use crate::scc_transpose::transpose;
     g = transpose(g);
-
     let mut l = 0;
     let mut st = vec![];
     for i in que.into_iter().rev() {

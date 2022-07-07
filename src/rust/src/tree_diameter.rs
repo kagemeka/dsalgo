@@ -15,7 +15,6 @@ fn tree_dfs(g: &Vec<Vec<(usize, i64)>>, root: usize) -> (Vec<usize>, Vec<i64>) {
     }
     (parent, dist)
 }
-
 pub fn tree_diameter(g: &Vec<(usize, usize, i64)>) -> (Vec<usize>, i64) {
     let n = g.len() + 1;
     let mut t: Vec<Vec<(usize, i64)>> = vec![vec![]; n];

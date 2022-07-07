@@ -19,18 +19,12 @@ pub fn kmp_findall<T: PartialEq>(a: &[T], pattern: &[T]) -> Vec<usize> {
     }
     indices
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn test() {
-        let s = [
-            'a', 'b', 'a', 'b', 'a', 'b', 'a', 'b', 'c',
-        ];
-        assert_eq!(
-            kmp_findall(&s, &['a', 'b', 'a']),
-            [0, 2, 4]
-        );
+        let s = ['a', 'b', 'a', 'b', 'a', 'b', 'a', 'b', 'c'];
+        assert_eq!(kmp_findall(&s, &['a', 'b', 'a']), [0, 2, 4]);
     }
 }

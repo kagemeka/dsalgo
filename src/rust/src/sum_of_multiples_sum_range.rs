@@ -1,5 +1,4 @@
 use crate::{find_root::isqrt, sum_of_multiples::sum_of_multiples};
-
 /// \sum_{i=lo}^{hi}{\sum_{i|j, j <= limit}{j}}
 /// sqrt split teqnique
 /// O(\sqrt{n})
@@ -41,7 +40,6 @@ pub fn sum_of_multiples_sum_range(limit: u64, lo: u64, mut hi: u64) -> u64 {
     }
     s
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
@@ -51,10 +49,6 @@ mod tests {
             sum_of_multiples_sum_range(10000000, 1, 10000000),
             838627288460105
         );
-
-        assert_eq!(
-            sum_of_multiples_sum_range(10, 3, 5),
-            18 + 12 + 15,
-        );
+        assert_eq!(sum_of_multiples_sum_range(10, 3, 5), 18 + 12 + 15,);
     }
 }
