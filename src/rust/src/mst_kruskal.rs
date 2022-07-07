@@ -1,10 +1,10 @@
-use crate::uf::*;
+use crate::{union_find::*, union_find_trait::*};
 // TODO: make edge type generic.
 /// O(E\log{E})
 pub fn mst_kruskcal(
     v_size: usize, undirected_edges: Vec<(usize, usize, i64)>,
 ) -> Vec<usize> {
-    let mut uf = UF::new(v_size);
+    let mut uf = UnionFind::new(v_size);
     let mut edges: Vec<(usize, (usize, usize, i64))> =
         undirected_edges.into_iter().enumerate().collect();
     edges.sort_by_key(|&(_, (.., w))| w);

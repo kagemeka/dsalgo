@@ -25,3 +25,26 @@ def find_divisors(n: int) -> list[int]:
 
 def highly_composite_numbers() -> list[int]:
     ...
+
+
+import unittest
+
+
+class TestCountDivisors(unittest.TestCase):
+    def test(self) -> None:
+        self.assertEqual(
+            count_divisors_zeta_transform(20),
+            [0, 1, 2, 2, 3, 2, 4, 2, 4, 3, 4, 2, 6, 2, 4, 4, 5, 2, 6, 2],
+        )
+
+
+class TestFindDivisors(unittest.TestCase):
+    def test(self) -> None:
+        self.assertEqual(
+            find_divisors(100),
+            [1, 2, 4, 5, 10, 20, 25, 50, 100],
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()

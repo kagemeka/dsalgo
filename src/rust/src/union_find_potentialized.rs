@@ -1,85 +1,4 @@
-//! Disjoint-Set-Union (DSU) or Union-Find (UF).
-pub trait Root {
-    fn root(&mut self, u: usize) -> usize;
-}
-#[allow(private_in_public)]
-trait Size {
-    fn size(&self) -> usize;
-}
-pub trait Unite {
-    fn unite(&mut self, u: usize, v: usize);
-}
-pub trait SizeOf {
-    fn size_of(&mut self, u: usize) -> usize;
-}
-pub trait Same {
-    fn same(&mut self, u: usize, v: usize) -> bool;
-}
-impl<U: Root> Same for U {
-    fn same(&mut self, u: usize, v: usize) -> bool {
-        self.root(u) == self.root(v)
-    }
-}
-pub trait Labels {
-    fn labels(&mut self) -> Vec<usize>;
-}
-impl<U: Root + Size> Labels for U {
-    /// same label -> same component.
-    fn labels(&mut self) -> Vec<usize> {
-        let n = self.size();
-        let mut lb = vec![n; n];
-        let mut l = 0;
-        for i in 0..n {
-            let r = self.root(i);
-            if lb[r] == n {
-                lb[r] = l;
-                l += 1;
-            }
-            lb[i] = lb[r];
-        }
-        lb
-    }
-}
-/// Union Find
-#[derive(Debug)]
-pub struct UF(Vec<isize>); // root: neg-size, other: parent
-impl UF {
-    pub fn new(size: usize) -> Self { Self(vec![-1; size]) }
-}
-impl Size for UF {
-    fn size(&self) -> usize { self.0.len() }
-}
-impl Root for UF {
-    fn root(&mut self, u: usize) -> usize {
-        if self.0[u] < 0 {
-            return u;
-        }
-        self.0[u] = self.root(self.0[u] as usize) as isize;
-        self.0[u] as usize
-    }
-}
-impl Unite for UF {
-    fn unite(&mut self, u: usize, v: usize) {
-        let mut u = self.root(u);
-        let mut v = self.root(v);
-        if u == v {
-            return;
-        }
-        if self.0[u] > self.0[v] {
-            std::mem::swap(&mut u, &mut v);
-        }
-        self.0[u] += self.0[v];
-        self.0[v] = u as isize;
-    }
-}
-impl SizeOf for UF {
-    /// size of the component containing u
-    fn size_of(&mut self, u: usize) -> usize {
-        let u = self.root(u);
-        -self.0[u] as usize
-    }
-}
-use crate::algebraic_structure::*;
+use crate::{algebraic_structure::*, union_find_trait::*};
 pub struct PotentialUF<G: AbelianGroup> {
     a: Vec<isize>, // neg-size or parent
     rp: Vec<G::S>, // root: identity, other: relative potential from parent
@@ -164,20 +83,9 @@ where
         -self.a[u] as usize
     }
 }
-// TODO:
-pub struct RollbackUF {}
-// TODO:
-pub struct PersitentUF {}
 #[cfg(test)]
 mod tests {
     use super::*;
-    #[test]
-    fn test_uf() {
-        let mut uf = UF::new(10);
-        assert_eq!(uf.size_of(0), 1);
-        uf.unite(3, 9);
-        assert_eq!(uf.size_of(3), 2);
-    }
     #[test]
     fn test_potential_uf() {
         use crate::{algebraic_structure_impl::*, group_theory_id::Additive};

@@ -53,12 +53,15 @@ pub mod tree {
             self.a[0][u]
         }
     }
-    use crate::{tree_edges_to_graph::tree_edges_to_graph, uf::*};
+    use crate::{
+        tree_edges_to_graph::tree_edges_to_graph, union_find::*,
+        union_find_trait::*,
+    };
     /// tarjan's offline algorithm
     pub fn tarjan(e: &[(usize, usize)], qs: &[(usize, usize)]) -> Vec<usize> {
         fn dfs(
             g: &Vec<Vec<usize>>, q: &Vec<Vec<(usize, usize)>>,
-            visited: &mut Vec<bool>, uf: &mut UF, a: &mut Vec<usize>,
+            visited: &mut Vec<bool>, uf: &mut UnionFind, a: &mut Vec<usize>,
             lca: &mut Vec<usize>, u: usize,
         ) {
             visited[u] = true;
@@ -83,7 +86,7 @@ pub mod tree {
             q[v].push((u, i));
         }
         let mut visited = vec![false; n];
-        let mut uf = UF::new(n);
+        let mut uf = UnionFind::new(n);
         let mut ancestor = vec![n; n];
         let mut lca = vec![n; qs.len()];
         dfs(&graph, &q, &mut visited, &mut uf, &mut ancestor, &mut lca, 0);
