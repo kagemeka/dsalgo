@@ -179,7 +179,7 @@ pub mod fast_fourier_transform;
 pub mod fast_mobius_transform;
 pub mod fast_modulo_transform;
 pub mod fast_zeta_transform;
-pub mod fenwick;
+pub mod fenwick_tree;
 pub mod fermat_factorization_method;
 pub mod fft;
 pub mod fibonacci_heap;

@@ -81,7 +81,7 @@ where
                 self.0[i + d].clone(),
             );
             if i + d <= l || f(&nv) {
-                i += d;
+                    i += d;
                 v = nv;
             }
         }
