@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import math
-import typing
-from dsalgo.psieve import erat_ps
-import unittest
 import random
+import typing
+import unittest
+
+from dsalgo.psieve import erat_ps
 
 random.seed(1 << 10)
 

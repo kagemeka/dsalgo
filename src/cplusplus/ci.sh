@@ -28,7 +28,7 @@ install_googletest() {
 #region
 # source `ci.sh` or copy these commands into ~/.bashrc
 gpp_compile() {
-    g++ $1 -DCPP_DEBUG -Wall -Wextra -Werror -std=c++17 -O3 -o main
+    g++ $1 -DCPP_DEBUG -Wall -Wextra -Werror -std=c++17 -O2 -g -o main
 }
 
 gpp() {

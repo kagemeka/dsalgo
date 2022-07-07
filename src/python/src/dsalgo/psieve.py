@@ -1,7 +1,8 @@
 # prime sieve
 
-import unittest
 import typing
+import unittest
+
 from dsalgo.isqrt import floor
 
 

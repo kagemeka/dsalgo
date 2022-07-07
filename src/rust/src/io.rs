@@ -179,3 +179,13 @@ mod tests {
         dbg!(dbg!(a) + 1);
     }
 }
+
+// template of main function.
+// fn main() -> Result<(), Box<dyn std::error::Error>> {
+//     use std::io::Write;
+//     let mut reader = locked_stdin_reader();
+//     let mut writer = locked_stdout_buf_writer();
+
+//     writer.flush()?;
+//     Ok(())
+// }

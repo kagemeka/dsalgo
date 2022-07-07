@@ -1,7 +1,7 @@
 import unittest
 
-import dsalgo.algstr
 import dsalgo.combinatorics
+import python.src.dsalgo.algebraic_structure
 
 
 class Test(unittest.TestCase):
@@ -13,7 +13,7 @@ class Test(unittest.TestCase):
             [1, 3, 3, 1, 0],
             [1, 4, 6, 4, 1],
         ]
-        monoid = dsalgo.algstr.Monoid[int](
+        monoid = dsalgo.algebraic_structure.Monoid[int](
             operation=lambda x, y: x + y,
             identity=lambda: 0,
         )

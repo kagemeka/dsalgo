@@ -1,1 +1,0 @@
-# range query algorithm

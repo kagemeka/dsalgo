@@ -3,6 +3,7 @@ from __future__ import annotations
 import typing
 
 from dsalgo._util import unwrap
+from dsalgo.floyd_warshall import *
 
 
 class NegativeCycleError(Exception):
@@ -164,31 +165,7 @@ def johnson_sparse(
     return dists
 
 
-def floyd_warshall(
-    dense_graph: list[list[int | None]],
-) -> list[list[int | None]]:
-    import copy
-
-    dist = copy.deepcopy(dense_graph)
-    n = len(dist)
-    for i in range(n):
-        dist[i][i] = 0
-    assert all(len(edges) == n for edges in dist)
-    for k in range(n):
-        for i in range(n):
-            for j in range(n):
-                if dist[i][k] is None or dist[k][j] is None:
-                    continue
-                d = unwrap(dist[i][k]) + unwrap(dist[k][j])
-                if dist[i][j] is None or d < unwrap(dist[i][j]):
-                    dist[i][j] = d
-    for i in range(n):
-        if unwrap(dist[i][i]) < 0:
-            raise NegativeCycleError
-    return dist
-
-
-def desopo_papge(
+def desopo_pape(
     graph: list[list[tuple[int, int]]],
     src: int,
 ) -> list[int | None]:

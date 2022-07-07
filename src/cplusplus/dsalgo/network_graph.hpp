@@ -3,23 +3,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template <typename T>
-struct Edge {
-
+template<typename T> struct Edge {
 public:
   T weight, capacity;
 
-  Edge(T weight = 1, T capacity = 1) : weight(weight), capacity(capacity) {}
+  Edge(T weight = 1, T capacity = 1): weight(weight), capacity(capacity) {}
 };
 
-template <typename T>
-struct Node {};
+template<typename T> struct Node {};
 
-template <typename T>
-struct Graph {
-
+template<typename T> struct Graph {
 public:
-  Graph(int n = 0) : edges(n), nodes(n) {}
+  Graph(int n = 0): edges(n), nodes(n) {}
 
   void add_edge(int u, int v, T weight = 1, T capacity = 1) {
     edges[u].emplace(v, Edge<T>(weight, capacity));
@@ -37,15 +32,13 @@ public:
     level[source] = 0;
     queue<int> que;
     que.push(source);
-    while (!que.empty()) {
+    while(!que.empty()) {
       int u = que.front();
       que.pop();
-      for (const auto& p : edges[u]) {
+      for(auto const& p: edges[u]) {
         int v = p.first;
         Edge<T> e = p.second;
-        if (level[v] != -1) {
-          continue;
-        }
+        if(level[v] != -1) { continue; }
         level[v] = level[u] + 1;
         que.push(v);
       }

@@ -1,6 +1,6 @@
 import typing
 
-from dsalgo.algstr import Monoid
+from python.src.dsalgo.algebraic_structure import Monoid
 
 S = typing.TypeVar("S")
 

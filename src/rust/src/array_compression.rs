@@ -1,66 +1,32 @@
-use crate::vector_unique::vector_unique;
-
-pub struct CompressionResult<T> {
-    pub keys: Vec<usize>,
-    pub values: Vec<T>,
-}
-
-pub fn compress<T: Ord + Clone>(slice: &[T]) -> CompressionResult<T> {
-    let values = vector_unique(slice.to_vec());
-    let keys = slice
-        .iter()
-        .map(|x| values.binary_search(x).unwrap())
-        .collect::<Vec<_>>();
-    CompressionResult { keys, values }
-}
-
-pub struct ArrayCompression<T: Ord + Clone> {
-    values: Vec<T>,
-}
+pub struct ArrayCompression<T>(Vec<T>);
 
 impl<T: Ord + Clone> ArrayCompression<T> {
-    pub fn new(slice: &[T]) -> Self {
-        Self {
-            values: vector_unique(slice.to_vec()),
-        }
-    }
+    pub fn new(a: Vec<T>) -> Self { Self(crate::vector_unique::unique(a)) }
 
-    pub fn encode(&self, value: &T) -> Option<usize> {
-        if let Ok(key) = self.values.binary_search(value) {
-            Some(key)
-        } else {
-            None
-        }
-    }
+    pub fn encode(&self, v: &T) -> usize { self.0.binary_search(v).unwrap() }
 
-    pub fn decode(&self, key: usize) -> T { self.values[key].clone() }
+    pub fn inv(&self, i: usize) -> T { self.0[i].clone() }
+
+    pub fn once(a: Vec<T>) -> Vec<usize> {
+        let f = Self::new(a.clone());
+        a.iter().map(|x| f.encode(x)).collect()
+    }
 }
-
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
     fn test() {
         let arr = [4, 3, 0, -1, 3, 10];
-        let compression = super::ArrayCompression::new(&arr);
-        assert_eq!(
-            compression.encode(&-1).unwrap(),
-            0
-        );
-        assert_eq!(
-            compression.encode(&10).unwrap(),
-            4
-        );
-        assert_eq!(compression.decode(0), -1);
-        assert_eq!(compression.encode(&5), None);
+        let f = ArrayCompression::new(arr.to_vec());
+        assert_eq!(f.encode(&-1), 0);
+        assert_eq!(f.encode(&10), 4);
+        assert_eq!(f.inv(0), -1);
+        // f.encode(&5); // error
 
-        let result = super::compress(&arr);
         assert_eq!(
-            result.keys,
+            ArrayCompression::once(arr.to_vec()),
             vec![3, 2, 1, 0, 2, 4]
-        );
-        assert_eq!(
-            result.values,
-            vec![-1, 0, 3, 4, 10]
         );
     }
 }

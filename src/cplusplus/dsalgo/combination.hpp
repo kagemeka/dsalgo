@@ -1,36 +1,25 @@
 #pragma once
-#include "./factorial_table.hpp"
-#include "./inverse_factorial_table.hpp"
-#include <cstdint>
+#include "factorial_table.hpp"
+#include "inverse_factorial_table.hpp"
+#include <cassert>
 #include <vector>
 
 template <typename S>
 class combination {
-  std::vector<S> f, if_;
+  std::vector<S> fact, inv_fact;
 
 public:
-  combination(usize n) {
-    f = factorials<S>(n);
-    if_ = inv_factorials<S>(n);
+  combination(int size) {
+    fact = factorial_table<S>(size);
+    inv_fact = inverse_factorial_table<S>(size);
   }
-  auto operator()(usize n, usize k) -> S {
-    if (n < k) return 0;
-    return f[n] * if_[k] * if_[n - k];
+  auto operator()(int n, int k) -> S {
+    if (k < 0 || n < k) return 0;
+    return fact[n] * inv_fact[k] * inv_fact[n - k];
   }
 
-  auto inv(usize n, usize k) -> S {
-    assert(k <= n);
-    return if_[n] * f[k] * if_[n - k];
-  }
-};
-
-template <typename S>
-class homogeneous_product {
-  combination<S> choose;
-
-public:
-  homogeneous_product(usize size) : choose(size) {}
-  auto operator()(usize n, usize k) -> S {
-    return n == 0 ? 0 : choose(n + k - 1, k);
+  auto inv(int n, int k) -> S {
+    assert(0 <= k && k <= n);
+    return inv_fact[n] * fact[k] * fact[n - k];
   }
 };

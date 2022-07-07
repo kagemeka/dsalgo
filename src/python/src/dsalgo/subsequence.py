@@ -26,6 +26,5 @@ def count_common_subsequences(
     return dp[-1][-1]
 
 
-
 def count_subsequences(arr: typing.Sequence[int]) -> int:
     ...

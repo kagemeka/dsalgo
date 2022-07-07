@@ -1,26 +1,11 @@
-#include <stdexcept>
-#include <vector>
+#pragma once
 
-template <typename T>
-auto floyd_warshall(const std::vector<std::vector<T>>& min_edge_matrix)
-    -> std::vector<std::vector<T>> {
-  auto dist = min_edge_matrix;
-  unsigned long int n = dist.size();
-  for (unsigned long int i = 0; i < n; ++i) assert(dist[i].size() == n);
-  for (unsigned long int i = 0; i < n; ++i) {
-    dist[i][i] = std::min(dist[i][i], 0);
-  }
-  for (unsigned long int k = 0; k < n; ++k) {
-    for (unsigned long int i = 0; i < n; ++i) {
-      for (unsigned long int j = 0; j < n; ++j) {
-        dist[i][j] = std::min(dist[i][j], dist[i][k] + dist[k][j]);
-      }
+template<typename G, typename F> auto floyd_warshall(G g, F f) -> G {
+  int n = g.size();
+  for(int k = 0; k < n; ++k) {
+    for(int i = 0; i < n; ++i) {
+      for(int j = 0; j < n; ++j) { g[i][j] = f(g[i][j], g[i][k], g[k][j]); }
     }
   }
-  for (unsigned long int i = 0; i < n; ++i) {
-    if (dist[i][i] < 0) {
-      throw std::logic_error("negative cycle found.");
-    }
-  }
-  return dist;
+  return g;
 }

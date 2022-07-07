@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import typing
 
-from dsalgo.algstr import Monoid
 from dsalgo.floor_sqrt import floor_sqrt
+from python.src.dsalgo.algebraic_structure import Monoid
 
 S = typing.TypeVar("S")
 
