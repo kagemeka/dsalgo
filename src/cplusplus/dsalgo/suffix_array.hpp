@@ -1,10 +1,8 @@
 // TODO:
-
 #include <algorithm>
 #include <functional>
 #include <numeric>
 #include <vector>
-
 std::vector<int> sa_is(std::vector<int> a) {
   int mn = *std::min_element(a.begin(), a.end());
   int n = a.size();
@@ -23,14 +21,12 @@ std::vector<int> sa_is(std::vector<int> a) {
   std::reverse(lms.begin(), lms.end());
   std::vector<int> bucket(m);
   for(int const& x: a) bucket[x]++;
-
   std::function<std::vector<int>()> induce = [&]() -> std::vector<int> {
     std::vector<int> sa(n, -1);
     std::vector<int> sa_idx(m);
     std::copy(bucket.begin(), bucket.end(), sa_idx.begin());
     for(int i = 0; i < m - 1; i++) sa_idx[i + 1] += sa_idx[i];
     for(int i = lms.size() - 1; i > -1; i--) sa[--sa_idx[a[lms[i]]]] = lms[i];
-
     std::copy(bucket.begin(), bucket.end(), sa_idx.begin());
     int s = 0;
     for(int i = 0; i < m; i++) {
@@ -41,7 +37,6 @@ std::vector<int> sa_is(std::vector<int> a) {
       int i = sa[j] - 1;
       if(i >= 0 && !is_s[i]) sa[sa_idx[a[i]]++] = i;
     }
-
     std::copy(bucket.begin(), bucket.end(), sa_idx.begin());
     for(int i = 0; i < m - 1; i++) sa_idx[i + 1] += sa_idx[i];
     for(int j = n - 1; j > -1; j--) {
@@ -50,7 +45,6 @@ std::vector<int> sa_is(std::vector<int> a) {
     }
     return sa;
   };
-
   std::vector<int> sa = induce(), lms_idx, rank(n, -1);
   lms_idx.reserve(n);
   for(int const& i: sa)
@@ -87,7 +81,6 @@ std::vector<int> sa_is(std::vector<int> a) {
   sa = induce();
   return std::vector<int>(sa.begin() + 1, sa.end());
 }
-
 std::vector<int> sa_doubling(std::vector<int> a) {
   int n = a.size();
   ArrayCompression<int> ac;
@@ -113,7 +106,6 @@ std::vector<int> sa_doubling(std::vector<int> a) {
   }
   return sa;
 }
-
 std::vector<int> sa_doubling_countsort(std::vector<int> a) {
   int n = a.size();
   std::vector<int> cnt(n + 2);

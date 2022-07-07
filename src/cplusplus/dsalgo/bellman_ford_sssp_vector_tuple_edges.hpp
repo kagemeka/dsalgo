@@ -1,8 +1,6 @@
 #pragma once
-
 #include <vector>
 using namespace std;
-
 template<typename T, typename G>
 auto bellman_ford(const T& inf, int n, const G& edges, int src) -> vector<T> {
   vector<T> dist(n, inf);

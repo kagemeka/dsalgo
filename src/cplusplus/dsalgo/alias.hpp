@@ -1,5 +1,4 @@
 #pragma once
-
 #define pb push_back
 #define eb emplace_back
 #define entire(a) a.begin(), a.end()

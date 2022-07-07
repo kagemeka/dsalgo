@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 using namespace std;
-
 template<typename T> auto find_divisors(T n) -> vector<T> {
   vector<T> d(0);
   for(T i = 1; i * i <= n; i++) {

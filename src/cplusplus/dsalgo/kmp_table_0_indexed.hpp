@@ -1,8 +1,6 @@
 #pragma once
 #include <vector>
-
 using std::vector;
-
 template<typename A> auto kmp_table(const A& a) -> vector<int> {
   int n = a.size();
   vector<int> f(n, 0); // failure function

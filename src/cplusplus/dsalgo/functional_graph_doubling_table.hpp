@@ -1,8 +1,6 @@
 #pragma once
-
 #include <vector>
 using namespace std;
-
 // able to compute at most 2^k th from any node in O(k) time.
 auto functional_graph_doubling_table(vector<int> const& f, int k)
   -> vector<vector<int>> {

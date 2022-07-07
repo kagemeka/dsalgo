@@ -1,18 +1,15 @@
 // TODO:
-
 #include "kagemeka/algebra/abstract/structure.cpp"
 #include <cassert>
 #include <functional>
 #include <iostream>
 #include <vector>
-
 template<typename S> class SegmentTree {
 private:
   using M = Monoid<S>;
   M m;
   int size, n;
   std::vector<S> data;
-
   void merge(int i) { data[i] = m.op(data[i << 1], data[i << 1 | 1]); }
 
 public:
@@ -22,9 +19,7 @@ public:
     for(int i = 0; i < size; i++) data[n + i] = a[i];
     for(int i = n - 1; i > 0; --i) merge(i);
   }
-
   SegmentTree(M m, int n): SegmentTree(m, std::vector<S>(n, m.e())) {}
-
   void set(int i, S x) {
     assert(0 <= i && i < size);
     i += n;
@@ -34,12 +29,10 @@ public:
       merge(i);
     }
   }
-
   auto operator[](int i) const -> const S& {
     assert(0 <= i && i < size);
     return data[n + i];
   }
-
   auto get(int l, int r) const -> S {
     assert(0 <= l && l <= r && r <= size);
     l += n;
@@ -53,7 +46,6 @@ public:
     }
     return m.op(vl, vr);
   }
-
   auto max_right(std::function<bool(S)> is_ok, int l) const -> int {
     assert(0 <= l < size);
     S v = m.e();
@@ -75,13 +67,11 @@ public:
     }
   }
 };
-
 template<typename S, typename F> struct SegmentTreeLazyConfig {
   Monoid<S> s;
   Monoid<F> f;
   std::function<S(F, S)> map;
 };
-
 template<typename S, typename F> class SegmentTreeLazy {
 private:
   using C = SegmentTreeLazyConfig<S, F>;
@@ -89,14 +79,11 @@ private:
   int size, n, h;
   std::vector<S> data;
   std::vector<F> lazy;
-
   void merge(int i) { data[i] = c.s.op(data[i << 1], data[i << 1 | 1]); }
-
   void apply(int i, F f) {
     data[i] = c.map(f, data[i]);
     if(i < n) lazy[i] = c.f.op(f, lazy[i]);
   }
-
   void propagate(int i) {
     apply(i << 1, lazy[i]);
     apply(i << 1 | 1, lazy[i]);
@@ -112,9 +99,7 @@ public:
     lazy = std::vector<F>(n, c.f.e());
     for(int i = n - 1; i > 0; --i) merge(i);
   }
-
   SegmentTreeLazy(C c, int n): SegmentTreeLazy(c, std::vector<S>(n, c.s.e())) {}
-
   void set(int l, int r, F f) {
     assert(0 <= l && l <= r && r <= size);
     l += n;
@@ -136,7 +121,6 @@ public:
       if((r >> i) << i != r) merge((r - 1) >> i);
     }
   }
-
   auto get(int l, int r) -> S {
     assert(0 <= l && l <= r && r <= size);
     l += n;
@@ -154,7 +138,6 @@ public:
     }
     return c.s.op(vl, vr);
   }
-
   void update(int i, S x) {
     assert(0 <= i && i < size);
     i += n;

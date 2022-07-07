@@ -1,6 +1,5 @@
 #pragma once
 #include "types.hpp"
-
 template<typename A> auto z_algorithm(const A& a) -> vec<int> {
   int n = a.size();
   vec<int> lcp(n, 0);

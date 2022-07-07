@@ -2,7 +2,6 @@
 #include <queue>
 #include <vector>
 using namespace std;
-
 template<typename G> auto connected_components(const G& g) -> vector<int> {
   int n = g.size();
   queue<int> que;

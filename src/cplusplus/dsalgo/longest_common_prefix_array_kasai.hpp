@@ -1,6 +1,5 @@
 #include <cassert>
 #include <vector>
-
 auto lcp_array_kasai(std::vector<int> a, std::vector<int> sa)
   -> std::vector<int> {
   int n = a.size();

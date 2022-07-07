@@ -1,7 +1,6 @@
 #pragma once
 #include "kmp_table_0_indexed.hpp"
 using namespace std;
-
 template<typename A> auto kmp_findall(const A& a, const A& pattern)
   -> vector<int> {
   auto const& p = pattern;

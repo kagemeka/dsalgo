@@ -1,6 +1,5 @@
 #include <tuple>
 using namespace std;
-
 template<typename T> auto extgcd(T a, T b) -> tuple<T, T, T> {
   T x00 = 1, x01 = 0, x10 = 0, x11 = 1;
   while(b != 0) {

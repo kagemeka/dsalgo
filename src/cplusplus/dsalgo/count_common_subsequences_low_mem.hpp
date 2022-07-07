@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 using namespace std;
-
 template<typename T, typename A>
 auto count_common_subsequences(const A& a, const A& b) -> T {
   int n = a.size(), m = b.size();

@@ -1,16 +1,12 @@
 // TODO:
-
 #include <bits/stdc++.h>
 using namespace std;
-
 namespace Algebra {
-
   template<typename T> auto identity(int n) -> vector<vector<T>> {
     vector<vector<T>> e(n, vector<T>(n));
     for(int i = 0; i < n; i++) { e[i][i] = 1; }
     return e;
   }
-
   template<typename T>
   auto matrix_dot(vector<vector<T>> const& a, vector<vector<T>> const& b)
     -> vector<vector<T>> {
@@ -27,7 +23,6 @@ namespace Algebra {
     }
     return c;
   }
-
   template<typename T> auto matrix_pow(vector<vector<T>> const& a, long long n)
     -> vector<vector<T>> {
     if(!n) {
@@ -39,5 +34,4 @@ namespace Algebra {
     if(n & 1) b = matrix_dot(b, a);
     return b;
   }
-
 } // namespace Algebra

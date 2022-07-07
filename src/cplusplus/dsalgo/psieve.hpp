@@ -1,7 +1,6 @@
 
 namespace erat {
   // sieve of eratosthenes
-
   auto ps(usize sz) -> vec<u32> {
     vec<u32> p;
     p.reserve(sz >> 4);
@@ -14,5 +13,4 @@ namespace erat {
     }
     return p;
   }
-
 } // namespace erat

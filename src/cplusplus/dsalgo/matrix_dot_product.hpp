@@ -1,5 +1,4 @@
 #include <vector>
-
 // T: semiring
 template<typename T, typename M> auto matrix_dot(const M& a, const M& b) -> M {
   assert(a[0].size() == b.size());

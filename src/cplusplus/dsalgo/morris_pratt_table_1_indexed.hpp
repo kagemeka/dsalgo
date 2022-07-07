@@ -1,6 +1,5 @@
 #pragma once
 #include "types.hpp"
-
 template<typename A> auto morris_pratt_table(const A& a) -> vec<int> {
   int n = a.size();
   vec<int> lb(n + 1, 0);

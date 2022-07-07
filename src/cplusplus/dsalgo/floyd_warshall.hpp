@@ -1,5 +1,4 @@
 #pragma once
-
 template<typename G, typename F> auto floyd_warshall(G g, F f) -> G {
   int n = g.size();
   for(int k = 0; k < n; ++k) {

@@ -1,5 +1,4 @@
 #include "factorial_table.hpp"
-
 template<typename S> auto inverse_factorial_table(int size) -> vector<S> {
   vector<S> a(size);
   iota(a.begin(), a.end(), 1);
