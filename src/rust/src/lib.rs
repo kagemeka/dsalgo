@@ -179,6 +179,8 @@ pub mod fast_mobius_transform;
 pub mod fast_modulo_transform;
 pub mod fast_zeta_transform;
 pub mod fenwick_tree;
+pub mod fenwick_tree_additive;
+pub mod fenwick_tree_multiset;
 pub mod fermat_factorization_method;
 pub mod fft;
 pub mod fibonacci_heap;
