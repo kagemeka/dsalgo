@@ -1,5 +1,5 @@
 #pragma once
-#include "concat_sequence.hpp"
+#include "concat_sequences.hpp"
 #include "types.hpp"
 #include "z_algorithm.hpp"
 template<typename A> auto findall_substr(const A& a, const A& pattern)

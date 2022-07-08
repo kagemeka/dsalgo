@@ -1,5 +1,5 @@
 pub fn kmp_findall<T: PartialEq>(a: &[T], pattern: &[T]) -> Vec<usize> {
-    use crate::kmp_table_0_indexed::kmp_table;
+    use crate::failure_function_kmp_table_0_indexed::kmp_table;
     let b = pattern;
     let (n, m) = (a.len(), b.len());
     let f = kmp_table(b);

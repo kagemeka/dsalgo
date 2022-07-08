@@ -1,9 +1,9 @@
 use crate::{union_find::*, union_find_trait::*};
-pub fn connected_components_uf(
-    v_size: usize, undirected_edges: &[(usize, usize)],
+pub fn connected_components(
+    v_size: usize, edges: &[(usize, usize)],
 ) -> Vec<usize> {
     let mut uf = UnionFind::new(v_size);
-    for &(u, v) in undirected_edges {
+    for &(u, v) in edges {
         uf.unite(u, v);
     }
     uf.labels()

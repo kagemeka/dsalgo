@@ -1,4 +1,4 @@
-pub fn morris_pratt_table<T: PartialEq>(a: &[T]) -> Vec<isize> {
+pub fn morris_pratt<T: PartialEq>(a: &[T]) -> Vec<isize> {
     let n = a.len();
     let mut lb = vec![0; n + 1];
     let mut d = -1;
@@ -29,7 +29,7 @@ mod tests {
         ];
         for (s, ans) in cases {
             let s = s.chars().collect::<Vec<_>>();
-            assert_eq!(morris_pratt_table(&s), ans);
+            assert_eq!(morris_pratt(&s), ans);
         }
     }
 }

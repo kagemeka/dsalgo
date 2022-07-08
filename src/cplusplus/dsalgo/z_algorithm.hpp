@@ -1,8 +1,9 @@
 #pragma once
-#include "types.hpp"
-template<typename A> auto z_algorithm(const A& a) -> vec<int> {
+#include <vector>
+using namespace std;
+template<typename A> auto z_algorithm(const A& a) -> vector<int> {
   int n = a.size();
-  vec<int> lcp(n, 0);
+  vector<int> lcp(n, 0);
   for(int i = 1, l = 0; i < n; ++i) {
     auto r = l + lcp[l];
     auto d = r <= i ? 0 : std::min(lcp[i - l], r - i);
