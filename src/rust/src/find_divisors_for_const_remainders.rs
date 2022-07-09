@@ -1,11 +1,8 @@
-use crate::find_divisors_naive::find_divisors_naive;
+use crate::find_divisors_trial_division::find_divisors;
 /// 0 <= r < n
 /// find all x such that n = qx + r
 pub fn find_divisors_for_const_remainder(n: u64, r: u64) -> Vec<u64> {
-    find_divisors_naive(n - r)
-        .into_iter()
-        .filter(|&d| d > r)
-        .collect()
+    find_divisors(n - r).into_iter().filter(|&d| d > r).collect()
 }
 #[cfg(test)]
 mod tests {

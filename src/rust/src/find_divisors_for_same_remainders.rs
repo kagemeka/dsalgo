@@ -1,10 +1,12 @@
-use crate::{find_divisors_naive::find_divisors_naive, gcd::int::gcd_reduce};
+use crate::{
+    find_divisors_trial_division::find_divisors, gcd::int::gcd_reduce,
+};
 pub fn find_divisors_for_same_remainders<I>(mut iter: I) -> Vec<u64>
 where
     I: Iterator<Item = u64>,
 {
     if let Some(a0) = iter.next() {
-        find_divisors_naive(gcd_reduce(
+        find_divisors(gcd_reduce(
             iter.map(|a| if a >= a0 { a - a0 } else { a0 - a }),
         ))
     } else {

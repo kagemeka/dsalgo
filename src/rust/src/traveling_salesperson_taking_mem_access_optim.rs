@@ -1,16 +1,11 @@
 use std::ops::*;
 pub fn tsp<T>(inf: T, g: &[Vec<T>], src: usize) -> T
 where
-    T: Clone + Add<Output = T> + Ord,
+    T: Clone + Add<Output = T> + Ord + From<i32>,
 {
     let n = g.len();
     let mut dist = vec![vec![inf.clone(); n]; 1 << n];
-    for i in 0..n {
-        if i == src {
-            continue;
-        }
-        dist[1 << i][i] = g[src][i].clone();
-    }
+    dist[1 << src][src] = 0.into();
     for s in 0..1 << n {
         for i in 0..n {
             if s >> i & 1 == 1 {
@@ -30,7 +25,15 @@ where
             }
         }
     }
-    dist.last().unwrap()[src].clone()
+    let mut mn = inf.clone();
+    let s = (1 << n) - 1;
+    for i in 0..n {
+        if i == src || dist[s][i] == inf || g[i][src] == inf {
+            continue;
+        }
+        mn = mn.min(dist[s][i].clone() + g[i][src].clone());
+    }
+    mn
 }
 #[cfg(test)]
 mod tests {

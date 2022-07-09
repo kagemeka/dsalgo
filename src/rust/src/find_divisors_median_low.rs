@@ -1,8 +1,8 @@
-use crate::find_divisors_naive::find_divisors_naive;
+use crate::find_divisors_trial_division::find_divisors;
 /// find medians of divisors.
 pub fn find_divisors_median_low(n: u64) -> u64 {
     assert!(n > 0);
-    let divs = find_divisors_naive(n);
+    let divs = find_divisors(n);
     divs[((divs.len() + 1) >> 1) - 1]
 }
 #[cfg(test)]
