@@ -1,5 +1,5 @@
 pub fn doubling_counting_sort(a: &Vec<usize>) -> Vec<usize> {
-    use crate::array_compression::ArrayCompression;
+    use crate::array_compression_unique_binary_search::ArrayCompression;
     let n = a.len();
     let counting_sort_key = |a: &Vec<usize>| -> Vec<usize> {
         let mut cnt = vec![0; n + 2];

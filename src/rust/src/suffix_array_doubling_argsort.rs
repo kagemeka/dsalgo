@@ -1,6 +1,6 @@
 /// O(N\log^2{N})
 pub fn suffix_array(mut a: Vec<usize>) -> Vec<usize> {
-    use crate::array_compression::ArrayCompression;
+    use crate::array_compression_unique_binary_search::ArrayCompression;
     let n = a.len();
     let mut d = 1usize;
     loop {
