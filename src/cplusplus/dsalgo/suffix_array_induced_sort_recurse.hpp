@@ -3,7 +3,7 @@
 auto sa_is(vec<int> a) -> vec<int> {
   int mn = *min_element(a.begin(), a.end());
   int n = a.size();
-  for(int i = 0; i < n; i++) a[i] = a[i] - mn + 1;
+  range(i, n) a[i] = a[i] - mn + 1;
   a.push_back(0);
   ++n;
   int m = *max_element(a.begin(), a.end()) + 1;
@@ -44,20 +44,21 @@ auto sa_is(vec<int> a) -> vec<int> {
   };
   vec<int> sa = induce(), lms_idx, rank(n, -1);
   lms_idx.reserve(n);
-  for(int const& i: sa)
-    if(is_lms[i]) lms_idx.push_back(i);
+  iter(i, sa) if(is_lms[i]) lms_idx.push_back(i);
   int l = lms_idx.size();
   int r = 0;
   rank[n - 1] = r;
-  for(int i = 0; i < l - 1; i++) {
+  range(i, l - 1) {
     int j = lms_idx[i], k = lms_idx[i + 1];
-    for(int d = 0; d < n; d++) {
-      bool j_is_lms = is_lms[j + d], k_is_lms = is_lms[k + d];
-      if(a[j + d] != a[k + d] || j_is_lms ^ k_is_lms) {
+    range(d, n) {
+      if(a[j + d] != a[k + d]) {
         ++r;
         break;
       }
-      if(d > 0 && j_is_lms | k_is_lms) break;
+      if(d > 0 && is_lms[j + d]) {
+        r += !is_lms[k + d];
+        break;
+      }
     }
     rank[k] = r;
   }
@@ -67,11 +68,11 @@ auto sa_is(vec<int> a) -> vec<int> {
   vec<int> lms_order;
   if(r == l - 1) {
     lms_order.resize(l);
-    for(int i = 0; i < l; i++) lms_order[rank[i]] = i;
+    range(i, l) lms_order[rank[i]] = i;
   } else {
     lms_order = sa_is(rank);
   }
-  for(int i = 0; i < l; i++) lms_idx[i] = lms[lms_order[i]];
+  range(i, l) lms_idx[i] = lms[lms_order[i]];
   swap(lms, lms_idx);
   sa = induce();
   return {sa.begin() + 1, sa.end()};

@@ -9,38 +9,6 @@ import unittest
 T = typing.TypeVar("T")
 
 
-class Compress(typing.Generic[T]):
-    _v: typing.List[int]  # unique values
-
-    def __init__(self, a: typing.Iterable[T]) -> None:
-        self._v = sorted(set(a))
-
-    def __call__(self, v: T) -> int:
-        i = bisect.bisect_left(self._v, v)
-        assert self._v[i] == v
-        return i
-
-    def inv(self, i: int) -> T:
-        # retrieve
-        return self._v[i]
-
-    @staticmethod
-    def once(a: typing.Iterable[T]) -> typing.List[int]:
-        f = Compress(a)
-        return [f(v) for v in a]
-
-
-class TestCompress(unittest.TestCase):
-    def test(self) -> None:
-        a = [3, 10, -1, 5]
-        f = Compress(a)
-        res = [f(x) for x in a]
-        assert res == [1, 3, 0, 2]
-        rev = [f.inv(x) for x in res]
-        assert rev == [3, 10, -1, 5]
-        assert Compress.once(a) == res
-
-
 def argmax(a: typing.Sequence[T]) -> int:
     # comparable list
     i, mx = 0, a[0]

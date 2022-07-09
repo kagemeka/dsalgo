@@ -1,7 +1,3 @@
-# mypy: ignore-errors
-
-import typing
-
 import numba as nb
 import numpy as np
 
@@ -84,54 +80,3 @@ def sa_is(a: np.ndarray) -> np.ndarray:
         a, is_s, lms, b = st.pop()
         lms_order = induce(a, is_s, lms[lms_order], b)
     return lms_order[1:]
-
-
-@nb.njit
-def sa_doubling(a: np.array) -> np.array:
-    n = a.size
-    rank, k = np.searchsorted(np.unique(a), a), 1
-    while True:
-        key = rank << 30
-        key[:-k] |= 1 + rank[k:]
-        sa = key.argsort(kind="mergesort")
-        rank[sa[0]] = 0
-        for i in range(n - 1):
-            rank[sa[i + 1]] = rank[sa[i]] + (key[sa[i + 1]] > key[sa[i]])
-        k <<= 1
-        if k >= n:
-            break
-    return sa
-
-
-@nb.njit
-def sa_doubling_countsort(a: np.array) -> np.array:
-    n = a.size
-
-    def counting_sort_key(a):
-        cnt = np.zeros(n + 2, dtype=np.int32)
-        for x in a:
-            cnt[x + 1] += 1
-        for i in range(n):
-            cnt[i + 1] += cnt[i]
-        key = np.empty(n, dtype=np.int32)
-        for i in range(n):
-            key[cnt[a[i]]] = i
-            cnt[a[i]] += 1
-        return key
-
-    rank, k = np.searchsorted(np.unique(a), a), 1
-    while True:
-        second = np.zeros(n, dtype=np.int64)
-        second[:-k] = 1 + rank[k:]
-        rank_second = counting_sort_key(second)
-        first = rank[rank_second]
-        rank_first = counting_sort_key(first)
-        sa = rank_second[rank_first]
-        key = first[rank_first] << 30 | second[sa]
-        rank[sa[0]] = 0
-        for i in range(n - 1):
-            rank[sa[i + 1]] = rank[sa[i]] + (key[i + 1] > key[i])
-        k <<= 1
-        if k >= n:
-            break
-    return sa

@@ -1,7 +1,8 @@
 /// O(N\log^2{N})
 pub fn suffix_array(mut a: Vec<usize>) -> Vec<usize> {
-    use crate::array_compression::ArrayCompression;
     let n = a.len();
+    let mut rank = vec![0; n];
+    let mut sa = vec![0; n];
     let mut d = 1usize;
     loop {
         for i in 0..n {
@@ -9,16 +10,20 @@ pub fn suffix_array(mut a: Vec<usize>) -> Vec<usize> {
             if i + d < n {
                 a[i] |= 1 + a[i + d];
             }
+            sa[i] = i;
         }
-        a = ArrayCompression::once(a);
+        sa.sort_by_key(|&i| a[i]);
         d <<= 1;
         if d >= n {
-            break;
+            return sa;
         }
+        rank[sa[0]] = 0;
+        for i in 0..n - 1 {
+            rank[sa[i + 1]] =
+                rank[sa[i]] + if a[sa[i + 1]] != a[sa[i]] { 1 } else { 0 };
+        }
+        std::mem::swap(&mut a, &mut rank);
     }
-    let mut sa = (0..n).collect::<Vec<_>>();
-    sa.sort_by_key(|&i| a[i]);
-    sa
 }
 #[cfg(test)]
 mod tests {
