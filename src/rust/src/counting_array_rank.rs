@@ -1,4 +1,4 @@
-pub fn argsort(mut a: Vec<usize>) -> Vec<usize> {
+pub fn array_rank(mut a: Vec<usize>) -> Vec<usize> {
     let n = a.len();
     let mut m = *a.iter().min().unwrap();
     for i in 0..n {
@@ -14,7 +14,7 @@ pub fn argsort(mut a: Vec<usize>) -> Vec<usize> {
     }
     let mut res = vec![0; n];
     for i in 0..n {
-        res[arg[a[i]]] = i;
+        res[i] = arg[a[i]];
         arg[a[i]] += 1;
     }
     res
@@ -24,7 +24,7 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        let mut a = vec![7, 2, 1, 3, 2, 1];
-        assert_eq!(argsort(a), [2, 5, 1, 4, 3, 0]);
+        let a = vec![7, 2, 1, 3, 2, 1];
+        assert_eq!(array_rank(a), [5, 2, 0, 4, 3, 1]);
     }
 }

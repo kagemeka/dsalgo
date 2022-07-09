@@ -125,6 +125,8 @@ pub mod count_subsequences;
 pub mod count_subset_sum;
 pub mod count_trailing_zeros_factorial;
 pub mod count_trailing_zeros_std;
+pub mod counting_argsort;
+pub mod counting_array_rank;
 pub mod counting_sort;
 pub mod cover_tree;
 pub mod crt;

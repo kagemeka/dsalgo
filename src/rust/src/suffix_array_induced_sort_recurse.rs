@@ -17,48 +17,45 @@ pub fn sa_is(mut a: Vec<usize>) -> Vec<usize> {
         }
     }
     lms.reverse();
-    let mut bucket = vec![0usize; m];
+    let mut arg_l = vec![0; m];
+    let mut arg_r = vec![0; m];
     for &x in a.iter() {
-        bucket[x] += 1;
+        arg_r[x] += 1;
+        if x < m - 1 {
+            arg_l[x + 1] += 1;
+        }
+    }
+    for i in 0..m - 1 {
+        arg_r[i + 1] += arg_r[i];
+        arg_l[i + 1] += arg_l[i];
     }
     let induce = |lms: &Vec<usize>| -> Vec<usize> {
         let mut sa = vec![n; n];
-        let mut rank = bucket.clone();
-        for i in 0..m - 1 {
-            rank[i + 1] += rank[i];
-        }
+        let mut arg = arg_r.clone();
         for &i in lms.iter().rev() {
-            rank[a[i]] -= 1;
-            sa[rank[a[i]]] = i;
+            arg[a[i]] -= 1;
+            sa[arg[a[i]]] = i;
         }
-        rank = bucket.clone();
-        let mut s = 0usize;
-        for i in 0..m {
-            rank[i] += s;
-            std::mem::swap(&mut s, &mut rank[i]);
-        }
+        let mut arg = arg_l.clone();
         for i in 0..n {
             if sa[i] == n || sa[i] == 0 {
                 continue;
             }
             let i = sa[i] - 1;
             if !is_s[i] {
-                sa[rank[a[i]]] = i;
-                rank[a[i]] += 1;
+                sa[arg[a[i]]] = i;
+                arg[a[i]] += 1;
             }
         }
-        rank = bucket.clone();
-        for i in 0..m - 1 {
-            rank[i + 1] += rank[i];
-        }
+        let mut arg = arg_r.clone();
         for i in (0..n).rev() {
             if sa[i] == n || sa[i] == 0 {
                 continue;
             }
             let i = sa[i] - 1;
             if is_s[i] {
-                rank[a[i]] -= 1;
-                sa[rank[a[i]]] = i;
+                arg[a[i]] -= 1;
+                sa[arg[a[i]]] = i;
             }
         }
         sa
@@ -69,19 +66,20 @@ pub fn sa_is(mut a: Vec<usize>) -> Vec<usize> {
         .filter(|&i| is_lms[i])
         .collect::<Vec<_>>();
     let mut rank = vec![n; n];
-    let mut r = 0usize;
+    let mut r = 0;
     rank[n - 1] = r;
     for i in 0..l - 1 {
         let j = lms_idx[i];
         let k = lms_idx[i + 1];
         for d in 0..n {
-            let j_is_lms = is_lms[j + d];
-            let k_is_lms = is_lms[k + d];
-            if a[j + d] != a[k + d] || j_is_lms ^ k_is_lms {
+            if a[j + d] != a[k + d] {
                 r += 1;
                 break;
             }
-            if d > 0 && j_is_lms | k_is_lms {
+            if d > 0 && is_lms[j + d] {
+                if !is_lms[k + d] {
+                    r += 1;
+                }
                 break;
             }
         }
