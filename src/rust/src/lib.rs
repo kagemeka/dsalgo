@@ -74,6 +74,7 @@ pub mod bridge_detection_lowlink;
 pub mod bridge_finding;
 pub mod bubble_sort;
 pub mod bucket_sort;
+pub mod rank_of_permutation_for_small_n;
 pub mod undirected_tuple_edges_to_adjacency_list;
 pub mod undirected_tuple_edges_with_data_to_adjacency_list;
 pub mod bucket_sort_make_argument_left_table;
