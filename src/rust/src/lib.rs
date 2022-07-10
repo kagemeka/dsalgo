@@ -74,6 +74,7 @@ pub mod bridge_detection_lowlink;
 pub mod bridge_finding;
 pub mod bubble_sort;
 pub mod bucket_sort;
+pub mod pi_with_arccosine;
 pub mod dist_2d_to_the_power_of_2;
 pub mod bucket_sort_make_argument_left_table;
 pub mod bucket_sort_make_argument_right_table;
