@@ -74,6 +74,8 @@ pub mod bridge_detection_lowlink;
 pub mod bridge_finding;
 pub mod bubble_sort;
 pub mod bucket_sort;
+pub mod sum_of_all_pairs_xor_in_array_modular;
+pub mod xor_of_all_pairs_bitwise_and_of_two_arrays;
 pub mod string_ith_char;
 pub mod string_ith_ascii_code;
 pub mod trigonometry_tau_with_pi;
