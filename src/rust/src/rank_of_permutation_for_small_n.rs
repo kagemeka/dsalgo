@@ -1,3 +1,4 @@
+/// O(N)
 pub fn permutation_rank(p: &Vec<usize>) -> usize {
     let n = p.len();
     let mut s = (1usize << n) - 1;
