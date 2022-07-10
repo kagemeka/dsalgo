@@ -77,6 +77,7 @@ pub mod bucket_sort;
 pub mod bucket_sort_make_argument_left_table;
 pub mod bucket_sort_make_argument_right_table;
 pub mod bucket_sort_normalize_min_as_0;
+pub mod bucket_sort_normalize_min_as_offset;
 pub mod bx_tree;
 pub mod bytes_to_char_vec;
 pub mod cache_oblivious_distributing_sort;
