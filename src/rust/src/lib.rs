@@ -65,6 +65,8 @@ pub mod bit_vector;
 pub mod bitonic_sort;
 pub mod bitops;
 pub mod check_two_circles_intersection;
+pub mod rle; 
+pub mod run_length_encoding;
 pub mod number_of_nodes_reachable_into_cycle_bfs_rev_edges;
 pub mod number_of_nodes_reachable_into_cycle_dfs_recurse;
 pub mod sum_of_xor_prod_of_all_subsets_in_array_modular;
