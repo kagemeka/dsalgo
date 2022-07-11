@@ -64,6 +64,7 @@ pub mod bit_set;
 pub mod bit_vector;
 pub mod bitonic_sort;
 pub mod bitops;
+pub mod number_of_nodes_reachable_into_cycle_bfs;
 pub mod number_of_nodes_reachable_into_cycle_dfs_recurse;
 pub mod sum_of_xor_prod_of_all_subsets_in_array_modular;
 pub mod bk_tree;
