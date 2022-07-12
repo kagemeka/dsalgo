@@ -68,7 +68,7 @@ pub mod check_two_circles_intersection;
 pub mod rle; 
 pub mod coordinates_compression;
 pub mod least_common_multiple_of_prime_factorization;
-
+pub mod digits_sum;
 pub mod run_length_encoding;
 pub mod number_of_nodes_reachable_into_cycle_bfs_rev_edges;
 pub mod number_of_nodes_reachable_into_cycle_dfs_recurse;
@@ -141,7 +141,7 @@ pub mod count_leading_zeros;
 pub mod count_leading_zeros_std;
 pub mod count_subsequences;
 pub mod count_subset_sum;
-pub mod count_trailing_zeros_factorial;
+pub mod count_trailing_zeros_in_digits_factorial;
 pub mod count_trailing_zeros_std;
 pub mod counting_argsort;
 pub mod counting_array_rank;
