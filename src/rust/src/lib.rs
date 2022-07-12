@@ -65,6 +65,7 @@ pub mod bit_vector;
 pub mod bitonic_sort;
 pub mod bitops;
 pub mod bk_tree;
+pub mod array_rank_with_argsort;
 pub mod permutation_argsort;
 pub mod block_cut_tree;
 pub mod block_sort;

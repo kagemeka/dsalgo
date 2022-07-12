@@ -1,4 +1,4 @@
-pub fn argsort<T: Ord>(a: &Vec<T>) -> Vec<usize> {
+pub fn argsort<T: Ord>(a: &[T]) -> Vec<usize> {
     let mut idx: Vec<usize> = (0..a.len()).collect();
     idx.sort_by_key(|&i| &a[i]);
     idx
