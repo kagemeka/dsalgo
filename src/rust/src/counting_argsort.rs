@@ -26,5 +26,7 @@ mod tests {
     fn test() {
         let a = vec![7, 2, 1, 3, 2, 1];
         assert_eq!(argsort(a), [2, 5, 1, 4, 3, 0]);
+        let a = vec![4, 3, 1, 6, 0, 6, 3];
+        assert_eq!(argsort(a), [4, 2, 1, 6, 0, 3, 5]);
     }
 }
