@@ -9,14 +9,6 @@ import unittest
 T = typing.TypeVar("T")
 
 
-def argmax(a: typing.Sequence[T]) -> int:
-    # comparable list
-    i, mx = 0, a[0]
-    for j, x in enumerate(a):
-        if x > mx:
-            i, mx = j, x
-    return i
-
 
 def bincnt(a: typing.Sequence[int]) -> typing.List[int]:
     c = [0] * (max(a) + 1)
@@ -43,11 +35,6 @@ def inversion_int(a: typing.List[int]) -> int:
         c += i - fw[x]
         fw[x] = 1
     return c
-
-
-def flatnonzero(arr: typing.List[bool]) -> typing.List[int]:
-    return [i for i, x in enumerate(arr) if x]
-
 
 def accumulate(
     identity_element: T,
