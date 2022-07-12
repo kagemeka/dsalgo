@@ -5,17 +5,17 @@ pub fn argsort(mut a: Vec<usize>) -> Vec<usize> {
         a[i] -= m;
     }
     m = *a.iter().max().unwrap();
-    let mut arg = vec![0; m + 2];
+    let mut arg = vec![0; m + 1];
     for &x in a.iter() {
-        arg[x + 1] += 1;
+        arg[x] += 1;
     }
-    for i in 0..m + 1 {
+    for i in 0..m {
         arg[i + 1] += arg[i];
     }
     let mut res = vec![0; n];
-    for i in 0..n {
+    for i in (0..n).rev() {
+        arg[a[i]] -= 1;
         res[arg[a[i]]] = i;
-        arg[a[i]] += 1;
     }
     res
 }
@@ -24,7 +24,7 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        let mut a = vec![7, 2, 1, 3, 2, 1];
+        let a = vec![7, 2, 1, 3, 2, 1];
         assert_eq!(argsort(a), [2, 5, 1, 4, 3, 0]);
     }
 }
