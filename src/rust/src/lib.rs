@@ -66,6 +66,8 @@ pub mod bitonic_sort;
 pub mod bitops;
 pub mod check_two_circles_intersection;
 pub mod rle; 
+pub mod number_of_topological_sort_modular;
+pub mod number_of_topological_sort;
 pub mod coordinates_compression;
 pub mod least_common_multiple_of_prime_factorization;
 pub mod digits_sum;
