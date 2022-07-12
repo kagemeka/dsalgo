@@ -69,6 +69,7 @@ pub mod rle;
 pub mod coordinates_compression;
 pub mod least_common_multiple_of_prime_factorization;
 pub mod digits_sum;
+pub mod is_multiple_of_9;
 pub mod run_length_encoding;
 pub mod number_of_nodes_reachable_into_cycle_bfs_rev_edges;
 pub mod number_of_nodes_reachable_into_cycle_dfs_recurse;
