@@ -83,45 +83,6 @@ pub mod len {
 /// just alias of count_ones.
 pub trait Popcount: CountOnes {}
 impl<T: CountOnes> Popcount for T {}
-pub mod popcount {
-    /// O(1)
-    pub fn with_std(n: u64) -> u8 { n.count_ones() as u8 }
-    /// O(\log\log{N})
-    pub fn divide_conquer(mut n: u64) -> u8 {
-        const M0: u64 = 0x5555555555555555; // 0b0101...
-        const M1: u64 = 0x3333333333333333; // 0b0011...
-        const M2: u64 = 0x0f0f0f0f0f0f0f0f; // 0b00001111...
-        n -= (n >> 1) & M0;
-        n = (n & M1) + ((n >> 2) & M1);
-        n = (n + (n >> 4)) & M2;
-        n += n >> 8;
-        n += n >> 16;
-        n += n >> 32;
-        return (n & 0x7f) as u8;
-    }
-    /// O(\log{N})
-    pub fn naive(mut n: u64) -> u8 {
-        let mut c = 0;
-        while n > 0 {
-            c += (n & 1) as u8;
-            n >>= 1
-        }
-        c
-    }
-    /// O(N)
-    pub fn table(size: usize) -> Vec<u8> {
-        let mut count = vec![0; size];
-        for i in 1..size {
-            count[i] = count[i >> 1] + (i & 1) as u8;
-        }
-        count
-    }
-    #[cfg(test)]
-    mod tests {
-        #[test]
-        fn test() {}
-    }
-}
 pub trait Inverse {
     fn invert(self) -> Self;
 }

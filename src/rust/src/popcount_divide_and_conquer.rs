@@ -1,3 +1,4 @@
+/// O(\log\log{N})
 pub fn popcount(mut n: u64) -> u8 {
     const MASKS: [u64; 6] = [
         0x5555555555555555,
