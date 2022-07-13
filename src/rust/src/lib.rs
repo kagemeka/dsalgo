@@ -67,6 +67,7 @@ pub mod bit_vector;
 pub mod bitonic_sort;
 pub mod bitops;
 pub mod bk_tree;
+pub mod impl_add_assign_from_add;
 pub mod block_cut_tree;
 pub mod block_sort;
 pub mod bool_to_int;

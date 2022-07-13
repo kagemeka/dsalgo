@@ -16,29 +16,28 @@ auto sa_is(vec<int> a) -> vec<int> {
     if(is_lms[i + 1]) lms.push_back(i + 1);
   }
   reverse(lms.begin(), lms.end());
-  vec<int> bucket(m);
-  iter(x, a) bucket[x]++;
+  vector<int> arg_l(m + 1), arg_r(m);
+  iter(x, a) {
+    arg_r[x]++;
+    arg_l[x + 1]++;
+  }
+  range(i, m - 1) {
+    arg_l[i + 1] += arg_l[i];
+    arg_r[i + 1] += arg_r[i];
+  }
   auto induce = [&]() -> vec<int> {
     vec<int> sa(n, -1);
-    vec<int> sa_idx(m);
-    copy(bucket.begin(), bucket.end(), sa_idx.begin());
-    range(i, m - 1) sa_idx[i + 1] += sa_idx[i];
-    range_rev(i, lms.size()) sa[--sa_idx[a[lms[i]]]] = lms[i];
-    copy(bucket.begin(), bucket.end(), sa_idx.begin());
-    int s = 0;
-    range(i, m) {
-      sa_idx[i] += s;
-      swap(s, sa_idx[i]);
-    }
+    auto arg = arg_r;
+    range_rev(i, lms.size()) sa[--arg[a[lms[i]]]] = lms[i];
+    arg = arg_l;
     range(j, n) {
       int i = sa[j] - 1;
-      if(i >= 0 && !is_s[i]) sa[sa_idx[a[i]]++] = i;
+      if(i >= 0 && !is_s[i]) sa[arg[a[i]]++] = i;
     }
-    copy(bucket.begin(), bucket.end(), sa_idx.begin());
-    range(i, m - 1) sa_idx[i + 1] += sa_idx[i];
+    arg = arg_r;
     range_rev(j, n) {
       int i = sa[j] - 1;
-      if(i >= 0 && is_s[i]) sa[--sa_idx[a[i]]] = i;
+      if(i >= 0 && is_s[i]) sa[--arg[a[i]]] = i;
     }
     return sa;
   };
