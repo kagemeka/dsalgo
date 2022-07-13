@@ -92,14 +92,9 @@ pub mod popcount {
         const M1: u64 = 0x3333333333333333; // 0b0011...
         const M2: u64 = 0x0f0f0f0f0f0f0f0f; // 0b00001111...
         n -= (n >> 1) & M0;
-        // = (n & M0) + ((n >> 1) & M0);
         n = (n & M1) + ((n >> 2) & M1);
         n = (n + (n >> 4)) & M2;
-        // = (n & M2) + ((n >> 4) & M2)
-        // k = 4, 2k < 2^k
         n += n >> 8;
-        // it's only enough to mask at last.
-        // popcount <= 64 = 7bits < 8.
         n += n >> 16;
         n += n >> 32;
         return (n & 0x7f) as u8;
