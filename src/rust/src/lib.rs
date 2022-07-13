@@ -192,6 +192,7 @@ pub mod exponential_tree;
 pub mod extended_euclidean_gcd_i64;
 pub mod extended_euclidean_gcd_i64_recurse;
 pub mod extended_euclidean_modular_gcd_inverse_u64_direct;
+pub mod extended_euclidean_gcd_generic_int_recurse;
 pub mod factorial;
 pub mod factorial_table;
 pub mod failure_function_kmp_table_0_indexed;
