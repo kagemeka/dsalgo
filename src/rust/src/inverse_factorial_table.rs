@@ -1,4 +1,6 @@
-use crate::{accumulate::accumulate, factorial::factorial, ops::MulInv};
+use crate::{
+    accumulate_iterator::accumulate, factorial::factorial, ops::MulInv,
+};
 pub fn inverse_factorial_table<T>(size: usize) -> Vec<T>
 where
     T: std::ops::Mul<Output = T> + MulInv<Output = T> + From<u64> + Clone,

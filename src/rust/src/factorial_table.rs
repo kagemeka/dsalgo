@@ -1,4 +1,4 @@
-use crate::accumulate::accumulate;
+use crate::accumulate_iterator::accumulate;
 pub fn factorial_table<T>(size: usize) -> Vec<T>
 where
     T: std::ops::Mul<Output = T> + From<u64> + Clone,
