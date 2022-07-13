@@ -189,6 +189,7 @@ pub mod eulerian_circuit;
 pub mod eulerian_path;
 pub mod eulerian_trail;
 pub mod exchange_sort;
+pub mod stack_with_vec;
 pub mod exponential_tree;
 pub mod extended_euclidean_gcd_generic_int_recurse;
 pub mod extended_euclidean_gcd_i64;
