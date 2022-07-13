@@ -1,4 +1,7 @@
-use crate::ext_euclid::{extgcd, mod_gcd_inv};
+use crate::{
+    extended_euclidean_gcd_i64::extgcd,
+    extended_euclidean_modular_gcd_inverse_u64_direct::mod_gcd_inv,
+};
 // fn crt_pre_swap(
 //     mod_0: &mut u64,
 //     rem_0: &mut u64,
@@ -16,6 +19,7 @@ pub fn crt(
 ) -> Result<(u64, u64), String> {
     assert!(rem_0 < mod_0 && rem_1 < mod_1);
     let (gcd, mut x, _) = extgcd(mod_0 as i64, mod_1 as i64);
+    let gcd = gcd as u64;
     if rem_0 > rem_1 {
         std::mem::swap(&mut rem_0, &mut rem_1);
         std::mem::swap(&mut mod_0, &mut mod_1);

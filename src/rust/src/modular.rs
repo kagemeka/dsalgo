@@ -296,7 +296,7 @@ pub mod inv {
         // or compute inverse with totient function.
         // related: carmichael_function.rs
     }
-    use crate::ext_euclid::mod_gcd_inv;
+    use crate::extended_euclidean_modular_gcd_inverse_u64_direct::mod_gcd_inv;
     /// inverse by Extended Euclidean Algorithm.
     pub fn extgcd(modulus: u64, element: u64) -> Result<u64, &'static str> {
         let (gcd, inv) = mod_gcd_inv(modulus, element);

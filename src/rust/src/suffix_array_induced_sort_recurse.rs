@@ -17,18 +17,18 @@ pub fn sa_is(mut a: Vec<usize>) -> Vec<usize> {
         }
     }
     lms.reverse();
-        let mut arg_l = vec![0; m];
-        let mut arg_r = vec![0; m];
-        for &x in a.iter() {
-            arg_r[x] += 1;
-            if x < m - 1 {
-                arg_l[x + 1] += 1;
-            }
+    let mut arg_l = vec![0; m];
+    let mut arg_r = vec![0; m];
+    for &x in a.iter() {
+        arg_r[x] += 1;
+        if x < m - 1 {
+            arg_l[x + 1] += 1;
         }
-        for i in 0..m - 1 {
-            arg_r[i + 1] += arg_r[i];
-            arg_l[i + 1] += arg_l[i];
-        }
+    }
+    for i in 0..m - 1 {
+        arg_r[i + 1] += arg_r[i];
+        arg_l[i + 1] += arg_l[i];
+    }
     let induce = |lms: &Vec<usize>| -> Vec<usize> {
         let mut sa = vec![n; n];
         let mut arg = arg_r.clone();
