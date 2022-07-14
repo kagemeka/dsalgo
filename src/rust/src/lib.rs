@@ -678,6 +678,7 @@ pub mod usize_u64_impl_graph_edge_trait;
 pub mod van_emde_boas_tree;
 pub mod vector;
 pub mod vector_rotation_2d_by_rad_with_matrix;
+pub mod modular_power_of_k_table;
 pub mod vector_rotation_3d_by_rad_with_matrix;
 pub mod vector_space;
 pub mod vector_unique;

@@ -28,8 +28,7 @@
 //         cands: &'a [i32],
 //         words: Vec<Vec<usize>>,
 //     }
-//     fn search(res: &mut [Vec<usize>], row: usize, col: usize, sum_col: usize)
-// {}
+//     fn search(res: &mut [Vec<usize>], row: usize, col: usize, sum_col: usize) {}
 // }
 // def verbal_arithmetic(
 //     words: list[list[int]],
