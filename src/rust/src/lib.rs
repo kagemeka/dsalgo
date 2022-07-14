@@ -681,6 +681,8 @@ pub mod vector_rotation_2d_by_rad_with_matrix;
 pub mod modular_power_of_k_table;
 pub mod vector_rotation_3d_by_rad_with_matrix;
 pub mod vector_space;
+pub mod add_with_xor_and_bitwise_and;
+pub mod gaussian_elimination_xor;
 pub mod vector_unique;
 pub mod cycle_detection_undirected_graph_union_find;
 pub mod verbal_arithmetic;
