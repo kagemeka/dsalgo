@@ -7,6 +7,6 @@ pub mod dijkstra_sparse_from_potential {
         let n = g.len();
         assert_eq!(initial_potential.len(), n);
         g.push(initial_potential.into_iter().enumerate().collect());
-        f(g, n)[..n].to_vec()
+        f(&g, n)[..n].to_vec()
     }
 }

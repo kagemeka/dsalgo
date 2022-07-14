@@ -1,5 +1,5 @@
 /// fill inf as std::u64::MAX.
-pub fn dijkstra(g: Vec<Vec<(usize, u64)>>, s: usize) -> Vec<u64> {
+pub fn dijkstra(g: &[Vec<(usize, u64)>], s: usize) -> Vec<u64> {
     use std::{cmp::Reverse, collections::BinaryHeap};
     type Q = BinaryHeap<Reverse<(u64, usize)>>;
     const INF: u64 = std::u64::MAX;
