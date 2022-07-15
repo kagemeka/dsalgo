@@ -143,7 +143,6 @@ pub fn lsb_num(n: u64) -> u64 {
 /// can be called safely only in release mode.
 pub fn rot_l(x: u64, k: u8) -> u64 { (x << k) | (x >> (64 - k)) }
 pub fn reset(n: u64, i: usize) -> u64 { n & !(1 << i) }
-pub fn reset_lsb(n: u64) -> u64 { if n == 0 { 0 } else { n & (n - 1) } }
 pub fn flip(n: u64, i: usize) -> u64 { n ^ (1 << i) }
 #[cfg(test)]
 mod tests {
@@ -169,10 +168,5 @@ mod tests {
         assert_eq!(lsb_num(2), 2);
         assert_eq!(lsb_num(3), 1);
     }
-    #[test]
-    fn test_reset_least_bit() {
-        assert_eq!(reset_lsb(0), 0);
-        assert_eq!(reset_lsb(16), 0);
-        assert_eq!(reset_lsb(3), 2);
-    }
+
 }

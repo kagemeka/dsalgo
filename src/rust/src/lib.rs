@@ -679,6 +679,8 @@ pub mod union_find_persistent;
 pub mod union_find_potentialized;
 pub mod union_find_rollback;
 pub mod union_find_trait;
+pub mod reset_least_significant_bit_u64;
+pub mod reset_least_significant_bit;
 pub mod upper_bound_on_sequence;
 pub mod usize_u64_impl_graph_edge_trait;
 pub mod van_emde_boas_tree;
