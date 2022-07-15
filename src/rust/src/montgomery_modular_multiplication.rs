@@ -1,4 +1,4 @@
-use crate::bitops::len::with_clz as bit_length;
+use crate::bit_length_with_count_leading_zeros_u64::bit_length;
 // TODO: role up same codes with 64bit const R version as trait.
 /// reference
 /// https://ja.wikipedia.org/wiki/

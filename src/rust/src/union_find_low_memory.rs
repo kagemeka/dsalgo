@@ -1,5 +1,5 @@
 //! Disjoint-Set-Union (DSU) or Union-Find (UF).
-use crate::union_find_trait::*;
+use crate::union_find_traits::*;
 #[derive(Debug)]
 pub struct UnionFind(Vec<isize>); // root: neg-size, other: parent
 impl UnionFind {

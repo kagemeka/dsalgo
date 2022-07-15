@@ -7,63 +7,6 @@ import typing
 def reverse_bit(n: int) -> int:
     ...
 
-
-def reset_least_bit_naive(n: int) -> int:
-    """
-    Examples:
-        >>> reset_least_bit_naive(0b0110) == 0b0100
-        True
-    """
-    return n - (n & -n)
-
-
-def reset_least_bit(n: int) -> int:
-    """
-    Examples:
-        >>> reset_least_bit(0b0110) == 0b0100
-        True
-    """
-    assert n >= 0
-    return n & (n - 1)
-
-
-def bit_length_std(n: int) -> int:
-    return n.bit_length()
-
-
-def bit_length_naive(n: int) -> int:
-    assert n >= 0
-    length = 0
-    while 1 << length <= n:
-        length += 1
-    return length
-
-
-def bit_length(n: int) -> int:
-    assert n >= 0
-    if n == 0:
-        return 0
-    length = 1
-    for i in range(5, -1, -1):
-        i = 1 << i
-        if n >> i == 0:
-            continue
-        length += i
-        n >>= i
-    return length
-
-
-def bit_length_table(n: int) -> list[int]:
-    """
-    Notes:
-        - std implementation is faster than table implementation.
-    """
-    length = [0] * n
-    for i in range(1, n):
-        length[i] = length[i >> 1] + 1
-    return length
-
-
 def next_power_of_two(n: int) -> int:
     assert n >= 0
     return 1 if n == 0 else 1 << (n - 1).bit_length()

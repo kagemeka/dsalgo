@@ -1,6 +1,6 @@
 use crate::{
     algebraic_structure::*, binary_function::*,
-    bitops::len::with_clz as bit_len,
+    bit_length_with_count_leading_zeros_u64::bit_length,
 };
 #[derive(Debug)]
 pub struct SegtreeLazy<Sg, Fg, M>
@@ -30,7 +30,7 @@ where
         d[n..(n + size)].clone_from_slice(&a);
         let mut seg = Self {
             size,
-            h: bit_len(n as u64),
+            h: bit_length(n as u64),
             d,
             lz: vec![Fg::e(); n],
             _phantom: std::marker::PhantomData,

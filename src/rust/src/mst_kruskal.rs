@@ -1,4 +1,4 @@
-use crate::{union_find::*, union_find_trait::*};
+use crate::{union_find_low_memory::*, union_find_traits::*};
 // TODO: make edge type generic.
 /// O(E\log{E})
 pub fn mst_kruskcal(

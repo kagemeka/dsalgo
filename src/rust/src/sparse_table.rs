@@ -66,7 +66,7 @@ where
 
     fn get_range(&mut self, l: usize, r: usize) -> Self::T { self.reduce(l, r) }
 }
-use crate::bitops::len::with_clz as bit_length;
+use crate::bit_length_with_count_leading_zeros_u64::bit_length;
 pub struct DisjointSparseTable<G: Semigroup> {
     data: Vec<Vec<G::S>>,
 }

@@ -1,4 +1,4 @@
-use crate::{algebraic_structure::*, union_find_trait::*};
+use crate::{algebraic_structure::*, union_find_traits::*};
 pub struct PotentialUF<G: AbelianGroup> {
     a: Vec<isize>, // neg-size or parent
     rp: Vec<G::S>, // root: identity, other: relative potential from parent

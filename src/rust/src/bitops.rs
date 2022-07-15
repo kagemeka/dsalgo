@@ -37,49 +37,6 @@ pub trait BSF {
     type L;
     fn bsf(self) -> Self::L;
 }
-pub mod len {
-    /// O(1)
-    pub fn with_clz(n: u64) -> u8 {
-        (0u64.leading_zeros() - n.leading_zeros()) as u8
-    }
-    pub fn with_clz_128(n: u128) -> u8 {
-        (0u128.leading_zeros() - n.leading_zeros()) as u8
-    }
-    /// O(\log\log{N}})
-    pub fn binary_search(mut n: u64) -> u8 {
-        let mut l = 0;
-        for i in (0..6).rev() {
-            let d = 1 << i;
-            if n >> d > 0 {
-                n >>= d;
-                l += d;
-            }
-        }
-        if n == 1 {
-            l += 1;
-            n -= 1;
-        }
-        debug_assert_eq!(n, 0);
-        l
-    }
-    /// O(\log{N})
-    pub fn naive(mut n: u64) -> u8 {
-        let mut l = 0;
-        while n > 0 {
-            n >>= 1;
-            l += 1;
-        }
-        l
-    }
-    /// O(N)
-    pub fn table(size: usize) -> Vec<u8> {
-        let mut l = vec![0; size];
-        for i in 1..size {
-            l[i] = l[i >> 1] + 1;
-        }
-        l
-    }
-}
 /// just alias of count_ones.
 pub trait Popcount: CountOnes {}
 impl<T: CountOnes> Popcount for T {}
@@ -101,13 +58,6 @@ pub fn shr_until_odd(n: u64) -> u64 {
     assert!(n > 0);
     n >> n.trailing_zeros()
 }
-/// most significant bit
-/// O(1)
-pub fn msb(n: u64) -> usize {
-    assert!(n > 0);
-    crate::bitops::len::with_clz(n) as usize - 1
-}
-pub fn msb_number(n: u64) -> u64 { if n == 0 { 0 } else { 1 << msb(n) } }
 /// O(\log\log{N})
 pub fn msb_number_binary_search(mut n: u64) -> u64 {
     const MASKS: [u64; 6] = [
@@ -168,5 +118,4 @@ mod tests {
         assert_eq!(lsb_num(2), 2);
         assert_eq!(lsb_num(3), 1);
     }
-
 }

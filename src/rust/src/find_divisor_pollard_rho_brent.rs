@@ -1,5 +1,5 @@
 use crate::{
-    abs_diff::abs_diff, bitops::len::with_clz as bit_length,
+    abs_diff::abs_diff, bit_length_with_count_leading_zeros_u64::bit_length,
     gcd::int::euclidean as gcd,
     montgomery_modular_multiplication_64::MontgomeryMultiplication64,
 };

@@ -1,5 +1,5 @@
 use crate::{
-    bitops::len::with_clz as bit_length,
+    bit_length_with_count_leading_zeros_u64::bit_length,
     karatsuba_mul_quotient_pow_2_power_of_2_128::*,
 };
 pub struct BarrettReduction {
