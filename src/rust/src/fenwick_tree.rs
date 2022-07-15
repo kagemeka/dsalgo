@@ -1,7 +1,7 @@
 //! fenwick tree (binary indexed tree)
 use crate::{
     algebraic_structure::*, binary_function::*, bitops::lsb_num,
-    reset_least_significant_bit_u64::reset_lsb,
+    reset_least_significant_bit_smart_u64::reset_lsb,
 };
 /// Node Indices
 /// (case $|given array| = 8$,

@@ -1,13 +1,9 @@
 use std::ops::*;
 pub fn reset_lsb<T>(n: T) -> T
 where
-    T: From<i32> + PartialEq + Clone + Sub<Output = T> + BitAnd<Output = T>,
+    T: Clone + Sub<Output = T> + Neg<Output = T> + BitAnd<Output = T>,
 {
-    if n == 0.into() {
-        0.into()
-    } else {
-        n.clone() & (n - 1.into())
-    }
+    n.clone() - (n.clone() & -n)
 }
 #[cfg(test)]
 mod tests {
