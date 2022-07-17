@@ -185,7 +185,7 @@ pub mod linear {
         #[test]
         fn test() {
             use crate::{
-                least_prime_factor_table::least_prime_factor_table,
+                least_prime_factor_table_with_sieve_of_eratosthenes::least_prime_factor_table,
                 psieve::erat,
             };
             const K: usize = 1 << 10;

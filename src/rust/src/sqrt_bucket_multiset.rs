@@ -140,4 +140,3 @@
 // #                 return ans + bisect_right(a, x)
 // #             ans += len(a)
 // #         return ans
-
