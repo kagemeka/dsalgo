@@ -501,7 +501,7 @@ pub mod prime_factorize_pollard_rho;
 pub mod prime_factorize_pollard_rho_flat;
 pub mod prime_factorize_pollard_rho_flat_2;
 pub mod prime_factorize_trial_division;
-pub mod prime_factorize_with_lpf;
+pub mod prime_factorize_with_least_prime_factor;
 pub mod prime_number;
 pub mod prime_pi_approx_ln;
 pub mod prime_pi_power_of_10;

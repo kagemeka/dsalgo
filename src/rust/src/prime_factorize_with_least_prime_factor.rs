@@ -1,4 +1,4 @@
-use crate::least_prime_factor_table_with_sieve_of_eratosthenes::least_prime_factor_table;
+use crate::least_prime_factor_table_with_sieve_of_eratosthenes::*;
 pub struct PrimeFactorizeLPF {
     lpf: Vec<Option<u32>>,
 }

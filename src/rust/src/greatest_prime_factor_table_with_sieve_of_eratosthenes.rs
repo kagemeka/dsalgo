@@ -1,4 +1,4 @@
-use crate::least_prime_factor_table_with_sieve_of_eratosthenes::least_prime_factor_table;
+use crate::least_prime_factor_table_with_sieve_of_eratosthenes::*;
 pub fn greatest_prime_factor_table(size: usize) -> Vec<Option<u32>> {
     let lpf = least_prime_factor_table(size);
     let mut gpf = vec![None; size];
