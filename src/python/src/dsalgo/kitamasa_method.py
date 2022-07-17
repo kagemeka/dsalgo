@@ -1,4 +1,0 @@
-"""
-algebra
-"""
-# kitamasa method
