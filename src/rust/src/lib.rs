@@ -683,6 +683,7 @@ pub mod two_three_four_tree;
 pub mod two_three_heap;
 pub mod two_three_tree;
 pub mod ub_tree;
+pub mod prime_factorize_factorial_histogram_trial_division;
 pub mod undirected_bridge_detection_chain_decomposition;
 pub mod undirected_bridge_detection_lowlink;
 pub mod undirected_lowlink;
