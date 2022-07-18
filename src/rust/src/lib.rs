@@ -211,6 +211,8 @@ pub mod fast_modulo_transform;
 pub mod fast_zeta_transform;
 pub mod fenwick_tree;
 pub mod fenwick_tree_additive;
+pub mod fenwick_tree_i32_add_0_indexed;
+pub mod fenwick_tree_i32_add_1_indexed;
 pub mod fenwick_tree_multiset;
 pub mod fenwick_tree_with_instance_commutative_monoid;
 pub mod fenwick_tree_xor;
