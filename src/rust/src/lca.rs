@@ -155,18 +155,18 @@ pub mod tree {
         }
     }
     use crate::{
-        algebraic_structure_impl::*, group_theory_id::Min, segtree::Segtree,
+        algebraic_structure_impl::*, group_theory_id::Min, segment_tree_with_static_monoid::Segtree,
     };
     type CommonG = GroupApprox<(usize, usize), Min>;
     #[allow(dead_code)]
     type ETRMQSeg = EulerTourRMQ<Segtree<CommonG>>;
-    use crate::sparse_table::SparseTable;
+    use crate::sparse_table_with_static_idempotent_semigroup::SparseTable;
     #[allow(dead_code)]
     type ETRMQSpT = EulerTourRMQ<SparseTable<CommonG>>;
     use crate::sqrt_decomposition::SqrtDecomposition;
     #[allow(dead_code)]
     type ETRMQSqD = EulerTourRMQ<SqrtDecomposition<CommonG>>;
-    use crate::sparse_table::DisjointSparseTable;
+    use crate::sparse_table_with_static_idempotent_semigroup::DisjointSparseTable;
     #[allow(dead_code)]
     type ETRMQDSpT = EulerTourRMQ<DisjointSparseTable<CommonG>>;
 }

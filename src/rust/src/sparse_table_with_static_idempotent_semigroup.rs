@@ -13,6 +13,7 @@ where
     fn from_iter<T: IntoIterator<Item = G::S>>(iter: T) -> Self {
         let mut data = vec![iter.into_iter().collect::<Vec<_>>()];
         let max_width = data[0].len();
+        assert!(max_width > 0);
         let height = if max_width <= 1 {
             1
         } else {
