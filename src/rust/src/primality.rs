@@ -125,7 +125,7 @@ pub mod test {
     pub mod fermat {
         //! Fermat's Test
         use crate::{
-            gcd::int::euclidean as gcd,
+            greatest_common_divisor::int::euclidean as gcd,
             montgomery_modular_multiplication_64::MontgomeryMultiplication64,
             power::pow_semigroup,
         };

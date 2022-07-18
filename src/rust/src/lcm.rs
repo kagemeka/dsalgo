@@ -1,5 +1,5 @@
 //! least common multiple
-use crate::gcd::int::euclidean as gcd;
+use crate::greatest_common_divisor::int::euclidean as gcd;
 // TODO: without GCD
 /// with gcd
 pub fn lcm(a: u64, b: u64) -> u64 {

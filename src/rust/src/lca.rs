@@ -155,7 +155,8 @@ pub mod tree {
         }
     }
     use crate::{
-        algebraic_structure_impl::*, group_theory_id::Min, segment_tree_with_static_monoid::Segtree,
+        algebraic_structure_impl::*, group_theory_id::Min,
+        segment_tree_with_static_monoid::Segtree,
     };
     type CommonG = GroupApprox<(usize, usize), Min>;
     #[allow(dead_code)]
