@@ -3,7 +3,8 @@
 #include <cassert>
 #include <vector>
 using namespace std;
-template<typename T, typename G> class segtree {
+template<typename G> class segtree {
+  using T = typename G::T;
   vector<T> data;
   G g;
   auto update(int i) { data[i] = g.op(data[i << 1], data[i << 1 | 1]); }

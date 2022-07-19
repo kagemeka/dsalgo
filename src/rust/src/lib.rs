@@ -571,6 +571,7 @@ pub mod segment_tree_beats;
 pub mod segment_tree_dual;
 pub mod segment_tree_lazy;
 pub mod segment_tree_with_dynamic_node;
+pub mod segment_tree_with_instance_monoid;
 pub mod segment_tree_with_static_monoid;
 pub mod selection_sort;
 pub mod set_theory;
