@@ -93,19 +93,6 @@ class Tests(unittest.TestCase):
         assert len(query(999999990000, 1000000000000)) == 337
 
 
-# TODO:
-def atkin() -> None:
-    ...
-
-
-def linear() -> None:
-    ...
-
-
-def sundaram() -> None:
-    ...
-
-
 if __name__ == "__main__":
     import doctest
 

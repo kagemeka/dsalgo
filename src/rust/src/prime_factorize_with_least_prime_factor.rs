@@ -1,11 +1,9 @@
-use crate::least_prime_factor_table_with_sieve_of_eratosthenes::*;
+use crate::least_prime_factor_table_from_sieve_of_eratosthenes::*;
 pub struct PrimeFactorizeLPF {
     lpf: Vec<Option<u32>>,
 }
 impl PrimeFactorizeLPF {
-    pub fn new(size: usize) -> Self {
-        Self { lpf: least_prime_factor_table(size) }
-    }
+    pub fn new(size: usize) -> Self { Self { lpf: least_prime_factor(size) } }
 
     pub fn factorize(&self, mut n: u32) -> Vec<(u32, u32)> {
         assert!((n as usize) < self.lpf.len());

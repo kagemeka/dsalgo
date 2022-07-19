@@ -25,11 +25,11 @@ pub mod linear {
         #[test]
         fn test() {
             use crate::{
-                least_prime_factor_table_with_sieve_of_eratosthenes::*,
+                least_prime_factor_table_from_sieve_of_eratosthenes::*,
                 sieve_of_eratosthenes_enumerate_primes::enumerate_primes,
             };
             const K: usize = 1 << 10;
-            let lpf_ans = least_prime_factor_table(K);
+            let lpf_ans = least_prime_factor(K);
             let p_ans = enumerate_primes(K as u32);
             assert_eq!((lpf_ans, p_ans), ps(K));
         }

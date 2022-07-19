@@ -5,7 +5,7 @@ auto least_prime_factor(int size) -> vector<int> {
   for(int i = 4; i < size; i += 2) lpf[i] = 2;
   for(int i = 3; i * i < size; i += 2) {
     if(lpf[i] != i) continue;
-    for(int j = i * i; j < size; j += i * 2) {
+    for(int j = i * i; j < size; j += i << 1) {
       if(lpf[j] == 0) lpf[j] = i;
     }
   }
