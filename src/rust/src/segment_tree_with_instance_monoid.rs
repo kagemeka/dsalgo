@@ -5,8 +5,8 @@ pub trait Monoid {
 }
 pub struct SegmentTree<G: Monoid> {
     g: G,
-    size: usize,
-    data: Vec<G::T>,
+    pub(crate) size: usize,
+    pub(crate) data: Vec<G::T>,
 }
 impl<G: Monoid> SegmentTree<G> {
     fn n(&self) -> usize { self.data.len() >> 1 }
@@ -114,7 +114,7 @@ where
             i -= 1;
             v = nv;
             if i.count_ones() == 1 {
-                return self.size;
+                return 0;
             }
         }
         while i < n {
@@ -131,17 +131,17 @@ where
 }
 #[cfg(test)]
 mod tests {
+    struct G;
+    impl Monoid for G {
+        type T = i32;
+
+        fn op(&self, x: i32, y: i32) -> i32 { x + y }
+
+        fn e(&self) -> i32 { 0 }
+    }
     use super::*;
     #[test]
     fn test() {
-        struct G;
-        impl Monoid for G {
-            type T = i32;
-
-            fn op(&self, x: i32, y: i32) -> i32 { x + y }
-
-            fn e(&self) -> i32 { 0 }
-        }
         let mut seg = SegmentTree::<G>::new(G {}, 5);
         for i in 0..5 {
             seg.set(i, i as i32 + 1);
@@ -152,5 +152,37 @@ mod tests {
         assert_eq!(seg.max_right(|&x| x <= 5, 1), 3);
         assert_eq!(seg.min_left(|&x| x < 7, 4), 3);
         assert_eq!(seg.min_left(|&x| x <= 7, 4), 2);
+    }
+    #[test]
+    fn test2() {
+        let n = 10;
+        let s = (n - 1) * n / 2;
+        let s = s as i32;
+        let mut seg = SegmentTree::<G>::new(G {}, 10);
+        for i in 0..n {
+            seg.set(i, i as i32);
+        }
+        assert_eq!(seg.get(0, n), s);
+        seg.set(0, 1);
+        assert_eq!(seg.get(0, n), s + 1);
+        seg.set(0, 0);
+        assert_eq!(seg.get(0, n), s);
+        assert_eq!(seg.size, 10);
+        assert_eq!(seg[5], 5);
+        seg.set(5, 10);
+        assert_eq!(seg.get(0, n), s + 10 - 5);
+        let is_ok = |x: &i32| *x < 10;
+        assert_eq!(seg.max_right(&is_ok, 0), 4);
+        assert_eq!(seg.max_right(&is_ok, 5), 5);
+        assert_eq!(seg.min_left(&is_ok, 7), 6);
+        assert_eq!(seg.min_left(&is_ok, 6), 6);
+        assert_eq!(seg.min_left(&is_ok, 5), 2);
+        assert_eq!(seg.min_left(&is_ok, 4), 0);
+        // self.assertEqual(seg.max_right(lambda s: s < 10, 0), 4)
+        // self.assertEqual(seg.max_right(lambda s: s < 10, 5), 5)
+        // self.assertEqual(seg.min_left(lambda s: s < 10, 7), 6)
+        // self.assertEqual(seg.min_left(lambda s: s < 10, 6), 6)
+        // self.assertEqual(seg.min_left(lambda s: s < 10, 5), 2)
+        // self.assertEqual(seg.min_left(lambda s: s < 10, 4), 0)
     }
 }
