@@ -167,7 +167,7 @@ pub mod tree {
     use crate::sqrt_decomposition::SqrtDecomposition;
     #[allow(dead_code)]
     type ETRMQSqD = EulerTourRMQ<SqrtDecomposition<CommonG>>;
-    use crate::sparse_table_with_static_idempotent_semigroup::DisjointSparseTable;
+    use crate::sparse_table_with_static_idempotent_semigroup::*;
     #[allow(dead_code)]
     type ETRMQDSpT = EulerTourRMQ<DisjointSparseTable<CommonG>>;
 }

@@ -1,19 +1,19 @@
 
 #pragma once
+#include "bit_length_32.hpp"
 #include <functional>
 #include <vector>
 using namespace std;
 template<typename T, class F = function<T(const T&, const T&)>>
 class sparse_table {
-  auto bitlen(int n) -> int { return 32 - __builtin_clz(n); }
-
-public:
   vector<vector<T>> data;
   F f;
+
+public:
   sparse_table(vector<T> const& a, const F& f): f(f) {
     int n = a.size();
     if(!n) return;
-    int height = bitlen(n - 1);
+    int height = bit_length(n - 1);
     data.resize(height);
     data[0] = a;
     for(int i = 1; i < height; i++) {
@@ -28,7 +28,7 @@ public:
   auto get(int l, int r) -> T {
     assert(0 <= l && l < r && r <= size());
     if(r - l == 1) return data[0][l];
-    int i = bitlen(r - l - 1) - 1;
+    int i = bit_length(r - l - 1) - 1;
     return f(data[i][l], data[i][r - (1 << i)]);
   }
 };
