@@ -1,7 +1,7 @@
-use crate::psieve::erat;
+use crate::sieve_of_eratosthenes_enumerate_primes::enumerate_primes;
 pub fn least_prime_factor_table(size: usize) -> Vec<Option<u32>> {
     let mut lpf = vec![None; size];
-    for p in erat::ps(size) {
+    for p in enumerate_primes(size as u32) {
         debug_assert!(lpf[p as usize].is_none());
         lpf[p as usize] = Some(p);
     }

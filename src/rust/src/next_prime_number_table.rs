@@ -1,7 +1,7 @@
-use crate::is_prime_table::is_p_t;
+use crate::is_prime_table_from_enumerate_primes::is_prime;
 pub fn next_prime_table(size: usize) -> Vec<u64> {
     const MAX_PRIME_GAP_64: u64 = 1550;
-    let mut next = is_p_t(size + MAX_PRIME_GAP_64 as usize)
+    let mut next = is_prime(size + MAX_PRIME_GAP_64 as usize)
         .into_iter()
         .enumerate()
         .map(|(i, is_prime)| if is_prime { Some(i as u64) } else { None })

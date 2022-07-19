@@ -10,6 +10,7 @@ public:
   template<typename A> array_compression(A a) {
     values = unique(vector<T>(a.begin(), a.end()));
   }
+  auto size() -> int { return values.size(); }
   auto operator()(T x) -> int {
     int i = lower_bound(values.begin(), values.end(), x) - values.begin();
     assert(i < (int)values.size() && values[i] == x);
