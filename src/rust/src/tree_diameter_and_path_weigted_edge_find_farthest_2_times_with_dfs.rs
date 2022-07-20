@@ -34,3 +34,8 @@ pub fn tree_diameter(g: &Vec<(usize, usize, i64)>) -> (Vec<usize>, i64) {
     }
     (path, diameter)
 }
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn test() {}
+}
