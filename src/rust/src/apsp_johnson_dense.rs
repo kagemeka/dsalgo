@@ -1,5 +1,6 @@
 use crate::{
-    dijkstra_dense::dijkstra_dense, negative_cycle::NegativeCycleError,
+    dijkstra_dense_option_u64::dijkstra_dense,
+    negative_cycle::NegativeCycleError,
     shortest_path_potential::shortest_path_potential,
 };
 /// O(V^3)
