@@ -1,4 +1,4 @@
-pub fn prime_factorize_trial_division(mut n: u64) -> Vec<(u64, u8)> {
+pub fn prime_factorize(mut n: u64) -> Vec<(u64, u8)> {
     assert!(n > 0);
     let mut factors = vec![];
     for i in 2..n {
@@ -26,13 +26,13 @@ mod tests {
     #[test]
     fn test() {
         use super::*;
-        assert_eq!(prime_factorize_trial_division(9999999999999), [
+        assert_eq!(prime_factorize(9999999999999), [
             (3, 2),
             (53, 1),
             (79, 1),
             (265371653, 1)
         ],);
-        assert_eq!(prime_factorize_trial_division(9316358251200), [
+        assert_eq!(prime_factorize(9316358251200), [
             (2, 6),
             (3, 3),
             (5, 2),

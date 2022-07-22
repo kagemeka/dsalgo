@@ -12,9 +12,7 @@ mod tests {
         use super::*;
         use crate::prime_factorize_trial_division::*;
         assert_eq!(
-            divisors_count_from_prime_factors(&prime_factorize_trial_division(
-                24
-            )),
+            divisors_count_from_prime_factors(&prime_factorize(24)),
             4 * 2,
         );
     }

@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
 using namespace std;
-template<typename T> auto prime_factorize(T n) -> vector<pair<int, int>> {
-  vector<pair<int, int>> factors;
-  for(int i = 2; i * i <= n; i++) {
+template<typename T> auto prime_factorize(T n) -> vector<pair<T, int>> {
+  vector<pair<T, int>> factors;
+  for(T i = 2; i * i <= n; i++) {
     if(n % i) continue;
     int cnt = 0;
     while(n % i == 0) {

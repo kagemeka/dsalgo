@@ -35,10 +35,7 @@ mod tests {
         use super::*;
         use crate::prime_factorize_trial_division::*;
         for i in 1..100 {
-            assert_eq!(
-                prime_factorize_fermat(i),
-                prime_factorize_trial_division(i)
-            );
+            assert_eq!(prime_factorize_fermat(i), prime_factorize(i));
         }
     }
 }

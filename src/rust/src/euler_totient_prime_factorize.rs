@@ -24,10 +24,7 @@ mod tests {
         ];
         for i in 0..PHI.len() {
             assert_eq!(
-                euler_totient_prime_factorize(
-                    &prime_factorize_trial_division,
-                    (i + 1) as u64
-                ),
+                euler_totient_prime_factorize(&prime_factorize, (i + 1) as u64),
                 PHI[i]
             );
         }

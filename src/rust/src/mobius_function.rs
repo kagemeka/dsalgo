@@ -1,4 +1,4 @@
-use crate::prime_factorize_trial_division::prime_factorize_trial_division;
+use crate::prime_factorize_trial_division::prime_factorize;
 // TODO: use faster factorization algorithm.
 pub fn mobius_function(n: u64) -> i8 {
     assert!(n > 0);
@@ -6,7 +6,7 @@ pub fn mobius_function(n: u64) -> i8 {
         return 1;
     }
     let mut u = 1;
-    for (_, e) in prime_factorize_trial_division(n) {
+    for (_, e) in prime_factorize(n) {
         if e > 1 {
             return 0;
         }
