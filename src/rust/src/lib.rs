@@ -53,7 +53,7 @@ pub mod bidirected_graph;
 pub mod bijection;
 pub mod bin_count;
 pub mod binary_function;
-pub mod binary_gcd;
+pub mod binary_greatest_common_divisor_u64;
 pub mod binary_heap;
 pub mod binary_heap_std_impl_priority_queue;
 pub mod binary_min_heap;

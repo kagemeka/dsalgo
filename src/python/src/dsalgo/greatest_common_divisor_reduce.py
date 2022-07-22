@@ -13,6 +13,7 @@ class Tests(unittest.TestCase):
     def test(self) -> None:
         assert gcd_reduce([]) == 0
         assert gcd_reduce([-1, 2]) == 1
+        assert gcd_reduce([15, 35, 21]) == 1
 
 
 if __name__ == "__main__":
