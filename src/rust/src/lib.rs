@@ -679,6 +679,8 @@ pub mod sum_of_all_pairs_xor_in_array_modular;
 pub mod sum_of_divisors_count;
 pub mod sum_of_divisors_count_times_i;
 pub mod sum_of_divisors_sum;
+pub mod sum_of_gcd_for_each_element_is_1_to_k_fast_mobius_transform_usize;
+pub mod sum_of_gcd_for_each_element_is_1_to_k_mobius_transform_usize;
 pub mod sum_of_i_times_n_choose_i;
 pub mod sum_of_multiples;
 pub mod sum_of_multiples_count_range;
