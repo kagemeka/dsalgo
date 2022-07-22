@@ -502,6 +502,8 @@ pub mod power_group_trait;
 pub mod power_monoid;
 pub mod power_monoid_itself;
 pub mod power_monoid_trait;
+pub mod power_multiplicative_semigroup_with_std_ops;
+pub mod power_multiplicative_semigroup_with_std_ops_recurse;
 pub mod power_semigroup;
 pub mod power_semigroup_itself;
 pub mod power_semigroup_recurse;

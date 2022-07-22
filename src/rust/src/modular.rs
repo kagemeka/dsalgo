@@ -24,8 +24,6 @@ pub fn mul_doubling(mut a: u128, mut b: u128, m: u128) -> u128 {
     }
     res
 }
-// TODO:
-pub fn primitive_root() {}
 pub mod modulus {
     pub trait StaticGet {
         type T;
