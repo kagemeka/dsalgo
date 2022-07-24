@@ -8,7 +8,7 @@ pub fn binary_gcd(mut a: u64, mut b: u64) -> u64 {
     b >>= j;
     while a != b {
         if a < b {
-            std::mem::swap(&mut a, &mut b);
+            (a, b) = (b, a);
         }
         a -= b;
         a >>= a.trailing_zeros();

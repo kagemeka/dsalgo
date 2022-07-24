@@ -322,6 +322,8 @@ pub mod int_kth_root_fast;
 pub mod int_kth_root_linear;
 pub mod int_kth_root_newton_method;
 pub mod interpolation_sort;
+pub mod intersection_length_of_2_intervals;
+pub mod intersection_of_2_intervals;
 pub mod inverse_factorial_table;
 pub mod inversion_number_with_array_compression_fenwick_tree;
 pub mod io;
