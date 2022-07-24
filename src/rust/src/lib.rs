@@ -1,4 +1,5 @@
 #![feature(once_cell)]
+#![feature(int_log)]
 // #![allow(dead_code)]
 pub mod a_star_search_algorithm;
 pub mod aa_tree;
@@ -325,7 +326,7 @@ pub mod interpolation_sort;
 pub mod intersection_length_of_2_intervals;
 pub mod intersection_of_2_intervals;
 pub mod inverse_factorial_table;
-pub mod inversion_number_with_array_compression_fenwick_tree;
+pub mod inversion_number_with_array_compression_and_fenwick_tree;
 pub mod io;
 pub mod iops;
 pub mod is_absorbing;
@@ -380,6 +381,8 @@ pub mod linear_programming;
 pub mod linear_time_minimum_spanning_tree;
 pub mod link_cut_tree;
 pub mod log_structured_merge_tree;
+pub mod logarithm_floor_for_any_base_recursive;
+pub mod logarithm_for_any_base_with_log_2;
 pub mod longest_border_morris_pratt_table_0_indexed;
 pub mod longest_border_morris_pratt_table_1_indexed;
 pub mod longest_common_prefix_array;
@@ -750,6 +753,7 @@ pub mod upper_bound_on_sequence;
 pub mod usize_u64_impl_graph_edge_trait;
 pub mod van_emde_boas_tree;
 pub mod vector;
+pub mod vector_dedup;
 pub mod vector_rotation_2d_by_rad_with_matrix;
 pub mod vector_rotation_3d_by_rad_with_matrix;
 pub mod vector_space;

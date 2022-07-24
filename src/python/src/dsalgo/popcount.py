@@ -11,3 +11,7 @@ def popcount(n: int) -> int:
     n = n + (n >> 16)
     n = n + (n >> 32)
     return n & 0x7F
+
+
+def with_std(n: int) -> int:
+    return n.bit_count()
