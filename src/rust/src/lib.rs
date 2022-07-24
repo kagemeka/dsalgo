@@ -382,7 +382,7 @@ pub mod linear_time_minimum_spanning_tree;
 pub mod link_cut_tree;
 pub mod log_structured_merge_tree;
 pub mod logarithm_floor_for_any_base_recursive;
-pub mod logarithm_for_any_base_with_log_2;
+pub mod logarithm_for_any_base_with_log_e;
 pub mod longest_border_morris_pratt_table_0_indexed;
 pub mod longest_border_morris_pratt_table_1_indexed;
 pub mod longest_common_prefix_array;
