@@ -1,4 +1,5 @@
 pub fn log(base: u64, x: u64) -> u8 {
+    assert!(base >= 2);
     if x >= base { 1 + log(base, x / base) } else { 0 }
 }
 #[cfg(test)]
