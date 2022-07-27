@@ -399,6 +399,8 @@ pub mod lsm_tree;
 pub mod lucas_number;
 pub mod lucas_sequence;
 pub mod m_ary_tree;
+pub mod euler_tour_nodes_direct;
+pub mod euler_tour_nodes_from_edges;
 pub mod maclaurin_series;
 pub mod make_sparse_histogram;
 pub mod manacher;
