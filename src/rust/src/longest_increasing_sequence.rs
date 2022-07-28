@@ -1,4 +1,4 @@
-use crate::binary_search_on_sequence::binary_search;
+use crate::binary_search_on_sequence_bisection_of_ng_ok::binary_search;
 pub(self) fn find_longest_sequence<T: Copy, F: Fn(&T, &T) -> bool>(
     slice: &[T], binary_relation: F,
 ) -> Vec<T> {

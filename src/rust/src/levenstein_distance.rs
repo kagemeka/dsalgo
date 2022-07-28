@@ -23,6 +23,9 @@ pub fn levenstein_distance<T: PartialEq>(a: &[T], b: &[T]) -> usize {
                 .min()
                 .unwrap()
                 + 1;
+            // min(delete s[i],
+            //     insert t[j] after s[i],
+            //     change s[i] -> t[j])
         }
     }
     dist[n][m]
