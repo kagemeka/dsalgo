@@ -369,6 +369,8 @@ pub mod karatsuba_mul_quotient_pow_2_power_of_2_128;
 pub mod kmp;
 pub mod kmp_findall;
 pub mod knapsack;
+pub mod knapsack_01_dual_table_with_inf;
+pub mod knapsack_01_for_large_weights_with_dual;
 pub mod knapsack_01_table;
 pub mod knapsack_unbounded_table_bottom_up_max_value_oriented;
 pub mod knapsack_unbounded_table_item_oriented;
