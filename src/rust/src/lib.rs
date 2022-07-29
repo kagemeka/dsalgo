@@ -657,6 +657,8 @@ pub mod single_source_shortest_path;
 pub mod size;
 pub mod skew_heap;
 pub mod sliding_window_aggregation;
+pub mod sliding_window_maximum_with_deque;
+pub mod sliding_window_minimum_with_deque;
 pub mod slope_trick;
 pub mod slowsort;
 pub mod smallest_enclosing_circle;
