@@ -1,40 +1,53 @@
-//! Disjoint-Set-Union (DSU) or Union-Find (UF).
-use crate::union_find_traits::*;
-#[derive(Debug)]
-pub struct UnionFind(Vec<isize>); // root: neg-size, other: parent
+pub struct UnionFind(Vec<isize>);
 impl UnionFind {
     pub fn new(size: usize) -> Self { Self(vec![-1; size]) }
-}
-impl Size for UnionFind {
-    fn size(&self) -> usize { self.0.len() }
-}
-impl Root for UnionFind {
-    fn root(&mut self, u: usize) -> usize {
-        if self.0[u] < 0 {
-            return u;
-        }
-        self.0[u] = self.root(self.0[u] as usize) as isize;
-        self.0[u] as usize
+
+    pub fn size(&self) -> usize { self.0.len() }
+
+    pub fn root(&mut self, u: usize) -> usize {
+        return if self.0[u] < 0 {
+            u
+        } else {
+            self.0[u] = self.root(self.0[u] as usize) as isize;
+            self.0[u] as usize
+        };
     }
-}
-impl Unite for UnionFind {
-    fn unite(&mut self, u: usize, v: usize) {
-        let mut u = self.root(u);
-        let mut v = self.root(v);
+
+    pub fn unite(&mut self, mut u: usize, mut v: usize) {
+        u = self.root(u);
+        v = self.root(v);
         if u == v {
             return;
         }
         if self.0[u] > self.0[v] {
-            std::mem::swap(&mut u, &mut v);
+            (u, v) = (v, u);
         }
         self.0[u] += self.0[v];
         self.0[v] = u as isize;
     }
-}
-impl SizeOf for UnionFind {
-    fn size_of(&mut self, u: usize) -> usize {
-        let u = self.root(u);
+
+    pub fn size_of(&mut self, mut u: usize) -> usize {
+        u = self.root(u);
         -self.0[u] as usize
+    }
+
+    pub fn same(&mut self, u: usize, v: usize) -> bool {
+        self.root(u) == self.root(v)
+    }
+
+    pub fn labels(&mut self) -> Vec<usize> {
+        let n = self.size();
+        let mut labels = vec![n; n];
+        let mut l = 0;
+        for i in 0..n {
+            let r = self.root(i);
+            if labels[r] == n {
+                labels[r] = l;
+                l += 1;
+            }
+            labels[i] = labels[r];
+        }
+        labels
     }
 }
 #[cfg(test)]

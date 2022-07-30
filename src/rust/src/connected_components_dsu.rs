@@ -1,4 +1,4 @@
-use crate::{union_find_low_memory::*, union_find_traits::*};
+use crate::{union_find_low_memory_with_trait::*, union_find_traits::*};
 pub fn connected_components(
     v_size: usize, edges: &[(usize, usize)],
 ) -> Vec<usize> {

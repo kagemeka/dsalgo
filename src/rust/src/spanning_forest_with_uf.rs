@@ -1,4 +1,4 @@
-use crate::{union_find_low_memory::UnionFind, union_find_traits::*};
+use crate::{union_find_low_memory_with_trait::UnionFind, union_find_traits::*};
 pub fn spanning_forest(v_size: usize, edges: &[(usize, usize)]) -> Vec<usize> {
     let mut ids = vec![];
     let mut uf = UnionFind::new(v_size);
