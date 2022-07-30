@@ -54,8 +54,8 @@ pub mod tree {
         }
     }
     use crate::{
-        tree_edges_to_graph::tree_edges_to_graph, union_find_low_memory_with_trait::*,
-        union_find_traits::*,
+        tree_edges_to_graph::tree_edges_to_graph,
+        union_find_low_memory_with_trait::*, union_find_traits::*,
     };
     /// tarjan's offline algorithm
     pub fn tarjan(e: &[(usize, usize)], qs: &[(usize, usize)]) -> Vec<usize> {

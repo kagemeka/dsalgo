@@ -80,7 +80,7 @@ pub mod test {
             }
         }
     }
-    pub mod ss {
+    pub mod solovay_strassen {
         //! solovay strassen's test
         use crate::{
             euler_criterion::try_euler_criterion, jacobi_symbol::jacobi_symbol,
@@ -119,7 +119,7 @@ pub mod test {
             }
         }
     }
-    pub mod mr_ss {
+    pub mod miller_rabin_solovay_strassen {
         //! Miller Rabin - Solovay Strassen's Test
     }
     pub mod fermat {

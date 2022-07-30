@@ -1,4 +1,6 @@
-use crate::{union_find_low_memory_with_trait::UnionFind, union_find_traits::*};
+use crate::{
+    union_find_low_memory_with_trait::UnionFind, union_find_traits::*,
+};
 pub fn has_cycle(v_size: usize, edges: &[(usize, usize)]) -> bool {
     let mut uf = UnionFind::new(v_size);
     for &(u, v) in edges.iter() {

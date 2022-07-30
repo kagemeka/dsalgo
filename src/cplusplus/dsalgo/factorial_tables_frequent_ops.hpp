@@ -2,10 +2,10 @@
 #include "factorial_table.hpp"
 #include "inverse_factorial_table.hpp"
 #include <cassert>
+using namespace std;
 template<typename S> class factorial_tables_frequent_ops {
-  std::vector<S> fact, inv_fact;
-
 public:
+  vector<S> fact, inv_fact;
   factorial_tables_frequent_ops(int size) {
     fact = factorial_table<S>(size);
     inv_fact = inverse_factorial_table<S>(size);
