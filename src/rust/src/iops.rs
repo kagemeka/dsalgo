@@ -61,12 +61,5 @@ pub mod div {
             assert_eq!(floor_div(-10, -3), 3);
         }
     }
-    // reference for following algorithms
-    // https://en.wikipedia.org/wiki/Division_algorithm
-    pub fn restoring() {}
-    pub fn non_restoring() {}
-    pub fn srt() {}
-    pub fn newton_rapheson() {}
-    pub fn goldschmidt() {}
 }
 pub mod mul {}
