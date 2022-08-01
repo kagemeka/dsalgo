@@ -1,13 +1,12 @@
 /// O(N)
-pub fn permutation_rank(p: &Vec<usize>) -> usize {
+pub fn permutation_rank(p: &[usize]) -> usize {
     let n = p.len();
     let mut s = (1usize << n) - 1;
     let mut fact = 1;
     let mut rank = 0;
-    for i in 0..n {
-        let j = p[n - 1 - i];
-        rank += (j - (s & ((1 << j) - 1)).count_ones() as usize) * fact;
-        s &= !(1 << j);
+    for (i, &p) in p.iter().rev().enumerate() {
+        rank += (p - (s & ((1 << p) - 1)).count_ones() as usize) * fact;
+        s &= !(1 << p);
         fact *= i + 1;
     }
     rank
