@@ -1,6 +1,6 @@
 use crate::{
     find_divisors_trial_division::find_divisors,
-    greatest_common_divisor::int::gcd_reduce,
+    greatest_common_divisor_euclidean_reduce::gcd_reduce,
 };
 pub fn find_divisors_for_same_remainders<I>(mut iter: I) -> Vec<u64>
 where

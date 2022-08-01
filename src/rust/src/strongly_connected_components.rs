@@ -3,7 +3,7 @@
 pub type G = Vec<Vec<usize>>;
 /// label
 pub type L = Vec<usize>;
-fn trans(g: G) -> G {
+fn transpose(g: G) -> G {
     let n = g.len();
     let mut t = vec![vec![]; n];
     for i in 0..n {
@@ -44,7 +44,7 @@ pub fn kosaraju(g: G) -> L {
             dfs(&mut d, i);
         }
     }
-    d.g = trans(d.g);
+    d.g = transpose(d.g);
     let mut l = 0;
     for i in d.q.clone().into_iter().rev() {
         if d.l[i] == n {

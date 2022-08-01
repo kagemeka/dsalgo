@@ -109,10 +109,6 @@ def dijkstra_sparse(
     return dist
 
 
-def dijkstra_small_edges_sparse() -> list[int | None]:
-    ...
-
-
 def bellman_ford_sparse(
     graph: list[list[tuple[int, int]]],
     src: int,
