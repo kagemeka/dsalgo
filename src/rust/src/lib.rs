@@ -782,6 +782,8 @@ pub mod torus;
 pub mod total_order;
 pub mod tournament_sort;
 pub mod transitive_relation;
+pub mod transpose_sparse_graph_with_unweighted_edges;
+pub mod transpose_sparse_graph_with_weighted_edges;
 pub mod traveling_salesperson;
 pub mod traveling_salesperson_giving_with_inf;
 pub mod traveling_salesperson_taking_mem_access_optim_with_inf;

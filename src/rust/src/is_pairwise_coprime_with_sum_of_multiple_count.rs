@@ -13,9 +13,9 @@ pub fn is_pairwise_coprime(a: &[usize]) -> bool {
         for j in (i << 1..k).step_by(i) {
             is_prime[j] = false;
             c += cnt[j];
-            if c > 1 {
-                return false;
-            }
+        }
+        if c > 1 {
+            return false;
         }
     }
     true
