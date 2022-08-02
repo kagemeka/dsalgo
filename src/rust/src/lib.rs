@@ -746,6 +746,7 @@ pub mod strongly_connected_components;
 pub mod subset_sum;
 pub mod subset_sum_at_most_k;
 pub mod subset_sum_limited_count_multiple_same_values;
+pub mod subset_sum_max_less_than_meet_in_the_middle_usize;
 pub mod subset_sum_min_count;
 pub mod subset_sum_problem;
 pub mod suffix_array;
