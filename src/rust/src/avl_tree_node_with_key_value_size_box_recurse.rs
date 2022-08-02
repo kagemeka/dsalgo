@@ -75,6 +75,7 @@ impl<K: PartialOrd, V> Node<K, V> {
         if balance < -1 {
             // lean left
             if Self::get_balance(root.left.as_ref()) > 0 {
+                // zig-zag
                 root.left = Some(Self::rotate_left(root.left.take().unwrap()));
             }
             return Self::rotate_right(root);
