@@ -1,5 +1,5 @@
 #[derive(Debug)]
-pub(crate) struct Node<T> {
+pub struct Node<T> {
     pub left: Option<Box<Node<T>>>,
     pub right: Option<Box<Node<T>>>,
     pub height: usize,
@@ -150,6 +150,40 @@ impl<T> Node<T> {
             offset + Self::binary_search(f, root.right.as_ref())
         }
     }
+
+    pub fn iter<'a>(&'a self) -> std::vec::IntoIter<&'a T> {
+        let mut inorder = vec![];
+        fn dfs<'b, T>(res: &mut Vec<&'b T>, node: &'b Node<T>) {
+            if let Some(left) = node.left.as_ref() {
+                dfs(res, left);
+            }
+            res.push(&node.value);
+            if let Some(right) = node.right.as_ref() {
+                dfs(res, right);
+            }
+        }
+        dfs(&mut inorder, self);
+        inorder.into_iter()
+    }
+}
+impl<T> IntoIterator for Node<T> {
+    type IntoIter = std::vec::IntoIter<Self::Item>;
+    type Item = T;
+
+    fn into_iter(self) -> Self::IntoIter {
+        let mut inorder = vec![];
+        fn dfs<T>(res: &mut Vec<T>, mut node: Node<T>) {
+            if let Some(left) = node.left.take() {
+                dfs(res, *left);
+            }
+            res.push(node.value);
+            if let Some(right) = node.right.take() {
+                dfs(res, *right);
+            }
+        }
+        dfs(&mut inorder, self);
+        inorder.into_iter()
+    }
 }
 #[cfg(test)]
 mod tests {
@@ -173,5 +207,14 @@ mod tests {
         assert_eq!(Nd::binary_search(|v| v <= &1, root.as_ref()), 1);
         assert_eq!(Nd::binary_search(|v| v < &1, root.as_ref()), 2);
         assert!(!std::ptr::eq(&Nd::new(1), &Nd::new(1)));
+        for v in root.as_ref().unwrap().iter() {
+            println!("{:?}", v);
+        }
+        for v in root.as_ref().unwrap().iter() {
+            println!("{:?}", v);
+        }
+        for v in root.unwrap().into_iter() {
+            println!("{:?}", v);
+        }
     }
 }

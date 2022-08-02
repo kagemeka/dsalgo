@@ -354,6 +354,7 @@ pub mod is_invertible;
 pub mod is_multiple_of_9;
 // pub mod is_multitree;
 pub mod avl_tree_node_with_value_size_box_recurse;
+pub mod avl_tree_ordered_multiset;
 pub mod bfs_on_sparse_graph_in_degree_oriented;
 pub mod bfs_on_sparse_graph_in_degree_oriented_with_data;
 pub mod catalan_number_with_formula_modular_with_factorial_tables_usize;
