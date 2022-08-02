@@ -35,21 +35,7 @@ class TestKasai(unittest.TestCase):
 
         arr = [1, 0, 3, 3, 0, 3, 3, 0, 2, 2, 0]  # mississippi
         sa = dsalgo.suffix_array.sais_recurse(arr)
-        """
-        sa|lcp |suffix
-        -------------------
-        10|None|i
-        7 |1   |ippi
-        4 |1   |issippi
-        1 |4   |ississippi
-        0 |0   |mississippi
-        9 |0   |pi
-        8 |1   |ppi
-        6 |0   |sippi
-        3 |2   |sissippi
-        5 |1   |ssippi
-        2 |3   |ssissippi
-        """
+
         lcp = [1, 1, 4, 0, 0, 1, 0, 2, 1, 3]
         kasai(arr, sa) == lcp
 
