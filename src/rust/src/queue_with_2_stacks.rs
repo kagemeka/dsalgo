@@ -13,8 +13,8 @@ impl<T> Queue<T> {
         if !self.st_front.is_empty() {
             return self.st_front.pop();
         }
-        while !self.st_back.is_empty() {
-            self.st_front.push(self.st_back.pop().unwrap());
+        while let Some(x) = self.st_back.pop() {
+            self.st_front.push(x);
         }
         self.st_front.pop()
     }
