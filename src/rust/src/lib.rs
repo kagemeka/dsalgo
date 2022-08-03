@@ -746,6 +746,7 @@ pub mod static_tensor_shape;
 pub mod steiner_tree;
 pub mod stooge_sort;
 pub mod strconv;
+pub mod dynamic_sliding_window_sum_deque_i64;
 pub mod string_ith_ascii_code;
 pub mod string_ith_char;
 pub mod strongly_connected_components;
