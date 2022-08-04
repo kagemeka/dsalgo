@@ -377,6 +377,7 @@ pub mod dynamic_array_queue;
 pub mod dynamic_sliding_window_maximum_queue_i64;
 pub mod dynamic_sliding_window_sum_deque_i64;
 pub mod factorial_tables_frequent_ops_modular_usize;
+pub mod fenwick_tree_usize_add_0_indexed;
 pub mod functional_graph;
 pub mod functional_graph_doubling_table;
 pub mod functional_graph_kth_from;
