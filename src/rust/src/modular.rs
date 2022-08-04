@@ -1,180 +1,3 @@
-use crate::power::pow_monoid;
-/// pow for u32
-/// why not only u64?
-/// because it's expensive to cast as u128.
-pub fn pow(m: u32, base: u64, exp: u64) -> u32 {
-    let modulus = m as u64;
-    pow_monoid(&|x, y| x * y % modulus, &|| 1, base % modulus, exp) as u32
-}
-pub fn pow_64(m: u64, base: u128, exp: u64) -> u64 {
-    let modulus = m as u128;
-    pow_monoid(&|x, y| x * y % modulus, &|| 1, base % modulus, exp) as u64
-}
-/// avoid overflow on u128.
-/// pow for addition.
-/// under u64 -> it's enough to cast as u128.
-pub fn mul_doubling(mut a: u128, mut b: u128, m: u128) -> u128 {
-    let mut res = 0;
-    while b > 0 {
-        if b & 1 == 1 {
-            res = (res + a) % m;
-        }
-        a = (a << 1) % m;
-        b >>= 1;
-    }
-    res
-}
-pub mod modulus {
-    pub trait StaticGet {
-        type T;
-        fn get() -> Self::T;
-    }
-    pub trait StaticSet {
-        type T;
-        fn set(value: Self::T);
-    }
-    pub trait DynGet {
-        type T;
-        fn get(&self) -> Self::T;
-    }
-    pub trait DynSet {
-        type T;
-        fn set(&mut self, value: Self::T);
-    }
-    pub trait Id {}
-    impl<T> Id for T {}
-    macro_rules! define_static_mod {
-        (
-            $name:ident,
-            $uint:ty,
-            $atomic_uint:ty,
-            $atomic_ordering_store:expr,
-            $atomic_ordering_load:expr
-        ) => {
-            #[derive(
-                Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash,
-            )]
-            pub struct $name<Id>(std::marker::PhantomData<Id>);
-            impl<Id> $name<Id> {
-                fn cell() -> &'static $atomic_uint {
-                    // VALUE type needs Sync + 'static
-                    // std::cell types are not Sync
-                    // std::sync::Mutex is not 'static
-                    // only atomic types can be.
-                    // or we can use external crate like `lazy_static`.
-                    // why not defining as associated const variable?
-                    // -> const variables are immutabe in any situation.
-                    static CELL: $atomic_uint = <$atomic_uint>::new(0);
-                    &CELL
-                }
-            }
-            impl<Id> StaticGet for $name<Id> {
-                type T = $uint;
-
-                fn get() -> Self::T { Self::cell().load($atomic_ordering_load) }
-            }
-            impl<Id> StaticSet for $name<Id> {
-                type T = $uint;
-
-                fn set(value: Self::T) {
-                    Self::cell().store(value, $atomic_ordering_store);
-                }
-            }
-        };
-
-        ($name:ident, $uint:ty, $atomic_uint:ty) => {
-            define_static_mod!(
-                $name,
-                $uint,
-                $atomic_uint,
-                std::sync::atomic::Ordering::SeqCst,
-                std::sync::atomic::Ordering::SeqCst
-            );
-        };
-    }
-    use std::sync::atomic::{AtomicU32, AtomicU64};
-    define_static_mod!(StaticMod32, u32, AtomicU32);
-    define_static_mod!(StaticMod64, u64, AtomicU64);
-    // TODO: change later. not compile on AtCoder.
-    // macro_rules! define_const_mod {
-    //     ($name:ident, $uint:ty) => {
-    //         #[derive(
-    //             Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash,
-    //         )]
-    //         pub struct $name<const MOD: $uint>;
-    //         impl<const MOD: $uint> StaticGet for $name<MOD> {
-    //             type T = $uint;
-    //             fn get() -> Self::T { MOD }
-    //         }
-    //     };
-    // }
-    // define_const_mod!(ConstMod64, u64);
-    // define_const_mod!(ConstMod32, u32);
-    /// old version for online judges.
-    macro_rules! define_const_mod_old {
-        ($name:ident, $uint:ty, $value:expr) => {
-            #[derive(
-                Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash,
-            )]
-            pub struct $name;
-            impl StaticGet for $name {
-                type T = $uint;
-
-                fn get() -> Self::T { $value }
-            }
-        };
-    }
-    define_const_mod_old!(Mod998_244_353, u32, 998_244_353);
-    define_const_mod_old!(Mod1_000_000_007, u32, 1_000_000_007);
-    /// T is gonna be u64 or u32
-    #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    pub struct DynMod<T>(T);
-    impl<T> DynMod<T> {
-        pub fn new(value: T) -> Self { Self(value) }
-    }
-    impl<T: Copy> DynGet for DynMod<T> {
-        type T = T;
-
-        fn get(&self) -> Self::T { self.0 }
-    }
-    impl<T> DynSet for DynMod<T> {
-        type T = T;
-
-        fn set(&mut self, value: Self::T) { self.0 = value }
-    }
-    #[cfg(test)]
-    mod tests {
-        use super::*;
-        // TODO: change later. not compile on AtCoder.
-        // #[test]
-        // fn test_const_mod() {
-        //     type Mod = ConstMod32<1_000_000_007>;
-        //     assert_eq!(Mod::get(), 1_000_000_007);
-        // }
-        #[test]
-        fn test_const_mod_old() {
-            type Mod = Mod1_000_000_007;
-            assert_eq!(Mod::get(), 1_000_000_007);
-        }
-        #[test]
-        fn test_static_mod() {
-            struct Id;
-            type Mod = StaticMod32<Id>;
-            Mod::set(1_000_000_007);
-            assert_eq!(Mod::get(), 1_000_000_007);
-            Mod::set(998_244_353);
-            assert_eq!(Mod::get(), 998_244_353);
-        }
-        #[test]
-        fn test_dyn_mod() {
-            type Mod = DynMod<u32>;
-            let mut m = Mod::new(998_244_353);
-            assert_eq!(m.get(), 998_244_353);
-            m.set(1_000_000_007);
-            assert_eq!(m.get(), 1_000_000_007);
-        }
-    }
-}
 pub mod arithmetic {
     //! reference
     //! https://en.wikipedia.org/wiki/Modular_arithmetic#Properties
@@ -206,19 +29,19 @@ pub mod arithmetic {
             self.mul(lhs, self.inv(rhs))
         }
     }
-    use crate::modular::{inv::extgcd as invert, modulus::StaticGet};
+    use crate::{modular::inv::extgcd as invert, static_modulus_trait::Get};
     /// why `default`?
     /// because there exists other modular arithmetic implementations.
     /// e.g. Montgomery Multiplication, or Burrett Reduction.
     #[derive(
         Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Default,
     )]
-    pub struct DefaultStatic<T, M: StaticGet<T = T>>(
+    pub struct DefaultStatic<T, M: Get<T = T>>(
         std::marker::PhantomData<(T, M)>,
     );
     macro_rules! impl_default_static {
         ($uint:ty, $mul_cast_uint:ty) => {
-            impl<M: StaticGet<T = $uint>> Static for DefaultStatic<$uint, M> {
+            impl<M: Get<T = $uint>> Static for DefaultStatic<$uint, M> {
                 type T = $uint;
 
                 fn modulus() -> Self::T { M::get() }
@@ -262,7 +85,7 @@ pub mod arithmetic {
     // #[allow(dead_code)]
     // pub type Modular998_244_353 =
     //     DefaultStatic<u32, ConstMod32<998_244_353>>;
-    use crate::modular::modulus::{Mod1_000_000_007, Mod998_244_353};
+    use crate::define_const_modulus_macro::{Mod1_000_000_007, Mod998_244_353};
     #[allow(dead_code)]
     pub type Modular1_000_000_007 = DefaultStatic<u32, Mod1_000_000_007>;
     #[allow(dead_code)]
@@ -594,15 +417,5 @@ pub mod int {
     mod tests {
         #[test]
         fn test() {}
-    }
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn test_mul_doubling_128() {
-        let a = 1234567890123456789u128;
-        let m = 1u128 << 100;
-        assert_eq!(mul_doubling(a, a, m), a * a % m,);
     }
 }

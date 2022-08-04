@@ -1,29 +1,25 @@
-# prime sieve
-
 import typing
 import unittest
 
-from dsalgo.isqrt import floor
+from dsalgo.isqrt import isqrt
 
 
-def erat_ps(sz: int) -> list[int]:
-    # eratosthenes prime numbers
+def enumerate_primes(sz: int) -> typing.Generator[int, None, None]:
     if sz <= 2:
-        return []
-    a = [2]
+        return
+    yield 2
     is_p = [True] * (sz >> 1)
     for i in range(3, sz, 2):
         if not is_p[i >> 1]:
             continue
-        a.append(i)
+        yield i
         for j in range(i * i >> 1, sz >> 1, i):
             is_p[j] = False
-    return a
 
 
 def erat_rs(lt: int) -> typing.Callable[[int, int], typing.List[int]]:
     # eratosthenes range sieve
-    ps = erat_ps(floor(lt) + 1)
+    ps = list(enumerate_primes(isqrt(lt) + 1))
 
     def query(l: int, h: int) -> typing.List[int]:
         assert l <= h <= lt
@@ -59,8 +55,8 @@ def erat_rs(lt: int) -> typing.Callable[[int, int], typing.List[int]]:
 
 class Tests(unittest.TestCase):
     def test_erat(self) -> None:
-        assert erat_ps(2) == []
-        assert erat_ps(100) == [
+        assert list(enumerate_primes(2)) == []
+        assert list(enumerate_primes(100)) == [
             2,
             3,
             5,
@@ -96,6 +92,9 @@ class Tests(unittest.TestCase):
 if __name__ == "__main__":
     import doctest
 
-    unittest.main()
+    # unittest.main()
 
-    doctest.testmod(verbose=True)
+    # doctest.testmod(verbose=True)
+    for x in enumerate_primes(100000000):
+        # print(x)
+        ...
