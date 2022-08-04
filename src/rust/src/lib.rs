@@ -132,6 +132,7 @@ pub mod connected_components_dsu;
 pub mod connected_components_group_by_id;
 pub mod const_modular_int_i64;
 pub mod container;
+pub mod min_max_priority_queue_with_binary_heap;
 pub mod next_subset_bits;
 pub mod convert_to_bool;
 pub mod convex_hull_trick;
