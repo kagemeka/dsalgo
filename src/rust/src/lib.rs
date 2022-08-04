@@ -882,4 +882,5 @@ pub mod z_algorithm;
 pub mod z_algorithm_findall_substr;
 pub mod zero_element;
 pub mod zero_one_bfs;
+pub mod round_up_with_int_u64;
 // pub mod rerooting_dynamic;
