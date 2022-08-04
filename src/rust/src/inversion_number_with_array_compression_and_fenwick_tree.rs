@@ -1,7 +1,7 @@
 //! Inversion (Descrete Math)
 use crate::{
     array_compression_unique_binary_search::ArrayCompression,
-    fenwick_tree_usize_add_0_indexed::Fenwick,
+    fenwick_tree_usize_add_1_indexed::Fenwick,
 };
 pub fn inversion_number<T: Ord + Clone>(a: Vec<T>) -> usize {
     let a = ArrayCompression::once(a);
