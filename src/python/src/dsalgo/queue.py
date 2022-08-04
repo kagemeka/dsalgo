@@ -45,30 +45,6 @@ class SinglyLinkedList(typing.Generic[T]):
         return popped.value
 
 
-class DinamicArray(typing.Generic[T]):
-    __arr: list[T]
-    __i: int
-
-    def __bool__(self) -> bool:
-        return not self.is_empty()
-
-    def is_empty(self) -> bool:
-        return self.__i == len(self.__arr)
-
-    def __init__(self) -> None:
-        self.__arr: list[T] = []
-        self.__i = 0
-
-    def append(self, value: T) -> None:
-        self.__arr.append(value)
-
-    def pop(self) -> T:
-        if self.is_empty():
-            raise Exception("queue is empty.")
-        value = self.__arr[self.__i]
-        self.__i += 1
-        return value
-
 
 if __name__ == "__main__":
     import doctest
