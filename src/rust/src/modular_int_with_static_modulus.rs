@@ -182,6 +182,12 @@ where
         y
     }
 }
+impl<M: Get + Copy> From<i32> for Modint<M>
+where
+    M::T: Element,
+{
+    fn from(v: i32) -> Self { Self::new(v.into()) }
+}
 #[cfg(test)]
 mod tests {
     use super::*;
