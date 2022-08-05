@@ -1,6 +1,6 @@
 use crate::{
-    factorial_table::factorial_table,
-    inverse_factorial_table::inverse_factorial_table, ops::MulInv,
+    factorial_table_from_u64::factorial_table,
+    inverse_factorial_table_from_u64::inverse_factorial_table, ops::MulInv,
 };
 pub struct Combination<T> {
     fact: Vec<T>,

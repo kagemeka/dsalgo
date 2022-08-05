@@ -1,4 +1,4 @@
-use crate::{choose::Choose, combination::Combination};
+use crate::{choose::Choose, combination_from_u64::Combination};
 impl<T> Choose<T> for Combination<T>
 where
     T: std::ops::Mul<Output = T> + From<u64> + Clone,
