@@ -1,9 +1,7 @@
 use crate::choose::Choose;
-
 pub struct HomogeneousProduct<T> {
     chooser: Box<dyn Choose<T>>,
 }
-
 impl<T> HomogeneousProduct<T> {
     pub fn new(chooser: Box<dyn Choose<T>>) -> Self { Self { chooser } }
 
@@ -18,7 +16,6 @@ impl<T> HomogeneousProduct<T> {
         }
     }
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
@@ -26,14 +23,10 @@ mod tests {
         use super::HomogeneousProduct;
         use crate::{
             combination::Combination,
-            modular::{
-                arithmetic::Modular1_000_000_007,
-                int::Modint as StaticModularInt,
-            },
+            default_static_modular_arithmetic::Modular1_000_000_007,
+            modular_int_with_arithmetic::Modint,
         };
-
-        type Mint = StaticModularInt<u32, Modular1_000_000_007>;
-
+        type Mint = Modint<u32, Modular1_000_000_007>;
         let mut hom =
             HomogeneousProduct::<Mint>::new(Box::new(
                 Combination::<Mint>::new(100),

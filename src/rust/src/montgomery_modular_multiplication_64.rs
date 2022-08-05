@@ -6,7 +6,6 @@ pub struct MontgomeryMultiplication64 {
     n_dash: u128,
     nr: u128,
 }
-
 impl MontgomeryMultiplication64 {
     const MASK: u128 = std::u64::MAX as u128;
     const R: u128 = 1 << 64;
@@ -24,10 +23,7 @@ impl MontgomeryMultiplication64 {
             }
             t >>= 1;
         }
-        debug_assert_eq!(
-            n * n_dash & Self::MASK,
-            Self::MASK
-        );
+        debug_assert_eq!(n * n_dash & Self::MASK, Self::MASK);
         let nr = n * Self::R;
         Self { n, r2, n_dash, nr }
     }
@@ -49,7 +45,6 @@ impl MontgomeryMultiplication64 {
         self.reduce(self.reduce(x as u128 * y as u128) as u128 * self.r2) as u64
     }
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

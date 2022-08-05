@@ -9,15 +9,11 @@ pub fn sum_of_multiples_sum(limit: u64) -> u64 {
     }
     s
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
     fn test() {
         use super::*;
-        assert_eq!(
-            sum_of_multiples_sum(10000000),
-            838627288460105
-        );
+        assert_eq!(sum_of_multiples_sum(10000000), 838627288460105);
     }
 }

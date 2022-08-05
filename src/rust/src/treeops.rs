@@ -1,9 +1,6 @@
 use crate::tree_edges_to_graph::tree_edges_to_graph;
-
 pub fn tree_dfs<T, F>(
-    tree_edges: &[(usize, usize)],
-    root: usize,
-    default_data: Vec<T>,
+    tree_edges: &[(usize, usize)], root: usize, default_data: Vec<T>,
     mut assign: F,
 ) -> Vec<T>
 where
@@ -36,13 +33,10 @@ where
     }
     data
 }
-
 // TODO: genelized edge type.
 // TODO: return parent and data
 pub fn tree_bfs<T, F>(
-    tree_edges: &[(usize, usize)],
-    root: usize,
-    default_data: Vec<T>,
+    tree_edges: &[(usize, usize)], root: usize, default_data: Vec<T>,
     mut assign: F,
 ) -> Vec<T>
 where
@@ -67,7 +61,6 @@ where
     }
     data
 }
-
 pub fn tree_depths(tree_edges: &[(usize, usize)], root: usize) -> Vec<usize> {
     tree_bfs::<usize, _>(
         tree_edges,
@@ -78,7 +71,6 @@ pub fn tree_depths(tree_edges: &[(usize, usize)], root: usize) -> Vec<usize> {
         },
     )
 }
-
 // TODO: change interface edges -> Adjacency list
 pub fn tree_parents(e: &[(usize, usize)], r: usize) -> Vec<Option<usize>> {
     tree_bfs::<Option<usize>, _>(
@@ -90,7 +82,6 @@ pub fn tree_parents(e: &[(usize, usize)], r: usize) -> Vec<Option<usize>> {
         },
     )
 }
-
 pub fn tree_sizes(tree_edges: &[(usize, usize)], root: usize) -> Vec<usize> {
     tree_dfs::<usize, _>(
         tree_edges,

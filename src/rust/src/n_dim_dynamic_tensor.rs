@@ -3,7 +3,6 @@ pub struct NdimDynamicTensor<T, const D: usize> {
     shape: [usize; D],
     data: Vec<T>,
 }
-
 // impl<T: std::fmt::Debug, const NDIM: usize> std::fmt::Debug
 //     for NdimDynamicTensor<T, NDIM>
 // {
@@ -14,7 +13,6 @@ pub struct NdimDynamicTensor<T, const D: usize> {
 //             .finish()
 //     }
 // }
-
 impl<T, const D: usize> NdimDynamicTensor<T, D> {
     pub const fn shape(&self) -> &[usize; D] { &self.shape }
 
@@ -39,7 +37,6 @@ impl<T, const D: usize> NdimDynamicTensor<T, D> {
 
     pub fn size(&self) -> usize { self.data.len() }
 }
-
 impl<T: Default, const D: usize> NdimDynamicTensor<T, D> {
     pub fn new(shape: [usize; D]) -> Self {
         Self {
@@ -50,7 +47,6 @@ impl<T: Default, const D: usize> NdimDynamicTensor<T, D> {
         }
     }
 }
-
 impl<T, const D: usize> NdimDynamicTensor<T, D> {
     fn flatten_index(&self, index: [usize; D]) -> usize {
         let mut idx = 0;
@@ -61,7 +57,6 @@ impl<T, const D: usize> NdimDynamicTensor<T, D> {
         idx
     }
 }
-
 impl<T, const D: usize> std::ops::Index<[usize; D]>
     for NdimDynamicTensor<T, D>
 {
@@ -71,7 +66,6 @@ impl<T, const D: usize> std::ops::Index<[usize; D]>
         &self.data[self.flatten_index(index)]
     }
 }
-
 impl<T, const D: usize> std::ops::IndexMut<[usize; D]>
     for NdimDynamicTensor<T, D>
 {
@@ -80,7 +74,6 @@ impl<T, const D: usize> std::ops::IndexMut<[usize; D]>
         &mut self.data[idx]
     }
 }
-
 // TODO: move to matrix_dot_product.rs
 impl<T> std::ops::Mul for NdimDynamicTensor<T, 2>
 where
@@ -104,7 +97,6 @@ where
         res
     }
 }
-
 // impl<T: Copy + Default + group_theory::Semiring>
 // Tensor<T, 2> {     pub fn e(&self) -> Self {
 //         let (h, w) = (self.shape[0], self.shape[1]);
@@ -119,7 +111,6 @@ where
 // self::group_theory::MulIdentity::identity();         }
 //         e
 //     }
-
 //     pub fn op(lhs: &Self, rhs: &Self) -> Self {
 //         assert_eq!(lhs.shape[1], rhs.shape[0]);
 //         let h = lhs.shape[0];
@@ -130,22 +121,11 @@ where
 //             for j in 0..w {
 //                 for k in 0..n {
 //                     res[[i, j]] = res[[i, j]] + lhs[[i, k]]
-// * rhs[[k, j]];                 } } } res }
-
-//     pub fn pow(&self, n: usize) -> Self {
-//         assert_eq!(self.shape[0], self.shape[1]);
-//         if n == 0 {
-//             return self.e();
-//         }
-//         let mut x = self.pow(n >> 1);
-//         x = Self::op(&x, &x);
-//         if n & 1 == 1 {
-//             x = Self::op(&x, self);
-//         }
-//         x
-//     }
+// * rhs[[k, j]];                 } } } res } pub fn pow(&self, n: usize) ->
+//   Self { assert_eq!(self.shape[0], self.shape[1]); if n == 0 { return
+//   self.e(); } let mut x = self.pow(n >> 1); x = Self::op(&x, &x); if n & 1 ==
+//   1 { x = Self::op(&x, self); } x }
 // }
-
 // TODO
 #[cfg(test)]
 mod tests {

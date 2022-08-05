@@ -132,68 +132,6 @@ class TestFermat(unittest.TestCase):
         for x in _NON_PRIEMS:
             assert not fermat(bases, x)
 
-
-def solovay_strassen() -> bool:
-    ...
-
-
-def pepin() -> bool:
-    ...
-
-
-def proth_theorem() -> bool:
-    ...
-
-
-def miller_rabin_solovay_strassen() -> bool:
-    ...
-
-
-def pocklington() -> bool:
-    ...
-
-
-def wilson_theorem() -> bool:
-    ...
-
-
-def lucas() -> bool:
-    ...
-
-
-def lucas_lehmer() -> bool:
-    ...
-
-
-def lucas_lehmer_reisel() -> bool:
-    ...
-
-
-def frobenius() -> bool:
-    ...
-
-
-def elliptic_curve() -> bool:
-    ...
-
-
-def baillie_psw() -> bool:
-    ...
-
-
-# agrawal, kayal, sexena test
-def aks() -> bool:
-    ...
-
-
-def adlheman_pomerance_rumely() -> bool:
-    ...
-
-
-def atkin_morain_elliptic_curve() -> bool:
-    ...
-
-
 if __name__ == "__main__":
     import doctest
 

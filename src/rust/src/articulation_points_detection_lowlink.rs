@@ -1,29 +1,21 @@
 use crate::undirected_lowlink::undirected_lowlink;
-
 /// return vertex ids.
 pub fn find_articulation_points_lowlink(
-    v_size: usize,
-    undirected_edges: &[(usize, usize)],
+    v_size: usize, undirected_edges: &[(usize, usize)],
 ) -> Vec<usize> {
     let mut articulation_points = Vec::new();
     let lowlink = undirected_lowlink(v_size, undirected_edges);
     let order = lowlink.orders;
     let low = lowlink.low_orders;
-
     let mut visited = vec![false; v_size];
-
     let mut g = vec![vec![]; v_size];
     for &(u, v) in undirected_edges {
         g[u].push(v);
         g[v].push(u);
     }
     fn find(
-        g: &[Vec<usize>],
-        order: &[usize],
-        low: &[usize],
-        points: &mut Vec<usize>,
-        visited: &mut Vec<bool>,
-        u: usize,
+        g: &[Vec<usize>], order: &[usize], low: &[usize],
+        points: &mut Vec<usize>, visited: &mut Vec<bool>, u: usize,
         parent: usize,
     ) {
         let n = g.len();
@@ -35,9 +27,7 @@ pub fn find_articulation_points_lowlink(
                 continue;
             }
             childs_count += 1;
-            find(
-                g, order, low, points, visited, v, u,
-            );
+            find(g, order, low, points, visited, v, u);
             if parent != n && low[v] >= order[u] {
                 is_articulation = true;
             }
@@ -65,7 +55,6 @@ pub fn find_articulation_points_lowlink(
     }
     articulation_points
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

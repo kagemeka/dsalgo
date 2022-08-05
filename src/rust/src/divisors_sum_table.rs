@@ -7,15 +7,11 @@ pub fn divisors_sum_table(size: usize) -> Vec<u64> {
     }
     s
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
     fn test() {
         use super::*;
-        assert_eq!(
-            divisors_sum_table(10),
-            [0, 1, 3, 4, 7, 6, 12, 8, 15, 13],
-        );
+        assert_eq!(divisors_sum_table(10), [0, 1, 3, 4, 7, 6, 12, 8, 15, 13],);
     }
 }

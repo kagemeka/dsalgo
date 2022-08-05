@@ -4,11 +4,9 @@ pub fn xorshift128(seeds: [u32; 4]) -> [u32; 4] {
     x ^= (x >> 8) ^ w ^ (w >> 19);
     [y, z, w, x]
 }
-
 pub struct XorShift128 {
     seeds: [u32; 4],
 }
-
 impl XorShift128 {
     pub fn new(seeds: [u32; 4]) -> Self { Self { seeds } }
 
@@ -17,15 +15,11 @@ impl XorShift128 {
         self.seeds[3]
     }
 }
-
 impl Default for XorShift128 {
     fn default() -> Self {
-        Self::new([
-            123456789, 362436069, 521288629, 88675123,
-        ])
+        Self::new([123456789, 362436069, 521288629, 88675123])
     }
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

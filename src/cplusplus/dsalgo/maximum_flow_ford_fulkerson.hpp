@@ -1,26 +1,19 @@
 // TODO:
-
 #include "../../data_structure/graph.cpp"
-
 // TODO cut below
-
 #include <functional>
 #include <limits>
 #include <vector>
-
 namespace graph_theory {
   namespace maximum_flow {
     template<typename T> struct FordFulkersonData { T capacity; };
-
     template<typename T> using FordFulkersonGraph =
       DenseDirectedGraph<void*, FordFulkersonData<T>>;
-
     template<typename T>
     auto ford_fulkerson(FordFulkersonGraph<T> g, int src, int sink) -> T {
       int n = g.nodes.size();
       T inf = std::numeric_limits<T>::max();
       std::vector<bool> visited(n);
-
       std::function<T(int, T)> augment_flow = [&](int u, T flow_in) -> T {
         visited[u] = true;
         if(u == sink) return flow_in;
@@ -35,7 +28,6 @@ namespace graph_theory {
         }
         return 0;
       };
-
       T flow = 0;
       while(true) {
         std::fill(visited.begin(), visited.end(), false);

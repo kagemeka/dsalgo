@@ -1,7 +1,6 @@
 
 #include <vector>
 using namespace std;
-
 template<typename S> auto factorial_table(int size) -> vector<S> {
   vector<S> a(size);
   iota(a.begin(), a.end(), 0);

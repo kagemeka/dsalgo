@@ -4,7 +4,6 @@ use crate::{
     negative_cycle::NegativeCycleError,
     spfa::spfa,
 };
-
 pub trait ShortestPathPotentialEdge:
     From<V = usize>
     + To<V = usize>
@@ -12,7 +11,6 @@ pub trait ShortestPathPotentialEdge:
     + std::convert::From<(usize, usize, i64)>
 {
 }
-
 impl<T> ShortestPathPotentialEdge for T where
     T: From<V = usize>
         + To<V = usize>
@@ -20,14 +18,12 @@ impl<T> ShortestPathPotentialEdge for T where
         + std::convert::From<(usize, usize, i64)>
 {
 }
-
 /// used to map edge weights from i64 to u64 space.
 /// mainly spawned as preprocessing
 /// before calling Dijkstra's algorithm multiple times
 /// on a graph which might be containing negative weighted edges.
 pub fn shortest_path_potential<E>(
-    v_size: usize,
-    mut directed_edges: Vec<E>,
+    v_size: usize, mut directed_edges: Vec<E>,
 ) -> Result<Vec<i64>, NegativeCycleError>
 where
     E: ShortestPathPotentialEdge,
@@ -42,7 +38,6 @@ where
         Err(e) => Err(e),
     }
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

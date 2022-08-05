@@ -1,16 +1,13 @@
-use crate::uf::*;
-
-pub fn connected_components_uf(
-    v_size: usize,
-    undirected_edges: &[(usize, usize)],
+use crate::{union_find_low_memory_with_trait::*, union_find_traits::*};
+pub fn connected_components(
+    v_size: usize, edges: &[(usize, usize)],
 ) -> Vec<usize> {
-    let mut uf = UF::new(v_size);
-    for &(u, v) in undirected_edges {
+    let mut uf = UnionFind::new(v_size);
+    for &(u, v) in edges {
         uf.unite(u, v);
     }
     uf.labels()
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

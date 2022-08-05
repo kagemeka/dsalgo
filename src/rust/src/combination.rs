@@ -1,14 +1,11 @@
 use crate::{
     factorial_table::factorial_table,
-    inverse_factorial_table::inverse_factorial_table,
-    ops::MulInv,
+    inverse_factorial_table::inverse_factorial_table, ops::MulInv,
 };
-
 pub struct Combination<T> {
     fact: Vec<T>,
     inv_fact: Vec<T>,
 }
-
 impl<T> Combination<T>
 where
     T: std::ops::Mul<Output = T> + From<u64> + Clone,
@@ -39,18 +36,16 @@ where
             * self.fact[n - k].clone()
     }
 }
-
 // #[cfg(test)]
 mod tests {
-
     #[test]
     fn test() {
         use super::*;
-        use crate::modular::{
-            arithmetic::Modular1_000_000_007,
-            int::Modint as StaticModularInt,
+        use crate::{
+            default_static_modular_arithmetic::Modular1_000_000_007,
+            modular_int_with_arithmetic::Modint,
         };
-        type Mint = StaticModularInt<u32, Modular1_000_000_007>;
+        type Mint = Modint<u32, Modular1_000_000_007>;
         let choose = Combination::<Mint>::new(100);
         assert_eq!(choose.calc(5, 2), 10.into());
     }

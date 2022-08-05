@@ -1,10 +1,8 @@
-use crate::find_divisors_naive::find_divisors_naive;
-
+use crate::find_divisors_trial_division::find_divisors;
 // TODO: optimize divisor finding algorithm
 pub fn is_perfect_number(n: u64) -> bool {
-    find_divisors_naive(n).iter().sum::<u64>() == n << 1
+    find_divisors(n).iter().sum::<u64>() == n << 1
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

@@ -16,31 +16,16 @@ pub fn z_algorithm<T: PartialEq>(a: &[T]) -> Vec<usize> {
     lcp[0] = n;
     lcp
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn test() {
         let cases = [
-            (
-                "aabcaabxaaaz",
-                vec![
-                    12, 1, 0, 0, 3, 1, 0, 0, 2, 2, 1, 0,
-                ],
-            ),
-            (
-                "aaaaaa",
-                vec![6, 5, 4, 3, 2, 1],
-            ),
-            (
-                "aabaacd",
-                vec![7, 1, 0, 2, 1, 0, 0],
-            ),
-            (
-                "abababab",
-                vec![8, 0, 6, 0, 4, 0, 2, 0],
-            ),
+            ("aabcaabxaaaz", vec![12, 1, 0, 0, 3, 1, 0, 0, 2, 2, 1, 0]),
+            ("aaaaaa", vec![6, 5, 4, 3, 2, 1]),
+            ("aabaacd", vec![7, 1, 0, 2, 1, 0, 0]),
+            ("abababab", vec![8, 0, 6, 0, 4, 0, 2, 0]),
         ];
         for (s, ans) in cases {
             let s = s.chars().collect::<Vec<_>>();

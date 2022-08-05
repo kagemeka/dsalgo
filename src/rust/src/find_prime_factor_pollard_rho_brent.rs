@@ -2,11 +2,8 @@ use crate::{
     find_divisor_pollard_rho_brent::find_divisor_pollard_rho_brent,
     montgomery_modular_multiplication_64::*,
 };
-
 pub fn find_prime_factor_pollard_rho<F>(
-    is_prime: &F,
-    mut n: u64,
-    epochs: u8,
+    is_prime: &F, mut n: u64, epochs: u8,
 ) -> Result<u64, &'static str>
 where
     F: Fn(u64) -> bool,
@@ -26,7 +23,6 @@ where
     }
     Err("no divisor found")
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

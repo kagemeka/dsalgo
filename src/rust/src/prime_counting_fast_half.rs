@@ -1,8 +1,6 @@
 //! this does not pass test.
-// TODO: fix bug.
-
+// FIXME: fix bug.
 use crate::find_root::isqrt;
-
 /// O(N^{3/4}) with constant time optimization.
 /// insipired by O(N^{3/4}/log{N}) implementation.
 pub fn prime_pi_fast_half(n: u64) -> u64 {
@@ -16,11 +14,9 @@ pub fn prime_pi_fast_half(n: u64) -> u64 {
     let n = n as usize;
     let size = (sqrt + 1) >> 1;
     let half = |j: usize| (j - 1) >> 1;
-
     let mut small = (0..size).collect::<Vec<_>>();
     let mut large =
         (0..size).map(|i| half(n / (i << 1 | 1))).collect::<Vec<_>>();
-
     for i in (3..=sqrt).step_by(2) {
         let i_half = half(i);
         if small[i_half] == small[i_half - 1] {
@@ -51,7 +47,6 @@ pub fn prime_pi_fast_half(n: u64) -> u64 {
     }
     large[0] as u64 + 1
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

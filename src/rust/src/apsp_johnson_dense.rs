@@ -1,9 +1,8 @@
 use crate::{
-    dijkstra_dense::dijkstra_dense,
+    dijkstra_dense_option_u64::dijkstra_dense,
     negative_cycle::NegativeCycleError,
     shortest_path_potential::shortest_path_potential,
 };
-
 /// O(V^3)
 /// all pairs shortest path
 pub fn johnson_dense(
@@ -46,12 +45,10 @@ pub fn johnson_dense(
     }
     Ok(results)
 }
-
 // TODO
 #[cfg(test)]
 mod tests {
     use super::*;
-
     #[test]
     fn test_positive() {
         let g = vec![
@@ -63,19 +60,13 @@ mod tests {
         assert_eq!(
             johnson_dense(&g),
             Ok(vec![
-                vec![
-                    Some(0),
-                    Some(1),
-                    Some(3),
-                    Some(4)
-                ],
+                vec![Some(0), Some(1), Some(3), Some(4)],
                 vec![None, Some(0), Some(2), Some(3)],
                 vec![None, None, Some(0), Some(1)],
                 vec![None, None, Some(7), Some(0)],
             ]),
         )
     }
-
     #[test]
     fn test_negative() {
         let g = vec![
@@ -87,12 +78,7 @@ mod tests {
         assert_eq!(
             johnson_dense(&g),
             Ok(vec![
-                vec![
-                    Some(0),
-                    Some(1),
-                    Some(-5),
-                    Some(-4)
-                ],
+                vec![Some(0), Some(1), Some(-5), Some(-4)],
                 vec![None, Some(0), Some(2), Some(3)],
                 vec![None, None, Some(0), Some(1)],
                 vec![None, None, Some(7), Some(0)],
@@ -107,9 +93,6 @@ mod tests {
             vec![None, None, None, Some(1)],
             vec![None, None, Some(-7), None],
         ];
-        assert_eq!(
-            johnson_dense(&g),
-            Err(NegativeCycleError::new()),
-        )
+        assert_eq!(johnson_dense(&g), Err(NegativeCycleError::new()),)
     }
 }

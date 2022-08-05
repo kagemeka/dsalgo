@@ -1,5 +1,4 @@
 use crate::is_undirected_dense_graph::is_undirected_dense_graph;
-
 /// return edges list (u, v), u < v
 /// the algorithm start from vertex 0.
 /// O(V^2)
@@ -19,11 +18,7 @@ pub fn mst_prim_dense(
                     return None;
                 }
                 let p = prev[i].unwrap();
-                Some((
-                    p,
-                    i,
-                    g[prev[i].unwrap()][i].unwrap(),
-                ))
+                Some((p, i, g[prev[i].unwrap()][i].unwrap()))
             })
             .min_by_key(|&(.., w)| w)
             .unwrap_or_default();
@@ -49,7 +44,6 @@ pub fn mst_prim_dense(
     debug_assert_eq!(added.len(), n - 1);
     added
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

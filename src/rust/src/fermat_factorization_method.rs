@@ -1,5 +1,4 @@
 use crate::find_root::isqrt;
-
 /// for odd integer n
 /// n = ab (\exist a, b are odd)
 /// a = x + y
@@ -21,7 +20,6 @@ pub fn fermat_factorization_method(n: u64) -> u64 {
     }
     panic!("can't be here");
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

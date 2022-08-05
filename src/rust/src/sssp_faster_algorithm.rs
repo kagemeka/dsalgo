@@ -2,11 +2,9 @@ use crate::{
     graph::edge::{To, Weight},
     negative_cycle::NegativeCycleError,
 };
-
 /// O(VE) but usually faster than bellman ford.
 pub fn spfa<E>(
-    sparse_graph: &[Vec<E>],
-    src: usize,
+    sparse_graph: &[Vec<E>], src: usize,
 ) -> Result<Vec<Option<i64>>, NegativeCycleError>
 where
     E: To<V = usize> + Weight<i64>,
@@ -41,7 +39,6 @@ where
     }
     Err(NegativeCycleError::new())
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -55,12 +52,7 @@ mod tests {
         ];
         assert_eq!(
             spfa(&graph, 1),
-            Ok(vec![
-                None,
-                Some(0),
-                Some(-5),
-                Some(-3)
-            ]),
+            Ok(vec![None, Some(0), Some(-5), Some(-3)]),
         );
     }
 }

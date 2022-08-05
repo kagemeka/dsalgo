@@ -3,15 +3,12 @@ use crate::{
     dijkstra_sparse_queue::DijkstraSparseQueue,
     negative_cycle::NegativeCycleError,
     shortest_path_potential::{
-        shortest_path_potential,
-        ShortestPathPotentialEdge,
+        shortest_path_potential, ShortestPathPotentialEdge,
     },
     sssp_dijkstra_sparse_with_general::dijkstra_sparse,
 };
-
 pub fn johnson_sparse<E, Q>(
-    v_size: usize,
-    directed_edges: Vec<E>,
+    v_size: usize, directed_edges: Vec<E>,
 ) -> Result<Vec<Vec<Option<i64>>>, NegativeCycleError>
 where
     E: ShortestPathPotentialEdge + Clone,
@@ -40,7 +37,6 @@ where
     }
     Ok(results)
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -58,19 +54,13 @@ mod tests {
         assert_eq!(
             johnson_sparse::<_, Q>(4, edges),
             Ok(vec![
-                vec![
-                    Some(0),
-                    Some(1),
-                    Some(3),
-                    Some(4)
-                ],
+                vec![Some(0), Some(1), Some(3), Some(4)],
                 vec![None, Some(0), Some(2), Some(3)],
                 vec![None, None, Some(0), Some(1)],
                 vec![None, None, Some(7), Some(0)],
             ]),
         )
     }
-
     #[test]
     fn test_negative() {
         let edges = vec![
@@ -84,12 +74,7 @@ mod tests {
         assert_eq!(
             johnson_sparse::<_, Q>(4, edges),
             Ok(vec![
-                vec![
-                    Some(0),
-                    Some(1),
-                    Some(-5),
-                    Some(-4)
-                ],
+                vec![Some(0), Some(1), Some(-5), Some(-4)],
                 vec![None, Some(0), Some(2), Some(3)],
                 vec![None, None, Some(0), Some(1)],
                 vec![None, None, Some(7), Some(0)],

@@ -2,11 +2,9 @@ use crate::{
     graph_edge_trait::{To, Weight},
     priority_queue_trait::{Pop, Push},
 };
-
 // TODO: generalize count type.
 pub fn dijkstra_path_count<Q, T, E>(
-    adj_list: &[Vec<E>],
-    src: usize,
+    adj_list: &[Vec<E>], src: usize,
 ) -> (Vec<Option<T>>, Vec<u64>)
 where
     Q: Push<T = (T, usize)> + Pop<T = Option<(T, usize)>> + Default,

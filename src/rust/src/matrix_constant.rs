@@ -3,7 +3,6 @@ pub trait ConstantShape {
     const WIDTH: usize;
     type Data;
 }
-
 // pub struct Matrix4x4<T, S: ConstantShape> {
 //     data: S::Data,
 // }

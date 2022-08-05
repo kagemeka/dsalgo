@@ -1,9 +1,7 @@
 #pragma once
-
 #include <cstdint>
 #include <type_traits>
 #include <vector>
-
 namespace dsalgo {
   namespace rust_types {
     using u8 = uint8_t;
@@ -21,8 +19,6 @@ namespace dsalgo {
     using f32 = float;
     using f64 = double;
     using f128 = __float128;
-
     template<typename T> using vec = std::vector<T>;
-
   } // namespace rust_types
 } // namespace dsalgo

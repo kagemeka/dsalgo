@@ -1,5 +1,4 @@
 #pragma once
-
 template<typename G, typename T, typename Z>
 auto pow_semigroup_recurse(T x, Z n) -> T {
   assert(n >= 1);

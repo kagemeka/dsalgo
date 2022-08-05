@@ -1,8 +1,6 @@
 #ifndef PASCAL_TRIANGLE_HPP
 #define PASCAL_TRIANGLE_HPP
-
 #include <vector>
-
 template<typename T> auto pascal_triangle(unsigned long int size)
   -> std::vector<std::vector<T>> {
   std::vector<std::vector<T>> p(size, std::vector<T>(size, 0));
@@ -14,5 +12,4 @@ template<typename T> auto pascal_triangle(unsigned long int size)
   }
   return p;
 }
-
 #endif // PASCAL_TRIANGLE_HPP

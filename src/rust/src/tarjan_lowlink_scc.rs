@@ -2,17 +2,14 @@
 pub fn tarjan(adj_list: &[Vec<usize>]) -> Vec<usize> {
     let g = adj_list;
     let n = g.len();
-
     let mut order = vec![n; n];
     let mut labels = vec![n; n];
     let mut o = 0;
     let mut l = 0;
-
     let mut st = vec![];
     let mut low_ord = vec![n; n];
     let mut st_dfs: Vec<isize> = (0..n as isize).rev().collect();
     let mut parent = vec![n; n];
-
     while let Some(u) = st_dfs.pop() {
         if u < 0 {
             let u = !u as usize;
@@ -50,7 +47,6 @@ pub fn tarjan(adj_list: &[Vec<usize>]) -> Vec<usize> {
             }
         }
     }
-
     use crate::scc_topological_sort::toposort;
     toposort(labels)
 }

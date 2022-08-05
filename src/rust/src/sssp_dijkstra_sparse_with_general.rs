@@ -3,10 +3,8 @@ use crate::{
     general_dijkstra_sparse::general_dijkstra_sparse,
     graph::edge::{To, Weight},
 };
-
 pub fn dijkstra_sparse<E, Q>(
-    sparse_graph: &[Vec<E>],
-    src: usize,
+    sparse_graph: &[Vec<E>], src: usize,
 ) -> Vec<Option<u64>>
 where
     E: To<V = usize> + Weight<u64>,
@@ -20,7 +18,6 @@ where
     )
     .0
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -35,14 +32,8 @@ mod tests {
         ];
         assert_eq!(
             dijkstra_sparse::<_, DijkstraQueueBinaryHeapStd>(&g, 0),
-            vec![
-                Some(0),
-                Some(1),
-                Some(3),
-                Some(4)
-            ]
+            vec![Some(0), Some(1), Some(3), Some(4)]
         );
-
         let g = vec![
             vec![(0, 1, 1), (0, 2, 4)],
             vec![(1, 2, 2)],

@@ -2,7 +2,6 @@ pub struct Xorwow {
     seeds: [u32; 5],
     counter: u32,
 }
-
 impl Xorwow {
     pub fn new(seeds: [u32; 5], counter: u32) -> Self {
         Self { seeds, counter }
@@ -23,18 +22,14 @@ impl Xorwow {
         x
     }
 }
-
 impl Default for Xorwow {
     fn default() -> Self {
         Xorwow {
-            seeds: [
-                123456789, 362436069, 521288629, 88675123, 5783321,
-            ],
+            seeds: [123456789, 362436069, 521288629, 88675123, 5783321],
             counter: 6615241,
         }
     }
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

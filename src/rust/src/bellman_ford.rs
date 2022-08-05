@@ -2,11 +2,8 @@ use crate::{
     graph::edge::{From, To, Value},
     negative_cycle::NegativeCycleError,
 };
-
 pub fn bellman_ford<E>(
-    v_size: usize,
-    directed_edges: &[E],
-    src: usize,
+    v_size: usize, directed_edges: &[E], src: usize,
 ) -> Result<Vec<Option<i64>>, NegativeCycleError>
 where
     E: From<V = usize> + To<V = usize> + Value<T = i64>,
@@ -31,30 +28,18 @@ where
     }
     Ok(dist)
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn test_negative_edge() {
-        let edges = vec![
-            (0, 1, 2),
-            (0, 2, 3),
-            (1, 2, -5),
-            (1, 3, 1),
-            (2, 3, 2),
-        ];
+        let edges =
+            vec![(0, 1, 2), (0, 2, 3), (1, 2, -5), (1, 3, 1), (2, 3, 2)];
         assert_eq!(
             bellman_ford(4, &edges, 1),
-            Ok(vec![
-                None,
-                Some(0),
-                Some(-5),
-                Some(-3)
-            ]),
+            Ok(vec![None, Some(0), Some(-5), Some(-3)]),
         );
     }
-
     #[test]
     fn test_negative_cycle() {
         let edges = vec![
@@ -65,9 +50,6 @@ mod tests {
             (2, 3, 2),
             (3, 1, 0),
         ];
-        assert_eq!(
-            bellman_ford(4, &edges, 0),
-            Err(NegativeCycleError::new()),
-        );
+        assert_eq!(bellman_ford(4, &edges, 0), Err(NegativeCycleError::new()),);
     }
 }

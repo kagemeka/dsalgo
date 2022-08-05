@@ -1,5 +1,4 @@
 use crate::{algebraic_structure::*, power_monoid::*};
-
 pub trait PowMonoid: Monoid
 where
     Self::S: Clone,

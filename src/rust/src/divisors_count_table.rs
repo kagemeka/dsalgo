@@ -7,15 +7,11 @@ pub fn divisors_count_table(size: usize) -> Vec<u64> {
     }
     cnt
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
     fn test() {
         use super::*;
-        assert_eq!(
-            divisors_count_table(10),
-            [0, 1, 2, 2, 3, 2, 4, 2, 4, 3],
-        );
+        assert_eq!(divisors_count_table(10), [0, 1, 2, 2, 3, 2, 4, 2, 4, 3],);
     }
 }

@@ -7,19 +7,12 @@ pub fn sum_arithmetic_progression(a: i64, b: i64, count: u64) -> i64 {
     }
     (a + b) * count as i64 / 2
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
     fn test() {
         use super::*;
-        assert_eq!(
-            sum_arithmetic_progression(1, 10, 10),
-            55
-        );
-        assert_eq!(
-            sum_arithmetic_progression(1, 9, 5),
-            25
-        );
+        assert_eq!(sum_arithmetic_progression(1, 10, 10), 55);
+        assert_eq!(sum_arithmetic_progression(1, 9, 5), 25);
     }
 }

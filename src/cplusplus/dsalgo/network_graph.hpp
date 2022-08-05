@@ -1,31 +1,21 @@
 // TODO:
-
 #include <bits/stdc++.h>
 using namespace std;
-
 template<typename T> struct Edge {
 public:
   T weight, capacity;
-
   Edge(T weight = 1, T capacity = 1): weight(weight), capacity(capacity) {}
 };
-
 template<typename T> struct Node {};
-
 template<typename T> struct Graph {
 public:
   Graph(int n = 0): edges(n), nodes(n) {}
-
   void add_edge(int u, int v, T weight = 1, T capacity = 1) {
     edges[u].emplace(v, Edge<T>(weight, capacity));
   }
-
   vector<map<int, Edge<T>>> edges;
-
   vector<Node<T>> nodes;
-
   vector<int> level;
-
   void bfs(int source = 0) {
     int n = (int)nodes.size();
     level = vector<int>(n, -1);

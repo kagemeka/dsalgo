@@ -14,7 +14,6 @@ pub fn jacobi_symbol_recurse(n: u64, mut a: u64) -> i8 {
     }
     jacobi_symbol_recurse(a, n % a) * symbol
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
@@ -23,10 +22,7 @@ mod tests {
         use crate::jacobi_symbol::jacobi_symbol;
         for n in (1..100).step_by(2) {
             for a in 0..n {
-                assert_eq!(
-                    jacobi_symbol_recurse(n, a),
-                    jacobi_symbol(n, a),
-                );
+                assert_eq!(jacobi_symbol_recurse(n, a), jacobi_symbol(n, a),);
             }
         }
     }

@@ -1,5 +1,4 @@
-use crate::bitops::len::with_clz as bit_length;
-
+use crate::bit_length_with_count_leading_zeros_u64::bit_length;
 // TODO: role up same codes with 64bit const R version as trait.
 /// reference
 /// https://ja.wikipedia.org/wiki/
@@ -12,7 +11,6 @@ pub struct MontgomeryMultiplication {
     n_dash: u128,
     nr: u128,
 }
-
 impl MontgomeryMultiplication {
     pub fn new(modulus: u64) -> Self {
         assert!(modulus & 1 == 1 && modulus >= 3);
@@ -36,14 +34,7 @@ impl MontgomeryMultiplication {
         }
         debug_assert_eq!(n * n_dash & mask, mask);
         let nr = n * r;
-        Self {
-            n,
-            n_bit_len,
-            mask,
-            r2,
-            n_dash,
-            nr,
-        }
+        Self { n, n_bit_len, mask, r2, n_dash, nr }
     }
 
     /// return tr^{-1} mod n
@@ -70,7 +61,6 @@ impl MontgomeryMultiplication {
         // equivalent to: reduce(form(x) * form(y))
     }
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

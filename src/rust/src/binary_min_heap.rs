@@ -1,5 +1,4 @@
 pub struct BinaryMinHeap<T>(Vec<T>);
-
 impl<T> BinaryMinHeap<T> {
     pub fn new() -> Self { Self(vec![]) }
 
@@ -20,6 +19,8 @@ impl<T> BinaryMinHeap<T> {
             i = j;
         }
     }
+
+    pub fn top(&self) -> &T { &self.0[0] }
 
     pub fn pop(&mut self) -> Option<T>
     where
@@ -50,7 +51,23 @@ impl<T> BinaryMinHeap<T> {
         x
     }
 }
-
 impl<T> Default for BinaryMinHeap<T> {
     fn default() -> Self { Self::new() }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test() {
+        let mut que = BinaryMinHeap::new();
+        que.push(0);
+        assert_eq!(que.top(), &0);
+        que.push(-1);
+        assert_eq!(que.top(), &-1);
+        que.push(1);
+        assert_eq!(que.top(), &-1);
+        assert_eq!(que.pop(), Some(-1));
+        assert_eq!(que.pop(), Some(0));
+        assert_eq!(que.pop(), Some(1));
+    }
 }

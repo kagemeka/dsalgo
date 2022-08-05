@@ -1,14 +1,12 @@
 use crate::{
-    bitops::len::with_clz as bit_length,
+    bit_length_with_count_leading_zeros_u64::bit_length,
     karatsuba_mul_quotient_pow_2_power_of_2_128::*,
 };
-
 pub struct BarrettReduction {
     n: u128,
     k: u8,
     m: u128,
 }
-
 impl BarrettReduction {
     pub fn new(modulus: u64) -> Self {
         assert!(0 < modulus && modulus >> 63 == 0);
@@ -30,12 +28,10 @@ impl BarrettReduction {
         x as u64
     }
 }
-
 pub struct BarrettReduction32 {
     n: u128,
     m: u128,
 }
-
 impl BarrettReduction32 {
     pub fn new(modulus: u32) -> Self {
         let n = modulus as u128;
@@ -55,13 +51,11 @@ impl BarrettReduction32 {
         x as u32
     }
 }
-
 pub struct BarrettReduction64 {
     n: u128,
     m0: u128,
     m1: u128,
 }
-
 impl BarrettReduction64 {
     const MASK: u128 = (1u128 << 63) - 1;
 
@@ -88,7 +82,6 @@ impl BarrettReduction64 {
         x as u64
     }
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

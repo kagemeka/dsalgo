@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 using namespace std;
-
 template<typename T, typename A>
 auto longest_non_decreasing_subsequence(const T& inf, const A& a) -> vector<T> {
   int n = a.size();

@@ -13,16 +13,12 @@ pub fn int_kth_root_linear(n: u64, k: u8) -> u64 {
     }
     x - 1
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
     fn test() {
         use super::*;
         use crate::test_int_kth_root::{test_int_kth_root, CASES_LINEAR};
-        test_int_kth_root(
-            &int_kth_root_linear,
-            CASES_LINEAR,
-        );
+        test_int_kth_root(&int_kth_root_linear, CASES_LINEAR);
     }
 }

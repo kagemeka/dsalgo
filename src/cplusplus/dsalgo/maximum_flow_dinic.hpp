@@ -1,20 +1,14 @@
 // TODO:
-
 #include "../../data_structure/graph.cpp"
-
 // TODO cut below
-
 #include <functional>
 #include <limits>
 #include <queue>
 #include <vector>
-
 namespace graph_theory::maximum_flow {
   template<typename T> struct DinicData { T capacity; };
-
   template<typename T> using DinicGraph =
     SparseDirectedGraph<void*, DinicData<T>>;
-
   template<typename T> auto dinic(DinicGraph<T> g, int src, int sink) -> T {
     int n = g.nodes.size();
     std::vector<int> level(n, -1);
@@ -33,7 +27,6 @@ namespace graph_theory::maximum_flow {
         }
       }
     };
-
     std::function<T(int, T)> flow_to_sink = [&](int u, T flow_in) -> T {
       if(u == sink) return flow_in;
       if(flow_in == 0) return 0;
@@ -54,7 +47,6 @@ namespace graph_theory::maximum_flow {
       }
       return flow_out;
     };
-
     T inf = std::numeric_limits<T>::max();
     T flow = 0;
     while(true) {
@@ -63,6 +55,5 @@ namespace graph_theory::maximum_flow {
       flow += flow_to_sink(src, inf);
     }
   };
-
   // e.g. using G = graph_theory::maximum_flow::DinicGraph<long long>;
 } // namespace graph_theory::maximum_flow

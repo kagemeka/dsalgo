@@ -1,5 +1,4 @@
 #pragma once
-
 template<typename G, typename F> auto bellman_ford_abstract(const G& edges, F f)
   -> void {
   while(true) {

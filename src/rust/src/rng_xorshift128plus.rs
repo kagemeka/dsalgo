@@ -1,7 +1,6 @@
 pub struct Xorshift128Plus {
     seeds: [u64; 2],
 }
-
 impl Xorshift128Plus {
     pub fn new(seeds: [u64; 2]) -> Self { Self { seeds } }
 
@@ -14,11 +13,9 @@ impl Xorshift128Plus {
         x + y
     }
 }
-
 impl Default for Xorshift128Plus {
     fn default() -> Self { Self::new([1, 1]) }
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

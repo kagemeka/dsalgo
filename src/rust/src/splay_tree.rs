@@ -5,16 +5,9 @@ pub(crate) struct Node<K, V> {
     pub(crate) right: Option<Box<Node<K, V>>>,
     pub(crate) size: usize,
 }
-
 impl<K: PartialOrd, V> Node<K, V> {
     pub(crate) fn new(key: K, value: V) -> Box<Node<K, V>> {
-        Box::new(Node {
-            key: key,
-            value: value,
-            left: None,
-            right: None,
-            size: 1,
-        })
+        Box::new(Node { key, value, left: None, right: None, size: 1 })
     }
 
     pub(crate) fn get_size(root: Option<&Box<Self>>) -> usize {
@@ -92,8 +85,7 @@ impl<K: PartialOrd, V> Node<K, V> {
     }
 
     pub fn find<'a>(
-        root: Option<&'a Box<Self>>,
-        key: &K,
+        root: Option<&'a Box<Self>>, key: &K,
     ) -> Option<&'a Box<Self>> {
         if root.is_none() {
             return None;

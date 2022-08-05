@@ -13,23 +13,19 @@ where
         .collect::<String>()
         .parse::<T>()
 }
-
 pub fn read_stdin<T>() -> Result<T, <T as std::str::FromStr>::Err>
 where
     T: std::str::FromStr,
 {
     read_token(&mut std::io::stdin().lock())
 }
-
 pub struct ReadWrapper<R> {
     reader: R,
     tokens: Vec<String>,
 }
-
 impl<R> ReadWrapper<R> {
     pub fn new(reader: R) -> Self { Self { reader, tokens: vec![] } }
 }
-
 impl<R: std::io::BufRead> ReadWrapper<R> {
     pub fn read<T: std::str::FromStr>(
         &mut self,
@@ -43,18 +39,15 @@ impl<R: std::io::BufRead> ReadWrapper<R> {
         self.tokens.pop().unwrap().parse::<T>()
     }
 }
-
 pub fn locked_stdin_reader() -> ReadWrapper<std::io::StdinLock<'static>> {
     let stdin = Box::leak(Box::new(std::io::stdin()));
     ReadWrapper::new(stdin.lock())
 }
-
 pub fn locked_stdout_buf_writer()
 -> std::io::BufWriter<std::io::StdoutLock<'static>> {
     let stdout = Box::leak(Box::new(std::io::stdout()));
     std::io::BufWriter::new(stdout.lock())
 }
-
 #[macro_export]
 #[allow(unused_macros)]
 macro_rules! write_vec {
@@ -64,22 +57,21 @@ macro_rules! write_vec {
 
     ($writer:ident, $values:expr,sep: $sep:expr) => {
         let n = $values.len();
-                if n == 0 {
-                    writeln!($writer).unwrap();
-                } else {
-                    for i in 0..n - 1 {
-                        write!(
-                            $writer,
-                            "{}{}",
-                            $values[i], $sep
-                        )
-                        .unwrap();
-                    }
-                    writeln!($writer, "{}", $values[n - 1]).unwrap();
-                }
+        if n == 0 {
+            writeln!($writer).unwrap();
+            return;
+        }
+        for i in 0..n - 1 {
+            write!(
+                $writer,
+                "{}{}",
+                $values[i], $sep
+            )
+            .unwrap();
+        }
+        writeln!($writer, "{}", $values[n - 1]).unwrap();
     };
 }
-
 #[macro_export]
 #[allow(unused_macros)]
 macro_rules! write_all {
@@ -96,7 +88,6 @@ macro_rules! write_all {
         write_all!($writer, $($values),*);
     };
 }
-
 #[macro_export]
 #[allow(unused_macros)]
 macro_rules! read_vec {
@@ -107,12 +98,10 @@ macro_rules! read_vec {
             .unwrap()
     };
 }
-
 #[allow(dead_code)]
 pub(crate) fn debug_print<T: std::fmt::Debug>(data: &T) {
     eprintln!("{:#?} ", data);
 }
-
 /// reference
 /// https://users.rust-lang.org/t/show-value-only-in-debug-mode/43686/3
 #[macro_export]
@@ -134,7 +123,6 @@ macro_rules! dbg {
         }
     }
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
@@ -143,7 +131,6 @@ mod tests {
         let stdin = std::io::stdin();
         let _reader = ReadWrapper::new(stdin.lock());
     }
-
     #[test]
     fn test_locked_stdin_buf_writer() {
         use std::io::Write;
@@ -153,7 +140,6 @@ mod tests {
         writeln!(writer, "Hello, world!").unwrap();
         writer.flush().unwrap();
     }
-
     #[test]
     fn write_macro() {
         use std::io::Write;
@@ -171,7 +157,6 @@ mod tests {
         write_all!(writer, 1);
         writer.flush().unwrap();
     }
-
     #[test]
     fn test_dbg() {
         // use super::*;
@@ -179,13 +164,11 @@ mod tests {
         dbg!(dbg!(a) + 1);
     }
 }
-
 // template of main function.
 // fn main() -> Result<(), Box<dyn std::error::Error>> {
 //     use std::io::Write;
 //     let mut reader = locked_stdin_reader();
 //     let mut writer = locked_stdout_buf_writer();
-
 //     writer.flush()?;
 //     Ok(())
 // }

@@ -3,7 +3,6 @@ pub struct DynamicTensor<T> {
     shape: Vec<usize>,
     data: Vec<T>,
 }
-
 impl<T> DynamicTensor<T> {
     pub fn shape(&self) -> &[usize] { &self.shape }
 
@@ -31,7 +30,6 @@ impl<T> DynamicTensor<T> {
 
     pub fn size(&self) -> usize { self.data.len() }
 }
-
 impl<T: Default> DynamicTensor<T> {
     pub fn new(shape: &[usize]) -> Self {
         let size = Self::compute_size(&shape);
@@ -41,7 +39,6 @@ impl<T: Default> DynamicTensor<T> {
         }
     }
 }
-
 impl<T> DynamicTensor<T> {
     fn flatten_index(&self, index: &[usize]) -> usize {
         let mut idx = 0;
@@ -53,7 +50,6 @@ impl<T> DynamicTensor<T> {
         idx
     }
 }
-
 impl<T> std::ops::Index<&[usize]> for DynamicTensor<T> {
     type Output = T;
 
@@ -61,14 +57,12 @@ impl<T> std::ops::Index<&[usize]> for DynamicTensor<T> {
         &self.data[self.flatten_index(index)]
     }
 }
-
 impl<T> std::ops::IndexMut<&[usize]> for DynamicTensor<T> {
     fn index_mut(&mut self, index: &[usize]) -> &mut Self::Output {
         let idx = self.flatten_index(index);
         &mut self.data[idx]
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -78,7 +72,6 @@ mod tests {
         a[&[0, 0, 0]] = 1;
         assert_eq!(a[&[0, 0, 0]], 1);
         println!("{:?}", a);
-
         let b = DynamicTensor::<i64>::new(&[]);
         println!("{:?}", b);
     }

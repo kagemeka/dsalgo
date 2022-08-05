@@ -1,5 +1,4 @@
 use crate::{choose::Choose, combination::Combination};
-
 impl<T> Choose<T> for Combination<T>
 where
     T: std::ops::Mul<Output = T> + From<u64> + Clone,

@@ -9,7 +9,6 @@ use crate::{
     split::Split,
     tree_node::Get,
 };
-
 #[derive(Debug)]
 pub struct Node<T> {
     pub data: T,
@@ -17,48 +16,35 @@ pub struct Node<T> {
     pub left: Option<Rc<RefCell<Self>>>,
     pub right: Option<Rc<RefCell<Self>>>,
 }
-
 impl<T> Node<T> {
     pub fn new(data: T) -> Self {
-        Node {
-            data,
-            parent: None,
-            left: None,
-            right: None,
-        }
+        Node { data, parent: None, left: None, right: None }
     }
 }
-
 impl<T: size::Size> size::Size for Node<T> {
     fn size(&self) -> usize { self.data.size() }
 }
-
 impl<T: size::Size> size::Size for Option<Node<T>> {
     fn size(&self) -> usize { self.as_ref().map_or(0, |node| node.size()) }
 }
-
 impl<T: size::Size> size::Size for Rc<RefCell<Node<T>>> {
     fn size(&self) -> usize { self.borrow().size() }
 }
-
 impl<T: size::Size> size::Size for Option<Rc<RefCell<Node<T>>>> {
     fn size(&self) -> usize { self.as_ref().map_or(0, |node| node.size()) }
 }
-
 #[derive(PartialEq)]
 enum State {
     LeftChild,
     RightChild,
     Root,
 }
-
 impl<T> Node<T>
 where
     Node<T>: binary_tree_node::Update,
 {
     fn rotation_common_ops(
-        previous_root: &Rc<RefCell<Self>>,
-        new_root: &Rc<RefCell<Self>>,
+        previous_root: &Rc<RefCell<Self>>, new_root: &Rc<RefCell<Self>>,
         child: &Option<Rc<RefCell<Self>>>,
     ) {
         previous_root.borrow_mut().update();
@@ -85,18 +71,11 @@ where
     fn rotate_up(node: &Rc<RefCell<Self>>) {
         let parent = node.borrow().parent.as_ref().unwrap().clone();
         if parent.borrow().left.is_some()
-            && Rc::ptr_eq(
-                parent.borrow().left.as_ref().unwrap(),
-                node,
-            )
+            && Rc::ptr_eq(parent.borrow().left.as_ref().unwrap(), node)
         {
             parent.rotate_right();
         } else {
-            assert!(Rc::ptr_eq(
-                parent.borrow().right.as_ref().unwrap(),
-                node
-            ));
-
+            assert!(Rc::ptr_eq(parent.borrow().right.as_ref().unwrap(), node));
             parent.rotate_left();
         }
     }
@@ -105,10 +84,7 @@ where
         match &node.borrow().parent {
             Some(parent) => {
                 if parent.borrow().left.is_some()
-                    && Rc::ptr_eq(
-                        parent.borrow().left.as_ref().unwrap(),
-                        node,
-                    )
+                    && Rc::ptr_eq(parent.borrow().left.as_ref().unwrap(), node)
                 {
                     State::LeftChild
                 } else {
@@ -138,7 +114,6 @@ where
         }
     }
 }
-
 impl<T> binary_tree_node::Rotation for Rc<RefCell<Node<T>>>
 where
     Node<T>: binary_tree_node::Update,
@@ -161,7 +136,6 @@ where
         sub_root
     }
 }
-
 impl<T> Node<T>
 where
     T: size::Size,
@@ -187,7 +161,6 @@ where
         }
     }
 }
-
 impl<T> Join for Option<Rc<RefCell<Node<T>>>>
 where
     T: size::Size,
@@ -200,18 +173,13 @@ where
         if rhs.is_none() {
             return self;
         }
-
-        let left_root = Node::<T>::get(
-            self.as_ref().unwrap(),
-            self.size() - 1,
-        );
+        let left_root = Node::<T>::get(self.as_ref().unwrap(), self.size() - 1);
         rhs.as_ref().unwrap().borrow_mut().parent = Some(left_root.clone());
         left_root.borrow_mut().right = rhs;
         left_root.borrow_mut().update();
         Some(left_root)
     }
 }
-
 impl<T> Split<usize> for Option<Rc<RefCell<Node<T>>>>
 where
     T: size::Size,
@@ -233,36 +201,29 @@ where
         (lhs, Some(right_root))
     }
 }
-
 impl<T: Default> Default for Node<T> {
     fn default() -> Self { Self::new(T::default()) }
 }
-
 #[derive(Debug)]
 pub struct DefaultData<K, V> {
     pub size: usize,
     pub key: K,
     pub value: V,
 }
-
 impl Default for DefaultData<usize, usize> {
     fn default() -> Self { Self::new(0, 0) }
 }
-
 impl<K, V> DefaultData<K, V> {
     pub fn new(key: K, value: V) -> Self { DefaultData { size: 1, key, value } }
 }
-
 impl<K, V> size::Size for DefaultData<K, V> {
     fn size(&self) -> usize { self.size }
 }
-
 impl<K, V> binary_tree_node::Update for Node<DefaultData<K, V>> {
     fn update(&mut self) {
         self.data.size = self.left.size() + self.right.size() + 1;
     }
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
@@ -271,26 +232,16 @@ mod tests {
         use crate::tree_node::{Insert, Pop};
         type Data = DefaultData<usize, usize>;
         type Root = Option<Rc<RefCell<Node<Data>>>>;
-        let mut root = Some(Rc::new(RefCell::new(
-            Node::new(Data::default()),
-        )));
+        let mut root = Some(Rc::new(RefCell::new(Node::new(Data::default()))));
         assert_eq!(root.size(), 1);
         root = <Root as Insert>::insert(
             root,
             0,
-            Some(Rc::new(RefCell::new(
-                Node::new(Data::new(1, 1)),
-            ))),
+            Some(Rc::new(RefCell::new(Node::new(Data::new(1, 1))))),
         );
         assert_eq!(root.size(), 2);
-        assert_eq!(
-            root.as_ref().unwrap().borrow().left.size(),
-            0
-        );
-        assert_eq!(
-            root.as_ref().unwrap().borrow().right.size(),
-            1
-        );
+        assert_eq!(root.as_ref().unwrap().borrow().left.size(), 0);
+        assert_eq!(root.as_ref().unwrap().borrow().right.size(), 1);
         let (mut root, mut popped) = <Root as Pop>::pop(root, 0);
         assert_eq!(root.size(), 1);
         assert_eq!(popped.size(), 1);

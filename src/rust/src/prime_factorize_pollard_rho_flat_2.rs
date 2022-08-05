@@ -1,8 +1,6 @@
 use crate::find_prime_factor_pollard_rho_brent::find_prime_factor_pollard_rho;
-
 pub fn prime_factorize_flat_pollard_rho_2<F>(
-    is_prime: &F,
-    mut n: u64,
+    is_prime: &F, mut n: u64,
 ) -> Result<Vec<u64>, &'static str>
 where
     F: Fn(u64) -> bool,
@@ -29,7 +27,6 @@ where
     }
     Ok(res)
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

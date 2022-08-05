@@ -1,5 +1,4 @@
-use crate::prime_factorize_with_lpf::PrimeFactorizeLPF;
-
+use crate::prime_factorize_with_least_prime_factor_table::PrimeFactorizeLPF;
 pub fn prime_factorize_factorial_lpf(n: u32) -> Vec<u32> {
     let size = n as usize + 1;
     let mut count = vec![0; size];
@@ -11,7 +10,6 @@ pub fn prime_factorize_factorial_lpf(n: u32) -> Vec<u32> {
     }
     count
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

@@ -17,7 +17,6 @@ pub fn safe_int_pow(x: u64, exponent: u8) -> Result<u64, &'static str> {
     }
     Ok(y)
 }
-
 #[cfg(test)]
 mod tests {
     #[test]

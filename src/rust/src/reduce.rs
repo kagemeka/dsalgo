@@ -5,7 +5,6 @@ where
 {
     values.reduce(f)
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

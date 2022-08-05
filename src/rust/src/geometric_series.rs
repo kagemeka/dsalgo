@@ -1,5 +1,4 @@
 use crate::power::pow_semigroup;
-
 /// \sum_{i=0}^{n}a_0r^i
 pub fn geometric_series(a0: i64, r: i64, n: usize) -> i64 {
     if r == 0 {
@@ -7,7 +6,6 @@ pub fn geometric_series(a0: i64, r: i64, n: usize) -> i64 {
     }
     (1 - pow_semigroup(&|x, y| x * y, r, n as u64 + 1)) / (1 - r) * a0
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

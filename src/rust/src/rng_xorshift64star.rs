@@ -1,5 +1,4 @@
 pub struct Xorshift64Star(u64);
-
 impl Xorshift64Star {
     pub fn next(&mut self) -> u64 {
         let mut x = self.0;
@@ -10,11 +9,9 @@ impl Xorshift64Star {
         x
     }
 }
-
 impl Default for Xorshift64Star {
     fn default() -> Self { Xorshift64Star(1) }
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

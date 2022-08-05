@@ -4,8 +4,8 @@ import unittest
 def extgcd_recurse(a: int, b: int) -> tuple[int, int, int]:
     if not b:
         return (a, 1, 0) if a >= 0 else (-a, -1, 0)
-    gcd, s, t = extgcd_recurse(b, a % b)
-    return gcd, t, s - a // b * t
+    g, s, t = extgcd_recurse(b, a % b)
+    return g, t, s - a // b * t
 
 
 # TODO:

@@ -1,20 +1,15 @@
-use crate::avl_tree_node::Node;
-
+use crate::avl_tree_node_with_key_value_size_box_recurse::Node;
 #[derive(Debug)]
 pub struct AVLTree<K, V> {
     root: Option<Box<Node<K, V>>>,
 }
-
 impl<K: PartialOrd, V> AVLTree<K, V> {
     pub fn new() -> Self { Self { root: None } }
 
     pub fn size(&self) -> usize { Node::get_size(self.root.as_ref()) }
 
     pub fn insert(&mut self, key: K, value: V) {
-        self.root = Some(Node::insert(
-            self.root.take(),
-            Node::new(key, value),
-        ));
+        self.root = Some(Node::insert(self.root.take(), Node::new(key, value)));
     }
 
     pub fn remove(&mut self, key: &K) {
@@ -41,7 +36,6 @@ impl<K: PartialOrd, V> AVLTree<K, V> {
         Node::find(self.root.as_ref(), key).is_some()
     }
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
@@ -52,9 +46,7 @@ mod tests {
         println!("{:?}", tree);
     }
 }
-
 // impl<K, V> Iterator<Item = &'a Box<Self>> for Node<K, V> {
-
 //     fn next(&mut self) -> Option<Self::Item> {
 //         if self.left.is_some() {
 //             return self.left.take().unwrap().next();
@@ -65,7 +57,6 @@ mod tests {
 //         None
 //     }
 // }
-
 // def iterate(root: typing.Optional[Node[K, V]]) ->
 // typing.Iterator[Node[K, V]]:     def dfs(root:
 // typing.Optional[Node[K, V]]) -> typing.Iterator[Node[K, V]]:
@@ -76,5 +67,4 @@ mod tests {
 //         yield root
 //         for node in dfs(root.right):
 //             yield node
-
 //     return dfs(root)

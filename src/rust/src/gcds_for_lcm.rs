@@ -1,5 +1,4 @@
-use crate::find_divisors_naive::find_divisors_naive;
-
+use crate::find_divisors_trial_division::find_divisors;
 /// \lcm(a_0, ...a_{n-1}) = `lcm`
 pub fn gcds_for_lcm(n: usize, lcm: u64) -> Vec<u64> {
     match n {
@@ -12,11 +11,10 @@ pub fn gcds_for_lcm(n: usize, lcm: u64) -> Vec<u64> {
         },
         _ => {
             assert!(lcm > 0); // n > 1 and lcm = 0 -> undefined.
-            find_divisors_naive(lcm)
+            find_divisors(lcm)
         },
     }
 }
-
 // TODO:
 #[cfg(test)]
 mod tests {

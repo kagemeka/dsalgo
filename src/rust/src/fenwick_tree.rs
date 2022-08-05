@@ -1,11 +1,8 @@
 //! fenwick tree (binary indexed tree)
-
 use crate::{
-    algebraic_structure::*,
-    binary_function::*,
-    bitops::{lsb_num, reset_lsb},
+    algebraic_structure::*, binary_function::*, bitops::lsb_num,
+    reset_least_significant_bit_smart_u64::reset_lsb,
 };
-
 /// Node Indices
 /// (case $|given array| = 8$,
 /// internally 1-indexed implemetation)
@@ -14,7 +11,6 @@ use crate::{
 /// |2  |   |6  |   |
 /// |1| |3| |5| |7| |
 pub struct Fw<G: Monoid>(Vec<G::S>);
-
 impl<G> Fw<G>
 where
     G: Monoid + Commutative,
@@ -76,12 +72,9 @@ where
             if i + d > n {
                 continue;
             }
-            let nv = G::op(
-                v.clone(),
-                self.0[i + d].clone(),
-            );
+            let nv = G::op(v.clone(), self.0[i + d].clone());
             if i + d <= l || f(&nv) {
-                    i += d;
+                i += d;
                 v = nv;
             }
         }
@@ -96,7 +89,6 @@ where
         self._max(f, 0, G::e())
     }
 }
-
 impl<G> Fw<G>
 where
     G: AbelianGroup,
@@ -105,10 +97,7 @@ where
     /// get range [l, r) = get(r) - get(l)
     pub fn getr(&self, l: usize, r: usize) -> G::S {
         assert!(l <= r);
-        G::op(
-            G::inv(self.get(l)),
-            self.get(r),
-        )
+        G::op(G::inv(self.get(l)), self.get(r))
     }
 
     /// max i (l < i <= n) f(getr(l, i)) is true. l(tr, .., tr, fal, .. fal]n
@@ -146,10 +135,7 @@ where
             if i + d > r {
                 continue;
             }
-            let nv = G::op(
-                G::inv(self.0[i + d - 1].clone()),
-                v.clone(),
-            );
+            let nv = G::op(G::inv(self.0[i + d - 1].clone()), v.clone());
             if !f(&nv) {
                 i += d;
                 v = nv;
@@ -157,9 +143,7 @@ where
         }
     }
 }
-
 pub struct Dual<G: Monoid>(Fw<G>);
-
 impl<G> Dual<G>
 where
     G: Monoid + Commutative,
@@ -171,10 +155,7 @@ where
         G::S: Clone,
     {
         for i in (1..a.len()).rev() {
-            a[i] = G::op(
-                G::inv(a[i - 1].clone()),
-                a[i].clone(),
-            );
+            a[i] = G::op(G::inv(a[i - 1].clone()), a[i].clone());
         }
         Self(Fw::new(a))
     }
@@ -200,7 +181,6 @@ where
         self.0.max(&|prod: &G::S| !is_ok(prod))
     }
 }
-
 impl<G> Dual<G>
 where
     G: AbelianGroup,
@@ -231,16 +211,10 @@ where
         assert!(l <= self.size());
         let prod_lt = if l == 0 { G::e() } else { self.get(l - 1) };
         self.0.max_from(
-            &|prod_ge: &G::S| {
-                !is_ok(&G::op(
-                    prod_lt.clone(),
-                    prod_ge.clone(),
-                ))
-            },
+            &|prod_ge: &G::S| !is_ok(&G::op(prod_lt.clone(), prod_ge.clone())),
             l,
         )
     }
-
     // /// [false, .. false, true, .., true, ?, .. ?]
     // /// find first true index.
     // /// no longer necessary function.
@@ -251,30 +225,22 @@ where
     //     assert!(right <= self.size());
     // }
 }
-
 // TODO:
 /// fenwick tree lazy for addition on int
 /// TODO: generalize to semiring
 pub struct FwLazyIntAdd {}
-
 // TODO: N-dim fenwick tree (recursive)
-
 // TODO: split test
-
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn test_fw() {
         use crate::{
-            algebraic_structure_impl::GroupApprox,
-            group_theory_id::Additive,
+            algebraic_structure_impl::GroupApprox, group_theory_id::Additive,
         };
-
         let arr = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
         let mut fw = Fw::<GroupApprox<i32, Additive>>::new(arr);
-
         assert_eq!(fw.getr(0, 10), 45);
         assert_eq!(fw.getr(6, 10), 30);
         fw.op(5, 10);
@@ -303,12 +269,10 @@ mod tests {
         let is_ok = |x: &i32| *x < 9;
         assert_eq!(fw.min_from(&is_ok, 10), 10);
     }
-
     #[test]
     fn test_dual() {
         use crate::{
-            algebraic_structure_impl::GroupApprox,
-            group_theory_id::Additive,
+            algebraic_structure_impl::GroupApprox, group_theory_id::Additive,
         };
         let mut a = (0..10).collect::<Vec<_>>();
         for i in 0..9 {
@@ -323,55 +287,22 @@ mod tests {
         assert_eq!(fw.get(1), 1);
         assert_eq!(fw.get(5), 17);
         assert_eq!(fw.get(9), 47);
-        assert_eq!(
-            fw.search(&|value: &i32| *value >= 23),
-            6
-        );
-        assert_eq!(
-            fw.search(&|value: &i32| *value >= 47),
-            9
-        );
-        assert_eq!(
-            fw.search(&|value: &i32| *value > 47),
-            10
-        );
-
+        assert_eq!(fw.search(&|value: &i32| *value >= 23), 6);
+        assert_eq!(fw.search(&|value: &i32| *value >= 47), 9);
+        assert_eq!(fw.search(&|value: &i32| *value > 47), 10);
         fw.opr(2, 6, 1);
         assert_eq!(fw.get(1), 1);
         assert_eq!(fw.get(5), 18);
         assert_eq!(fw.get(9), 47);
         fw.opr(2, 6, -1);
-        assert_eq!(
-            fw.search_from(&|value: &i32| *value >= 23, 0),
-            6
-        );
-        assert_eq!(
-            fw.search_from(&|value: &i32| *value >= 47, 0),
-            9
-        );
-        assert_eq!(
-            fw.search_from(&|value: &i32| *value > 47, 0),
-            10
-        );
-
+        assert_eq!(fw.search_from(&|value: &i32| *value >= 23, 0), 6);
+        assert_eq!(fw.search_from(&|value: &i32| *value >= 47, 0), 9);
+        assert_eq!(fw.search_from(&|value: &i32| *value > 47, 0), 10);
         let b = (0..10).map(|i| fw.get(i)).collect::<Vec<_>>();
-        assert_eq!(
-            b,
-            [
-                0, 1, 3, 6, 10, 17, 23, 30, 38, 47
-            ]
-        );
-
-        assert_eq!(
-            fw.search_from(&|value: &i32| *value >= 23, 7),
-            7
-        );
-        assert_eq!(
-            fw.search_from(&|value: &i32| *value >= 23, 5),
-            6
-        );
+        assert_eq!(b, [0, 1, 3, 6, 10, 17, 23, 30, 38, 47]);
+        assert_eq!(fw.search_from(&|value: &i32| *value >= 23, 7), 7);
+        assert_eq!(fw.search_from(&|value: &i32| *value >= 23, 5), 6);
     }
-
     // TODO:
     #[test]
     fn test_lazy() {}

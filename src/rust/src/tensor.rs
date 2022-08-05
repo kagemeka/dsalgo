@@ -1,5 +1,4 @@
 use crate::tensor_property::{Shape, Size, Strides};
-
 // TODO: define macro for initialization.
 // accept scalar, 1d vec, 2d vec, ... n-d vec.
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -7,14 +6,12 @@ pub struct Tensor<P, T> {
     _phantom: std::marker::PhantomData<P>,
     data: Vec<T>,
 }
-
 impl<P, T> Shape for Tensor<P, T>
 where
     P: Shape,
 {
     fn shape() -> &'static [usize] { P::shape() }
 }
-
 impl<P, T> Default for Tensor<P, T>
 where
     P: Size,
@@ -27,7 +24,6 @@ where
         }
     }
 }
-
 impl<P, T> Tensor<P, T>
 where
     P: Size,
@@ -35,20 +31,15 @@ where
 {
     pub fn new() -> Self { Self::default() }
 }
-
 impl<P, T> From<Vec<T>> for Tensor<P, T>
 where
     P: Size,
 {
     fn from(v: Vec<T>) -> Self {
         assert_eq!(v.len(), P::size());
-        Self {
-            _phantom: std::marker::PhantomData,
-            data: v,
-        }
+        Self { _phantom: std::marker::PhantomData, data: v }
     }
 }
-
 impl<P, T> Tensor<P, T>
 where
     P: Strides,
@@ -63,7 +54,6 @@ where
         idx
     }
 }
-
 impl<P, T> std::ops::Index<&[usize]> for Tensor<P, T>
 where
     P: Strides,
@@ -75,7 +65,6 @@ where
         &self.data[idx]
     }
 }
-
 impl<P, T> std::ops::IndexMut<&[usize]> for Tensor<P, T>
 where
     P: Strides,
@@ -85,7 +74,6 @@ where
         &mut self.data[idx]
     }
 }
-
 // TODO
 #[cfg(test)]
 mod tests {

@@ -1,11 +1,9 @@
 pub trait Shape {
     fn shape() -> &'static [usize];
 }
-
 pub trait Size {
     fn size() -> usize;
 }
-
 impl<T: Shape> Size for T {
     fn size() -> usize {
         let mut size = 1;
@@ -15,19 +13,15 @@ impl<T: Shape> Size for T {
         size
     }
 }
-
 pub trait Dimension {
     fn dimension() -> usize;
 }
-
 impl<P: Shape> Dimension for P {
     fn dimension() -> usize { P::shape().len() }
 }
-
 pub trait Strides {
     fn strides() -> Vec<usize>;
 }
-
 impl<P: Shape> Strides for P {
     fn strides() -> Vec<usize> {
         let ndim = Self::dimension();
@@ -41,6 +35,5 @@ impl<P: Shape> Strides for P {
         strides
     }
 }
-
 pub trait TensorProperty: Shape {}
 impl<P: Shape> TensorProperty for P {}

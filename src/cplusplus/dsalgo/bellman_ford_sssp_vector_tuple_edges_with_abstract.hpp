@@ -2,7 +2,6 @@
 #include "bellman_ford_abstract.hpp"
 #include <vector>
 using namespace std;
-
 template<typename G, typename T>
 auto bellman_ford_sssp(const T& inf, int n, const G& edges, int src)
   -> vector<T> {

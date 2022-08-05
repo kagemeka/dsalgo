@@ -1,7 +1,6 @@
 #pragma once
 #include <queue>
 using namespace std;
-
 template<typename G, typename F> auto graph_bfs(const G& g, F f, int src)
   -> void {
   queue<int> que;

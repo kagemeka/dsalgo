@@ -1,19 +1,14 @@
 // TODO:
 #include "../../data_structure/graph.cpp"
-
 // TODO cut below
-
 #include <functional>
 #include <limits>
 #include <queue>
 #include <vector>
-
 namespace graph_theory::maximum_flow {
   template<typename T> struct EdmondsKarpData { T capacity; };
-
   template<typename T> using EdmondsKarpGraph =
     DenseDirectedGraph<void*, EdmondsKarpData<T>>;
-
   template<typename T>
   auto edmonds_karp(EdmondsKarpGraph<T> g, int src, int sink) -> T {
     int n = g.nodes.size();
@@ -21,7 +16,6 @@ namespace graph_theory::maximum_flow {
     std::vector<int> prev(n, -1);
     std::vector<bool> visited(n);
     std::queue<int> fifo_que;
-
     std::function<void()> find_path = [&]() -> void {
       std::fill(prev.begin(), prev.end(), -1);
       std::fill(visited.begin(), visited.end(), false);
@@ -38,7 +32,6 @@ namespace graph_theory::maximum_flow {
         }
       }
     };
-
     std::function<T()> augment_flow = [&]() -> T {
       int u, v = sink;
       T flow = inf;
@@ -57,7 +50,6 @@ namespace graph_theory::maximum_flow {
       }
       return flow;
     };
-
     T flow = 0;
     while(true) {
       find_path();

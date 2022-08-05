@@ -1,5 +1,4 @@
 use crate::is_prime_naive::is_prime_naive;
-
 // TODO: use miller rabin
 pub fn next_prime(mut n: u64) -> u64 {
     loop {
@@ -10,7 +9,6 @@ pub fn next_prime(mut n: u64) -> u64 {
     }
     n
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -1,6 +1,5 @@
 //! Analysis Root Finding Algorithm
 //! for given f(x), find x such that f(x) = 0
-
 pub mod newton {
     //! Newton's Method
     //! f(x) must be differentiabl and f'(x) != 0
@@ -9,7 +8,6 @@ pub mod newton {
     //! f'(x) = 2x
     //! x = 3.16227...
     //! TODO: use generic instead of f64 accepting int, big-rational, etc.
-
     /// tol:  absolute tolerance
     /// rtol: relative tolerance
     #[derive(Default)]
@@ -18,26 +16,19 @@ pub mod newton {
         pub rtol: Option<f64>,
         pub max_iter: Option<u8>,
     }
-
     impl Opts {
         pub fn new(
-            tol: Option<f64>,
-            rtol: Option<f64>,
-            max_iter: Option<u8>,
+            tol: Option<f64>, rtol: Option<f64>, max_iter: Option<u8>,
         ) -> Self {
             Self { tol, rtol, max_iter }
         }
     }
-
     /// f := f(x)
     /// fp := f'(x)
     /// x0 := initial guess
     /// Err(x) if not terminated in max iterations.
     pub fn root<F, D>(
-        f: &F,
-        fp: &D,
-        x0: f64,
-        opts: Option<Opts>,
+        f: &F, fp: &D, x0: f64, opts: Option<Opts>,
     ) -> Result<f64, f64>
     where
         F: Fn(f64) -> f64,
@@ -50,7 +41,6 @@ pub mod newton {
         let max_iter = opts.max_iter.unwrap_or(MAX_ITER);
         assert!(0. <= tol);
         assert!(0. <= rtol && rtol < 1.);
-
         let mut x = x0;
         for _ in 0..max_iter {
             let d = f(x) / fp(x);
@@ -61,7 +51,6 @@ pub mod newton {
         }
         Err(x)
     }
-
     #[cfg(test)]
     mod tests {
         #[test]
@@ -75,19 +64,15 @@ pub mod newton {
             assert_eq!(x as u64, 227219563); // 227219563.854...
         }
     }
-
     // TODO:
     /// newton's method for 2D function
     pub fn newton2d() {}
 }
-
 pub mod isqrt {
     //! integer sqrt
-
     pub fn naive(n: u64) -> u64 {
         (1..1 << 32).find(|&x| x * x > n).unwrap_or(1 << 32) - 1
     }
-
     // linear with addition
     pub fn add(n: u64) -> u64 {
         let mut x = 0;
@@ -100,7 +85,6 @@ pub mod isqrt {
         }
         x - 1
     }
-
     /// linear with subtraction
     /// reference
     /// https://en.wikipedia.org/wiki/Integer_square_root
@@ -113,7 +97,6 @@ pub mod isqrt {
         }
         b / 10
     }
-
     /// binary search
     pub fn binsrch(n: u64) -> u64 {
         let mut lo = 0;
@@ -128,7 +111,6 @@ pub mod isqrt {
         }
         lo
     }
-
     // digit by digit
     pub fn dbd(n: u64) -> u64 {
         if n < 2 {
@@ -137,7 +119,6 @@ pub mod isqrt {
         let x = dbd(n >> 2) << 1;
         if (x + 1).pow(2) <= n { x + 1 } else { x }
     }
-
     /// newton's method
     pub fn newton(n: u64) -> u64 {
         let mut x0 = n >> 1;
@@ -153,40 +134,31 @@ pub mod isqrt {
         }
         x0
     }
-
     pub fn floor(n: u64) -> u64 { binsrch(n) }
-
     pub fn ceil(n: u64) -> u64 {
         let x = binsrch(n);
         if x * x == n { x } else { x + 1 }
     }
-
     #[cfg(test)]
     mod tests {
         use super::*;
         #[test]
         fn test_naive() {
             let res = (0..10).map(|x| naive(x)).collect::<Vec<_>>();
-            assert_eq!(
-                res,
-                [0, 1, 1, 1, 2, 2, 2, 2, 2, 3]
-            );
+            assert_eq!(res, [0, 1, 1, 1, 2, 2, 2, 2, 2, 3]);
         }
-
         #[test]
         fn test_add() {
             for i in 0..1000 {
                 assert_eq!(add(i), naive(i));
             }
         }
-
         #[test]
         fn test_sub() {
             for i in 0..1000 {
                 assert_eq!(sub(i), naive(i));
             }
         }
-
         #[test]
         fn test_binsrch() {
             for i in 0..1000 {
@@ -214,7 +186,6 @@ pub mod isqrt {
         }
     }
 }
-
 pub mod ikthrt {
     //! integer kth root
 }

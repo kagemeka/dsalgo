@@ -1,9 +1,7 @@
 use std::ops::*;
 
 use crate::static_matrix_trait::{ElementType, Len, Shape};
-
 pub struct Matrix<P: ElementType>(Vec<P::T>);
-
 impl<P: ElementType> Matrix<P> {
     pub fn new<F>(default: F) -> Self
     where
@@ -13,7 +11,6 @@ impl<P: ElementType> Matrix<P> {
         Self((0..P::len()).map(|_| default()).collect())
     }
 }
-
 impl<P> Default for Matrix<P>
 where
     P::T: Default,
@@ -21,7 +18,6 @@ where
 {
     fn default() -> Self { Self::new(|| P::T::default()) }
 }
-
 impl<P> Index<(usize, usize)> for Matrix<P>
 where
     P: ElementType + Shape,
@@ -33,7 +29,6 @@ where
         &self.0[i * P::shape().0 + j]
     }
 }
-
 impl<P> IndexMut<(usize, usize)> for Matrix<P>
 where
     P: ElementType + Shape,

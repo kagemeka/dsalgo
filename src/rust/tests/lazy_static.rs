@@ -1,6 +1,5 @@
 #[macro_use]
 extern crate lazy_static;
-
 #[cfg(test)]
 mod tests {
     use std::collections::HashMap;
@@ -15,19 +14,11 @@ mod tests {
         static ref COUNT: usize = HASHMAP.len();
         static ref NUMBER: u32 = times_two(21);
     }
-
     fn times_two(n: u32) -> u32 { n * 2 }
-
     #[test]
     fn test() {
-        println!(
-            "The map has {} entries.",
-            *COUNT
-        );
-        println!(
-            "The entry for `0` is \"{}\".",
-            HASHMAP.get(&0).unwrap()
-        );
+        println!("The map has {} entries.", *COUNT);
+        println!("The entry for `0` is \"{}\".", HASHMAP.get(&0).unwrap());
         println!(
             "A expensive calculation on a static results in: {}.",
             *NUMBER

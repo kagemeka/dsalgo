@@ -2,10 +2,8 @@ use crate::{
     make_sparse_histogram::make_sparse_histogram,
     prime_factorize_pollard_rho_flat::*,
 };
-
 pub fn prime_factorize_pollard_rho<F>(
-    is_prime: &F,
-    n: u64,
+    is_prime: &F, n: u64,
 ) -> Result<Vec<(u64, u8)>, &'static str>
 where
     F: Fn(u64) -> bool,
@@ -17,22 +15,18 @@ where
             .collect(),
     )
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
     fn test() {
         use super::*;
         use crate::{
-            primality::test::mr::*,
-            prime_factorize_trial_division::*,
+            primality::test::mr::*, prime_factorize_trial_division::*,
         };
         for i in 1..10000 {
             assert_eq!(
                 prime_factorize_pollard_rho(&is_p, i),
-                Ok(prime_factorize_trial_division(
-                    i
-                )),
+                Ok(prime_factorize(i)),
             );
         }
     }

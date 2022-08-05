@@ -1,10 +1,8 @@
 use crate::{algebraic_structure::*, find_root::isqrt};
-
 pub struct SqrtDecomposition<G: Semigroup> {
     pub(crate) data: Vec<G::S>,
     pub(crate) buckets: Vec<G::S>,
 }
-
 impl<G: Semigroup> SqrtDecomposition<G> {
     pub fn size(&self) -> usize { self.data.len() }
 
@@ -13,7 +11,6 @@ impl<G: Semigroup> SqrtDecomposition<G> {
         (self.size() + n - 1) / n
     }
 }
-
 impl<G> std::iter::FromIterator<G::S> for SqrtDecomposition<G>
 where
     G: Semigroup,
@@ -31,7 +28,6 @@ where
                 //     .reduce(|l, r| G::op(l, r))
                 //     .unwrap()
                 // CHANGE LATER: reduce is not supported on atcoder yet.
-
                 let mut iter = data[j * n..std::cmp::min((j + 1) * n, size)]
                     .iter()
                     .cloned();
@@ -45,7 +41,6 @@ where
         Self { data, buckets }
     }
 }
-
 impl<G> SqrtDecomposition<G>
 where
     G: Semigroup,
@@ -113,7 +108,6 @@ where
         //     })
         //     .reduce(|l, r| G::op(l, r))
         // CHANGE LATER: reduce is not supported on atcoder yet.
-
         let mut iter = (0..self.buckets.len()).filter_map(|j| {
             if r <= n * j || n * (j + 1) <= l {
                 return None;
@@ -121,7 +115,6 @@ where
             if l <= n * j && n * (j + 1) <= r {
                 return Some(self.buckets[j].clone());
             }
-
             let mut iter = (0..n).filter_map(|k| {
                 let i = j * n + k;
                 if l <= i && i < r { Some(self.data[i].clone()) } else { None }
@@ -139,7 +132,6 @@ where
         v
     }
 }
-
 /// fast reduce
 impl<G> SqrtDecomposition<G>
 where
@@ -173,9 +165,7 @@ where
         v
     }
 }
-
 use crate::{algebraic_structure_impl::*, query::RangeGetQuery};
-
 impl<S, I> RangeGetQuery<I> for SqrtDecomposition<GroupApprox<S, I>>
 where
     GroupApprox<S, I>: Semigroup<S = S>,
@@ -187,7 +177,6 @@ where
         self.fast_reduce(l, r)
     }
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
