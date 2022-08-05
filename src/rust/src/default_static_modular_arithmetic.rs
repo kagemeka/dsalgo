@@ -1,5 +1,5 @@
 use crate::{
-    modular::inv::extgcd as invert,
+    modular_inverse_euclidean_u64::modinv,
     static_modular_arithmetic_trait::ModularArithmetic,
     static_modulus_trait::Get,
 };
@@ -39,7 +39,7 @@ macro_rules! impl_default_static {
 
             fn inv(x: $uint) -> Self::T {
                 assert!(x > 0);
-                invert(M::get() as u64, x as u64).unwrap() as Self::T
+                modinv(M::get() as u64, x as u64).unwrap() as Self::T
             }
         }
     };
