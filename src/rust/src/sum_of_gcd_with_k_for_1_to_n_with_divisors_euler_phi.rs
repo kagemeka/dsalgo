@@ -1,12 +1,12 @@
 use crate::{
-    euler_totient_with_trial_division::euler_totient,
+    euler_totient_with_trial_division::phi,
     find_divisors_trial_division::find_divisors,
 };
 /// sum(gcd(i, k)) for i = 1..=n
 pub fn sum_of_gcd(n: u64, k: u64) -> u64 {
     let mut s = 0;
     for d in find_divisors(k).into_iter() {
-        s += n / d * euler_totient(d);
+        s += n / d * phi(d);
     }
     s
 }

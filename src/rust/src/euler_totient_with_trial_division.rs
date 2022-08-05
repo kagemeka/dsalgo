@@ -1,6 +1,6 @@
-pub fn euler_totient(mut n: u64) -> u64 {
+pub fn phi(mut n: u64) -> u64 {
     let mut c = n;
-    for i in 2..n + 1 {
+    for i in 2..n {
         if i * i > n {
             break;
         }
@@ -29,7 +29,7 @@ mod tests {
             24, 36, 28, 58, 16, 60, 30, 36, 32, 48, 20, 66, 32, 44,
         ];
         for i in 0..ans.len() {
-            assert_eq!(euler_totient(i as u64 + 1), ans[i]);
+            assert_eq!(phi(i as u64 + 1), ans[i]);
         }
     }
 }
