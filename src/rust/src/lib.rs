@@ -535,6 +535,7 @@ pub mod modular_power_for_prime_usize_recurse;
 pub mod modular_power_of_k_table;
 pub mod modular_power_usize_recurse;
 pub mod modular_tetration;
+pub mod xor_vectors_rank_online;
 pub mod monte_carlo_algorithm;
 pub mod montgomery_modular_multiplication;
 pub mod montgomery_modular_multiplication_64;
