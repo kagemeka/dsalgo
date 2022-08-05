@@ -13,8 +13,13 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        const MOD: u64 = 1_000_000_007;
-        const INV: u64 = (MOD + 1) >> 1;
-        assert_eq!(modinv(MOD, 2), Ok(INV));
+        let cases = vec![
+            ((1_000_000_0007, 2), Ok(1_000_000_0008 >> 1)),
+            ((8, 3), Ok(3)),
+            ((4, 2), Err("modulus and element are not coprime")),
+        ];
+        for ((m, x), ans) in cases {
+            assert_eq!(modinv(m, x), ans);
+        }
     }
 }

@@ -12,10 +12,7 @@ from dsalgo.modular_inverse_extgcd import modular_inverse_extgcd
 
 def modular_inverse_factorial_table(mod: int, size: int) -> np.ndarray:
     a = np.arange(1, size + 1)
-    a[-1] = modular_inverse_extgcd(
-        mod,
-        int(modular_factorial_table(mod, size)[-1]),
-    )
+    a[-1] = pow(int(modular_factorial_table(mod, size)[-1]), -1, mod)
     return modular_cumprod(mod, a[::-1])[::-1]
 
 
