@@ -531,6 +531,7 @@ pub mod modular_power_for_prime_usize_recurse;
 pub mod modular_power_of_k_table;
 pub mod modular_power_usize_recurse;
 pub mod modular_tetration;
+pub mod pascal_triangle_with_instance_semiring;
 pub mod pascal_triangle_from_i32;
 pub mod monte_carlo_algorithm;
 pub mod montgomery_modular_multiplication;
