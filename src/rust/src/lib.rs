@@ -586,7 +586,7 @@ pub mod pairing_heap;
 pub mod pancacke_sorting;
 pub mod parity_check_matrix;
 pub mod partial_order;
-pub mod pascal_rule;
+pub mod pascal_rule_cached_from_usize;
 pub mod pascal_simplex;
 pub mod pascal_triangle_from_u64_low_memory;
 pub mod path_based_scc;

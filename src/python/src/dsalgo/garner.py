@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import dsalgo.modular
+import dsalgo.modular_int
 
 
 def garner_form(mod_rem_pairs: list[tuple[int, int]]) -> int | None:
@@ -9,7 +9,7 @@ def garner_form(mod_rem_pairs: list[tuple[int, int]]) -> int | None:
     x = 0
     mod_prod = 1
     for mod, rem in mod_rem_pairs:
-        inv = dsalgo.modular.invert_extended_euclidean(mod, mod_prod)
+        inv = dsalgo.modular_int.invert_extended_euclidean(mod, mod_prod)
         if inv is None:
             return None
         coeff = (rem - x) * inv % mod
@@ -31,7 +31,7 @@ def garner_modular_form(
     mod_prod = [1] * (n + 1)
     # mod_prod[i] = (\prod_{j=0}^{j=i-1} modulos[j]) \mod modulos[i]
     for i, (mod, rem) in enumerate(mod_rem_pairs):
-        inv = dsalgo.modular.invert_extended_euclidean(mod, mod_prod[i])
+        inv = dsalgo.modular_int.invert_extended_euclidean(mod, mod_prod[i])
         if inv is None:
             return None
         t = (rem - mod_values[i]) * inv % mod

@@ -1,7 +1,7 @@
 import unittest
 
 import dsalgo._util
-import dsalgo.modular
+import dsalgo.modular_int
 
 
 class TestElement(unittest.TestCase):
