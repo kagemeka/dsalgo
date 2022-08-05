@@ -1,4 +1,4 @@
-#[derive(Copy, Clone, Hash)]
+#[derive(Copy, Clone, Hash, PartialEq, Eq)]
 pub struct Modint<const MOD: i64>(pub i64);
 impl<const MOD: i64> Modint<MOD> {
     pub const fn modulus() -> i64 { MOD }
@@ -142,16 +142,35 @@ where
 {
     fn div_assign(&mut self, rhs: T) { *self = *self / rhs; }
 }
+impl<const MOD: i64> Modint<MOD> {
+    pub fn pow(self, n: i64) -> Self {
+        if n < 0 {
+            return self.mul_inv().pow(-n);
+        }
+        if n == 0 {
+            return Self::new(1);
+        }
+        let mut y = self.pow(n >> 1);
+        y *= y;
+        if n & 1 == 1 {
+            y *= self;
+        }
+        y
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn test() {
-        type Mint = Modint<1_000_000_007>;
+        const MOD: i64 = 1_000_000_007;
+        type Mint = Modint<MOD>;
         let mut x = Mint::new(-1);
         assert_eq!(x.0, 1_000_000_006);
         x += 2;
         assert_eq!(x.0, 1);
         assert_eq!((5 * x).0, 5);
+        x.0 = 2;
+        assert_eq!(x.pow(-1).0, (MOD + 1) >> 1);
     }
 }

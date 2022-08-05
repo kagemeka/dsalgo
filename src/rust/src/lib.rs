@@ -536,6 +536,8 @@ pub mod morphism;
 pub mod most_significant_bit_number_with_msb;
 pub mod most_significant_bit_with_bit_length_u64;
 pub mod mst_boruvka;
+pub mod static_modular_int_with_id_i64;
+pub mod static_modular_int_i64;
 pub mod mst_kruskal;
 pub mod mst_prim_dense;
 pub mod mst_prim_sparse;
