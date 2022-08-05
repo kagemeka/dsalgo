@@ -1,5 +1,6 @@
 use crate::{
-    modular_factorial_table_usize::*, modular_inverse_factorial_table_usize::*,
+    modular_factorial_table_usize::*,
+    modular_inverse_factorial_table_for_prime_usize::*,
 };
 pub struct FactorialTablesFrequentOps {
     pub p: usize,
