@@ -25,6 +25,7 @@ where
 {
     pub fn new(a: Vec<Sg::S>) -> Self {
         let size = a.len();
+        assert!(size > 0);
         let n = a.len().next_power_of_two();
         let mut d = vec![Sg::e(); n << 1];
         d[n..(n + size)].clone_from_slice(&a);
@@ -69,18 +70,15 @@ where
     // from root
     fn propagate_above(&mut self, i: usize) {
         for j in (1..self.h).rev() {
-            if (i >> j) << j != i {
-                self.propagate(i >> j);
-            }
+            self.propagate(i >> j);
         }
     }
 
     // from leaf
-    fn update_above(&mut self, i: usize) {
-        for j in 1..self.h {
-            if (i >> j) << j != i {
-                self.update(i >> j);
-            }
+    fn update_above(&mut self, mut i: usize) {
+        while i > 1 {
+            i >>= 1;
+            self.update(i);
         }
     }
 
@@ -89,9 +87,10 @@ where
         let n = self.n();
         l += n;
         r += n;
-        self.propagate_above(l);
-        self.propagate_above(r);
-        let (l0, r0) = (l, r); // backup
+        let l0 = l >> l.trailing_zeros();
+        let r0 = (r >> r.trailing_zeros()) - 1;
+        self.propagate_above(l0);
+        self.propagate_above(r0);
         while l < r {
             if l & 1 == 1 {
                 self.apply_node(l, f.clone());
@@ -111,22 +110,17 @@ where
     pub fn get(&mut self, mut i: usize) -> Sg::S {
         assert!(i < self.size);
         i += self.n();
-        for j in (1..self.h).rev() {
-            self.propagate(i >> j);
-        }
+        self.propagate_above(i);
         self.d[i].clone()
     }
 
-    pub fn apply_point<F>(&mut self, mut i: usize, f: F)
+    pub fn apply_point<F>(&mut self, i: usize, f: F)
     where
         F: Fn(Sg::S) -> Sg::S,
     {
         let n = self.n();
         self.d[i + n] = f(self.get(i));
-        i += n;
-        for j in 1..self.h {
-            self.update(i >> j);
-        }
+        self.update_above(i + n);
     }
 
     pub fn set(&mut self, i: usize, v: Sg::S) {
@@ -139,7 +133,7 @@ where
         l += n;
         r += n;
         self.propagate_above(l);
-        self.propagate_above(r);
+        self.propagate_above(r - 1);
         let mut vl = Sg::e();
         let mut vr = Sg::e();
         while l < r {
@@ -169,7 +163,7 @@ where
         let n = self.n();
         let mut v = Sg::e();
         let mut i = n + l;
-        self.propagate_above(i);
+        self.propagate_above(i - 1);
         loop {
             i >>= i.trailing_zeros();
             let nv = Sg::op(v.clone(), self.d[i].clone());
@@ -404,6 +398,7 @@ mod tests {
         >::new(a);
         assert_eq!(seg.reduce(0, 10), Data { sum: 0, len: 10 });
         seg.apply(0, 5, 2);
+        // [2, 2, 2, 2, 2, 0, 0, 0, 0, 0]
         assert_eq!(seg.reduce(2, 6), Data { sum: 6, len: 4 });
         assert_eq!(seg.reduce_recurse(2, 6), Data { sum: 6, len: 4 });
         assert_eq!(seg.reduce(0, 10), Data { sum: 10, len: 10 });
@@ -419,9 +414,12 @@ mod tests {
         assert_eq!(seg.min_left(&|x: &Data| x.sum < 0, 10), 10);
         assert_eq!(seg.min_left_recurse(&|x: &Data| x.sum < 0, 10), 10);
         seg.set(2, Data { sum: -1, len: 1 });
+        // [2, 2, -1, 2, 2, 0, 0, 0, 0, 0]
         assert_eq!(seg.reduce(0, 10), Data { sum: 7, len: 10 });
         assert_eq!(seg.reduce_recurse(0, 10), Data { sum: 7, len: 10 });
         seg.apply_recurse(1, 7, 3);
+        // [2, 5, 2, 5, 5, 3, 3, 0, 0, 0]
+        assert_eq!(seg.get(4), Data { sum: 5, len: 1 });
         assert_eq!(seg.reduce(0, 10), Data { sum: 25, len: 10 });
     }
 }
