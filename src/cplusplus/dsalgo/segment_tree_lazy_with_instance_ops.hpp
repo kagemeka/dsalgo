@@ -28,7 +28,7 @@ template<typename Sg, typename Fg, typename Map> class lazy_segtree {
     for(int j = height() - 1; j > 0; j--) propagate(i >> j);
   }
   void update_above(int i) {
-    for(int j = 1; j < height(); j++) update(i >> j);
+    for(i >>= 1; i >= 1; i >>= 1) { update(i); }
   }
 
 public:
@@ -43,9 +43,9 @@ public:
   auto apply(int l, int r, F f) {
     assert(0 <= l && l <= r && r <= size());
     int n = this->n();
-    l += n, r += r;
-    pull(l), pull(r - 1);
-    int l0 = l, r0 = r;
+    l += n, r += n;
+    int l0 = l / (l & -l), r0 = r / (r & -r) - 1;
+    pull(l0), pull(r0);
     while(l < r) {
       if(l & 1) apply_node(l++, f);
       if(r & 1) apply_node(--r, f);
@@ -64,7 +64,7 @@ public:
     assert(0 <= l && l <= r && r <= size());
     int n = this->n();
     l += n, r += n;
-    pull(l), pull(r);
+    pull(l), pull(r - 1);
     S vl = sg.e(), vr = sg.e();
     while(l < r) {
       if(l & 1) vl = sg.op(vl, data[l++]);
@@ -73,4 +73,70 @@ public:
     }
     return sg.op(vl, vr);
   }
+  template<typename G> auto max_right(G is_ok, int l) -> int {
+    assert(l <= size());
+    if(l == size()) return size();
+    int n = this->n();
+    int i = l + n;
+    S v = sg.e();
+    pull(i);
+    while(true) {
+      i /= i & -i;
+      S nv = sg.op(v, data[i]);
+      if(!is_ok(nv)) break;
+      v = nv;
+      i++;
+      if(__builtin_popcount(i) == 1) return size();
+    }
+    while(i < n) {
+      propagate(i);
+      i <<= 1;
+      S nv = sg.op(v, data[i]);
+      if(!is_ok(nv)) continue;
+      v = nv;
+      i++;
+    }
+    return i - n;
+  }
+  template<typename G> auto min_left(G is_ok, int r) -> int {
+    assert(r <= size());
+    if(r == 0) return 0;
+    int n = this->n();
+    int i = r + n;
+    S v = sg.e();
+    pull(i - 1);
+    while(true) {
+      i /= i & -i;
+      S nv = sg.op(data[i - 1], v);
+      if(!is_ok(nv)) break;
+      v = nv;
+      i--;
+      if(!i || __builtin_popcount(i) == 1) return 0;
+    }
+    while(i < n) {
+      propagate(i - 1);
+      i <<= 1;
+      S nv = sg.op(data[i - 1], v);
+      if(!is_ok(nv)) continue;
+      v = nv;
+      i--;
+    }
+    return i - n;
+  }
 };
+// RARS
+struct Sg {
+  using T = pair<long, int>;
+  auto op(const T& a, const T& b) -> T {
+    return {a.first + b.first, a.second + b.second};
+  }
+  auto e() -> T { return {0, 0}; }
+};
+struct Fg {
+  using T = long;
+  auto op(const T& a, const T& b) -> T { return a + b; }
+  auto e() -> T { return 0; }
+};
+auto map_(Fg::T const& f, Sg::T const& x) -> Sg::T {
+  return {x.first + f * x.second, x.second};
+}

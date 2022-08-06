@@ -163,7 +163,7 @@ where
         let n = self.n();
         let mut v = Sg::e();
         let mut i = n + l;
-        self.propagate_above(i - 1);
+        self.propagate_above(i);
         loop {
             i >>= i.trailing_zeros();
             let nv = Sg::op(v.clone(), self.d[i].clone());
@@ -204,7 +204,7 @@ where
         let n = self.n();
         let mut v = Sg::e();
         let mut i = n + r;
-        self.propagate_above(i);
+        self.propagate_above(i - 1);
         loop {
             debug_assert!(i >= 1);
             i >>= i.trailing_zeros();
