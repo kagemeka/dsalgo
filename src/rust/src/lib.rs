@@ -738,6 +738,7 @@ pub mod segment_tree_beats;
 pub mod segment_tree_dual;
 pub mod segment_tree_dynamic_node;
 pub mod segment_tree_lazy_i64_range_add_range_sum;
+pub mod segment_tree_lazy_range_add_range_minimum;
 pub mod segment_tree_lazy_range_update_range_minimum;
 pub mod segment_tree_lazy_with_instance_ops;
 pub mod segment_tree_lazy_with_instance_ops_recurse;

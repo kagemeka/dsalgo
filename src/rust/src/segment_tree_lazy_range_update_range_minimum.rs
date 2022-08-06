@@ -1,9 +1,7 @@
-use std::marker::PhantomData;
-
 use crate::segment_tree_lazy_with_instance_ops::*;
-pub struct RangeUpdateRangeMinimum<T>(T, PhantomData<T>);
+pub struct RangeUpdateRangeMinimum<T>(T);
 impl<T> RangeUpdateRangeMinimum<T> {
-    pub fn new(inf: T) -> Self { Self(inf, PhantomData) }
+    pub fn new(inf: T) -> Self { Self(inf) }
 }
 impl<T: Ord + Clone> Ops for RangeUpdateRangeMinimum<T> {
     type F = Option<T>;
