@@ -1,5 +1,5 @@
 use crate::segment_tree_lazy_with_instance_ops::*;
-struct RangeAddRangeSumI64;
+pub struct RangeAddRangeSumI64;
 impl Ops for RangeAddRangeSumI64 {
     type F = i64;
     type S = (i64, i64);
@@ -13,4 +13,9 @@ impl Ops for RangeAddRangeSumI64 {
     fn id(&self) -> Self::F { 0 }
 
     fn map(&self, f: Self::F, x: Self::S) -> Self::S { (x.0 + f * x.1, x.1) }
+}
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn test() {}
 }
