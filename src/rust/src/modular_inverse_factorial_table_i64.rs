@@ -5,6 +5,7 @@ use crate::{
 /// modular m must be coprime with n < m;
 /// so lpf(m) >= size
 pub fn inverse_factorial(m: i64, size: usize) -> Vec<i64> {
+    assert!(size <= m as usize);
     let mut a: Vec<_> = (1..size as i64 + 1).rev().collect();
     a[0] = pow(m as i32, *factorial(m, size).last().unwrap(), -1) as i64;
     a = cumprod(m, a);

@@ -3,6 +3,7 @@ use crate::{
     modular_power_for_prime_usize_recurse::*,
 };
 pub fn inverse_factorial(p: usize, size: usize) -> Vec<usize> {
+    assert!(size <= p);
     let mut a: Vec<_> = (1..size + 1).rev().collect();
     a[0] = pow(p, *factorial(p, size).last().unwrap(), -1);
     a = cumprod(p, a);

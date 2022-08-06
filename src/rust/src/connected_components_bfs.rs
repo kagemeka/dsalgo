@@ -23,7 +23,6 @@ pub fn connected_components(g: &[Vec<usize>]) -> Vec<usize> {
     }
     ids
 }
-// TODO
 #[cfg(test)]
 mod tests {
     #[test]
