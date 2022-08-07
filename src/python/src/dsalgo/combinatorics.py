@@ -19,42 +19,6 @@ def n_choose_table(p: int, n: int, kmax: int) -> list[int]:
     return a
 
 
-def make_count_permutation(p: int, n: int) -> typing.Callable[[int, int], int]:
-    fact = dsalgo.modular_int.factorial(p, n)
-    ifact = dsalgo.modular_int.factorial_inverse(p, n)
-
-    def count_perm(n: int, k: int) -> int:
-        nonlocal fact, ifact
-        if k < 0 or n < k:
-            return 0
-        return fact[n] * ifact[n - k] % p
-
-    return count_perm
-
-
-def combinations(
-    n: int,
-    k: int,
-) -> typing.Generator[tuple[int, ...], None, None]:
-    a = tuple(range(n))
-    n = len(a)
-    if k < 0 or n < k:
-        return
-    rng = range(k)
-    res = list(rng)
-    yield a[:k]
-    while True:
-        for j in reversed(rng):
-            if res[j] != j + n - k:
-                break
-        else:
-            return
-        res[j] += 1
-        for j in range(j + 1, k):
-            res[j] = res[j - 1] + 1
-        yield tuple(a[j] for j in res)
-
-
 def combinations_next_comb(
     n: int,
     k: int,
@@ -77,22 +41,6 @@ def next_combination(s: int) -> int:
     lsb = s & -s
     i = s + lsb
     return (s & ~i) // lsb >> 1 | i
-
-
-def repeated_combinations(
-    n: int,
-    k: int,
-) -> typing.Generator[tuple[int, ...], None, None]:
-    """Repeated Combinations.
-
-    Args:
-        n (int): n of nHk
-        k (int): k of nHk
-
-    Returns:
-        typing.Generator[tuple[int, ...], None, None]: [description]
-    """
-    ...
 
 
 def next_permutation(
@@ -168,24 +116,6 @@ def permutations_next_perm(n: int) -> typing.Iterator[tuple[int, ...]]:
     while arr is not None:
         yield tuple(arr)
         arr = next_permutation(arr)
-
-
-def repeated_permutations_dfs(
-    n: int,
-    repeat: int,
-) -> typing.Iterator[tuple[int, ...]]:
-    p: list[int] = [n] * repeat
-
-    def dfs(fixed_count: int) -> typing.Iterator[tuple[int, ...]]:
-        nonlocal p
-        if fixed_count == repeat:
-            yield tuple(p)
-            return
-        for i in range(n):
-            p[fixed_count] = i
-            yield from dfs(fixed_count + 1)
-
-    return dfs(0)
 
 
 if __name__ == "__main__":
