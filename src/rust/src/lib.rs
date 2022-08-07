@@ -479,6 +479,7 @@ pub mod knapsack_unbounded_table_item_oriented;
 pub mod knuth_morris_pratt;
 pub mod kosaraju_scc;
 pub mod las_vegas_algorithm;
+pub mod lazy_binary_heap_accepting_negative_count;
 pub mod lazy_sqrt_decomposition;
 pub mod lca;
 pub mod lcm;
