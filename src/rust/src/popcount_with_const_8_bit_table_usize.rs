@@ -1,6 +1,6 @@
 use crate::popcount_table_const_8_bit_usize::POPCOUNT;
 pub fn popcount(mut n: usize) -> usize {
-    const MASK: usize = (1 << 8) - 1;
+    const MASK: usize = 0xff;
     let mut cnt = 0;
     while n > 0 {
         cnt += POPCOUNT[n & MASK];

@@ -48,8 +48,6 @@ pub fn invert<T: std::ops::Not<Output = T>>(n: T) -> T { !n }
 pub trait Reverse {
     fn reverse(self) -> Self;
 }
-/// TODO: not implemented.
-pub fn reverse() {}
 pub trait ShrUntilOdd {
     fn shr_until_odd(self) -> Self;
 }
