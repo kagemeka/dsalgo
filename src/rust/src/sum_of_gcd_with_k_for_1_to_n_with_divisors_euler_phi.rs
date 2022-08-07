@@ -1,6 +1,6 @@
 use crate::{
-    euler_totient_with_trial_division::phi,
-    find_divisors_trial_division::find_divisors,
+    euler_totient_with_trial_division_u64::phi,
+    find_divisors_trial_division_u64::find_divisors,
 };
 /// sum(gcd(i, k)) for i = 1..=n
 pub fn sum_of_gcd(n: u64, k: u64) -> u64 {

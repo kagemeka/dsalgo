@@ -180,6 +180,9 @@ impl<Id: Copy> Modint<Id> {
 impl<Id: Copy> From<i32> for Modint<Id> {
     fn from(x: i32) -> Self { Self::new(x as i64) }
 }
+impl<Id: Copy> From<usize> for Modint<Id> {
+    fn from(x: usize) -> Self { Self::new(x as i64) }
+}
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub struct DefaultId;
 pub type Mint = Modint<DefaultId>;

@@ -1,4 +1,4 @@
-use crate::find_divisors_trial_division::find_divisors;
+use crate::find_divisors_trial_division_u64::find_divisors;
 /// find medians of divisors.
 pub fn find_divisors_median_low(n: u64) -> u64 {
     assert!(n > 0);

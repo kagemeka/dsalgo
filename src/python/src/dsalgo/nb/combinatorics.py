@@ -4,53 +4,6 @@ import numba as nb
 import numpy as np
 
 
-@nb.njit
-def mod_nchoose_table(mod: int, n: int, k: int) -> np.ndarray:
-    a = np.arange(n + 1, n - k, -1)
-    a[0] = 1
-    cumprod(mod, a)
-    return a * inv_factorial(mod, r + 1) % mod
-
-
-@nb.njit
-def next_combination(s: int) -> int:
-    """Next Combination.
-
-    Args:
-        s (int): represent a bit set.
-
-    Returns:
-        int: the bit set of next combination.
-    """
-    i = s & -s
-    j = s + i
-    return (s & ~j) // i >> 1 | j
-
-
-@nb.njit
-def combinations(n: int, r: int) -> np.ndarray:
-    a = np.arange(n)
-    ls: list[list[int]] = []
-    if r < 0 or r > n:
-        return np.array(ls)
-    rng = np.arange(r)[::-1]
-    i = np.arange(r)
-    ls.append(list(a[:r]))
-    while 1:
-        for j in rng:
-            if i[j] != j + n - r:
-                break
-        else:
-            return np.array(ls)
-        i[j] += 1
-        for j in range(j + 1, r):
-            i[j] = i[j - 1] + 1
-        b = []
-        for j in i:
-            b.append(a[j])
-        ls.append(b)
-
-
 @nb.jit
 def combinations_with_next_comb(n: int, r: int) -> np.ndarray:
     ls: list[list[int]] = []
@@ -178,29 +131,6 @@ def repeated_permutations_bfs(n: int, k: int) -> np.ndarray:
             b[i] = j
             que.append((b, i + 1))
     return res
-
-
-@nb.njit((nb.i8, nb.i8))
-def repeated_permutations_dfs(n: int, k: int) -> np.ndarray:
-    res = np.empty((n**k, k), np.int64)
-    idx_to_add = 0
-
-    def add_result(a):
-        nonlocal idx_to_add
-        res[idx_to_add] = a
-        idx_to_add += 1
-
-    st = [(np.empty(k, np.int64), 0)]
-    while st:
-        a, i = st.pop()
-        if i == k:
-            add_result(a)
-            continue
-        for j in range(n):
-            b = a.copy()
-            b[i] = j
-            st.append((b, i + 1))
-    return res[::-1]
 
 
 @nb.njit((nb.i8, nb.i8[:]))

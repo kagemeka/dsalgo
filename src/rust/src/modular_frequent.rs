@@ -179,6 +179,9 @@ impl<Id: Copy> Modint<Id> {
 impl<Id: Copy> From<i32> for Modint<Id> {
     fn from(x: i32) -> Self { Self::new(x as i64) }
 }
+impl<Id: Copy> From<usize> for Modint<Id> {
+    fn from(x: usize) -> Self { Self::new(x as i64) }
+}
 pub fn extgcd(mut a: i64, mut b: i64) -> (i64, i64, i64) {
     use std::mem::swap;
     let (mut x00, mut x01, mut x10, mut x11) = (1, 0, 0, 1);

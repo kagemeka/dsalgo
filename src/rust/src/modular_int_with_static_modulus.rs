@@ -40,7 +40,7 @@ impl<T> Element for T where
 {
 }
 use crate::static_modulus_trait::Get;
-#[derive(Copy, Clone, Hash, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub struct Modint<M: Get>(pub M::T);
 impl<M: Get> Modint<M>
 where
@@ -187,6 +187,12 @@ where
     M::T: Element,
 {
     fn from(v: i32) -> Self { Self::new(v.into()) }
+}
+impl<M: Get + Copy> From<usize> for Modint<M>
+where
+    M::T: Element,
+{
+    fn from(v: usize) -> Self { (v as i32).into() }
 }
 #[cfg(test)]
 mod tests {
