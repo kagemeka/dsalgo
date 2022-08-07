@@ -539,6 +539,7 @@ pub mod merge_sort_inplace;
 pub mod mergeable_heap;
 pub mod mergesort;
 pub mod merkle_tree;
+pub mod popcount_cached_usize;
 pub mod metric_tree;
 pub mod min_max_pq;
 pub mod minimum_cost_arborescence;
