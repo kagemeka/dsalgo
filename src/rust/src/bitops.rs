@@ -58,25 +58,6 @@ pub fn shr_until_odd(n: u64) -> u64 {
     assert!(n > 0);
     n >> n.trailing_zeros()
 }
-/// O(\log\log{N})
-pub fn msb_number_binary_search(mut n: u64) -> u64 {
-    const MASKS: [u64; 6] = [
-        0xffffffff00000000,
-        0xffff0000ffff0000,
-        0xff00ff00ff00ff00,
-        0xf0f0f0f0f0f0f0f0,
-        0xcccccccccccccccc, // 0b1100...
-        0xaaaaaaaaaaaaaaaa, // 0b1010...
-    ];
-    // TODO: change later. not compile on AtCoder.
-    // for m in MASKS {
-    for m in MASKS.iter() {
-        if n & m > 0 {
-            n &= m;
-        }
-    }
-    n
-}
 /// least significant bit
 pub fn lsb(n: u64) -> usize {
     assert!(n > 0);

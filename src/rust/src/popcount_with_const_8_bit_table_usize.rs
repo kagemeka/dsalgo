@@ -1,5 +1,13 @@
-/// O(1)
-pub fn popcount(n: u64) -> u8 { n.count_ones() as u8 }
+use crate::popcount_table_const_8_bit_usize::POPCOUNT;
+pub fn popcount(mut n: usize) -> usize {
+    const MASK: usize = (1 << 8) - 1;
+    let mut cnt = 0;
+    while n > 0 {
+        cnt += POPCOUNT[n & MASK];
+        n >>= 8;
+    }
+    cnt
+}
 #[cfg(test)]
 mod tests {
     use super::*;

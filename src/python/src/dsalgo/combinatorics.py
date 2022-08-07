@@ -111,13 +111,6 @@ def permutations_dfs(
     return dfs(0)
 
 
-def permutations_next_perm(n: int) -> typing.Iterator[tuple[int, ...]]:
-    arr: typing.Optional[list[int]] = list(range(n))
-    while arr is not None:
-        yield tuple(arr)
-        arr = next_permutation(arr)
-
-
 if __name__ == "__main__":
     import doctest
 
