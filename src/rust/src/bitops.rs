@@ -56,18 +56,6 @@ pub fn shr_until_odd(n: u64) -> u64 {
     assert!(n > 0);
     n >> n.trailing_zeros()
 }
-/// least significant bit
-pub fn lsb(n: u64) -> usize {
-    assert!(n > 0);
-    n.trailing_zeros() as usize
-}
-pub fn lsb_num_i64(n: i64) -> i64 { n & -n }
-pub fn lsb_num(n: u64) -> u64 {
-    match n {
-        0 => 0,
-        n => 1 << lsb(n),
-    }
-}
 /// rotate left
 /// can be called safely only in release mode.
 pub fn rot_l(x: u64, k: u8) -> u64 { (x << k) | (x >> (64 - k)) }
@@ -81,20 +69,5 @@ mod tests {
         assert_eq!(shr_until_odd(1), 1);
         assert_eq!(shr_until_odd(2), 1);
         assert_eq!(shr_until_odd(12), 3);
-    }
-    #[test]
-    fn test_lsb() {
-        assert_eq!(lsb(1), 0,);
-    }
-    #[test]
-    fn test_lsb_num() {
-        assert_eq!(lsb_num_i64(0), 0);
-        assert_eq!(lsb_num_i64(1), 1);
-        assert_eq!(lsb_num_i64(2), 2);
-        assert_eq!(lsb_num_i64(3), 1);
-        assert_eq!(lsb_num(0), 0);
-        assert_eq!(lsb_num(1), 1);
-        assert_eq!(lsb_num(2), 2);
-        assert_eq!(lsb_num(3), 1);
     }
 }
