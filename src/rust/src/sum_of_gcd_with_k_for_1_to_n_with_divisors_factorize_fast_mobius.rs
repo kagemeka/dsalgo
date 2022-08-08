@@ -1,5 +1,5 @@
 use crate::{
-    find_divisors_trial_division::find_divisors,
+    find_divisors_trial_division_u64::find_divisors,
     prime_factorize_trial_division::prime_factorize,
 };
 /// sum(gcd(i, k)) for i = 1..=n

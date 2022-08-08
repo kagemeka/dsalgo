@@ -12,4 +12,20 @@ struct union_find {
     data[u] += data[v];
     data[v] = u;
   }
+  auto size_of(int u) -> int { return -data[root(u)]; }
+  auto size() -> int { return data.size(); }
+  auto labels() -> vector<int> {
+    int n = size();
+    vector<int> labels(n, -1);
+    int l = 0;
+    for(int i = 0; i < n; i++) {
+      int r = root(i);
+      if(labels[r] == -1) {
+        labels[r] = l;
+        l++;
+      }
+      labels[i] = labels[r];
+    }
+    return labels;
+  }
 };

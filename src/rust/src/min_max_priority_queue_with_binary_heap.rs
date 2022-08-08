@@ -44,8 +44,7 @@ impl<T: Ord + std::hash::Hash + Clone> MinMaxQueue<T> {
     }
 
     fn lazy_discard_false_min(&mut self) {
-        while !self.min_que.is_empty() {
-            let x = &self.min_que.peek().unwrap().0;
+        while let Some(Reverse(x)) = self.min_que.peek() {
             if self.count(x) == 0 {
                 self.min_que.pop();
                 continue;
@@ -55,8 +54,7 @@ impl<T: Ord + std::hash::Hash + Clone> MinMaxQueue<T> {
     }
 
     fn lazy_discard_false_max(&mut self) {
-        while !self.max_que.is_empty() {
-            let x = self.max_que.peek().unwrap();
+        while let Some(x) = self.max_que.peek() {
             if self.count(x) == 0 {
                 self.max_que.pop();
                 continue;
@@ -67,10 +65,10 @@ impl<T: Ord + std::hash::Hash + Clone> MinMaxQueue<T> {
 
     fn min(&mut self) -> Option<&T> {
         self.lazy_discard_false_min();
-        if self.size() == 0 {
-            None
+        if let Some(Reverse(x)) = self.min_que.peek() {
+            Some(x)
         } else {
-            Some(&self.min_que.peek().unwrap().0)
+            None
         }
     }
 

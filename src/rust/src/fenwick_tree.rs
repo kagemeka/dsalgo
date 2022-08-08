@@ -1,6 +1,7 @@
 //! fenwick tree (binary indexed tree)
 use crate::{
-    algebraic_structure::*, binary_function::*, bitops::lsb_num,
+    algebraic_structure::*, binary_function::*,
+    least_significant_bit_number_from_lsb_usize::lsb_num,
     reset_least_significant_bit_smart_u64::reset_lsb,
 };
 /// Node Indices
@@ -23,7 +24,7 @@ where
         let mut d = vec![G::e()];
         d.append(&mut a.to_vec());
         for i in 1..n {
-            let j = i + lsb_num(i as u64) as usize;
+            let j = i + lsb_num(i);
             if j <= n {
                 d[j] = G::op(d[j].clone(), d[i].clone());
             }
@@ -38,7 +39,7 @@ where
         i += 1;
         while i <= self.size() {
             self.0[i] = G::op(self.0[i].clone(), v.clone());
-            i += lsb_num(i as u64) as usize;
+            i += lsb_num(i);
         }
     }
 

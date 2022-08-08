@@ -11,5 +11,6 @@ mod tests {
     #[test]
     fn test() {
         assert_eq!(popcount(8), [0, 1, 1, 2, 1, 2, 2, 3]);
+        // dbg!(popcount(1 << 8));
     }
 }

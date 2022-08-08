@@ -6,14 +6,11 @@ pub trait Monoid {
 pub trait Edge {
     fn to(&self) -> usize;
 }
-pub trait Reverse {
-    fn rev(&self) -> Self;
-}
 pub fn rerooting_dp<M, E, F>(g: &[Vec<E>], m: M, f: F) -> Vec<M::T>
 where
     M: Monoid,
     M::T: Clone,
-    E: Clone + Edge + Reverse,
+    E: Clone + Edge,
     F: Fn(&E, M::T) -> M::T,
 {
     let n = g.len();
@@ -21,6 +18,7 @@ where
     let mut dp = vec![m.e(); n];
     let mut parent = vec![n; n];
     let mut st = vec![0isize];
+    let mut rev_edge = vec![None; n];
     while let Some(u) = st.pop() {
         if u < 0 {
             let u = !u as usize;
@@ -41,15 +39,15 @@ where
         for e in g[u].iter() {
             let v = e.to();
             if v == parent[u] {
+                rev_edge[u] = Some(e);
                 continue;
             }
             parent[v] = u;
             st.push(v as isize)
         }
     }
-    let mut que = std::collections::VecDeque::new();
-    que.push_back((0, m.e()));
-    while let Some((u, x)) = que.pop_front() {
+    let mut st = vec![(0, m.e())];
+    while let Some((u, x)) = st.pop() {
         dp[u] = m.op(x.clone(), dp_from_childs[u].clone());
         let mut childs = vec![];
         for e in g[u].iter() {
@@ -70,10 +68,10 @@ where
         }
         for (i, e) in childs.iter().enumerate() {
             let y = f(
-                &e.rev(),
+                rev_edge[e.to()].unwrap(),
                 m.op(x.clone(), m.op(dp_l[i].clone(), dp_r[i + 1].clone())),
             );
-            que.push_back((e.to(), y));
+            st.push((e.to(), y));
         }
     }
     dp
@@ -94,26 +92,19 @@ mod tests {
         }
         #[derive(Clone)]
         struct E {
-            from: usize,
             to: usize,
             weight: u64,
         }
         impl E {
-            pub fn new(from: usize, to: usize, weight: u64) -> Self {
-                Self { from, to, weight }
-            }
+            pub fn new(to: usize, weight: u64) -> Self { Self { to, weight } }
         }
         impl Edge for E {
             fn to(&self) -> usize { self.to }
         }
-        impl Reverse for E {
-            fn rev(&self) -> Self { Self::new(self.to, self.from, self.weight) }
-        }
-        let g = vec![
-            vec![E::new(0, 1, 2)],
-            vec![E::new(1, 0, 2), E::new(1, 2, 3)],
-            vec![E::new(2, 1, 3)],
-        ];
+        let g =
+            vec![vec![E::new(1, 2)], vec![E::new(0, 2), E::new(2, 3)], vec![
+                E::new(1, 3),
+            ]];
         let d = vec![1, 2, 3];
         let map = |e: &E, x: u64| -> u64 { e.weight + x.max(d[e.to()]) };
         let res = rerooting_dp(&g, M {}, &map);

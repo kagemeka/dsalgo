@@ -1,5 +1,5 @@
 /// number of 1 <= k <= n, gcd(k, n) = 1.
-pub fn euler_totient_prime_factorize<F>(factorize: &F, mut n: u64) -> u64
+pub fn euler_totient<F>(factorize: &F, mut n: u64) -> u64
 where
     F: Fn(u64) -> Vec<(u64, u8)>,
 {
@@ -23,10 +23,7 @@ mod tests {
             24, 36, 28, 58, 16, 60, 30, 36, 32, 48, 20, 66, 32, 44,
         ];
         for i in 0..PHI.len() {
-            assert_eq!(
-                euler_totient_prime_factorize(&prime_factorize, (i + 1) as u64),
-                PHI[i]
-            );
+            assert_eq!(euler_totient(&prime_factorize, (i + 1) as u64), PHI[i]);
         }
     }
 }

@@ -48,8 +48,6 @@ pub fn invert<T: std::ops::Not<Output = T>>(n: T) -> T { !n }
 pub trait Reverse {
     fn reverse(self) -> Self;
 }
-/// TODO: not implemented.
-pub fn reverse() {}
 pub trait ShrUntilOdd {
     fn shr_until_odd(self) -> Self;
 }
@@ -57,37 +55,6 @@ pub trait ShrUntilOdd {
 pub fn shr_until_odd(n: u64) -> u64 {
     assert!(n > 0);
     n >> n.trailing_zeros()
-}
-/// O(\log\log{N})
-pub fn msb_number_binary_search(mut n: u64) -> u64 {
-    const MASKS: [u64; 6] = [
-        0xffffffff00000000,
-        0xffff0000ffff0000,
-        0xff00ff00ff00ff00,
-        0xf0f0f0f0f0f0f0f0,
-        0xcccccccccccccccc, // 0b1100...
-        0xaaaaaaaaaaaaaaaa, // 0b1010...
-    ];
-    // TODO: change later. not compile on AtCoder.
-    // for m in MASKS {
-    for m in MASKS.iter() {
-        if n & m > 0 {
-            n &= m;
-        }
-    }
-    n
-}
-/// least significant bit
-pub fn lsb(n: u64) -> usize {
-    assert!(n > 0);
-    n.trailing_zeros() as usize
-}
-pub fn lsb_num_i64(n: i64) -> i64 { n & -n }
-pub fn lsb_num(n: u64) -> u64 {
-    match n {
-        0 => 0,
-        n => 1 << lsb(n),
-    }
 }
 /// rotate left
 /// can be called safely only in release mode.
@@ -102,20 +69,5 @@ mod tests {
         assert_eq!(shr_until_odd(1), 1);
         assert_eq!(shr_until_odd(2), 1);
         assert_eq!(shr_until_odd(12), 3);
-    }
-    #[test]
-    fn test_lsb() {
-        assert_eq!(lsb(1), 0,);
-    }
-    #[test]
-    fn test_lsb_num() {
-        assert_eq!(lsb_num_i64(0), 0);
-        assert_eq!(lsb_num_i64(1), 1);
-        assert_eq!(lsb_num_i64(2), 2);
-        assert_eq!(lsb_num_i64(3), 1);
-        assert_eq!(lsb_num(0), 0);
-        assert_eq!(lsb_num(1), 1);
-        assert_eq!(lsb_num(2), 2);
-        assert_eq!(lsb_num(3), 1);
     }
 }

@@ -1,4 +1,4 @@
-use crate::binary_min_heap::*;
+use crate::binary_min_heap_0_indexed::*;
 type Q<T> = BinaryMinHeap<T>;
 use crate::priority_queue_trait::{Pop, Push};
 impl<T: Ord> Push for Q<T> {

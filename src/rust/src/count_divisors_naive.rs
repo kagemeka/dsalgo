@@ -1,4 +1,4 @@
-use crate::find_divisors_trial_division::find_divisors;
+use crate::find_divisors_trial_division_u64::find_divisors;
 pub fn count_divisors_naive(n: u64) -> u32 { find_divisors(n).len() as u32 }
 #[cfg(test)]
 mod tests {

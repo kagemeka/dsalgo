@@ -22,7 +22,7 @@ mod tests {
     fn test() {
         use super::HomogeneousProduct;
         use crate::{
-            combination::Combination,
+            combination_from_u64::Combination,
             default_static_modular_arithmetic::Modular1_000_000_007,
             modular_int_with_arithmetic::Modint,
         };

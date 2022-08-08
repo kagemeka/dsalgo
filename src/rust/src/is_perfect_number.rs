@@ -1,4 +1,4 @@
-use crate::find_divisors_trial_division::find_divisors;
+use crate::find_divisors_trial_division_u64::find_divisors;
 // TODO: optimize divisor finding algorithm
 pub fn is_perfect_number(n: u64) -> bool {
     find_divisors(n).iter().sum::<u64>() == n << 1

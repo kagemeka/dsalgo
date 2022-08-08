@@ -1,4 +1,4 @@
-use crate::find_divisors_trial_division::find_divisors;
+use crate::find_divisors_trial_division_u64::find_divisors;
 /// 0 <= r < n
 /// find all x such that n = qx + r
 pub fn find_divisors_for_const_remainder(n: u64, r: u64) -> Vec<u64> {

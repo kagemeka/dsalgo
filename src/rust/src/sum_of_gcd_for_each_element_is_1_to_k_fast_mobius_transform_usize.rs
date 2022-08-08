@@ -1,9 +1,7 @@
-use crate::power_multiplicative_semigroup_with_std_ops::power;
-// TODO: use fast enumerating power to the n table of size k,
-// to make entire complexity O(k|log\log{k} + k(\log{N}/\log{k}).
-// for detail: https://37zigen.com/linear-sieve/#i-3
-// current: O(k|log\log{k} + k\log{N})
-use crate::sieve_of_eratosthenes_enumerate_primes::enumerate_primes;
+use crate::{
+    power_multiplicative_semigroup_with_std_ops::power,
+    sieve_of_eratosthenes_enumerate_primes::enumerate_primes,
+};
 pub fn sum_of_gcd(k: usize, n: u64) -> usize {
     let mut d = vec![0; k + 1];
     for i in 1..=k {
