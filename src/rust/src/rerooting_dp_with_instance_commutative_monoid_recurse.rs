@@ -51,36 +51,34 @@ where
 
     fn reroot(&mut self, u: usize, parent: usize, x: M::T) {
         self.dp[u] = self.m.op(x.clone(), self.dp_from_childs[u].clone());
-        let mut childs = vec![];
-        for e in self.g[u].iter() {
-            if e.to() != parent {
-                childs.push(e.clone());
-            }
-        }
-        let n = childs.len();
-        let mut dp_l = vec![self.m.e(); n + 1];
+        let n = self.g[u].len();
         let mut dp_r = vec![self.m.e(); n + 1];
-        for (i, e) in childs.iter().enumerate() {
-            dp_l[i + 1] = self.m.op(
-                dp_l[i].clone(),
-                (self.f)(&e, self.dp_from_childs[e.to()].clone()),
-            );
+        for (i, e) in self.g[u].iter().enumerate().rev() {
+            let v = e.to();
+            dp_r[i] = if v == parent {
+                dp_r[i + 1].clone()
+            } else {
+                self.m.op(
+                    (self.f)(e, self.dp_from_childs[v].clone()),
+                    dp_r[i + 1].clone(),
+                )
+            };
         }
-        for (i, e) in childs.iter().enumerate().rev() {
-            dp_r[i] = self.m.op(
-                (self.f)(&e, self.dp_from_childs[e.to()].clone()),
-                dp_r[i + 1].clone(),
-            );
-        }
-        for (i, e) in childs.iter().enumerate() {
+        let mut dp_l = self.m.e();
+        for (i, e) in self.g[u].iter().enumerate() {
+            let v = e.to();
+            if v == parent {
+                continue;
+            }
             let y = (self.f)(
-                self.rev_edge[e.to()].unwrap(),
+                self.rev_edge[v].unwrap(),
                 self.m.op(
                     x.clone(),
-                    self.m.op(dp_l[i].clone(), dp_r[i + 1].clone()),
+                    self.m.op(dp_l.clone(), dp_r[i + 1].clone()),
                 ),
             );
-            self.reroot(e.to(), u, y)
+            dp_l = self.m.op(dp_l, (self.f)(e, self.dp_from_childs[v].clone()));
+            self.reroot(v, u, y);
         }
     }
 }
