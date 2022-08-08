@@ -49,29 +49,28 @@ where
     let mut st = vec![(0, m.e())];
     while let Some((u, x)) = st.pop() {
         dp[u] = m.op(x.clone(), dp_from_childs[u].clone());
-        let mut childs = vec![];
-        for e in g[u].iter() {
-            if e.to() != parent[u] {
-                childs.push(e);
-            }
-        }
-        let n = childs.len();
-        let mut dp_l = vec![m.e(); n + 1];
+        let n = g[u].len();
         let mut dp_r = vec![m.e(); n + 1];
-        for (i, e) in childs.iter().enumerate() {
-            dp_l[i + 1] =
-                m.op(dp_l[i].clone(), f(e, dp_from_childs[e.to()].clone()));
+        for (i, e) in g[u].iter().enumerate().rev() {
+            let v = e.to();
+            dp_r[i] = if v == parent[u] {
+                dp_r[i + 1].clone()
+            } else {
+                m.op(f(e, dp_from_childs[v].clone()), dp_r[i + 1].clone())
+            };
         }
-        for (i, e) in childs.iter().enumerate().rev() {
-            dp_r[i] =
-                m.op(f(e, dp_from_childs[e.to()].clone()), dp_r[i + 1].clone());
-        }
-        for (i, e) in childs.iter().enumerate() {
+        let mut dp_l = m.e();
+        for (i, e) in g[u].iter().enumerate() {
+            let v = e.to();
+            if v == parent[u] {
+                continue;
+            }
             let y = f(
-                rev_edge[e.to()].unwrap(),
-                m.op(x.clone(), m.op(dp_l[i].clone(), dp_r[i + 1].clone())),
+                rev_edge[v].unwrap(),
+                m.op(x.clone(), m.op(dp_l.clone(), dp_r[i + 1].clone())),
             );
-            st.push((e.to(), y));
+            st.push((v, y));
+            dp_l = m.op(dp_l, f(e, dp_from_childs[v].clone()));
         }
     }
     dp
