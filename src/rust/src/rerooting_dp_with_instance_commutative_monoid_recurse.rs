@@ -6,35 +6,31 @@ pub trait Monoid {
 pub trait Edge {
     fn to(&self) -> usize;
 }
-pub trait Reverse {
-    fn rev(&self) -> Self;
-}
 pub struct ReRootingDP<'a, M: Monoid, E, F> {
     g: &'a [Vec<E>],
     m: M,
     f: F,
+    rev_edge: Vec<Option<&'a E>>,
     dp_from_childs: Vec<M::T>,
-    dp_from_parent: Vec<M::T>,
     dp: Vec<M::T>,
 }
 impl<'a, M: Monoid, E, F: Fn(&E, M::T) -> M::T> ReRootingDP<'a, M, E, F>
 where
     M::T: Clone + std::fmt::Debug,
-    E: Clone + Edge + Reverse,
+    E: Clone + Edge,
 {
     fn new(g: &'a [Vec<E>], m: M, f: F) -> Self {
         let n = g.len();
         let dp_from_childs = vec![m.e(); n];
-        let dp_from_parent = vec![m.e(); n];
         let dp = vec![m.e(); n];
-        Self { g, m, f, dp_from_childs, dp_from_parent, dp }
+        let rev_edge = vec![None; n];
+        Self { g, m, f, rev_edge, dp_from_childs, dp }
     }
 
     pub fn calc(g: &'a [Vec<E>], m: M, f: F) -> Vec<M::T> {
         let mut wrapper = Self::new(g, m, f);
         wrapper.tree_dp(0, 0);
-        wrapper.reroot(0, 0);
-        wrapper.merge_parent_and_childs();
+        wrapper.reroot(0, 0, wrapper.m.e());
         wrapper.dp
     }
 
@@ -42,6 +38,7 @@ where
         for e in self.g[u].iter() {
             let v = e.to();
             if v == parent {
+                self.rev_edge[u] = Some(e);
                 continue;
             }
             self.tree_dp(v, u);
@@ -52,7 +49,8 @@ where
         }
     }
 
-    fn reroot(&mut self, u: usize, parent: usize) {
+    fn reroot(&mut self, u: usize, parent: usize, x: M::T) {
+        self.dp[u] = self.m.op(x.clone(), self.dp_from_childs[u].clone());
         let mut childs = vec![];
         for e in self.g[u].iter() {
             if e.to() != parent {
@@ -75,23 +73,14 @@ where
             );
         }
         for (i, e) in childs.iter().enumerate() {
-            self.dp_from_parent[e.to()] = (self.f)(
-                &e.rev(),
+            let y = (self.f)(
+                self.rev_edge[e.to()].unwrap(),
                 self.m.op(
-                    self.dp_from_parent[u].clone(),
+                    x.clone(),
                     self.m.op(dp_l[i].clone(), dp_r[i + 1].clone()),
                 ),
             );
-            self.reroot(e.to(), u)
-        }
-    }
-
-    fn merge_parent_and_childs(&mut self) {
-        for i in 0..self.g.len() {
-            self.dp[i] = self.m.op(
-                self.dp_from_childs[i].clone(),
-                self.dp_from_parent[i].clone(),
-            );
+            self.reroot(e.to(), u, y)
         }
     }
 }
@@ -111,26 +100,19 @@ mod tests {
         }
         #[derive(Clone)]
         struct E {
-            from: usize,
             to: usize,
             weight: u64,
         }
         impl E {
-            pub fn new(from: usize, to: usize, weight: u64) -> Self {
-                Self { from, to, weight }
-            }
+            pub fn new(to: usize, weight: u64) -> Self { Self { to, weight } }
         }
         impl Edge for E {
             fn to(&self) -> usize { self.to }
         }
-        impl Reverse for E {
-            fn rev(&self) -> Self { Self::new(self.to, self.from, self.weight) }
-        }
-        let g = vec![
-            vec![E::new(0, 1, 2)],
-            vec![E::new(1, 0, 2), E::new(1, 2, 3)],
-            vec![E::new(2, 1, 3)],
-        ];
+        let g =
+            vec![vec![E::new(1, 2)], vec![E::new(0, 2), E::new(2, 3)], vec![
+                E::new(1, 3),
+            ]];
         let d = vec![1, 2, 3];
         let map = |e: &E, x: u64| -> u64 { e.weight + x.max(d[e.to()]) };
         let res = ReRootingDP::calc(&g, M {}, &map);
