@@ -1,18 +1,18 @@
-pub fn binary_search<T, F>(is_ok: &F, monotonic_sequence: &[T]) -> usize
+pub fn binary_search<T, F>(is_ok: F, monotonic_sequence: &[T]) -> usize
 where
     F: Fn(&T) -> bool,
 {
-    let mut ng = -1;
-    let mut ok = monotonic_sequence.len() as isize;
-    while ok - ng > 1 {
-        let i = (ng + ok) >> 1;
-        if is_ok(&monotonic_sequence[i as usize]) {
-            ok = i;
+    let mut lo_ok = 0;
+    let mut hi_ok = monotonic_sequence.len();
+    while lo_ok < hi_ok {
+        let i = (lo_ok + hi_ok - 1) >> 1;
+        if is_ok(&monotonic_sequence[i]) {
+            hi_ok = i;
         } else {
-            ng = i;
+            lo_ok = i + 1;
         }
     }
-    ok as usize
+    hi_ok
 }
 #[cfg(test)]
 mod tests {

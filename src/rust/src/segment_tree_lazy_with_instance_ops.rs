@@ -100,6 +100,13 @@ where
         self.merge_above(i);
     }
 
+    pub fn get(&mut self, mut i: usize) -> O::S {
+        assert!(i < self.size);
+        i += self.n();
+        self.pull(i);
+        self.data[i].clone()
+    }
+
     pub fn fold(&mut self, mut l: usize, mut r: usize) -> O::S {
         assert!(l <= r && r <= self.size);
         let n = self.n();

@@ -7,7 +7,7 @@ template<typename G> class segtree {
   using T = typename G::T;
   vector<T> data;
   G g;
-  auto update(int i) { data[i] = g.op(data[i << 1], data[i << 1 | 1]); }
+  auto merge(int i) { data[i] = g.op(data[i << 1], data[i << 1 | 1]); }
   auto n() -> int { return data.size() >> 1; }
 
 public:
@@ -19,7 +19,7 @@ public:
   }
   auto set(int i, T x) {
     assert(0 <= i && i < size);
-    for(data[i += n()] = x, i >>= 1; i >= 1; i >>= 1) update(i);
+    for(data[i += n()] = x, i >>= 1; i >= 1; i >>= 1) merge(i);
   }
   auto operator[](int i) -> T { return data[i + n()]; }
   auto operator[](pair<int, int> lr) -> T {
@@ -80,4 +80,13 @@ public:
     }
     return i - n();
   }
+};
+// example monoid (T = {min of prefix sum, sum})
+struct M {
+  int const inf = 1 << 30;
+  using T = pair<int, int>;
+  auto op(const T& a, const T& b) -> T {
+    return {min(a.first, a.second + b.first), a.second + b.second};
+  }
+  auto e() -> T { return {inf, 0}; }
 };
