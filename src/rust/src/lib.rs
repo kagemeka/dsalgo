@@ -737,6 +737,7 @@ pub mod rabin_karp;
 pub mod radix_heap;
 pub mod radix_sort;
 pub mod radix_tree;
+pub mod segment_tree_i64_add;
 pub mod random_forest;
 pub mod range_tree;
 pub mod rank_of_permutation_for_small_n;
