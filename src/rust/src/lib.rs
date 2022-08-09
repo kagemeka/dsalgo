@@ -4,6 +4,7 @@
 #![feature(inherent_associated_types)]
 #![feature(array_chunks)]
 #![feature(iterator_try_collect)]
+#![feature(slice_as_chunks)]
 // #![allow(dead_code)]
 pub mod a_star_search_algorithm;
 pub mod aa_tree;

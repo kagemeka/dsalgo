@@ -9,12 +9,11 @@ where
 {
     pub fn new(fill_value: T) -> Self { Self([fill_value; H * W]) }
 }
-impl<T, const H: usize, const W: usize> Matrix<T, H, W>
+impl<T, const H: usize, const W: usize> Default for Matrix<T, H, W>
 where
     [(); H * W]:,
     T: Copy + Default,
 {
-    #[allow(dead_code)]
     fn default() -> Self { Self::new(T::default()) }
 }
 impl<T, const H: usize, const W: usize> From<[[T; W]; H]> for Matrix<T, H, W>
@@ -47,13 +46,12 @@ where
         &mut self.0[index.0 * W + index.1]
     }
 }
-use std::convert::Into;
-impl<T, const H: usize, const W: usize> Into<[[T; W]; H]> for Matrix<T, H, W>
+impl<T, const H: usize, const W: usize> Matrix<T, H, W>
 where
     [(); H * W]:,
     T: Copy + std::fmt::Debug,
 {
-    fn into(self) -> [[T; W]; H] {
+    fn to_2d_array(&self) -> [[T; W]; H] {
         self.0
             .array_chunks::<W>()
             .map(|x| *x)
@@ -68,7 +66,8 @@ where
     T: std::fmt::Debug + Copy,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let format_str = <Self as Into<[[T; W]; H]>>::into(*self)
+        let format_str = self
+            .to_2d_array()
             .iter()
             .map(|row| format!("{:?}", row))
             .collect::<Vec<_>>()
