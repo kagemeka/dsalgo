@@ -1,40 +1,22 @@
-use std::ops::*;
+use std::{marker::PhantomData, ops::*};
 
-use crate::static_matrix_property_trait::{ElementType, Len, Shape};
-pub struct Matrix<P: ElementType>(Vec<P::T>);
-impl<P: ElementType> Matrix<P> {
-    pub fn new<F>(default: F) -> Self
-    where
-        F: Fn() -> P::T,
-        P: Len,
-    {
-        Self((0..P::len()).map(|_| default()).collect())
+use crate::static_matrix_property_trait::Shape;
+#[derive(Debug, Clone, Eq, PartialEq)]
+pub struct Matrix<T, P>(Vec<Vec<T>>, PhantomData<P>);
+impl<T: Clone, P: Shape> Matrix<T, P> {
+    pub fn new(fill_value: T) -> Self {
+        let (h, w) = P::shape();
+        Self(vec![vec![fill_value; w]; h], PhantomData)
     }
 }
-impl<P> Default for Matrix<P>
-where
-    P::T: Default,
-    P: ElementType + Len,
-{
-    fn default() -> Self { Self::new(|| P::T::default()) }
+impl<T: Clone + Default, P: Shape> Default for Matrix<T, P> {
+    fn default() -> Self { Self::new(T::default()) }
 }
-impl<P> Index<(usize, usize)> for Matrix<P>
-where
-    P: ElementType + Shape,
-{
-    type Output = P::T;
+impl<T, P> Index<usize> for Matrix<T, P> {
+    type Output = [T];
 
-    fn index(&self, index: (usize, usize)) -> &Self::Output {
-        let (i, j) = index;
-        &self.0[i * P::shape().0 + j]
-    }
+    fn index(&self, i: usize) -> &Self::Output { &self.0[i] }
 }
-impl<P> IndexMut<(usize, usize)> for Matrix<P>
-where
-    P: ElementType + Shape,
-{
-    fn index_mut(&mut self, index: (usize, usize)) -> &mut Self::Output {
-        let (i, j) = index;
-        &mut self.0[i * P::shape().0 + j]
-    }
+impl<T, P> IndexMut<usize> for Matrix<T, P> {
+    fn index_mut(&mut self, i: usize) -> &mut Self::Output { &mut self.0[i] }
 }

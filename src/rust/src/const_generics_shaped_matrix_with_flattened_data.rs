@@ -14,6 +14,7 @@ where
     [(); H * W]:,
     T: Copy + Default,
 {
+    #[allow(dead_code)]
     fn default() -> Self { Self::new(T::default()) }
 }
 impl<T, const H: usize, const W: usize> From<[[T; W]; H]> for Matrix<T, H, W>
@@ -81,7 +82,7 @@ mod tests {
     #[test]
     fn test() {
         type Mat = Matrix<i64, 3, 2>;
-        let mut a = Mat::new(0);
+        let mut a = Mat::default();
         a[(1, 1)] += 1;
         println!("{:?}", a);
         println!("{}", a);
