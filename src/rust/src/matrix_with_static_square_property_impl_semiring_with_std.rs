@@ -77,13 +77,15 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        #[derive(Clone, Debug)]
+        #[derive(Clone, Debug, Eq, PartialEq)]
         struct P;
         impl Size for P {
             fn size() -> usize { 3 }
         }
         type Mat = Matrix<i64, P>;
-        let mut a: Mat = 1.into();
-        dbg!(a);
+        let e: Mat = 1.into();
+        let b: Mat = [[0, 1, 2], [3, 4, 5], [6, 7, 8]].into();
+        assert_eq!(e.clone() * b.clone(), b);
+        dbg!(b);
     }
 }
