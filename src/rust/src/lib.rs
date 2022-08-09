@@ -11,6 +11,7 @@ pub mod aa_tree;
 pub mod static_square_matrix_with_id;
 pub mod static_square_matrix;
 pub mod ab_tree;
+pub mod power_multiplicative_semigroup_with_std_ops_exp_from_i32;
 pub mod abs_diff;
 pub mod accumulate_iterator;
 pub mod adaptive_heap_sort;
