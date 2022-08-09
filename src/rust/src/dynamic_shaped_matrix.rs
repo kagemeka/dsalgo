@@ -1,4 +1,4 @@
-#[derive(Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Matrix<T>(pub Vec<Vec<T>>);
 impl<T> std::ops::Index<(usize, usize)> for Matrix<T> {
     type Output = T;
@@ -54,7 +54,7 @@ impl<T: Default + Clone> Matrix<T> {
 
     pub fn rot270(&self) -> Self { self.reverse().transpose() }
 }
-impl<T: std::fmt::Debug> std::fmt::Debug for Matrix<T> {
+impl<T: std::fmt::Debug> std::fmt::Display for Matrix<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let format_str = self
             .0
@@ -92,7 +92,7 @@ mod tests {
                 vec![0, 0, 0, 0],
             ])
         );
-        println!("{:?}", matrix);
+        println!("{}", matrix);
         matrix[(1, 1)] += 1;
         matrix[1][1] += 1;
         assert_eq!(
