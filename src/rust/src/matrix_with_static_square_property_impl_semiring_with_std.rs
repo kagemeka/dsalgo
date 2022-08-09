@@ -1,9 +1,9 @@
 use std::ops::*;
 
 use crate::{
-    square_matrix_trait::Size,
-    static_matrix::Matrix,
-    static_matrix_trait::{ElementType, Shape},
+    matrix_with_static_property::Matrix,
+    static_matrix_property_trait::{ElementType, Shape},
+    static_square_matrix_property_trait::Size,
 };
 /// T should be semiring.
 impl<P> Mul for Matrix<P>
@@ -18,8 +18,8 @@ where
         let n = P::size();
         let mut res = Self::new(|| 0.into());
         for i in 0..n {
-            for j in 0..n {
-                for k in 0..n {
+            for k in 0..n {
+                for j in 0..n {
                     res[(i, j)] += self[(i, k)] * rhs[(k, j)];
                 }
             }

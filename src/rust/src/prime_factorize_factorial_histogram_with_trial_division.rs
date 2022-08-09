@@ -1,4 +1,4 @@
-pub fn prime_factorize_factorial(n: usize) -> Vec<usize> {
+pub fn factorize_factorial(n: usize) -> Vec<usize> {
     let mut cnt = vec![0; n + 1];
     for mut x in 2..n + 1 {
         for i in 2..x {
@@ -21,8 +21,6 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        assert_eq!(prime_factorize_factorial(10), [
-            0, 0, 8, 4, 0, 2, 0, 1, 0, 0, 0,
-        ]);
+        assert_eq!(factorize_factorial(10), [0, 0, 8, 4, 0, 2, 0, 1, 0, 0, 0,]);
     }
 }

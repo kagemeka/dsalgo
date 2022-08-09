@@ -1,6 +1,6 @@
 use crate::{
-    square_matrix_trait::Size,
-    static_matrix_trait::{ElementType, Shape},
+    static_matrix_property_trait::{ElementType, Shape},
+    static_square_matrix_property_trait::Size,
 };
 pub struct MatrixPropI6422;
 impl Size for MatrixPropI6422 {

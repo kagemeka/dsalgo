@@ -1,4 +1,4 @@
-use crate::fenwick_tree_additive::Fenwick;
+use crate::fenwick_tree_additive_from_i32::Fenwick;
 pub struct Multiset(Fenwick<i32>);
 impl Multiset {
     pub fn new(less_than: usize) -> Self { Self(Fenwick::new(less_than)) }

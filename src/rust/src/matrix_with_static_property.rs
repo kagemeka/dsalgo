@@ -1,6 +1,6 @@
 use std::ops::*;
 
-use crate::static_matrix_trait::{ElementType, Len, Shape};
+use crate::static_matrix_property_trait::{ElementType, Len, Shape};
 pub struct Matrix<P: ElementType>(Vec<P::T>);
 impl<P: ElementType> Matrix<P> {
     pub fn new<F>(default: F) -> Self

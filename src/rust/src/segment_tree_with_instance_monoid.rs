@@ -21,7 +21,7 @@ impl<G: Monoid> SegmentTree<G>
 where
     G::T: Clone,
 {
-    fn update(&mut self, i: usize) {
+    fn merge(&mut self, i: usize) {
         self.data[i] = self
             .g
             .op(self.data[i << 1].clone(), self.data[i << 1 | 1].clone());
@@ -39,7 +39,7 @@ where
         self.data[i] = x;
         while i > 1 {
             i >>= 1;
-            self.update(i);
+            self.merge(i);
         }
     }
 
