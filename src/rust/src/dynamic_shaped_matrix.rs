@@ -1,17 +1,5 @@
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Matrix<T>(pub Vec<Vec<T>>);
-impl<T> std::ops::Index<(usize, usize)> for Matrix<T> {
-    type Output = T;
-
-    fn index(&self, index: (usize, usize)) -> &Self::Output {
-        &self.0[index.0][index.1]
-    }
-}
-impl<T> std::ops::IndexMut<(usize, usize)> for Matrix<T> {
-    fn index_mut(&mut self, index: (usize, usize)) -> &mut Self::Output {
-        &mut self.0[index.0][index.1]
-    }
-}
 impl<T> std::ops::Index<usize> for Matrix<T> {
     type Output = [T];
 
@@ -20,9 +8,9 @@ impl<T> std::ops::Index<usize> for Matrix<T> {
 impl<T> std::ops::IndexMut<usize> for Matrix<T> {
     fn index_mut(&mut self, i: usize) -> &mut Self::Output { &mut self.0[i] }
 }
-impl<T: Default + Clone> Matrix<T> {
-    pub fn new(height: usize, width: usize) -> Matrix<T> {
-        Matrix(vec![vec![T::default(); width]; height])
+impl<T: Clone> Matrix<T> {
+    pub fn new(height: usize, width: usize, fill_value: T) -> Matrix<T> {
+        Matrix(vec![vec![fill_value; width]; height])
     }
 
     pub fn shape(&self) -> (usize, usize) {
@@ -32,27 +20,6 @@ impl<T: Default + Clone> Matrix<T> {
             (self.0.len(), self.0[0].len())
         }
     }
-
-    pub fn transpose(&self) -> Self {
-        let (h, w) = self.shape();
-        let mut a = Matrix::new(w, h);
-        for i in 0..h {
-            for j in 0..w {
-                a[j][i] = self[i][j].clone();
-            }
-        }
-        a
-    }
-
-    pub fn reverse(&self) -> Self {
-        let mut a = Self(self.0.clone());
-        a.0.reverse();
-        a
-    }
-
-    pub fn rot90(&self) -> Self { self.transpose().reverse() }
-
-    pub fn rot270(&self) -> Self { self.reverse().transpose() }
 }
 impl<T: std::fmt::Debug> std::fmt::Display for Matrix<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -77,79 +44,28 @@ impl<T> From<Vec<Vec<T>>> for Matrix<T> {
         Self(data)
     }
 }
+impl<T: Clone, const H: usize, const W: usize> From<[[T; W]; H]> for Matrix<T> {
+    fn from(data: [[T; W]; H]) -> Self {
+        Self(data.into_iter().map(|x| x.to_vec()).collect())
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn test() {
         let (height, width) = (3, 4);
-        let mut matrix = super::Matrix::<usize>::new(height, width);
-        assert_eq!(
-            matrix,
-            Matrix::<usize>::from(vec![
-                vec![0, 0, 0, 0],
-                vec![0, 0, 0, 0],
-                vec![0, 0, 0, 0],
-            ])
-        );
-        println!("{}", matrix);
-        matrix[(1, 1)] += 1;
-        matrix[1][1] += 1;
-        assert_eq!(
-            matrix,
-            Matrix::<usize>::from(vec![
-                vec![0, 0, 0, 0],
-                vec![0, 2, 0, 0],
-                vec![0, 0, 0, 0],
-            ])
-        );
-        assert_eq!(
-            matrix.transpose(),
-            Matrix::<usize>::from(vec![
-                vec![0, 0, 0],
-                vec![0, 2, 0],
-                vec![0, 0, 0],
-                vec![0, 0, 0],
-            ])
-        );
-        for row in 0..height {
-            for col in 0..width {
-                matrix[(row, col)] = row * width + col;
+        type Mat = Matrix<usize>;
+        let mut a = Mat::new(height, width, 0);
+        assert_eq!(a.0, [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]);
+        println!("{}", a);
+        a[1][1] += 1;
+        assert_eq!(a, [[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]].into());
+        for i in 0..height {
+            for j in 0..width {
+                a[i][j] = i * width + j;
             }
         }
-        assert_eq!(
-            matrix,
-            Matrix::<usize>::from(vec![
-                vec![0, 1, 2, 3],
-                vec![4, 5, 6, 7],
-                vec![8, 9, 10, 11],
-            ])
-        );
-        assert_eq!(
-            matrix.reverse(),
-            Matrix::<usize>::from(vec![
-                vec![8, 9, 10, 11],
-                vec![4, 5, 6, 7],
-                vec![0, 1, 2, 3],
-            ])
-        );
-        assert_eq!(
-            matrix.rot90(),
-            Matrix::<usize>::from(vec![
-                vec![3, 7, 11],
-                vec![2, 6, 10],
-                vec![1, 5, 9],
-                vec![0, 4, 8],
-            ])
-        );
-        assert_eq!(
-            matrix.rot270(),
-            Matrix::<usize>::from(vec![
-                vec![8, 4, 0],
-                vec![9, 5, 1],
-                vec![10, 6, 2],
-                vec![11, 7, 3],
-            ])
-        );
+        assert_eq!(a.0, [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]]);
     }
 }
