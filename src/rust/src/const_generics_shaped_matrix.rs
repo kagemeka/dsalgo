@@ -1,8 +1,19 @@
 use std::ops::*;
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub struct Matrix<T, const H: usize, const W: usize>([[T; W]; H]);
 impl<T: Copy, const H: usize, const W: usize> Matrix<T, H, W> {
     pub fn new(fill_value: T) -> Self { Self([[fill_value; W]; H]) }
+}
+impl<T: Copy, const H: usize, const W: usize> Default for Matrix<T, H, W>
+where
+    T: Default,
+{
+    fn default() -> Self { Self::new(T::default()) }
+}
+impl<T: Copy, const H: usize, const W: usize> From<[[T; W]; H]>
+    for Matrix<T, H, W>
+{
+    fn from(a: [[T; W]; H]) -> Self { Self(a) }
 }
 impl<T, const H: usize, const W: usize> Index<usize> for Matrix<T, H, W> {
     type Output = [T; W];

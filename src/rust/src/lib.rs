@@ -2,6 +2,8 @@
 #![feature(int_log)]
 #![feature(generic_const_exprs)]
 #![feature(inherent_associated_types)]
+#![feature(array_chunks)]
+#![feature(iterator_try_collect)]
 // #![allow(dead_code)]
 pub mod a_star_search_algorithm;
 pub mod aa_tree;
@@ -134,6 +136,7 @@ pub mod connected_components_dsu;
 pub mod connected_components_group_by_id;
 pub mod const_generics_modular_int_i64;
 pub mod const_generics_shaped_matrix;
+pub mod const_generics_shaped_matrix_impl_semiring_with_std_ops;
 pub mod const_generics_shaped_matrix_with_flattened_data;
 pub mod const_generics_sized_square_matrix;
 pub mod const_modulus_trait;

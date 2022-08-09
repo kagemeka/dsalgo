@@ -1,4 +1,4 @@
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Matrix<T>(pub Vec<Vec<T>>);
 impl<T> std::ops::Index<(usize, usize)> for Matrix<T> {
     type Output = T;

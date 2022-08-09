@@ -1,4 +1,4 @@
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub struct Matrix<T, const H: usize, const W: usize>([T; H * W])
 where
     [(); H * W]:;
@@ -8,6 +8,22 @@ where
     T: Copy,
 {
     pub fn new(fill_value: T) -> Self { Self([fill_value; H * W]) }
+}
+impl<T, const H: usize, const W: usize> Matrix<T, H, W>
+where
+    [(); H * W]:,
+    T: Copy + Default,
+{
+    fn default() -> Self { Self::new(T::default()) }
+}
+impl<T, const H: usize, const W: usize> From<[[T; W]; H]> for Matrix<T, H, W>
+where
+    [(); H * W]:,
+    T: Copy + std::fmt::Debug,
+{
+    fn from(a: [[T; W]; H]) -> Self {
+        Self(a.into_iter().flatten().collect::<Vec<_>>().try_into().unwrap())
+    }
 }
 use std::ops::*;
 impl<T, const H: usize, const W: usize> Index<(usize, usize)>
@@ -37,8 +53,9 @@ where
     T: Copy + std::fmt::Debug,
 {
     fn into(self) -> [[T; W]; H] {
-        (0..H)
-            .map(|i| self.0[i * W..(i + 1) * W].to_vec().try_into().unwrap())
+        self.0
+            .array_chunks::<W>()
+            .map(|x| *x)
             .collect::<Vec<_>>()
             .try_into()
             .unwrap()
@@ -63,10 +80,12 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        type Mat = Matrix<i64, 4, 3>;
+        type Mat = Matrix<i64, 3, 2>;
         let mut a = Mat::new(0);
         a[(1, 1)] += 1;
         println!("{:?}", a);
+        println!("{}", a);
+        a = [[1, 2], [3, 4], [5, 6]].into();
         println!("{}", a);
     }
 }
