@@ -22,11 +22,11 @@ impl<T, P> IndexMut<usize> for Matrix<T, P> {
 }
 impl<T, P: Shape> From<Vec<Vec<T>>> for Matrix<T, P> {
     fn from(data: Vec<Vec<T>>) -> Self {
-        let h = data.len();
-        assert_ne!(h, 0); // (0, 0) shaped static matrix is nonsense.
-        let w = data[0].len();
-        let (h0, w0) = P::shape();
-        assert!(h == h0 && w == w0);
+        let (h, w) = P::shape();
+        assert_eq!(h, data.len());
+        for i in 0..h {
+            assert_eq!(data[i].len(), w);
+        }
         Self(data, PhantomData)
     }
 }

@@ -8,6 +8,8 @@
 // #![allow(dead_code)]
 pub mod a_star_search_algorithm;
 pub mod aa_tree;
+pub mod static_square_matrix_with_id;
+pub mod static_square_matrix;
 pub mod ab_tree;
 pub mod abs_diff;
 pub mod accumulate_iterator;
