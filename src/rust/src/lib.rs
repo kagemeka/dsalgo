@@ -8,10 +8,7 @@
 // #![allow(dead_code)]
 pub mod a_star_search_algorithm;
 pub mod aa_tree;
-pub mod static_square_matrix_with_id;
-pub mod static_square_matrix;
 pub mod ab_tree;
-pub mod power_multiplicative_semigroup_with_std_ops_exp_from_i32;
 pub mod abs_diff;
 pub mod accumulate_iterator;
 pub mod adaptive_heap_sort;
@@ -392,8 +389,13 @@ pub mod modular_power_u32;
 pub mod modular_power_u64;
 pub mod next_subset_bits;
 pub mod number_of_distinct_subsequences_with_min_step_modular_i64;
+pub mod power_multiplicative_group_with_std_ops_exp_from_i32;
+pub mod power_multiplicative_monoid_with_std_ops_exp_from_i32;
+pub mod power_multiplicative_semigroup_with_std_ops_exp_from_i32;
 pub mod static_modular_arithmetic_trait;
 pub mod static_modulus_trait;
+pub mod static_square_matrix;
+pub mod static_square_matrix_with_id;
 // pub mod is_multitree;
 pub mod add_middle_nodes_and_make_double_tree_undirected_tuple_edges;
 pub mod avl_array;
