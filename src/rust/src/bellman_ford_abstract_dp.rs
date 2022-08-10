@@ -1,4 +1,4 @@
-pub fn bellman_ford<E, F>(edges: &[E], mut f: F)
+pub fn bellman_ford_abstract<E, F>(edges: &[E], mut f: F)
 where
     F: FnMut(&E) -> bool,
 {
