@@ -373,6 +373,7 @@ pub mod is_eulerian_graph;
 pub mod is_identity;
 pub mod is_invertible;
 pub mod is_multiple_of_9;
+pub mod matrix_multiplication;
 pub mod median_priority_queue_with_2_binary_heap;
 pub mod min_max_priority_queue_with_binary_heap;
 pub mod modular_cumprod_i64;
