@@ -1,14 +1,14 @@
 #include "iteration_macro.hpp"
 #include "types.hpp"
-auto sa_is(vec<int> a) -> vec<int> {
+auto sa_is(vector<int> a) -> vector<int> {
   int mn = *min_element(a.begin(), a.end());
   int n = a.size();
   rep(i, n) a[i] = a[i] - mn + 1;
   a.push_back(0);
   ++n;
   int m = *max_element(a.begin(), a.end()) + 1;
-  vec<bool> is_s(n, true), is_lms(n);
-  vec<int> lms;
+  vector<bool> is_s(n, true), is_lms(n);
+  vector<int> lms;
   lms.reserve(n);
   rep_rev(i, n - 1) {
     is_s[i] = a[i] != a[i + 1] ? a[i] < a[i + 1] : is_s[i + 1];
@@ -25,8 +25,8 @@ auto sa_is(vec<int> a) -> vec<int> {
     arg_l[i + 1] += arg_l[i];
     arg_r[i + 1] += arg_r[i];
   }
-  auto induce = [&]() -> vec<int> {
-    vec<int> sa(n, -1);
+  auto induce = [&]() -> vector<int> {
+    vector<int> sa(n, -1);
     auto arg = arg_r;
     rep_rev(i, lms.size()) sa[--arg[a[lms[i]]]] = lms[i];
     arg = arg_l;
@@ -41,7 +41,7 @@ auto sa_is(vec<int> a) -> vec<int> {
     }
     return sa;
   };
-  vec<int> sa = induce(), lms_idx, rank(n, -1);
+  vector<int> sa = induce(), lms_idx, rank(n, -1);
   lms_idx.reserve(n);
   iter(i, sa) if(is_lms[i]) lms_idx.push_back(i);
   int l = lms_idx.size();
@@ -64,7 +64,7 @@ auto sa_is(vec<int> a) -> vec<int> {
   rank.erase(
     remove_if(rank.begin(), rank.end(), [](int x) { return x < 0; }), rank.end()
   );
-  vec<int> lms_order;
+  vector<int> lms_order;
   if(r == l - 1) {
     lms_order.resize(l);
     rep(i, l) lms_order[rank[i]] = i;

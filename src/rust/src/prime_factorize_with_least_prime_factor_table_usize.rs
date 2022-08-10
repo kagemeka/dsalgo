@@ -1,4 +1,4 @@
-use crate::sieve_of_eratosthenes_least_prime_factor_table_direct_usize::*;
+use crate::sieve_of_eratosthenes_least_prime_factor_table_direct_usize_optim::*;
 pub struct PrimeFactorize(Vec<usize>);
 impl PrimeFactorize {
     pub fn new(size: usize) -> Self { Self(least_prime_factor(size)) }

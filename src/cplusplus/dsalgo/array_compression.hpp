@@ -3,10 +3,8 @@
 #include <cassert>
 #include <vector>
 using namespace std;
-template<typename T> class array_compression {
+template<typename T> struct array_compression {
   vector<T> values;
-
-public:
   template<typename A> array_compression(A a) {
     values = unique(vector<T>(a.begin(), a.end()));
   }

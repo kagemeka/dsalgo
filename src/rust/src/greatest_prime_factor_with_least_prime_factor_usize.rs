@@ -1,4 +1,4 @@
-use crate::sieve_of_eratosthenes_least_prime_factor_table_direct_usize::*;
+use crate::sieve_of_eratosthenes_least_prime_factor_table_direct_usize_optim::*;
 pub fn greatest_prime_factor(size: usize) -> Vec<usize> {
     let mut gpf: Vec<usize> = least_prime_factor(size);
     for i in 2..size {

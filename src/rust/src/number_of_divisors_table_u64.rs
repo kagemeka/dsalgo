@@ -1,8 +1,9 @@
 /// d(n) table. d(0) := 0 here.
+/// O(N\log{N})
 pub fn number_of_divisors(size: usize) -> Vec<u64> {
     let mut cnt = vec![1; size];
     cnt[0] = 0;
-    for i in (2..size).rev() {
+    for i in 2..size {
         for j in (i..size).step_by(i) {
             cnt[j] += 1;
         }

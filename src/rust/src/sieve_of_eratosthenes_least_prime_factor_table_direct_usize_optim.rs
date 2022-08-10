@@ -1,11 +1,14 @@
 /// valid for n >= 2. please do not access lpf[0] or lpf[1].
 pub fn least_prime_factor(size: usize) -> Vec<usize> {
     let mut lpf: Vec<usize> = (0..size).collect();
-    for i in (2..size).take_while(|i| i * i < size) {
+    for i in (4..size).step_by(2) {
+        lpf[i] = 2;
+    }
+    for i in (3..size).step_by(2).take_while(|i| i * i < size) {
         if lpf[i] != i {
             continue;
         }
-        for j in (i * i..size).step_by(i) {
+        for j in (i * i..size).step_by(i << 1) {
             if lpf[j] == j {
                 lpf[j] = i;
             }
