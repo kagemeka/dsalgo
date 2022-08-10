@@ -1,8 +1,8 @@
-use crate::least_prime_factor_table_from_sieve_of_eratosthenes::*;
-pub struct PrimeFactorizeLPF {
+use crate::least_prime_factor_table_with_sieve_of_eratosthenes_u32::*;
+pub struct PrimeFactorize {
     lpf: Vec<Option<u32>>,
 }
-impl PrimeFactorizeLPF {
+impl PrimeFactorize {
     pub fn new(size: usize) -> Self { Self { lpf: least_prime_factor(size) } }
 
     pub fn factorize(&self, mut n: u32) -> Vec<(u32, u32)> {
@@ -29,7 +29,6 @@ impl PrimeFactorizeLPF {
         factors
     }
 }
-// TODO:
 #[cfg(test)]
 mod tests {
     #[test]

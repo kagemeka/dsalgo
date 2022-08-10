@@ -1,3 +1,4 @@
+/// O(N\log{\log{N}})
 pub fn phi_table(size: usize) -> Vec<usize> {
     let mut phi: Vec<_> = (0..size).collect();
     for i in 2..size {

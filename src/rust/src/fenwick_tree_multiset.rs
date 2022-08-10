@@ -9,7 +9,7 @@ impl Multiset {
 
     /// positive cnt: insert.
     /// negative cnt: remove. (|cnt| <= count(x))
-    pub fn add(&mut self, x: usize, cnt: i32) { self.0.operate(x, cnt); }
+    pub fn add(&mut self, x: usize, delta: i32) { self.0.operate(x, delta); }
 
     pub fn lower_bound(&self, x: usize) -> usize { self.0.get(x) as usize }
 
