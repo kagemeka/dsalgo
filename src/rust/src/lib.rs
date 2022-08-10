@@ -77,6 +77,7 @@ pub mod bit_length_binary_search_u64;
 pub mod bit_length_naive_u64;
 pub mod bit_length_primitive;
 pub mod bit_length_table;
+pub mod matrix_transpose;
 pub mod bit_length_with_count_leading_zeros_u128;
 pub mod bit_length_with_count_leading_zeros_u64;
 pub mod bit_set;
