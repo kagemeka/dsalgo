@@ -61,6 +61,7 @@ pub mod bin_count;
 pub mod two_satisfiability;
 pub mod two_sat;
 pub mod sat_2;
+pub mod bellman_ford_sssp_tuple_edges_no_error_with_inf_i64_with_abstract;
 pub mod binary_function;
 pub mod binary_greatest_common_divisor_u64;
 pub mod binary_heap;
