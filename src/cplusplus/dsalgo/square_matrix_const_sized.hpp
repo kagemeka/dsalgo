@@ -1,12 +1,13 @@
 #include "iteration_macro.hpp"
 #include <array>
 #include <cassert>
+#include <iostream>
 using namespace std;
 template<typename T, int n> struct matrix {
   using Self = matrix;
   array<array<T, n>, n> data;
   matrix() { rep(i, n) data[i].fill(0); }
-  matrix(int x) {
+  matrix(int x): matrix() {
     assert(x == 0 || x == 1);
     if(x) { rep(i, n) data[i][i] = 1; }
   }
@@ -23,4 +24,5 @@ template<typename T, int n> struct matrix {
     return a;
   }
   auto operator+=(Self& rhs) { *this = *this + rhs; }
+  auto debug() { rep(i, n) rep(j, n) cout << data[i][j] << " \n"[j == n - 1]; }
 };

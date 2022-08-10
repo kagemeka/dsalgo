@@ -1,19 +1,19 @@
 pub struct Queue<T> {
-    data: Vec<T>,
+    nodes: Vec<T>,
     buf_size: usize,
     idx: usize,
 }
 impl<T: Clone> Queue<T> {
     pub fn new(buf_size: usize) -> Self {
-        Self { data: vec![], buf_size, idx: 0 }
+        Self { nodes: vec![], buf_size, idx: 0 }
     }
 
-    pub fn size(&self) -> usize { self.data.len() - self.idx }
+    pub fn size(&self) -> usize { self.nodes.len() - self.idx }
 
     pub fn is_full(&self) -> bool { self.size() == self.buf_size }
 
     pub fn reform(&mut self) {
-        self.data = self.data[self.idx..].to_vec();
+        self.nodes = self.nodes[self.idx..].to_vec();
         self.idx = 0;
     }
 
@@ -21,15 +21,15 @@ impl<T: Clone> Queue<T> {
         if self.size() == 0 {
             return None;
         }
-        let v = self.data[self.idx].clone();
+        let v = self.nodes[self.idx].clone();
         self.idx += 1;
         Some(v)
     }
 
     pub fn push(&mut self, x: T) {
         assert!(!self.is_full());
-        self.data.push(x);
-        if self.data.len() == self.buf_size {
+        self.nodes.push(x);
+        if self.nodes.len() == self.buf_size {
             self.reform();
         }
     }

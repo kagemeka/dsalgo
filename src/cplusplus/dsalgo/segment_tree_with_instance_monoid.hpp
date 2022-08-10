@@ -1,5 +1,4 @@
 #pragma once
-#include "bit_length_32.hpp"
 #include <cassert>
 #include <vector>
 using namespace std;
@@ -14,7 +13,7 @@ public:
   int size;
   segtree(G g, int size): g(g), size(size) {
     assert(size > 0);
-    int n = 1 << bit_length(size - 1);
+    int n = 1 << (32 - __builtin_clz(size - 1));
     data.resize(n << 1, g.e());
   }
   auto set(int i, T x) {

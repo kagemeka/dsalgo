@@ -1,5 +1,5 @@
 pub struct SparseTable<T, F> {
-    data: Vec<Vec<T>>,
+    node: Vec<Vec<T>>,
     f: F,
 }
 impl<T: Clone, F: Fn(T, T) -> T> SparseTable<T, F> {
@@ -7,28 +7,28 @@ impl<T: Clone, F: Fn(T, T) -> T> SparseTable<T, F> {
         let n = a.len();
         assert!(n > 0);
         let h = n.next_power_of_two().trailing_zeros().max(1) as usize;
-        let mut data = vec![vec![]; h];
-        data[0] = a.to_vec();
+        let mut node = vec![vec![]; h];
+        node[0] = a.to_vec();
         for i in 1..h {
             let d1 = 1 << i;
             let d0 = d1 >> 1;
             let w = n - d1 + 1;
-            data[i] = (0..w)
-                .map(|j| f(data[i - 1][j].clone(), data[i - 1][j + d0].clone()))
+            node[i] = (0..w)
+                .map(|j| f(node[i - 1][j].clone(), node[i - 1][j + d0].clone()))
                 .collect();
         }
-        Self { data, f }
+        Self { node, f }
     }
 
-    pub fn size(&self) -> usize { self.data[0].len() }
+    pub fn size(&self) -> usize { self.node[0].len() }
 
     pub fn get(&self, l: usize, r: usize) -> T {
         assert!(l < r && r <= self.size());
         if r - l == 1 {
-            return self.data[0][l].clone();
+            return self.node[0][l].clone();
         }
         let i = (r - l).next_power_of_two().trailing_zeros() as usize - 1;
-        (self.f)(self.data[i][l].clone(), self.data[i][r - (1 << i)].clone())
+        (self.f)(self.node[i][l].clone(), self.node[i][r - (1 << i)].clone())
     }
 }
 #[cfg(test)]

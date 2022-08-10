@@ -3,7 +3,7 @@ use std::iter::FromIterator;
 
 use crate::{algebraic_structure::*, binary_function::*};
 pub struct SparseTable<G: Semigroup> {
-    data: Vec<Vec<G::S>>,
+    node: Vec<Vec<G::S>>,
 }
 impl<G> std::iter::FromIterator<G::S> for SparseTable<G>
 where
@@ -11,8 +11,8 @@ where
     G::S: Clone,
 {
     fn from_iter<T: IntoIterator<Item = G::S>>(iter: T) -> Self {
-        let mut data = vec![iter.into_iter().collect::<Vec<_>>()];
-        let max_width = data[0].len();
+        let mut node = vec![iter.into_iter().collect::<Vec<_>>()];
+        let max_width = node[0].len();
         assert!(max_width > 0);
         let height = if max_width <= 1 {
             1
@@ -23,18 +23,18 @@ where
             let row_size = max_width - (1 << i) + 1;
             // last is max_width - (1 << i) covering (1 << i)
             // including the position.
-            data.push(
+            node.push(
                 (0..row_size)
                     .map(|j| {
                         G::op(
-                            data[i - 1][j].clone(),
-                            data[i - 1][j + (1 << (i - 1))].clone(),
+                            node[i - 1][j].clone(),
+                            node[i - 1][j + (1 << (i - 1))].clone(),
                         )
                     })
                     .collect(),
             );
         }
-        Self { data }
+        Self { node }
     }
 }
 impl<G> SparseTable<G>
@@ -46,15 +46,15 @@ where
         Self::from_iter(slice.iter().cloned())
     }
 
-    pub fn size(&self) -> usize { self.data[0].len() }
+    pub fn size(&self) -> usize { self.node[0].len() }
 
     pub fn reduce(&self, l: usize, r: usize) -> G::S {
         assert!(l < r && r <= self.size());
         if r - l == 1 {
-            return self.data[0][l].clone();
+            return self.node[0][l].clone();
         }
         let i = (r - l).next_power_of_two().trailing_zeros() as usize - 1;
-        G::op(self.data[i][l].clone(), self.data[i][r - (1 << i)].clone())
+        G::op(self.node[i][l].clone(), self.node[i][r - (1 << i)].clone())
     }
 }
 use crate::{algebraic_structure_impl::*, query::RangeGetQuery};
@@ -69,7 +69,7 @@ where
 }
 use crate::bit_length_with_count_leading_zeros_u64::bit_length;
 pub struct DisjointSparseTable<G: Semigroup> {
-    data: Vec<Vec<G::S>>,
+    node: Vec<Vec<G::S>>,
 }
 impl<G> std::iter::FromIterator<G::S> for DisjointSparseTable<G>
 where
@@ -77,15 +77,15 @@ where
     G::S: Clone,
 {
     fn from_iter<T: IntoIterator<Item = G::S>>(iter: T) -> Self {
-        let mut data = vec![iter.into_iter().collect::<Vec<_>>()];
-        let size = data[0].len();
+        let mut node = vec![iter.into_iter().collect::<Vec<_>>()];
+        let size = node[0].len();
         let height = if size <= 1 {
             1
         } else {
             size.next_power_of_two().trailing_zeros() as usize
         };
         for i in 1..height {
-            let mut row = data[0].clone();
+            let mut row = node[0].clone();
             for p in (1 << i..=size).step_by(2 << i) {
                 for d in 1..(1 << i) {
                     let j = p - d;
@@ -99,9 +99,9 @@ where
                     row[j + 1] = G::op(row[j].clone(), row[j + 1].clone());
                 }
             }
-            data.push(row);
+            node.push(row);
         }
-        Self { data }
+        Self { node }
     }
 }
 impl<G> DisjointSparseTable<G>
@@ -113,14 +113,14 @@ where
         Self::from_iter(slice.iter().cloned())
     }
 
-    pub fn size(&self) -> usize { self.data[0].len() }
+    pub fn size(&self) -> usize { self.node[0].len() }
 
     /// [l, r)
     pub fn reduce(&self, l: usize, mut r: usize) -> G::S {
         assert!(l < r && r <= self.size());
         r -= 1; // internally, consider [l, r]
         if l == r {
-            return self.data[0][l].clone();
+            return self.node[0][l].clone();
         }
         let i = bit_length((l ^ r) as u64) as usize - 1;
         // if i = 0, then use 0-th row.
@@ -129,16 +129,16 @@ where
         // only msb of l \xor r is important.
         // because,
         // for each bit j (checking in descending order from top bit),
-        // if for any k in 2^j..=|data| (step 2^{j + 1}), l < k <= r,
+        // if for any k in 2^j..=|node| (step 2^{j + 1}), l < k <= r,
         // then j-th bit of l \xor r is gonna be 1.
         // so the query can be dealed with j-th row.
         // <->
         // if j-th bit of l \xor r is 0,
-        // then for all k in 2^j..=|data| (step 2^{j + 1}),
+        // then for all k in 2^j..=|node| (step 2^{j + 1}),
         // k <= l < r or l < r < k.
         // so the query cannot be dealed with j-th row.
         // then, check {j-1}-th bit next...
-        G::op(self.data[i][l].clone(), self.data[i][r].clone())
+        G::op(self.node[i][l].clone(), self.node[i][r].clone())
     }
 }
 impl<S, I> RangeGetQuery<I> for DisjointSparseTable<GroupApprox<S, I>>

@@ -1,9 +1,9 @@
-use crate::{
-    accumulate_iterator::accumulate, factorial::factorial, ops::MulInv,
-};
+use std::ops::*;
+
+use crate::{accumulate_iterator::accumulate, factorial::factorial};
 pub fn inverse_factorial_table<T>(size: usize) -> Vec<T>
 where
-    T: std::ops::Mul<Output = T> + MulInv<Output = T> + From<u64> + Clone,
+    T: Mul<Output = T> + Div<Output = T> + From<u64> + Clone,
 {
     if size == 0 {
         return vec![];
@@ -12,7 +12,7 @@ where
     if size == 0 {
         return v;
     }
-    v[size - 1] = factorial::<T>(size as u64 - 1).mul_inv();
+    v[size - 1] = T::from(1) / factorial::<T>(size as u64 - 1);
     let op = |a: T, b: T| -> T { a * b };
     let mut ifact = accumulate(&op, v.into_iter().rev()).collect::<Vec<_>>();
     ifact.reverse();

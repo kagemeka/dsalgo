@@ -1,6 +1,8 @@
+use std::ops::*;
+
 use crate::{
     factorial_table_from_u64::factorial_table,
-    inverse_factorial_table_from_u64::inverse_factorial_table, ops::MulInv,
+    inverse_factorial_table_from_u64::inverse_factorial_table,
 };
 pub struct Combination<T> {
     fact: Vec<T>,
@@ -8,11 +10,11 @@ pub struct Combination<T> {
 }
 impl<T> Combination<T>
 where
-    T: std::ops::Mul<Output = T> + From<u64> + Clone,
+    T: Mul<Output = T> + From<u64> + Clone,
 {
     pub fn new(size: usize) -> Self
     where
-        T: MulInv<Output = T>,
+        T: Div<Output = T>,
     {
         Self {
             fact: factorial_table::<T>(size),
