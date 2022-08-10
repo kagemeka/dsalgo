@@ -32,3 +32,8 @@ pub(crate) fn bellman_ford_dense(
     }
     Ok(dist)
 }
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn test() {}
+}
