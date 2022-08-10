@@ -1,3 +1,5 @@
+# mypy: ignore-errors
+
 import typing
 import unittest
 
@@ -6,16 +8,8 @@ import numpy.typing as npt
 
 
 # np.dot cause overflow.
-def dot(
-    mod: int,
-    a: npt.NDArray[np.int64],
-    b: npt.NDArray[np.int64],
-) -> npt.NDArray[np.int64]:
-    assert np.ndim(a) == np.ndim(b) == 2 and a.shape[1] == b.shape[0]
-    return typing.cast(
-        npt.NDArray[np.int64],
-        (a[:, None, :] * b.T[None, ...] % mod).sum(axis=-1) % mod,
-    )
+def mul(mod: int, a: np.ndarray, b: np.ndarray) -> np.ndarray:
+    return (a[:, None, :] * b.T[None, ...] % mod).sum(axis=-1) % mod
 
 
 class Test(unittest.TestCase):
@@ -25,10 +19,10 @@ class Test(unittest.TestCase):
         b = np.array([[0, 1, 1], [1, 0, 1]])
         print(a)
         print(b)
-        print(dot(MOD, a, b))
+        print(mul(MOD, a, b))
         ans = np.array([[0, -1, -1], [-1, 0, -1]])
         ans %= MOD
-        assert np.all(dot(MOD, a, b) == ans)
+        assert np.all(mul(MOD, a, b) == ans)
 
 
 if __name__ == "__main__":
