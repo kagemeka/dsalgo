@@ -440,6 +440,7 @@ pub mod zeta_transform_for_multiples_with_instant_func;
 pub mod zeta_transform_for_subset;
 pub mod sieve_of_eratosthenes_mobius_function_table_direct_isize;
 pub mod zeta_transform_for_superset;
+pub mod sieve_of_eratosthenes_number_of_distinct_prime_factors_table_usize;
 // pub mod is_multitree;
 pub mod add_middle_nodes_and_make_double_tree_undirected_tuple_edges;
 pub mod avl_array;
