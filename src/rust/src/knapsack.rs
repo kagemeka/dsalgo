@@ -78,7 +78,7 @@ pub mod kp01 {
         .max()
         .unwrap()
     }
-    use crate::upper_bound_on_sequence::upper_bound;
+    use crate::upper_bound_on_slice::upper_bound;
     pub fn knapsack_01_meet_in_the_middle(
         value_weight_pairs: &[(u64, u64)], capacity: u64,
     ) -> u64 {

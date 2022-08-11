@@ -6,8 +6,7 @@ public:
   fw_multiset(int less_than): fw(less_than) {}
   auto size() -> int { return fw.get(fw.size()); }
   auto count(int x) -> int { return fw.get(x + 1) - fw.get(x); }
-  auto insert(int x, int count = 1) { fw.operate(x, count); }
-  auto remove(int x, int count = 1) { fw.operate(x, -count); }
+  auto add(int x, int delta) { fw.operate(x, delta); }
   auto lower_bound(int x) -> int { return fw.get(x); }
   auto upper_bound(int x) -> int { return fw.get(x + 1); }
   auto operator[](int i) -> int {

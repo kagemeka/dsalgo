@@ -4,7 +4,7 @@ use crate::algebraic_structure::*;
 /// Segment Tree
 pub struct Segtree<M: Monoid> {
     pub(crate) size: usize,
-    pub(crate) data: Vec<M::S>,
+    pub(crate) node: Vec<M::S>,
 }
 impl<M> std::iter::FromIterator<M::S> for Segtree<M>
 where
@@ -12,15 +12,15 @@ where
     M::S: Clone,
 {
     fn from_iter<T: IntoIterator<Item = M::S>>(iter: T) -> Self {
-        let mut data = iter.into_iter().collect::<Vec<_>>();
-        let size = data.len();
+        let mut node = iter.into_iter().collect::<Vec<_>>();
+        let size = node.len();
         let n = size.next_power_of_two();
-        data = (0..n)
+        node = (0..n)
             .map(|_| M::e())
-            .chain(data.into_iter())
+            .chain(node.into_iter())
             .chain((0..n - size).map(|_| M::e()))
             .collect::<Vec<_>>();
-        let mut seg = Self { size, data };
+        let mut seg = Self { size, node };
         (1..n).rev().for_each(|i| seg.update(i));
         seg
     }
@@ -28,7 +28,7 @@ where
 impl<M: Monoid> Segtree<M> {
     pub fn size(&self) -> usize { self.size }
 
-    pub(crate) fn n(&self) -> usize { self.data.len() >> 1 }
+    pub(crate) fn n(&self) -> usize { self.node.len() >> 1 }
 }
 impl<M> Segtree<M>
 where
@@ -43,14 +43,14 @@ where
     }
 
     fn update(&mut self, i: usize) {
-        self.data[i] =
-            M::op(self.data[i << 1].clone(), self.data[i << 1 | 1].clone());
+        self.node[i] =
+            M::op(self.node[i << 1].clone(), self.node[i << 1 | 1].clone());
     }
 
     pub fn set(&mut self, mut i: usize, x: M::S) {
         assert!(i < self.size);
         i += self.n();
-        self.data[i] = x;
+        self.node[i] = x;
         while i > 1 {
             i >>= 1;
             self.update(i);
@@ -74,12 +74,12 @@ where
         let mut vr = M::e();
         while l < r {
             if l & 1 == 1 {
-                vl = M::op(vl, self.data[l].clone());
+                vl = M::op(vl, self.node[l].clone());
                 l += 1;
             }
             if r & 1 == 1 {
                 r -= 1;
-                vr = M::op(self.data[r].clone(), vr);
+                vr = M::op(self.node[r].clone(), vr);
             }
             l >>= 1;
             r >>= 1;
@@ -104,7 +104,7 @@ where
             return M::e();
         }
         if l <= cur_l && cur_r <= r {
-            return self.data[i].clone();
+            return self.node[i].clone();
         }
         let c = (cur_l + cur_r) >> 1;
         M::op(
@@ -122,7 +122,7 @@ where
 
     fn index(&self, i: usize) -> &Self::Output {
         assert!(i < self.size());
-        &self.data[i + self.n()]
+        &self.node[i + self.n()]
     }
 }
 impl<M> From<&[M::S]> for Segtree<M>
@@ -151,7 +151,7 @@ where
         debug_assert_ne!(i, 0);
         loop {
             i >>= i.trailing_zeros(); // upstream
-            let nv = M::op(v.clone(), self.data[i].clone());
+            let nv = M::op(v.clone(), self.node[i].clone());
             if !is_ok(&nv) {
                 break;
             }
@@ -165,7 +165,7 @@ where
         // down stairs to right
         while i < n {
             i <<= 1;
-            let nv = M::op(v.clone(), self.data[i].clone());
+            let nv = M::op(v.clone(), self.node[i].clone());
             if !is_ok(&nv) {
                 continue;
             }
@@ -189,7 +189,7 @@ where
         debug_assert_ne!(i, 0);
         loop {
             i >>= i.trailing_zeros(); // upstream
-            let nv = M::op(self.data[i - 1].clone(), v.clone());
+            let nv = M::op(self.node[i - 1].clone(), v.clone());
             if !is_ok(&nv) {
                 break;
             }
@@ -201,7 +201,7 @@ where
         }
         while i < n {
             i <<= 1;
-            let nv = M::op(self.data[i - 1].clone(), v.clone());
+            let nv = M::op(self.node[i - 1].clone(), v.clone());
             if !is_ok(&nv) {
                 continue;
             }
@@ -240,7 +240,7 @@ where
         if cur_l >= self.size {
             return self.size;
         }
-        let nv = M::op(v.clone(), self.data[i].clone());
+        let nv = M::op(v.clone(), self.node[i].clone());
         if l <= cur_l && cur_r <= self.size && is_ok(&nv) {
             *v = nv;
             return cur_r;
@@ -274,7 +274,7 @@ where
         if cur_l >= r {
             return r;
         }
-        let nv = M::op(self.data[i].clone(), v.clone());
+        let nv = M::op(self.node[i].clone(), v.clone());
         if cur_r <= r && is_ok(&nv) {
             *v = nv;
             return cur_l;

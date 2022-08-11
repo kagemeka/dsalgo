@@ -3,7 +3,8 @@ pub fn dijkstra_dense(inf: i64, g: &[Vec<i64>], src: usize) -> Vec<i64> {
     let mut dist = vec![inf; n];
     dist[src] = 0;
     let mut visited = vec![false; n];
-    loop {
+    // loop {
+    for _ in 0..n - 1 {
         let mut u = n;
         let mut du = inf;
         for i in 0..n {

@@ -1,8 +1,8 @@
 use std::ops::*;
 
 use crate::{
-    euler_totient_function_table_usize::phi_table,
     power_multiplicative_semigroup_with_std_ops::power,
+    sieve_of_eratosthenes_euler_totient_function_table_direct_usize::phi_table,
 };
 pub fn sum_of_gcd<T>(k: usize, n: usize) -> T
 where

@@ -226,12 +226,8 @@ where
     //     assert!(right <= self.size());
     // }
 }
-// TODO:
-/// fenwick tree lazy for addition on int
-/// TODO: generalize to semiring
 pub struct FwLazyIntAdd {}
 // TODO: N-dim fenwick tree (recursive)
-// TODO: split test
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -304,7 +300,6 @@ mod tests {
         assert_eq!(fw.search_from(&|value: &i32| *value >= 23, 7), 7);
         assert_eq!(fw.search_from(&|value: &i32| *value >= 23, 5), 6);
     }
-    // TODO:
     #[test]
     fn test_lazy() {}
 }

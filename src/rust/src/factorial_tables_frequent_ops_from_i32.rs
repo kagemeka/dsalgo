@@ -7,13 +7,14 @@ pub struct FactorialTablesFrequentOps<T> {
     pub inv_fact: Vec<T>,
 }
 use std::ops::*;
-
-use crate::multiplicative_inverse::MulInv;
 impl<T> FactorialTablesFrequentOps<T>
 where
-    T: Clone + Mul<Output = T> + MulInv<Output = T> + From<i32>,
+    T: Clone + Mul<Output = T> + From<i32>,
 {
-    pub fn new(size: usize) -> Self {
+    pub fn new(size: usize) -> Self
+    where
+        T: Div<Output = T>,
+    {
         let fact = factorial(size);
         let inv_fact = inverse_factorial(size);
         Self { fact, inv_fact }

@@ -1,10 +1,11 @@
 #pragma once
-template<typename T, typename N> auto power(T x, N n) -> T {
-  T y = 1;
-  while(n) {
-    if(n & 1) y *= x;
-    x *= x;
-    n >>= 1;
+template<typename T, typename Z> auto power(T x, Z n) -> T {
+  if(n < 0) {
+    x = 1 / x;
+    n *= -1;
   }
+  T y = 1;
+  for(; n; x *= x, n >>= 1)
+    if(n & 1) y *= x;
   return y;
 }

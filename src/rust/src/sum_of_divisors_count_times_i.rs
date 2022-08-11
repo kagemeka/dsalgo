@@ -1,4 +1,4 @@
-use crate::sum_of_multiples_sum::sum_of_multiples_sum;
+use crate::sum_of_multiples_sum_with_smart_formula::sum_of_multiples_sum;
 /// \sum_{i=1}^n{i \cdot |divisors(i)|}
 pub fn sum_of_divisors_count_times_i(n: u64) -> u64 { sum_of_multiples_sum(n) }
 #[cfg(test)]

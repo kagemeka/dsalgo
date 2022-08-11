@@ -9,7 +9,7 @@ mod tests {
     fn test() {
         for b in 2u64..1000 {
             for x in 1u64..10000 {
-                assert_eq!(log(b, x) as u32, x.log(b));
+                assert_eq!(log(b, x) as u32, x.ilog(b));
             }
         }
     }

@@ -1,6 +1,6 @@
-use crate::legendre_function::legendre_function;
+use crate::legendre_formula::legendre;
 /// trailing zeros in decimal.
-pub fn count_factorial_trailing_zeros(n: u64) -> u64 { legendre_function(n, 5) }
+pub fn count_factorial_trailing_zeros(n: u64) -> u64 { legendre(n, 5) }
 // TODO:
 #[cfg(test)]
 mod tests {

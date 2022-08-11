@@ -1,6 +1,6 @@
 pub trait Monoid {
     type T;
-    fn op(&self, _: Self::T, _: Self::T) -> Self::T;
+    fn op(&self, l: Self::T, r: Self::T) -> Self::T;
     fn e(&self) -> Self::T;
 }
 pub struct SegmentTree<G: Monoid> {
@@ -21,7 +21,7 @@ impl<G: Monoid> SegmentTree<G>
 where
     G::T: Clone,
 {
-    fn update(&mut self, i: usize) {
+    fn merge(&mut self, i: usize) {
         self.data[i] = self
             .g
             .op(self.data[i << 1].clone(), self.data[i << 1 | 1].clone());
@@ -39,7 +39,7 @@ where
         self.data[i] = x;
         while i > 1 {
             i >>= 1;
-            self.update(i);
+            self.merge(i);
         }
     }
 
@@ -178,11 +178,5 @@ mod tests {
         assert_eq!(seg.min_left(&is_ok, 6), 6);
         assert_eq!(seg.min_left(&is_ok, 5), 2);
         assert_eq!(seg.min_left(&is_ok, 4), 0);
-        // self.assertEqual(seg.max_right(lambda s: s < 10, 0), 4)
-        // self.assertEqual(seg.max_right(lambda s: s < 10, 5), 5)
-        // self.assertEqual(seg.min_left(lambda s: s < 10, 7), 6)
-        // self.assertEqual(seg.min_left(lambda s: s < 10, 6), 6)
-        // self.assertEqual(seg.min_left(lambda s: s < 10, 5), 2)
-        // self.assertEqual(seg.min_left(lambda s: s < 10, 4), 0)
     }
 }

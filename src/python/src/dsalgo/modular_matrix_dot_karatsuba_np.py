@@ -10,7 +10,7 @@ import unittest
 import numpy as np
 
 
-def dot_karatsuba(mod: int, a: np.ndarray, b: np.ndarray) -> np.ndarray:
+def mul(mod: int, a: np.ndarray, b: np.ndarray) -> np.ndarray:
     B = 16
     MASK = (1 << B) - 1
     assert np.ndim(a) == np.ndim(b) == 2 and a.shape[1] == b.shape[0]
@@ -33,10 +33,10 @@ class Test(unittest.TestCase):
         b = np.array([[0, 1, 1], [1, 0, 1]])
         print(a)
         print(b)
-        print(dot_karatsuba(MOD, a, b))
+        print(mul(MOD, a, b))
         ans = np.array([[0, -1, -1], [-1, 0, -1]])
         ans %= MOD
-        assert np.all(dot_karatsuba(MOD, a, b) == ans)
+        assert np.all(mul(MOD, a, b) == ans)
 
 
 if __name__ == "__main__":

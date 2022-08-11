@@ -75,6 +75,10 @@ doc() {
         --open
 }
 
+crean() {
+    cargo clean
+}
+
 ci() {
     if ! command -v cargo &>/dev/null; then
         echo "command not found"

@@ -1,4 +1,4 @@
-use crate::sieve_of_eratosthenes_least_prime_factor_table_direct::*;
+use crate::sieve_of_eratosthenes_least_prime_factor_table_usize_optim2::*;
 pub struct PrimeFactorize(Vec<usize>);
 impl PrimeFactorize {
     pub fn new(size: usize) -> Self { Self(least_prime_factor(size)) }
@@ -6,23 +6,14 @@ impl PrimeFactorize {
     pub fn factorize(&self, mut n: usize) -> Vec<(usize, usize)> {
         assert!(n < self.0.len());
         let mut factors = vec![];
-        let mut prime = 0;
-        let mut cnt = 0;
         while n > 1 {
             let p = self.0[n];
-            n /= p;
-            if p == prime {
-                cnt += 1;
-                continue;
+            let mut e = 0;
+            while n % p == 0 {
+                n /= p;
+                e += 1;
             }
-            if cnt > 0 {
-                factors.push((prime, cnt));
-            }
-            prime = p;
-            cnt = 1;
-        }
-        if cnt > 0 {
-            factors.push((prime, cnt));
+            factors.push((p, e));
         }
         factors
     }

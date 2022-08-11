@@ -2,11 +2,11 @@ use std::ops::*;
 
 use crate::{
     cumulative_product_vec_with_std_mul::cumprod,
-    factorial_table_from_i32::factorial, multiplicative_inverse::MulInv,
+    factorial_table_from_i32::factorial,
 };
 pub fn inverse_factorial<T>(size: usize) -> Vec<T>
 where
-    T: Mul<Output = T> + MulInv<Output = T> + From<i32> + Clone,
+    T: Mul<Output = T> + Div<Output = T> + From<i32> + Clone,
 {
     if size == 0 {
         return vec![];
@@ -15,7 +15,7 @@ where
         .rev()
         .map(|i| (i + 1).into())
         .collect::<Vec<T>>();
-    inv_fact[0] = factorial::<T>(size)[size - 1].clone().mul_inv();
+    inv_fact[0] = T::from(1) / factorial::<T>(size)[size - 1].clone();
     inv_fact = cumprod(inv_fact);
     inv_fact.reverse();
     inv_fact

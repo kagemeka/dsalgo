@@ -25,8 +25,8 @@ pub mod linear {
         #[test]
         fn test() {
             use crate::{
-                least_prime_factor_table_from_sieve_of_eratosthenes::*,
-                sieve_of_eratosthenes_enumerate_primes::enumerate_primes,
+                least_prime_factor_table_with_sieve_of_eratosthenes_u32::*,
+                sieve_of_eratosthenes_enumerate_primes_u32::enumerate_primes,
             };
             const K: usize = 1 << 10;
             let lpf_ans = least_prime_factor(K);
@@ -70,7 +70,7 @@ pub mod sunda {
         use super::*;
         #[test]
         fn test() {
-            use crate::sieve_of_eratosthenes_enumerate_primes::*;
+            use crate::sieve_of_eratosthenes_enumerate_primes_u32::*;
             let lim = [99, 100, 101, 102, 1 << 17];
             for l in lim {
                 assert_eq!(ps(l), enumerate_primes(l),);
