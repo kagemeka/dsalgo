@@ -2,25 +2,20 @@
 pub fn mobius_function(size: usize) -> Vec<isize> {
     let mut f = vec![0; size];
     f[1] = 1;
-    let inf = 1 << 60;
     for i in 2..size {
+        // fill mu(i)
         if f[i] != 0 {
-            // not prime
-            if f[i] < 0 {
-                f[i] = 0;
-            } else if f[i] & 1 == 1 {
-                f[i] = -1;
-            } else {
-                f[i] = 1;
-            }
+            let lpf = f[i] as usize;
+            let j = i / lpf;
+            f[i] = if j % lpf == 0 { 0 } else { f[j] * -1 };
             continue;
         }
         f[i] = -1;
-        for j in (i << 1..size).step_by(i) {
-            f[j] += 1;
-        }
-        for j in (i * i..size).step_by(i * i) {
-            f[j] = -inf;
+        // update lpf for i|j
+        for j in (i * i..size).step_by(i) {
+            if f[j] == 0 {
+                f[j] = i as isize;
+            }
         }
     }
     f

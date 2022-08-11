@@ -817,6 +817,7 @@ pub mod rbst;
 pub mod mobius_function_with_trial_division;
 pub mod reachability_based_scc;
 pub mod rectangle_tree;
+pub mod sieve_of_eratosthenes_mobius_function_table_direct_isize_optim;
 pub mod red_black_tree;
 pub mod reduce;
 pub mod reflexive_relation;
