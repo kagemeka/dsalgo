@@ -1,5 +1,6 @@
 use crate::{
-    find_root::isqrt, sieve_of_eratosthenes_enumerate_primes_u32::enumerate_primes,
+    find_root::isqrt,
+    sieve_of_eratosthenes_enumerate_primes_u32::enumerate_primes,
 };
 pub struct RangeSieve {
     primes: Vec<u64>,

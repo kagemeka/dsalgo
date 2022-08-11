@@ -1,12 +1,11 @@
-use crate::sieve_of_eratosthenes_enumerate_primes_usize::enumerate_primes;
 /// d(n) table. d(0) := 0 here.
-/// O(N\log{\log{N}})
-pub fn number_of_divisors(size: usize) -> Vec<u64> {
+/// O(N\log{N})
+pub fn number_of_divisors(size: usize) -> Vec<usize> {
     let mut cnt = vec![1; size];
     cnt[0] = 0;
-    for p in enumerate_primes(size) {
-        for i in 1..(size - 1) / p + 1 {
-            cnt[i * p] += cnt[i];
+    for i in (1..size).rev() {
+        for j in (i << 1..size).step_by(i) {
+            cnt[j] += cnt[i];
         }
     }
     cnt

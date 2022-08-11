@@ -25,7 +25,7 @@ pub mod linear {
         #[test]
         fn test() {
             use crate::{
-                least_prime_factor_table_with_sieve_of_eratosthenes_u32::*,
+                least_prime_factor_table_with_sieve_of_eratosthenes_option_u32::*,
                 sieve_of_eratosthenes_enumerate_primes_u32::enumerate_primes,
             };
             const K: usize = 1 << 10;
