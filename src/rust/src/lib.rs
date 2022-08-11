@@ -444,6 +444,8 @@ pub mod sieve_of_eratosthenes_number_of_distinct_prime_factors_table_usize;
 // pub mod is_multitree;
 pub mod add_middle_nodes_and_make_double_tree_undirected_tuple_edges;
 pub mod avl_array;
+pub mod mobius_function_table_with_divisor_fast_mobius_isize;
+pub mod mobius_function_table_with_divisor_mobius_isize;
 pub mod number_of_distinct_prime_factors_table_with_divisor_fast_zeta_usize;
 pub mod number_of_distinct_prime_factors_table_with_divisor_zeta_usize;
 pub mod avl_tree_array;
