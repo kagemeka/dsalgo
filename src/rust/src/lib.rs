@@ -444,6 +444,8 @@ pub mod sieve_of_eratosthenes_number_of_distinct_prime_factors_table_usize;
 // pub mod is_multitree;
 pub mod add_middle_nodes_and_make_double_tree_undirected_tuple_edges;
 pub mod avl_array;
+pub mod number_of_distinct_prime_factors_table_with_divisor_fast_zeta_usize;
+pub mod number_of_distinct_prime_factors_table_with_divisor_zeta_usize;
 pub mod avl_tree_array;
 pub mod avl_tree_node_with_box_recurse_merge_split_based;
 pub mod avl_tree_node_with_rc_refcell_merge_split_based_recurse;
