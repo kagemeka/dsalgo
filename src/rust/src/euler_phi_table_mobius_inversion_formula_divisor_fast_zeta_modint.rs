@@ -5,6 +5,7 @@ use crate::{
 };
 /// O(N\log{\log{N}})
 /// use \phi(n) = n\sum_{d|n}{mu(d)/d}
+/// size must be <= 1_000_000_007
 pub fn phi_table(size: usize) -> Vec<usize> {
     const MOD: isize = 1_000_000_007; // arbitrary enough big prime.
     let inv = inverse(MOD as usize, size);
