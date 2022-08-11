@@ -3,8 +3,9 @@ where
     F: Fn(usize, usize, usize) -> usize,
     G: Fn(usize, usize) -> usize,
 {
-    inv(p, n) * choose(p, n << 1, n)
+    inv(p, n + 1) * choose(p, n << 1, n)
 }
+// TODO:
 #[cfg(test)]
 mod tests {
     use super::*;

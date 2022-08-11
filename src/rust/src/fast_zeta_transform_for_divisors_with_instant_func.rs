@@ -1,15 +1,15 @@
 use std::ops::*;
 
 use crate::sieve_of_eratosthenes_enumerate_primes_usize::enumerate_primes;
-pub fn fast_zeta_multiples<T, F>(op: F, mut f: Vec<T>) -> Vec<T>
+pub fn fast_zeta_divisors<T, F>(mut f: Vec<T>, op: F) -> Vec<T>
 where
     T: Clone,
     F: Fn(T, T) -> T,
 {
     let n = f.len();
     for p in enumerate_primes(n) {
-        for i in (1..(n - 1) / p + 1).rev() {
-            f[i] = op(f[i].clone(), f[i * p].clone());
+        for i in 1..(n - 1) / p + 1 {
+            f[i * p] = op(f[i * p].clone(), f[i].clone());
         }
     }
     f
@@ -19,12 +19,12 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        use crate::number_of_multiples_table_with_multiple_zeta_usize::*;
+        use crate::number_of_divisors_table_naive_usize::number_of_divisors;
         let n = 1 << 15;
         let mut a = vec![1; n];
         a[0] = 0;
         let f = |a, b| a + b;
-        let res = fast_zeta_multiples(f, a);
-        assert_eq!(res, number_of_multiples(n));
+        let res = fast_zeta_divisors(a, f);
+        assert_eq!(res, number_of_divisors(n));
     }
 }
