@@ -1,4 +1,4 @@
-use crate::sieve_of_eratosthenes_enumerate_primes::enumerate_primes;
+use crate::sieve_of_eratosthenes_enumerate_primes_u32::enumerate_primes;
 pub fn prime_pi_table(size: usize) -> Vec<u32> {
     let mut pi = vec![0; size];
     for p in enumerate_primes(size as u32) {

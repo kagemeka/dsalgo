@@ -17,7 +17,7 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        use crate::sieve_of_eratosthenes_enumerate_primes::*;
+        use crate::sieve_of_eratosthenes_enumerate_primes_u32::*;
         let k: usize = 10000;
         let mut is_p = vec![false; k];
         for p in enumerate_primes(k as u32) {

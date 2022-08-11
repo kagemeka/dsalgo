@@ -1,6 +1,6 @@
 use crate::{
     legendre_formula::legendre,
-    sieve_of_eratosthenes_enumerate_primes::enumerate_primes,
+    sieve_of_eratosthenes_enumerate_primes_u32::enumerate_primes,
 };
 pub fn factorize_factorial(n: usize) -> Vec<(usize, usize)> {
     enumerate_primes(n as u32 + 1)

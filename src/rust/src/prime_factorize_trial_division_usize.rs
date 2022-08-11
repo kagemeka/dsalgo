@@ -8,12 +8,12 @@ pub fn prime_factorize(mut n: usize) -> Vec<(usize, usize)> {
         if n % i != 0 {
             continue;
         }
-        let mut cnt = 0;
+        let mut e = 0;
         while n % i == 0 {
-            cnt += 1;
+            e += 1;
             n /= i;
         }
-        factors.push((i, cnt));
+        factors.push((i, e));
     }
     if n > 1 {
         factors.push((n, 1));

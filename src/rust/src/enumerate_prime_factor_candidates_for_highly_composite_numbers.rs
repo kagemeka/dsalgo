@@ -1,4 +1,4 @@
-use crate::sieve_of_eratosthenes_enumerate_primes::enumerate_primes;
+use crate::sieve_of_eratosthenes_enumerate_primes_u32::enumerate_primes;
 pub fn enumerate_prime_candidates(n: u64) -> Vec<u64> {
     const MAX_P: u32 = 1 << 10;
     let primes = enumerate_primes(MAX_P);

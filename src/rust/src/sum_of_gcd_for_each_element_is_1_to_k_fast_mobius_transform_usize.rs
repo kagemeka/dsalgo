@@ -1,6 +1,6 @@
 use crate::{
     power_multiplicative_semigroup_with_std_ops::power,
-    sieve_of_eratosthenes_enumerate_primes::enumerate_primes,
+    sieve_of_eratosthenes_enumerate_primes_u32::enumerate_primes,
 };
 pub fn sum_of_gcd(k: usize, n: u64) -> usize {
     let mut d = vec![0; k + 1];

@@ -1,5 +1,5 @@
 pub fn factorize_factorial(n: usize) -> Vec<usize> {
-    let mut cnt = vec![0; n + 1];
+    let mut e = vec![0; n + 1];
     for mut x in 2..n + 1 {
         for i in 2..x {
             if i * i > x {
@@ -7,14 +7,14 @@ pub fn factorize_factorial(n: usize) -> Vec<usize> {
             }
             while x % i == 0 {
                 x /= i;
-                cnt[i] += 1;
+                e[i] += 1;
             }
         }
         if x > 1 {
-            cnt[x] += 1;
+            e[x] += 1;
         }
     }
-    cnt
+    e
 }
 #[cfg(test)]
 mod tests {

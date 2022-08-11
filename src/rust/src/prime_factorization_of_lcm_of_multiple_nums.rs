@@ -1,8 +1,8 @@
 pub fn lcm_of_factorization(
     factors: &[Vec<(u64, usize)>],
 ) -> Vec<(u64, usize)> {
-    use std::collections::BTreeMap;
-    let mut cnt = BTreeMap::new();
+    use std::collections::HashMap;
+    let mut cnt = HashMap::new();
     for f in factors.iter() {
         for &(p, e) in f {
             let c = cnt.entry(p).or_insert(0);
