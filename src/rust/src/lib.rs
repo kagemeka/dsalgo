@@ -937,6 +937,8 @@ pub mod static_square_matrix_property_trait;
 pub mod static_square_matrix_with_id;
 pub mod static_tensor_shape;
 pub mod steiner_tree;
+pub mod euler_totient_function_table_with_divisor_fast_mobius;
+pub mod euler_totient_function_table_with_divisor_mobius;
 pub mod stooge_sort;
 pub mod strconv;
 pub mod string_ith_ascii_code;
