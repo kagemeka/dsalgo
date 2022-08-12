@@ -2,8 +2,6 @@
 
 import numpy as np
 
-# slower than argsort
-
 
 def suffix_array(a: np.array) -> np.array:
     n = a.size
@@ -11,7 +9,8 @@ def suffix_array(a: np.array) -> np.array:
     while True:
         a <<= 30
         a[:-d] |= 1 + (a[d:] >> 30)
-        a = np.searchsorted(np.unique(a), a)
+        sa = a.argsort()
         d <<= 1
         if d >= n:
-            return a.argsort()
+            return sa
+        a[sa[0]], a[sa[1:]] = 0, np.cumsum(a[sa[1:]] != a[sa[:-1]])

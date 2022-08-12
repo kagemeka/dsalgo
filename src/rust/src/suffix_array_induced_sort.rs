@@ -131,8 +131,16 @@ mod tests {
     use super::*;
     #[test]
     fn suffix_array() {
-        let s = vec![1, 1, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 2, 2, 0, 0];
-        let answer = vec![15, 14, 10, 6, 2, 11, 7, 3, 1, 0, 13, 12, 9, 5, 8, 4];
-        assert_eq!(sa_is(s), answer,);
+        let cases = vec![
+            (vec![1, 1, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 2, 2, 0, 0], vec![
+                15, 14, 10, 6, 2, 11, 7, 3, 1, 0, 13, 12, 9, 5, 8, 4,
+            ]),
+            (vec![1, 0, 3, 3, 0, 3, 3, 0, 2, 2, 0], vec![
+                10, 7, 4, 1, 0, 9, 8, 6, 3, 5, 2,
+            ]),
+        ];
+        for (s, ans) in cases {
+            assert_eq!(sa_is(s), ans);
+        }
     }
 }

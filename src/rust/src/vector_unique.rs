@@ -1,5 +1,5 @@
 pub fn unique<T: Ord>(mut a: Vec<T>) -> Vec<T> {
-    a.sort();
+    a.sort_unstable();
     a.dedup();
     a
 }
