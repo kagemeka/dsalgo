@@ -819,6 +819,8 @@ pub mod reachability_based_scc;
 pub mod rectangle_tree;
 pub mod sieve_of_eratosthenes_mobius_function_table_direct_isize_optim;
 pub mod red_black_tree;
+pub mod enumerate_cycles_of_functional_graph_with_bfs;
+pub mod enumerate_cycles_of_functional_graph_with_dfs_recurse;
 pub mod reduce;
 pub mod reflexive_relation;
 pub mod rerooting;
