@@ -1,8 +1,8 @@
-use crate::array_compression_unique_binary_search::ArrayCompression;
 /// O(N\log^2{N})
 pub fn suffix_array(mut a: Vec<usize>) -> Vec<usize> {
     let n = a.len();
-    let mut d = 1usize;
+    let mut d = 1;
+    let mut sa: Vec<_> = (0..n).collect();
     loop {
         for i in 0..n {
             a[i] <<= 30;
@@ -10,15 +10,21 @@ pub fn suffix_array(mut a: Vec<usize>) -> Vec<usize> {
                 a[i] |= 1 + a[i + d];
             }
         }
-        a = ArrayCompression::once(&a);
+        sa.sort_unstable_by_key(|&i| a[i]);
         d <<= 1;
         if d >= n {
-            break;
+            return sa;
+        }
+        let mut rank = 0;
+        let mut prev = a[sa[0]];
+        for &i in sa.iter() {
+            if a[i] > prev {
+                rank += 1;
+                prev = a[i];
+            }
+            a[i] = rank;
         }
     }
-    let mut sa = (0..n).collect::<Vec<_>>();
-    sa.sort_by_key(|&i| a[i]);
-    sa
 }
 #[cfg(test)]
 mod tests {

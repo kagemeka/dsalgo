@@ -1,5 +1,5 @@
-pub fn suffix_array(a: Vec<usize>) -> Vec<usize> {
-    use crate::array_compression_unique_binary_search::ArrayCompression;
+use crate::array_compression_unique_binary_search::ArrayCompression;
+pub fn suffix_array(a: &[usize]) -> Vec<usize> {
     let n = a.len();
     let counting_argsort = |a: &Vec<usize>| -> Vec<usize> {
         let mut cnt = vec![0; n + 2];
@@ -53,6 +53,6 @@ mod tests {
     fn test() {
         let s = vec![1, 1, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 2, 2, 0, 0];
         let answer = vec![15, 14, 10, 6, 2, 11, 7, 3, 1, 0, 13, 12, 9, 5, 8, 4];
-        assert_eq!(suffix_array(s), answer,);
+        assert_eq!(suffix_array(&s), answer,);
     }
 }

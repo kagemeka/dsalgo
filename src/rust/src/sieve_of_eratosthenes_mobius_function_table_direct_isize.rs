@@ -4,7 +4,6 @@ pub fn mobius_function(size: usize) -> Vec<isize> {
     f[1] = 1;
     let inf = 1 << 60;
     for i in 2..size {
-        dbg!(i, f[i]);
         if f[i] != 0 {
             // not prime
             if f[i] < 0 {

@@ -1,4 +1,5 @@
 use crate::sieve_of_eratosthenes_enumerate_primes_usize::enumerate_primes;
+/// use \sum_{d|n} mu(n) = 1 if n = 1 else 0
 pub fn mobius_function(size: usize) -> Vec<isize> {
     let mut f = vec![0; size];
     f[1] = 1;

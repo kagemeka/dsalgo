@@ -1,7 +1,7 @@
 #include <cassert>
 #include <vector>
 using namespace std;
-auto lcp_array(vector<int> a, vector<int> sa) -> vector<int> {
+auto lcp_array(vector<int> const& a, vector<int> const& sa) -> vector<int> {
   int n = a.size();
   assert(n > 0 && (int)sa.size() == n);
   vector<int> rank(n), lcp(n - 1);

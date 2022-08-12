@@ -1,14 +1,14 @@
 /// O(N\log{N}\log{k})
 pub fn divisor_func(k: usize, size: usize) -> Vec<usize> {
     let k = k as u32;
-    let mut cnt = vec![0; size];
+    let mut f = vec![0; size];
     for i in 1..size {
         let x = i.pow(k);
         for j in (i..size).step_by(i) {
-            cnt[j] += x;
+            f[j] += x;
         }
     }
-    cnt
+    f
 }
 #[cfg(test)]
 mod tests {

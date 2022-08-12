@@ -1,10 +1,21 @@
-/// use \sum_{d|n} mu(n) = 1 if n = 1 else 0
+/// mu(0) is undefined, please don't access to.
 pub fn mobius_function(size: usize) -> Vec<isize> {
     let mut f = vec![0; size];
     f[1] = 1;
-    for i in 1..size {
-        for j in (i << 1..size).step_by(i) {
-            f[j] -= f[i];
+    for i in 2..size {
+        // fill mu(i)
+        if f[i] != 0 {
+            let lpf = f[i] as usize;
+            let j = i / lpf;
+            f[i] = if j % lpf == 0 { 0 } else { f[j] * -1 };
+            continue;
+        }
+        f[i] = -1;
+        // update lpf for i|j
+        for j in (i * i..size).step_by(i) {
+            if f[j] == 0 {
+                f[j] = i as isize;
+            }
         }
     }
     f
