@@ -974,6 +974,8 @@ pub mod static_tensor_shape;
 pub mod steiner_tree;
 pub mod stooge_sort;
 pub mod strconv;
+pub mod number_of_pairs_in_range_l_r_whose_gcd_is_k_table;
+pub mod number_of_gcd_pairs_in_range_table_with_multiples_fast_mobius;
 pub mod string_ith_ascii_code;
 pub mod string_ith_char;
 pub mod strongly_connected_components;
