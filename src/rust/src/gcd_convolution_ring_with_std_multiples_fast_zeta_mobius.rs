@@ -6,11 +6,7 @@ use crate::{
 };
 pub fn gcd_convolve<T>(mut f: Vec<T>, mut g: Vec<T>) -> Vec<T>
 where
-    T: Clone
-        + Add<Output = T>
-        + Mul<Output = T>
-        + Neg<Output = T>
-        + Sub<Output = T>,
+    T: Clone + Add<Output = T> + Mul<Output = T> + Sub<Output = T>,
 {
     let n = f.len();
     assert_eq!(g.len(), n);
