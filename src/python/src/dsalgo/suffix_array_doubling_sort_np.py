@@ -3,13 +3,15 @@
 import numpy as np
 
 # slower than argsort
+
+
 def suffix_array(a: np.array) -> np.array:
     n = a.size
-    rank, d = np.searchsorted(np.unique(a), a), 1
+    d = 1
     while True:
-        rank <<= 25
-        rank[:-d] |= 1 + (rank[d:] >> 25)
-        rank = np.searchsorted(np.unique(rank), rank)
+        a <<= 30
+        a[:-d] |= 1 + (a[d:] >> 30)
+        a = np.searchsorted(np.unique(a), a)
         d <<= 1
         if d >= n:
-            return rank.argsort(kind="mergesort")
+            return a.argsort()

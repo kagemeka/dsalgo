@@ -7,9 +7,9 @@ def suffix_array(a: np.array) -> np.array:
     n = a.size
     d = 1
     while True:
-        a <<= 25
-        a[:-d] |= 1 + (a[d:] >> 25)
-        sa = a.argsort(kind="mergesort")
+        a <<= 30
+        a[:-d] |= 1 + (a[d:] >> 30)
+        sa = a.argsort()
         d <<= 1
         if d >= n:
             return sa

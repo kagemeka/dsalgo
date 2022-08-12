@@ -24,6 +24,9 @@ pub fn suffix_array(mut a: Vec<usize>) -> Vec<usize> {
             }
             a[i] = rank;
         }
+        if rank == n {
+            return sa;
+        }
     }
 }
 #[cfg(test)]
