@@ -118,12 +118,12 @@ where
         self.ops.op(vl, vr)
     }
 
-    pub fn max_right<G>(&mut self, is_ok: &G, l: usize) -> usize
+    pub fn max_right<G>(&mut self, is_ok: G, l: usize) -> usize
     where
         G: Fn(&O::S) -> bool,
     {
         assert!(l <= self.size);
-        self._max_right(is_ok, l, 0, self.n(), &mut self.ops.e(), 1)
+        self._max_right(&is_ok, l, 0, self.n(), &mut self.ops.e(), 1)
     }
 
     fn _max_right<G>(
@@ -156,12 +156,12 @@ where
         self._max_right(is_ok, l, c, cr, v, i << 1 | 1)
     }
 
-    pub fn min_left<G>(&mut self, is_ok: &G, r: usize) -> usize
+    pub fn min_left<G>(&mut self, is_ok: G, r: usize) -> usize
     where
         G: Fn(&O::S) -> bool,
     {
         assert!(r <= self.size);
-        self._min_left(is_ok, r, 0, self.n(), &mut self.ops.e(), 1)
+        self._min_left(&is_ok, r, 0, self.n(), &mut self.ops.e(), 1)
     }
 
     fn _min_left<G>(
@@ -193,6 +193,41 @@ where
 }
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
-    fn test() {}
+    fn test() {
+        struct Lz;
+        impl Ops for Lz {
+            type F = i64;
+            type S = (i64, usize);
+
+            fn op(&self, a: Self::S, b: Self::S) -> Self::S {
+                (a.0 + b.0, a.1 + b.1)
+            }
+
+            fn e(&self) -> Self::S { (0, 0) }
+
+            fn compose(&self, f: Self::F, g: Self::F) -> Self::F { f + g }
+
+            fn id(&self) -> Self::F { 0 }
+
+            fn map(&self, f: Self::F, x: Self::S) -> Self::S {
+                (x.0 + x.1 as i64 * f, x.1)
+            }
+        }
+        let n = 5;
+        let mut seg = LazySegtree::new(Lz {}, n);
+        for i in 0..n {
+            seg.set(i, (0, 1));
+        }
+        for i in 0..n {
+            assert_eq!(seg.fold(i, i + 1), (0, 1));
+        }
+        seg.apply(1, 3, 1);
+        assert_eq!(seg.fold(0, n), (2, 5));
+        assert_eq!(seg.max_right(|x| x.0 < 2, 0), 2);
+        assert_eq!(seg.max_right(|x| x.0 < 2, 2), n);
+        assert_eq!(seg.min_left(|x| x.0 < 2, n), 2);
+        assert_eq!(seg.min_left(|x| x.0 < 2, 2), 0);
+    }
 }
