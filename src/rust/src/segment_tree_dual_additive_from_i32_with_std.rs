@@ -1,21 +1,15 @@
-use crate::bit_length_with_count_leading_zeros_usize::bit_length;
-pub trait Monoid {
-    type T;
-    fn op(l: Self::T, r: Self::T) -> Self::T;
-    fn e() -> Self::T;
-}
-pub struct DualSegtree<G: Monoid> {
-    node: Vec<G::T>,
+use std::ops::*;
+
+use crate::bit_length_with_count_leading_zeros_usize::*;
+pub struct DualSegtree<T> {
+    node: Vec<T>,
     size: usize,
 }
-impl<G: Monoid> DualSegtree<G>
-where
-    G::T: Clone,
-{
+impl<T: Clone + Add<Output = T> + From<i32>> DualSegtree<T> {
     pub fn new(size: usize) -> Self {
         assert!(size > 0);
         let n = size.next_power_of_two();
-        let node = vec![G::e(); n << 1];
+        let node = vec![0.into(); n << 1];
         Self { node, size }
     }
 
@@ -25,14 +19,14 @@ where
 
     fn height(&self) -> usize { bit_length(self.n()) }
 
-    fn operate_node(&mut self, i: usize, x: G::T) {
-        self.node[i] = G::op(self.node[i].clone(), x);
+    fn operate_node(&mut self, i: usize, x: T) {
+        self.node[i] = self.node[i].clone() + x;
     }
 
     fn propagate(&mut self, i: usize) {
         self.operate_node(i << 1, self.node[i].clone());
         self.operate_node(i << 1 | 1, self.node[i].clone());
-        self.node[i] = G::e();
+        self.node[i] = 0.into();
     }
 
     fn pull(&mut self, i: usize) {
@@ -41,14 +35,14 @@ where
         }
     }
 
-    pub fn get(&mut self, mut i: usize) -> &mut G::T {
+    pub fn get(&mut self, mut i: usize) -> &mut T {
         assert!(i < self.size());
         i += self.n();
         self.pull(i);
         &mut self.node[i]
     }
 
-    pub fn operate(&mut self, mut l: usize, mut r: usize, x: G::T) {
+    pub fn operate(&mut self, mut l: usize, mut r: usize, x: T) {
         assert!(l <= r && r <= self.size());
         let n = self.n();
         l += n;
@@ -68,4 +62,9 @@ where
             r >>= 1;
         }
     }
+}
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn test() {}
 }
