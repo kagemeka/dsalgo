@@ -972,6 +972,8 @@ pub mod splay_tree_node_with_trait_rc_refcell_merge_split_based_bottom_up;
 pub mod split;
 pub mod spqr_tree;
 pub mod spreadsort;
+pub mod chebyshev_distance_2d_i64;
+pub mod chebyshev_distance_ndim_i64;
 pub mod sqrt_decomposition;
 pub mod sqrt_tree;
 pub mod srt_division;
