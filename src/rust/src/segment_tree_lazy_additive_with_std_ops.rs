@@ -62,6 +62,14 @@ where
         }
     }
 
+    pub fn set(&mut self, mut i: usize, x: S) {
+        assert!(i < self.size);
+        i += self.n();
+        self.pull(i);
+        self.data[i] = x;
+        self.merge_above(i);
+    }
+
     pub fn apply(&mut self, mut l: usize, mut r: usize, f: F) {
         assert!(l <= r && r <= self.size);
         let n = self.n();
@@ -85,14 +93,6 @@ where
         }
         self.merge_above(l0);
         self.merge_above(r0);
-    }
-
-    pub fn set(&mut self, mut i: usize, x: S) {
-        assert!(i < self.size);
-        i += self.n();
-        self.pull(i);
-        self.data[i] = x;
-        self.merge_above(i);
     }
 
     pub fn fold(&mut self, mut l: usize, mut r: usize) -> S {
@@ -119,7 +119,7 @@ where
         vl + vr
     }
 
-    pub fn max_right<G>(&mut self, is_ok: &G, l: usize) -> usize
+    pub fn max_right<G>(&mut self, is_ok: G, l: usize) -> usize
     where
         G: Fn(&S) -> bool,
     {
@@ -156,7 +156,7 @@ where
         i - n
     }
 
-    pub fn min_left<G>(&mut self, is_ok: &G, r: usize) -> usize
+    pub fn min_left<G>(&mut self, is_ok: G, r: usize) -> usize
     where
         G: Fn(&S) -> bool,
     {
@@ -197,6 +197,52 @@ where
 }
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
-    fn test() {}
+    fn test() {
+        use std::ops::*;
+        #[derive(Debug, Clone, PartialEq)]
+        struct S(i64, usize);
+        impl Identity for S {
+            fn e() -> Self { Self(0, 0) }
+        }
+        impl Add for S {
+            type Output = Self;
+
+            fn add(self, rhs: Self) -> Self::Output {
+                Self(self.0 + rhs.0, self.1 + rhs.1)
+            }
+        }
+        impl Add<F> for S {
+            type Output = S;
+
+            fn add(self, rhs: F) -> Self::Output {
+                Self(self.0 + self.1 as i64 * rhs.0, self.1)
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        struct F(i64);
+        impl Add for F {
+            type Output = Self;
+
+            fn add(self, rhs: Self) -> Self::Output { Self(self.0 + rhs.0) }
+        }
+        impl Identity for F {
+            fn e() -> Self { Self(0) }
+        }
+        let n = 5;
+        let mut seg = LazySegtree::<S, F>::new(n);
+        for i in 0..n {
+            seg.set(i, S(0, 1));
+        }
+        for i in 0..n {
+            assert_eq!(seg.fold(i, i + 1), S(0, 1));
+        }
+        seg.apply(1, 3, F(1));
+        assert_eq!(seg.fold(0, n), S(2, 5));
+        assert_eq!(seg.max_right(|x| x.0 < 2, 0), 2);
+        assert_eq!(seg.max_right(|x| x.0 < 2, 2), n);
+        assert_eq!(seg.min_left(|x| x.0 < 2, n), 2);
+        assert_eq!(seg.min_left(|x| x.0 < 2, 2), 0);
+    }
 }

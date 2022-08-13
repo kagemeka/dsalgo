@@ -67,6 +67,14 @@ where
         }
     }
 
+    pub fn set(&mut self, mut i: usize, x: O::S) {
+        assert!(i < self.size);
+        i += self.n();
+        self.pull(i);
+        self.data[i] = x;
+        self.merge_above(i);
+    }
+
     pub fn apply(&mut self, mut l: usize, mut r: usize, f: O::F) {
         assert!(l <= r && r <= self.size);
         let n = self.n();
@@ -90,14 +98,6 @@ where
         }
         self.merge_above(l0);
         self.merge_above(r0);
-    }
-
-    pub fn set(&mut self, mut i: usize, x: O::S) {
-        assert!(i < self.size);
-        i += self.n();
-        self.pull(i);
-        self.data[i] = x;
-        self.merge_above(i);
     }
 
     pub fn get(&mut self, mut i: usize) -> O::S {
@@ -131,7 +131,7 @@ where
         self.ops.op(vl, vr)
     }
 
-    pub fn max_right<F>(&mut self, is_ok: &F, l: usize) -> usize
+    pub fn max_right<F>(&mut self, is_ok: F, l: usize) -> usize
     where
         F: Fn(&O::S) -> bool,
     {
@@ -168,7 +168,7 @@ where
         i - n
     }
 
-    pub fn min_left<F>(&mut self, is_ok: &F, r: usize) -> usize
+    pub fn min_left<F>(&mut self, is_ok: F, r: usize) -> usize
     where
         F: Fn(&O::S) -> bool,
     {

@@ -67,6 +67,14 @@ where
         }
     }
 
+    pub fn set(&mut self, mut i: usize, x: O::S) {
+        assert!(i < self.size);
+        i += self.n();
+        self.pull(i);
+        self.data[i] = x;
+        self.merge_above(i);
+    }
+
     pub fn apply(&mut self, l: usize, r: usize, f: O::F) {
         assert!(l <= r && r <= self.size);
         self._apply(l, r, 0, self.n(), 1, f);
@@ -87,14 +95,6 @@ where
         self._apply(l, r, cl, c, i << 1, f.clone());
         self._apply(l, r, c, cr, i << 1 | 1, f);
         self.merge(i);
-    }
-
-    pub fn set(&mut self, mut i: usize, x: O::S) {
-        assert!(i < self.size);
-        i += self.n();
-        self.pull(i);
-        self.data[i] = x;
-        self.merge_above(i);
     }
 
     pub fn fold(&mut self, l: usize, r: usize) -> O::S {
