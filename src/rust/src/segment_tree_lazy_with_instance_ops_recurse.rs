@@ -1,4 +1,3 @@
-use crate::bit_length_with_count_leading_zeros_usize::bit_length;
 pub trait Ops {
     type S;
     type F;
@@ -32,8 +31,6 @@ where
 
     fn n(&self) -> usize { self.lazy.len() }
 
-    fn height(&self) -> usize { bit_length(self.n()) }
-
     fn merge(&mut self, i: usize) {
         self.data[i] = self
             .ops
@@ -54,25 +51,25 @@ where
         self.lazy[i] = self.ops.id();
     }
 
-    fn pull(&mut self, i: usize) {
-        for j in (1..self.height()).rev() {
-            self.propagate(i >> j);
-        }
+    pub fn set(&mut self, i: usize, x: O::S) {
+        assert!(i < self.size());
+        self._set(i, 0, self.n(), 1, x);
     }
 
-    fn merge_above(&mut self, mut i: usize) {
-        while i > 1 {
-            i >>= 1;
-            self.merge(i);
+    fn _set(&mut self, i: usize, cl: usize, cr: usize, ci: usize, x: O::S) {
+        assert!(cl <= i && i < cr);
+        if cr - cl == 1 {
+            self.data[ci] = x;
+            return;
         }
-    }
-
-    pub fn set(&mut self, mut i: usize, x: O::S) {
-        assert!(i < self.size);
-        i += self.n();
-        self.pull(i);
-        self.data[i] = x;
-        self.merge_above(i);
+        self.propagate(ci);
+        let c = (cl + cr) >> 1;
+        if i < c {
+            self._set(i, cl, c, ci << 1, x);
+        } else {
+            self._set(i, c, cr, ci << 1 | 1, x);
+        }
+        self.merge(ci);
     }
 
     pub fn apply(&mut self, l: usize, r: usize, f: O::F) {
@@ -96,6 +93,8 @@ where
         self._apply(l, r, c, cr, i << 1 | 1, f);
         self.merge(i);
     }
+
+    pub fn get(&mut self, i: usize) -> O::S { self.fold(i, i + 1) }
 
     pub fn fold(&mut self, l: usize, r: usize) -> O::S {
         assert!(l <= r && r <= self.size);
@@ -221,7 +220,7 @@ mod tests {
             seg.set(i, (0, 1));
         }
         for i in 0..n {
-            assert_eq!(seg.fold(i, i + 1), (0, 1));
+            assert_eq!(seg.get(i), (0, 1));
         }
         seg.apply(1, 3, 1);
         assert_eq!(seg.fold(0, n), (2, 5));

@@ -237,7 +237,7 @@ mod tests {
             seg.set(i, (0, 1));
         }
         for i in 0..n {
-            assert_eq!(seg.fold(i, i + 1), (0, 1));
+            assert_eq!(seg.get(i), (0, 1));
         }
         seg.apply(1, 3, 1);
         assert_eq!(seg.fold(0, n), (2, 5));

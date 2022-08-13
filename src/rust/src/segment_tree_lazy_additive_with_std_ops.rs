@@ -95,6 +95,13 @@ where
         self.merge_above(r0);
     }
 
+    pub fn get(&mut self, mut i: usize) -> S {
+        assert!(i < self.size);
+        i += self.n();
+        self.pull(i);
+        self.data[i].clone()
+    }
+
     pub fn fold(&mut self, mut l: usize, mut r: usize) -> S {
         assert!(l <= r && r <= self.size);
         let n = self.n();
@@ -236,7 +243,7 @@ mod tests {
             seg.set(i, S(0, 1));
         }
         for i in 0..n {
-            assert_eq!(seg.fold(i, i + 1), S(0, 1));
+            assert_eq!(seg.get(i), S(0, 1));
         }
         seg.apply(1, 3, F(1));
         assert_eq!(seg.fold(0, n), S(2, 5));
