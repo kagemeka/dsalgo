@@ -1,6 +1,6 @@
 use std::ops::*;
 
-use crate::segment_tree_lazy_with_instance_ops::*;
+use crate::segment_tree_lazy_with_instance_homomorphism::*;
 pub struct RangeUpdateRangeSum<T>(T);
 impl<T> RangeUpdateRangeSum<T> {
     pub fn new(zero: T) -> Self { Self(zero) }

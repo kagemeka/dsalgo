@@ -1,6 +1,6 @@
 use std::ops::*;
 
-use crate::segment_tree_lazy_with_instance_ops::*;
+use crate::segment_tree_lazy_with_instance_homomorphism::*;
 pub struct RangeAddRangeMinimum<T>(T, T);
 impl<T> RangeAddRangeMinimum<T> {
     pub fn new(inf: T, zero: T) -> Self { Self(inf, zero) }

@@ -1,6 +1,9 @@
 use std::ops::*;
 
-use crate::{modular_frequent::*, segment_tree_lazy_additive_with_std_ops::*};
+use crate::{
+    modular_frequent::*,
+    segment_tree_lazy_additive_homomorphism_with_std_ops::*,
+};
 #[derive(Clone)]
 pub struct S(Mint, Mint);
 impl Add for S {
