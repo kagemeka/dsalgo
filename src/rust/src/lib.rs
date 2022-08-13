@@ -979,6 +979,8 @@ pub mod sssp_dijkstra_sparse_with_general;
 pub mod sssp_faster_algorithm;
 pub mod stable_sort;
 pub mod stack_with_vec;
+pub mod union_find_potentialized_with_instance_abelian_group;
+pub mod union_find_potentialized_i64_add;
 pub mod static_matrix_property_i64_2_2;
 pub mod static_matrix_property_trait;
 pub mod static_modular_arithmetic_trait;
