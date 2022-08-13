@@ -899,6 +899,7 @@ pub mod segment_tree_lazy_with_static_ops;
 pub mod segment_tree_min;
 pub mod segment_tree_point_update_get_range_sum_and_range_prefix_sum_min_i64;
 pub mod segment_tree_with_instance_monoid;
+pub mod segment_tree_with_instance_monoid_recurse;
 pub mod segment_tree_with_static_monoid;
 pub mod selection_sort;
 pub mod self_balancing_binary_search_tree;
