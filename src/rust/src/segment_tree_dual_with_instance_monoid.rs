@@ -70,3 +70,31 @@ where
         }
     }
 }
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test() {
+        struct M;
+        impl Monoid for M {
+            type T = i64;
+
+            fn op(&self, l: Self::T, r: Self::T) -> Self::T { l + r }
+
+            fn e(&self) -> Self::T { 0 }
+        }
+        let n = 5;
+        let mut seg = DualSegtree::new(M {}, n);
+        seg.operate(1, 3, 1);
+        assert_eq!(seg.get(0), &0);
+        assert_eq!(seg.get(1), &1);
+        assert_eq!(seg.get(1), &1);
+        assert_eq!(seg.get(0), &0);
+        assert_eq!(seg.get(0), &0);
+        *seg.get(0) = -1;
+        seg.operate(0, 2, -1);
+        assert_eq!(seg.get(0), &-2);
+        assert_eq!(seg.get(1), &0);
+        assert_eq!(seg.get(2), &1);
+    }
+}

@@ -65,6 +65,21 @@ impl<T: Clone + Add<Output = T> + From<i32>> DualSegtree<T> {
 }
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
-    fn test() {}
+    fn test() {
+        let n = 5;
+        let mut seg = DualSegtree::<i64>::new(n);
+        seg.operate(1, 3, 1);
+        assert_eq!(seg.get(0), &0);
+        assert_eq!(seg.get(1), &1);
+        assert_eq!(seg.get(1), &1);
+        assert_eq!(seg.get(0), &0);
+        assert_eq!(seg.get(0), &0);
+        *seg.get(0) = -1;
+        seg.operate(0, 2, -1);
+        assert_eq!(seg.get(0), &-2);
+        assert_eq!(seg.get(1), &0);
+        assert_eq!(seg.get(2), &1);
+    }
 }

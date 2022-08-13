@@ -33,24 +33,20 @@ where
         self.node[i] = self.g.e();
     }
 
-    pub fn get(&mut self, i: usize) -> G::T {
+    pub fn get(&mut self, i: usize) -> &mut G::T {
         assert!(i < self.size());
-        self._get(i, 0, self.n(), 1).unwrap()
+        self._get(i, 0, self.n(), 1)
     }
 
-    fn _get(
-        &mut self, i: usize, cl: usize, cr: usize, ci: usize,
-    ) -> Option<G::T> {
-        if cr <= i || i < cl {
-            return None;
-        }
+    fn _get(&mut self, i: usize, cl: usize, cr: usize, ci: usize) -> &mut G::T {
+        assert!(cl <= i && i < cr);
         if cr - cl == 1 {
-            return Some(self.node[ci].clone());
+            return &mut self.node[ci];
         }
         self.propagate(ci);
         let c = (cl + cr) >> 1;
-        if let Some(res) = self._get(i, cl, c, ci << 1) {
-            Some(res)
+        if i < c {
+            self._get(i, cl, c, ci << 1)
         } else {
             self._get(i, c, cr, ci << 1 | 1)
         }
@@ -79,6 +75,29 @@ where
 }
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
-    fn test() {}
+    fn test() {
+        struct M;
+        impl Monoid for M {
+            type T = i64;
+
+            fn op(&self, l: Self::T, r: Self::T) -> Self::T { l + r }
+
+            fn e(&self) -> Self::T { 0 }
+        }
+        let n = 5;
+        let mut seg = DualSegtree::new(M {}, n);
+        seg.operate(1, 3, 1);
+        assert_eq!(seg.get(0), &0);
+        assert_eq!(seg.get(1), &1);
+        assert_eq!(seg.get(1), &1);
+        assert_eq!(seg.get(0), &0);
+        assert_eq!(seg.get(0), &0);
+        *seg.get(0) = -1;
+        seg.operate(0, 2, -1);
+        assert_eq!(seg.get(0), &-2);
+        assert_eq!(seg.get(1), &0);
+        assert_eq!(seg.get(2), &1);
+    }
 }
