@@ -1,6 +1,7 @@
 pub fn suffix_array<T: Ord>(a: &[T]) -> Vec<usize> {
     let n = a.len();
-    let counting_argsort = |a: &Vec<usize>| -> Vec<usize> {
+    fn counting_argsort(a: &Vec<usize>) -> Vec<usize> {
+        let n = a.len();
         let mut arg = vec![0; n + 2];
         for &x in a.iter() {
             arg[x + 1] += 1;
@@ -14,7 +15,7 @@ pub fn suffix_array<T: Ord>(a: &[T]) -> Vec<usize> {
             arg[x] += 1;
         }
         key
-    };
+    }
     let mut v = Vec::with_capacity(n);
     for x in a.iter() {
         v.push(x);

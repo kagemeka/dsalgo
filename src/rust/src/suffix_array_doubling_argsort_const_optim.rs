@@ -1,33 +1,37 @@
 /// O(N\log^2{N})
-pub fn suffix_array(mut a: Vec<usize>) -> Vec<usize> {
+pub fn suffix_array<T: Ord>(a: &[T]) -> Vec<usize> {
+    let mut v: Vec<_> = a.iter().collect();
+    v.sort_unstable();
+    v.dedup();
+    let mut a: Vec<_> =
+        a.iter().map(|x| v.binary_search(&x).unwrap() + 1).collect();
     let n = a.len();
     let mut d = 1;
-    let mut sa: Vec<_> = (0..n).collect();
+    let mut b: Vec<_> = (0..n as u32).map(|i| (0, i)).collect();
     loop {
-        for i in 0..n {
-            a[i] <<= 30;
-            if i + d < n {
-                a[i] |= 1 + a[i + d];
-            }
+        for x in b.iter_mut() {
+            x.0 = a[x.1 as usize] << 30
+                | a.get(x.1 as usize + d).map_or(0, |r| *r);
         }
-        sa.sort_unstable_by_key(|&i| a[i]);
+        b.sort_unstable_by_key(|&x| x.0);
         d <<= 1;
         if d >= n {
-            return sa;
+            break;
         }
         let mut rank = 0;
-        let mut prev = a[sa[0]];
-        for &i in sa.iter() {
-            if a[i] > prev {
+        let mut prev = 0;
+        for x in b.iter() {
+            if x.0 > prev {
                 rank += 1;
-                prev = a[i];
+                prev = x.0;
             }
-            a[i] = rank;
+            a[x.1 as usize] = rank;
         }
         if rank == n {
-            return sa;
+            break;
         }
     }
+    b.into_iter().map(|x| x.1 as usize).collect()
 }
 #[cfg(test)]
 mod tests {
@@ -43,7 +47,7 @@ mod tests {
             ]),
         ];
         for (s, ans) in cases {
-            assert_eq!(suffix_array(s), ans);
+            assert_eq!(suffix_array(&s), ans);
         }
     }
 }
