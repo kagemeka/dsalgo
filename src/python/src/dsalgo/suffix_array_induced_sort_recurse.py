@@ -71,10 +71,11 @@ def sa_is(a: list[int]) -> list[int]:
     return induce([lms[i] for i in lms_order])[1:]
 
 
-# TODO:
 class Tests(unittest.TestCase):
     def test(self) -> None:
-        ...
+        s = [1, 1, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 2, 2, 0, 0]
+        ans = [15, 14, 10, 6, 2, 11, 7, 3, 1, 0, 13, 12, 9, 5, 8, 4]
+        assert sa_is(s) == ans
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@ import unittest
 L = typing.List
 
 
-def kasai(a: L[int], sa: L[int]) -> L[int]:
+def lcp_array(a: L[int], sa: L[int]) -> L[int]:
     n = len(a)
     assert n > 0
     rank = [0] * n
@@ -23,7 +23,7 @@ def kasai(a: L[int], sa: L[int]) -> L[int]:
         if r == n - 1:
             continue
         j = sa[r + 1]
-        while i + h < n and j + h < n and a[i + h] == a[j + h]:
+        while max(i, j) + h < n and a[i + h] == a[j + h]:
             h += 1
         lcp[r] = h
     return lcp
@@ -31,13 +31,13 @@ def kasai(a: L[int], sa: L[int]) -> L[int]:
 
 class TestKasai(unittest.TestCase):
     def test(self) -> None:
-        import dsalgo.suffix_array
+        from dsalgo.suffix_array_induced_sort_recurse import sa_is
 
         arr = [1, 0, 3, 3, 0, 3, 3, 0, 2, 2, 0]  # mississippi
-        sa = dsalgo.suffix_array.sais_recurse(arr)
+        sa = sa_is(arr)
 
         lcp = [1, 1, 4, 0, 0, 1, 0, 2, 1, 3]
-        kasai(arr, sa) == lcp
+        lcp_array(arr, sa) == lcp
 
 
 if __name__ == "__main__":

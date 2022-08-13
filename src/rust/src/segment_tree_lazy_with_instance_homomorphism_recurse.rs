@@ -1,4 +1,3 @@
-use crate::bit_length_with_count_leading_zeros_usize::bit_length;
 pub trait Ops {
     type S;
     type F;
@@ -32,8 +31,6 @@ where
 
     fn n(&self) -> usize { self.lazy.len() }
 
-    fn height(&self) -> usize { bit_length(self.n()) }
-
     fn merge(&mut self, i: usize) {
         self.data[i] = self
             .ops
@@ -54,17 +51,25 @@ where
         self.lazy[i] = self.ops.id();
     }
 
-    fn pull(&mut self, i: usize) {
-        for j in (1..self.height()).rev() {
-            self.propagate(i >> j);
-        }
+    pub fn set(&mut self, i: usize, x: O::S) {
+        assert!(i < self.size());
+        self._set(i, 0, self.n(), 1, x);
     }
 
-    fn merge_above(&mut self, mut i: usize) {
-        while i > 1 {
-            i >>= 1;
-            self.merge(i);
+    fn _set(&mut self, i: usize, cl: usize, cr: usize, ci: usize, x: O::S) {
+        assert!(cl <= i && i < cr);
+        if cr - cl == 1 {
+            self.data[ci] = x;
+            return;
         }
+        self.propagate(ci);
+        let c = (cl + cr) >> 1;
+        if i < c {
+            self._set(i, cl, c, ci << 1, x);
+        } else {
+            self._set(i, c, cr, ci << 1 | 1, x);
+        }
+        self.merge(ci);
     }
 
     pub fn apply(&mut self, l: usize, r: usize, f: O::F) {
@@ -89,13 +94,7 @@ where
         self.merge(i);
     }
 
-    pub fn set(&mut self, mut i: usize, x: O::S) {
-        assert!(i < self.size);
-        i += self.n();
-        self.pull(i);
-        self.data[i] = x;
-        self.merge_above(i);
-    }
+    pub fn get(&mut self, i: usize) -> O::S { self.fold(i, i + 1) }
 
     pub fn fold(&mut self, l: usize, r: usize) -> O::S {
         assert!(l <= r && r <= self.size);
@@ -118,12 +117,12 @@ where
         self.ops.op(vl, vr)
     }
 
-    pub fn max_right<G>(&mut self, is_ok: &G, l: usize) -> usize
+    pub fn max_right<G>(&mut self, is_ok: G, l: usize) -> usize
     where
         G: Fn(&O::S) -> bool,
     {
         assert!(l <= self.size);
-        self._max_right(is_ok, l, 0, self.n(), &mut self.ops.e(), 1)
+        self._max_right(&is_ok, l, 0, self.n(), &mut self.ops.e(), 1)
     }
 
     fn _max_right<G>(
@@ -156,12 +155,12 @@ where
         self._max_right(is_ok, l, c, cr, v, i << 1 | 1)
     }
 
-    pub fn min_left<G>(&mut self, is_ok: &G, r: usize) -> usize
+    pub fn min_left<G>(&mut self, is_ok: G, r: usize) -> usize
     where
         G: Fn(&O::S) -> bool,
     {
         assert!(r <= self.size);
-        self._min_left(is_ok, r, 0, self.n(), &mut self.ops.e(), 1)
+        self._min_left(&is_ok, r, 0, self.n(), &mut self.ops.e(), 1)
     }
 
     fn _min_left<G>(
@@ -193,6 +192,41 @@ where
 }
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
-    fn test() {}
+    fn test() {
+        struct Lz;
+        impl Ops for Lz {
+            type F = i64;
+            type S = (i64, usize);
+
+            fn op(&self, a: Self::S, b: Self::S) -> Self::S {
+                (a.0 + b.0, a.1 + b.1)
+            }
+
+            fn e(&self) -> Self::S { (0, 0) }
+
+            fn compose(&self, f: Self::F, g: Self::F) -> Self::F { f + g }
+
+            fn id(&self) -> Self::F { 0 }
+
+            fn map(&self, f: Self::F, x: Self::S) -> Self::S {
+                (x.0 + x.1 as i64 * f, x.1)
+            }
+        }
+        let n = 5;
+        let mut seg = LazySegtree::new(Lz {}, n);
+        for i in 0..n {
+            seg.set(i, (0, 1));
+        }
+        for i in 0..n {
+            assert_eq!(seg.get(i), (0, 1));
+        }
+        seg.apply(1, 3, 1);
+        assert_eq!(seg.fold(0, n), (2, 5));
+        assert_eq!(seg.max_right(|x| x.0 < 2, 0), 2);
+        assert_eq!(seg.max_right(|x| x.0 < 2, 2), n);
+        assert_eq!(seg.min_left(|x| x.0 < 2, n), 2);
+        assert_eq!(seg.min_left(|x| x.0 < 2, 2), 0);
+    }
 }

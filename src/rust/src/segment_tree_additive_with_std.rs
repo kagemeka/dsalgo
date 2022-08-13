@@ -7,6 +7,11 @@ pub struct Segtree<T> {
 impl<T> Segtree<T> {
     fn n(&self) -> usize { self.node.len() >> 1 }
 }
+impl<T> Index<usize> for Segtree<T> {
+    type Output = T;
+
+    fn index(&self, i: usize) -> &Self::Output { &self.node[i + self.n()] }
+}
 impl<T: Add<Output = T> + Clone> Segtree<T> {
     fn update(&mut self, i: usize) {
         self.node[i] =
@@ -51,13 +56,15 @@ impl<T: Add<Output = T> + Clone> Segtree<T> {
         vl + vr
     }
 }
-impl<T> Index<usize> for Segtree<T> {
-    type Output = T;
-
-    fn index(&self, i: usize) -> &Self::Output { &self.node[i + self.n()] }
-}
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
-    fn test() {}
+    fn test() {
+        let n = 5;
+        let mut seg = Segtree::<i64>::new(0, n);
+        seg.set(2, 1);
+        assert_eq!(seg[2], 1);
+        assert_eq!(seg.fold(0, 5), 1);
+    }
 }

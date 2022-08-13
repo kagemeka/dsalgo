@@ -2,8 +2,8 @@ pub fn lcp_array(a: &[usize], sa: &[usize]) -> Vec<usize> {
     let n = a.len();
     assert!(n > 0 && sa.len() == n);
     let mut rank = vec![0; n];
-    for i in 0..n {
-        rank[sa[i]] = i;
+    for (r, &i) in sa.iter().enumerate() {
+        rank[i] = r;
     }
     let mut lcp = vec![0; n - 1];
     let mut h = 0;

@@ -53,7 +53,7 @@ mod tests {
                     seg.set(l, (a[l], a[l]));
                     seg.set(r, (a[r], a[r]));
                 } else {
-                    let s = seg.get(l, r + 1);
+                    let s = seg.fold(l, r + 1);
                     assert_eq!(s.0 >= 0 && s.1 == 0, ans);
                 }
             }

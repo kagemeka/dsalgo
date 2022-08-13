@@ -1,4 +1,4 @@
-use crate::segment_tree_lazy_with_instance_ops::*;
+use crate::segment_tree_lazy_with_instance_homomorphism::*;
 pub struct RangeAddRangeSumI64;
 impl Ops for RangeAddRangeSumI64 {
     type F = i64;

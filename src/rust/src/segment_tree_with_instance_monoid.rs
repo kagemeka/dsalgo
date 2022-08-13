@@ -29,7 +29,8 @@ where
 
     pub fn new(g: G, size: usize) -> Self {
         assert!(size > 0);
-        let data = vec![g.e(); size.next_power_of_two() << 1];
+        let n = size.next_power_of_two();
+        let data = vec![g.e(); n << 1];
         Self { g, size, data }
     }
 
@@ -43,7 +44,7 @@ where
         }
     }
 
-    pub fn get(&self, mut l: usize, mut r: usize) -> G::T {
+    pub fn fold(&self, mut l: usize, mut r: usize) -> G::T {
         assert!(l <= r && r <= self.size);
         let mut vl = self.g.e();
         let mut vr = self.g.e();
@@ -147,7 +148,7 @@ mod tests {
             seg.set(i, i as i32 + 1);
         }
         assert_eq!(seg[3], 4);
-        assert_eq!(seg.get(2, 4), 7);
+        assert_eq!(seg.fold(2, 4), 7);
         assert_eq!(seg.max_right(|&x| x < 5, 1), 2);
         assert_eq!(seg.max_right(|&x| x <= 5, 1), 3);
         assert_eq!(seg.min_left(|&x| x < 7, 4), 3);
@@ -162,15 +163,15 @@ mod tests {
         for i in 0..n {
             seg.set(i, i as i32);
         }
-        assert_eq!(seg.get(0, n), s);
+        assert_eq!(seg.fold(0, n), s);
         seg.set(0, 1);
-        assert_eq!(seg.get(0, n), s + 1);
+        assert_eq!(seg.fold(0, n), s + 1);
         seg.set(0, 0);
-        assert_eq!(seg.get(0, n), s);
+        assert_eq!(seg.fold(0, n), s);
         assert_eq!(seg.size, 10);
         assert_eq!(seg[5], 5);
         seg.set(5, 10);
-        assert_eq!(seg.get(0, n), s + 10 - 5);
+        assert_eq!(seg.fold(0, n), s + 10 - 5);
         let is_ok = |x: &i32| *x < 10;
         assert_eq!(seg.max_right(&is_ok, 0), 4);
         assert_eq!(seg.max_right(&is_ok, 5), 5);
