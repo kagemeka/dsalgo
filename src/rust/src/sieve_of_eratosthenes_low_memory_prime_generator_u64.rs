@@ -1,6 +1,6 @@
 use crate::{
     integer_square_root_with_binary_search_u64::isqrt,
-    sieve_of_eratosthenes_enumerate_primes_in_range_optim_u64::*,
+    sieve_of_eratosthenes_enumerate_primes_in_range_query_optim_u64::*,
 };
 pub struct PrimeGenerator {
     it: std::vec::IntoIter<u64>,
