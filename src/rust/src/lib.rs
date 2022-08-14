@@ -496,6 +496,7 @@ pub mod is_adjacency_matrix;
 pub mod is_arborescence;
 pub mod is_eulerian_graph;
 pub mod is_identity;
+pub mod prime_factorize_combination_with_sieve_of_eratosthenes;
 pub mod is_invertible;
 pub mod is_multiple_of_9;
 pub mod is_multitree;
