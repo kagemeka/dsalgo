@@ -1,7 +1,9 @@
-use crate::{find_root::isqrt, sieve_of_eratosthenes_range_sieve::RangeSieve};
+use crate::{
+    find_root::isqrt, sieve_of_eratosthenes_enumerate_primes_in_range_u64::*,
+};
 pub struct PrimeGenerator {
     it: std::vec::IntoIter<u64>,
-    rs: RangeSieve,
+    rs: EnumerateRangePrimes,
     ranges: std::vec::IntoIter<(u64, u64)>,
 }
 impl PrimeGenerator {
@@ -24,7 +26,7 @@ impl PrimeGenerator {
         }
         Self {
             it: vec![].into_iter(),
-            rs: RangeSieve::new(hi as u64),
+            rs: EnumerateRangePrimes::new(hi as u64),
             ranges: ranges.into_iter(),
         }
     }
@@ -37,7 +39,7 @@ impl Iterator for PrimeGenerator {
             return Some(p);
         }
         while let Some((lo, hi)) = self.ranges.next() {
-            self.it = self.rs.ps(lo, hi).into_iter();
+            self.it = self.rs.enumerate(lo, hi).into_iter();
             if let Some(p) = self.it.next() {
                 return Some(p);
             }

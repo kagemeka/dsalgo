@@ -16,7 +16,9 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        let s = ['a', 'b', 'a', 'b', 'a', 'b', 'a', 'b', 'c'];
-        assert_eq!(z_algorithm_findall(&s, &['a', 'b', 'a']), [0, 2, 4]);
+        let cases = vec![(("ababababc", "aba"), vec![0, 2, 4])];
+        for ((s, t), ans) in cases {
+            assert_eq!(z_algorithm_findall(s.as_bytes(), t.as_bytes()), ans);
+        }
     }
 }

@@ -1,6 +1,6 @@
-pub fn morris_pratt<T: PartialEq>(a: &[T]) -> Vec<usize> {
+pub fn longest_border<T: PartialEq>(a: &[T]) -> Vec<usize> {
     let n = a.len();
-    let mut lb = vec![0; n]; // longest border
+    let mut lb = vec![0; n];
     let mut d = 0;
     for i in 1..n {
         while d != 0 && a[d] != a[i] {
@@ -29,8 +29,7 @@ mod tests {
             ]),
         ];
         for (s, ans) in cases {
-            let s = s.chars().collect::<Vec<_>>();
-            assert_eq!(morris_pratt(&s), ans);
+            assert_eq!(longest_border(s.as_bytes()), ans);
         }
     }
 }

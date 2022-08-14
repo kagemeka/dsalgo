@@ -1,4 +1,4 @@
-pub fn kmp_table<T: PartialEq>(a: &[T]) -> Vec<usize> {
+pub fn failure_function<T: PartialEq>(a: &[T]) -> Vec<usize> {
     let n = a.len();
     let mut f = vec![0; n]; // failure function
     let mut d = 0;
@@ -33,8 +33,7 @@ mod tests {
             ]),
         ];
         for (s, ans) in cases {
-            let s = s.chars().collect::<Vec<_>>();
-            assert_eq!(kmp_table(&s), ans);
+            assert_eq!(failure_function(s.as_bytes()), ans);
         }
     }
 }

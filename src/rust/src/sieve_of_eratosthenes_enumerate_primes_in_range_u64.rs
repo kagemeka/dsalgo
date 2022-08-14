@@ -1,12 +1,16 @@
+//! example
+//! enumerate(10, 20)
+//! = [11, 13, 17, 19]
 use crate::{
     find_root::isqrt,
     sieve_of_eratosthenes_enumerate_primes_u32::enumerate_primes,
 };
-pub struct RangeSieve {
+pub struct EnumerateRangePrimes {
     primes: Vec<u64>,
     less_than: u64,
 }
-impl RangeSieve {
+impl EnumerateRangePrimes {
+    /// less_than < 10^14
     pub fn new(less_than: u64) -> Self {
         Self {
             primes: enumerate_primes(isqrt::floor(less_than) as u32 + 1)
@@ -20,7 +24,7 @@ impl RangeSieve {
     /// find prime numbers in [lo, hi).
     /// time: O((hi - lo)\log{\log{less_than}})
     /// space: O(hi - lo)
-    pub fn ps(&self, mut lo: u64, hi: u64) -> Vec<u64> {
+    pub fn enumerate(&self, mut lo: u64, hi: u64) -> Vec<u64> {
         assert!(lo <= hi && hi <= self.less_than);
         if hi <= 2 {
             return vec![];
@@ -41,8 +45,8 @@ impl RangeSieve {
         }
         // initially, only odd numbers are in sieve.
         // be careful of indices.
-        let sz = ((hi - lo + 1) >> 1) as usize;
-        let mut is_p = vec![true; sz];
+        let size = ((hi - lo + 1) >> 1) as usize;
+        let mut is_p = vec![true; size];
         for &p in self.primes.iter().skip(1) {
             let mut from = p * p;
             if from >= hi {
@@ -53,7 +57,7 @@ impl RangeSieve {
                 from += p;
             }
             debug_assert!(from & 1 == 1);
-            for j in (((from - lo) >> 1) as usize..sz).step_by(p as usize) {
+            for j in (((from - lo) >> 1) as usize..size).step_by(p as usize) {
                 is_p[j] = false;
             }
         }
@@ -65,8 +69,8 @@ impl RangeSieve {
 }
 #[test]
 fn test_rs() {
-    let gen = RangeSieve::new(1 << 10);
-    assert_eq!(gen.ps(100, 500), vec![
+    let gen = EnumerateRangePrimes::new(1 << 10);
+    assert_eq!(gen.enumerate(100, 500), vec![
         101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167,
         173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241,
         251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331,

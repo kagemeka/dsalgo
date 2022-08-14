@@ -32,8 +32,7 @@ mod tests {
             ]),
         ];
         for (s, ans) in cases {
-            let s = s.chars().collect::<Vec<_>>();
-            assert_eq!(kmp_table(&s), ans);
+            assert_eq!(kmp_table(s.as_bytes()), ans);
         }
     }
 }

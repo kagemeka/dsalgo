@@ -11,12 +11,12 @@ pub mod newton {
     /// tol:  absolute tolerance
     /// rtol: relative tolerance
     #[derive(Default)]
-    pub struct Opts {
+    pub struct Options {
         pub tol: Option<f64>,
         pub rtol: Option<f64>,
         pub max_iter: Option<u8>,
     }
-    impl Opts {
+    impl Options {
         pub fn new(
             tol: Option<f64>, rtol: Option<f64>, max_iter: Option<u8>,
         ) -> Self {
@@ -28,7 +28,7 @@ pub mod newton {
     /// x0 := initial guess
     /// Err(x) if not terminated in max iterations.
     pub fn root<F, D>(
-        f: &F, fp: &D, x0: f64, opts: Option<Opts>,
+        f: &F, fp: &D, x0: f64, opts: Option<Options>,
     ) -> Result<f64, f64>
     where
         F: Fn(f64) -> f64,
@@ -74,7 +74,7 @@ pub mod isqrt {
         (1..1 << 32).find(|&x| x * x > n).unwrap_or(1 << 32) - 1
     }
     // linear with addition
-    pub fn add(n: u64) -> u64 {
+    pub fn linear_with_addition(n: u64) -> u64 {
         let mut x = 0;
         let mut x2 = 0; // x^2
         let mut delta = 1; // x2 + delta = (x + 1)^2
@@ -88,7 +88,7 @@ pub mod isqrt {
     /// linear with subtraction
     /// reference
     /// https://en.wikipedia.org/wiki/Integer_square_root
-    pub fn sub(n: u64) -> u64 {
+    pub fn linear_with_subtraction(n: u64) -> u64 {
         let mut a = 5 * n;
         let mut b = 5;
         while a >= b {
@@ -98,7 +98,7 @@ pub mod isqrt {
         b / 10
     }
     /// binary search
-    pub fn binsrch(n: u64) -> u64 {
+    pub fn binary_search(n: u64) -> u64 {
         let mut lo = 0;
         let mut hi = std::cmp::min(n + 1, 1 << 32);
         while hi - lo > 1 {
@@ -112,11 +112,11 @@ pub mod isqrt {
         lo
     }
     // digit by digit
-    pub fn dbd(n: u64) -> u64 {
+    pub fn digit_by_digit_recurse(n: u64) -> u64 {
         if n < 2 {
             return n;
         }
-        let x = dbd(n >> 2) << 1;
+        let x = digit_by_digit_recurse(n >> 2) << 1;
         if (x + 1).pow(2) <= n { x + 1 } else { x }
     }
     /// newton's method
@@ -134,9 +134,9 @@ pub mod isqrt {
         }
         x0
     }
-    pub fn floor(n: u64) -> u64 { binsrch(n) }
+    pub fn floor(n: u64) -> u64 { binary_search(n) }
     pub fn ceil(n: u64) -> u64 {
-        let x = binsrch(n);
+        let x = binary_search(n);
         if x * x == n { x } else { x + 1 }
     }
     #[cfg(test)]
@@ -150,32 +150,32 @@ pub mod isqrt {
         #[test]
         fn test_add() {
             for i in 0..1000 {
-                assert_eq!(add(i), naive(i));
+                assert_eq!(linear_with_addition(i), naive(i));
             }
         }
         #[test]
         fn test_sub() {
             for i in 0..1000 {
-                assert_eq!(sub(i), naive(i));
+                assert_eq!(linear_with_subtraction(i), naive(i));
             }
         }
         #[test]
-        fn test_binsrch() {
+        fn test_binary_search() {
             for i in 0..1000 {
-                assert_eq!(binsrch(i), naive(i));
+                assert_eq!(binary_search(i), naive(i));
             }
-            assert_eq!(binsrch(0), 0);
-            assert_eq!(binsrch(1), 1);
-            assert_eq!(binsrch(3), 1);
-            assert_eq!(binsrch(4), 2);
-            assert_eq!(binsrch(99), 9);
-            assert_eq!(binsrch(100), 10);
-            assert_eq!(binsrch(120), 10);
+            assert_eq!(binary_search(0), 0);
+            assert_eq!(binary_search(1), 1);
+            assert_eq!(binary_search(3), 1);
+            assert_eq!(binary_search(4), 2);
+            assert_eq!(binary_search(99), 9);
+            assert_eq!(binary_search(100), 10);
+            assert_eq!(binary_search(120), 10);
         }
         #[test]
         fn test_dd() {
             for i in 0..1000 {
-                assert_eq!(dbd(i), naive(i));
+                assert_eq!(digit_by_digit_recurse(i), naive(i));
             }
         }
         #[test]

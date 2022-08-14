@@ -1,8 +1,8 @@
 pub fn kmp_findall<T: PartialEq>(a: &[T], pattern: &[T]) -> Vec<usize> {
-    use crate::failure_function_kmp_table_0_indexed::kmp_table;
+    use crate::knuth_morris_pratt_failure_function_table_0_indexed::*;
     let b = pattern;
     let (n, m) = (a.len(), b.len());
-    let f = kmp_table(b);
+    let f = failure_function(b);
     let mut indices = vec![];
     let mut j = 0;
     for i in 0..n {
@@ -24,7 +24,9 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        let s = ['a', 'b', 'a', 'b', 'a', 'b', 'a', 'b', 'c'];
-        assert_eq!(kmp_findall(&s, &['a', 'b', 'a']), [0, 2, 4]);
+        let cases = vec![(("ababababc", "aba"), vec![0, 2, 4])];
+        for ((s, t), ans) in cases {
+            assert_eq!(kmp_findall(s.as_bytes(), t.as_bytes()), ans);
+        }
     }
 }
