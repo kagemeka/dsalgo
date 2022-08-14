@@ -1,5 +1,5 @@
 use crate::{
-    find_root::isqrt, sieve_of_eratosthenes_enumerate_primes_in_range_u64::*,
+    find_root::isqrt, sieve_of_eratosthenes_enumerate_primes_in_range_optim_u64::*,
 };
 pub struct PrimeGenerator {
     it: std::vec::IntoIter<u64>,

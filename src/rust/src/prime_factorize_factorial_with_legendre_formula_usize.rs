@@ -1,5 +1,5 @@
 use crate::{
-    legendre_formula::legendre,
+    legendre_formula_u64::legendre,
     sieve_of_eratosthenes_enumerate_primes_u32::enumerate_primes,
 };
 pub fn factorize_factorial(n: usize) -> Vec<(usize, usize)> {
