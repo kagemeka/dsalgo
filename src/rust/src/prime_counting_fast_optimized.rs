@@ -1,4 +1,4 @@
-use crate::find_root::isqrt;
+use crate::integer_square_root_with_binary_search_u64::isqrt;
 /// Compute \pi(n)
 /// O(N^{3/4}/log{N})
 /// reference
@@ -11,7 +11,7 @@ pub fn prime_pi_fast_optimized(n: u64) -> u64 {
         return 1;
     }
     let half = |i: usize| (i - 1) >> 1;
-    let sqrt = isqrt::floor(n) as usize;
+    let sqrt = isqrt(n) as usize;
     let n = n as usize;
     let mut size = (sqrt + 1) >> 1;
     // for memory saving. do not have space for even numbers.

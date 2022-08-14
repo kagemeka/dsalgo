@@ -1,6 +1,6 @@
 //! this does not pass test.
 // FIXME: fix bug.
-use crate::find_root::isqrt;
+use crate::integer_square_root_with_binary_search_u64::isqrt;
 /// O(N^{3/4}) with constant time optimization.
 /// insipired by O(N^{3/4}/log{N}) implementation.
 pub fn prime_pi_fast_half(n: u64) -> u64 {
@@ -10,7 +10,7 @@ pub fn prime_pi_fast_half(n: u64) -> u64 {
     if n == 2 {
         return 1;
     }
-    let sqrt = isqrt::floor(n) as usize;
+    let sqrt = isqrt(n) as usize;
     let n = n as usize;
     let size = (sqrt + 1) >> 1;
     let half = |j: usize| (j - 1) >> 1;

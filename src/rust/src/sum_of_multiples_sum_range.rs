@@ -1,4 +1,7 @@
-use crate::{find_root::isqrt, sum_of_multiples::sum_of_multiples};
+use crate::{
+    integer_square_root_with_binary_search_u64::isqrt,
+    sum_of_multiples::sum_of_multiples,
+};
 /// \sum_{i=lo}^{hi}{\sum_{i|j, j <= limit}{j}}
 /// sqrt split teqnique
 /// O(\sqrt{n})
@@ -23,7 +26,7 @@ pub fn sum_of_multiples_sum_range(limit: u64, lo: u64, mut hi: u64) -> u64 {
         debug_assert!(hi * hi <= limit);
         return s;
     }
-    debug_assert!(k == isqrt::floor(limit) + 1);
+    debug_assert!(k == isqrt(limit) + 1);
     debug_assert!(lo <= k && k <= hi);
     // added for i=lo..k.
     // next, consider i=k..=hi.

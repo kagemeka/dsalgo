@@ -2,7 +2,7 @@
 //! enumerate(10, 20)
 //! = [11, 13, 17, 19]
 use crate::{
-    find_root::isqrt,
+    integer_square_root_with_binary_search_u64::isqrt,
     sieve_of_eratosthenes_enumerate_primes_u32::enumerate_primes,
 };
 pub struct EnumerateRangePrimes {
@@ -13,7 +13,7 @@ impl EnumerateRangePrimes {
     /// less_than < 10^14
     pub fn new(less_than: u64) -> Self {
         Self {
-            primes: enumerate_primes(isqrt::floor(less_than) as u32 + 1)
+            primes: enumerate_primes(isqrt(less_than) as u32 + 1)
                 .into_iter()
                 .map(|p| p as u64)
                 .collect(),

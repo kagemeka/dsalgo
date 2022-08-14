@@ -1,5 +1,6 @@
 use crate::{
-    find_root::isqrt, sieve_of_eratosthenes_enumerate_primes_in_range_optim_u64::*,
+    integer_square_root_with_binary_search_u64::isqrt,
+    sieve_of_eratosthenes_enumerate_primes_in_range_optim_u64::*,
 };
 pub struct PrimeGenerator {
     it: std::vec::IntoIter<u64>,
@@ -16,7 +17,7 @@ impl PrimeGenerator {
             hi = 2;
         }
         let mut ranges = vec![];
-        let sz = (isqrt::floor(hi) as usize) << 3; // 2 ~ 4
+        let sz = (isqrt(hi) as usize) << 3; // 2 ~ 4
         // because range sieve has only odd numbers internally,
         // the size is sqrt / 2.
         // so we can check more than twice the range at once.

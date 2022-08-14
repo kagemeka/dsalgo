@@ -1,4 +1,6 @@
-use crate::{algebraic_structure::*, find_root::isqrt};
+use crate::{
+    algebraic_structure::*, integer_square_root_with_binary_search_u64::isqrt,
+};
 pub struct SqrtDecomposition<G: Semigroup> {
     pub(crate) node: Vec<G::S>,
     pub(crate) buckets: Vec<G::S>,
@@ -19,7 +21,7 @@ where
     fn from_iter<T: IntoIterator<Item = G::S>>(iter: T) -> Self {
         let node = iter.into_iter().collect::<Vec<_>>();
         let size = node.len();
-        let n = isqrt::floor(size as u64) as usize;
+        let n = isqrt(size as u64) as usize;
         let buckets = (0..(size + n - 1) / n)
             .map(|j| {
                 // node[j * n..std::cmp::min((j + 1) * n, size)]
