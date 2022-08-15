@@ -46,7 +46,7 @@ impl EnumerateRangePrimes {
         // initially, only odd numbers are in sieve.
         // be careful of indices.
         let size = ((hi - lo + 1) >> 1) as usize;
-        let mut is_p = vec![true; size];
+        let mut is_prime = vec![true; size];
         for &p in self.primes.iter().skip(1) {
             let mut from = p * p;
             if from >= hi {
@@ -57,13 +57,15 @@ impl EnumerateRangePrimes {
                 from += p;
             }
             debug_assert!(from & 1 == 1);
-            for j in (((from - lo) >> 1) as usize..size).step_by(p as usize) {
-                is_p[j] = false;
+            for i in (from..hi).step_by((p as usize) << 1) {
+                is_prime[(i - lo) as usize >> 1] = false;
             }
         }
-        a.extend(is_p.into_iter().enumerate().filter_map(|(i, is_p)| {
-            if is_p { Some(lo + (i << 1) as u64) } else { None }
-        }));
+        a.extend(is_prime.into_iter().enumerate().filter_map(
+            |(i, is_prime)| {
+                if is_prime { Some(lo + (i << 1) as u64) } else { None }
+            },
+        ));
         a
     }
 }

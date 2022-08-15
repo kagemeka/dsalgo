@@ -4,7 +4,7 @@ use crate::{
 };
 pub struct PrimeGenerator {
     it: std::vec::IntoIter<u64>,
-    rs: EnumerateRangePrimes,
+    range_sieve: EnumerateRangePrimes,
     ranges: std::vec::IntoIter<(u64, u64)>,
 }
 impl PrimeGenerator {
@@ -17,17 +17,17 @@ impl PrimeGenerator {
             hi = 2;
         }
         let mut ranges = vec![];
-        let sz = (isqrt(hi) as usize) << 3; // 2 ~ 4
+        let size = (isqrt(hi) as usize) << 3; // 2 ~ 4
         // because range sieve has only odd numbers internally,
         // the size is sqrt / 2.
         // so we can check more than twice the range at once.
         // four times is best in test.
-        for i in (lo..hi).step_by(sz) {
-            ranges.push((i, hi.min(i + sz as u64)));
+        for i in (lo..hi).step_by(size) {
+            ranges.push((i, hi.min(i + size as u64)));
         }
         Self {
             it: vec![].into_iter(),
-            rs: EnumerateRangePrimes::new(hi as u64),
+            range_sieve: EnumerateRangePrimes::new(hi as u64),
             ranges: ranges.into_iter(),
         }
     }
@@ -40,7 +40,7 @@ impl Iterator for PrimeGenerator {
             return Some(p);
         }
         while let Some((lo, hi)) = self.ranges.next() {
-            self.it = self.rs.enumerate(lo, hi).into_iter();
+            self.it = self.range_sieve.enumerate(lo, hi).into_iter();
             if let Some(p) = self.it.next() {
                 return Some(p);
             }
