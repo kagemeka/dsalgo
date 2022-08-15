@@ -499,6 +499,8 @@ pub mod is_adjacency_matrix;
 pub mod is_arborescence;
 pub mod is_eulerian_graph;
 pub mod is_identity;
+pub mod iterate_over_multiples_for_primes_in_1_n_harmonic_series_abstract;
+pub mod iterate_over_multiples_for_1_n_harmonic_series_abstract;
 pub mod is_invertible;
 pub mod is_multiple_of_9;
 pub mod is_multitree;
