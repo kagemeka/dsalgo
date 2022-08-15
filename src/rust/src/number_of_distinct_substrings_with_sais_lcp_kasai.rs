@@ -2,8 +2,8 @@ use crate::{
     longest_common_prefix_array_kasai::lcp_array,
     suffix_array_induced_sort_recurse::sa_is,
 };
-pub fn count_substrings(a: Vec<usize>) -> usize {
-    let sa = sa_is(a.clone());
+pub fn count_substrings(a: &[usize]) -> usize {
+    let sa = sa_is(a.to_vec());
     let lcp = lcp_array(&a, &sa);
     let n = sa.len();
     n * (n + 1) / 2 - lcp.iter().sum::<usize>()
@@ -20,7 +20,7 @@ mod tests {
             (vec![0, 0, 0, 0, 0], 5),
         ];
         for (a, ans) in cases {
-            assert_eq!(count_substrings(a), ans);
+            assert_eq!(count_substrings(&a), ans);
         }
     }
 }
