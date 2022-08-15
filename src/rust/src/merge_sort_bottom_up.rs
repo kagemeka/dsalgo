@@ -18,16 +18,10 @@ pub fn merge_sort<T: Ord + Clone>(mut a: Vec<T>) -> Vec<T> {
             }
             k += 1;
         }
-        while i < m {
-            a[k] = b[i].clone();
-            i += 1;
-            k += 1;
+        if i < m {
+            a[k..n].clone_from_slice(&b[i..m]);
         }
-        while j < n {
-            a[k] = b[j].clone();
-            j += 1;
-            k += 1;
-        }
+        // even if right is still remain, already sorted.
     }
     let mut d = 1;
     let n = a.len();
