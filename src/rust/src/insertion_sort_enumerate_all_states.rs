@@ -3,9 +3,10 @@ pub fn insertion_sort_states<T: Ord + Clone>(mut a: Vec<T>) -> Vec<Vec<T>> {
     let mut res = vec![a.clone()];
     for i in 1..n {
         for j in (0..i).rev() {
-            if a[j] > a[j + 1] {
-                a.swap(j, j + 1);
+            if a[j] <= a[j + 1] {
+                break;
             }
+            a.swap(j, j + 1);
         }
         res.push(a.clone());
     }

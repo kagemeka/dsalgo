@@ -2,9 +2,10 @@ pub fn insertion_sort<T: Ord>(mut a: Vec<T>) -> Vec<T> {
     let n = a.len();
     for i in 1..n {
         for j in (0..i).rev() {
-            if a[j] > a[j + 1] {
-                a.swap(j, j + 1);
+            if a[j] <= a[j + 1] {
+                break;
             }
+            a.swap(j, j + 1);
         }
     }
     a

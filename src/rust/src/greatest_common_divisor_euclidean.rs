@@ -6,7 +6,7 @@ where
     let zero = T::default();
     while b != zero {
         a %= b;
-        (a, b) = (b, a);
+        std::mem::swap(&mut a, &mut b);
     }
     a
 }
