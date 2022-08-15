@@ -501,6 +501,7 @@ pub mod is_identity;
 pub mod is_invertible;
 pub mod is_multiple_of_9;
 pub mod is_multitree;
+pub mod sum_of_lcp_of_all_suffix_pairs_with_sais_lcp_kasai;
 pub mod sum_of_lcp_with_all_suffixes_with_z_algorithm;
 pub mod is_pairwise_coprime_with_prime_factorize;
 pub mod is_pairwise_coprime_with_sum_of_multiple_count;
