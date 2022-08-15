@@ -1,6 +1,7 @@
+use crate::vector_unique::unique;
 pub struct ArrayCompression<T>(pub Vec<T>);
 impl<T: Ord + Clone> ArrayCompression<T> {
-    pub fn new(a: Vec<T>) -> Self { Self(crate::vector_unique::unique(a)) }
+    pub fn new(a: Vec<T>) -> Self { Self(unique(a)) }
 
     pub fn encode(&self, v: &T) -> usize { self.0.binary_search(v).unwrap() }
 
