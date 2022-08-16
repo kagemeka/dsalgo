@@ -494,6 +494,7 @@ pub mod inverse_factorial_table_from_i32;
 pub mod inverse_factorial_table_from_u64;
 pub mod inversion_number_with_array_compression_and_fenwick_tree;
 pub mod io;
+pub mod segment_tree_lazy_01_sequence_range_xor_range_inversion_number;
 pub mod is_absorbing;
 pub mod is_adjacency_matrix;
 pub mod is_arborescence;
