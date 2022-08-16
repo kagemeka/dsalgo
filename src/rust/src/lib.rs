@@ -905,6 +905,7 @@ pub mod run_length_encoding;
 pub mod safe_int_power;
 pub mod sat_2;
 pub mod sbbst;
+pub mod segment_tree_range_minimum;
 pub mod scapegoat_tree;
 pub mod scc_topological_sort;
 pub mod scc_transpose;
