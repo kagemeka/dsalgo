@@ -1,9 +1,10 @@
 use std::ops::*;
 
 use crate::{
-    modular_frequent::*,
+    const_generics_modular_int_i64::Modint,
     segment_tree_lazy_additive_homomorphism_with_std_ops::*,
 };
+type Mint = Modint<998_244_353>;
 #[derive(Clone)]
 pub struct S(Mint, Mint);
 impl Add for S {
