@@ -13,13 +13,15 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
+        // ref: https://atcoder.jp/contests/practice2/tasks/practice2_i
         let cases = vec![
-            (vec![0, 1, 2, 1, 2, 1, 0], 21),
-            (vec![1, 0, 3, 3, 0, 3, 3, 0, 2, 2, 0], 53),
-            (vec![0, 1, 0, 1, 0, 2, 0, 2, 0], 33),
-            (vec![0, 0, 0, 0, 0], 5),
+            ("abcbcba", 21),
+            ("mississippi", 53),
+            ("ababacaca", 33),
+            ("aaaaa", 5),
         ];
         for (a, ans) in cases {
+            let a: Vec<_> = a.chars().map(|x| x as usize).collect();
             assert_eq!(count_substrings(&a), ans);
         }
     }
