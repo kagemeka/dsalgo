@@ -4,8 +4,8 @@ pub trait Monoid {
     fn e(&self) -> Self::T;
 }
 pub struct Fenwick<G: Monoid> {
-    g: G,
-    node: Vec<G::T>,
+    pub(crate) g: G,
+    pub(crate) node: Vec<G::T>,
 }
 impl<G: Monoid> Fenwick<G>
 where
@@ -28,7 +28,7 @@ where
         }
     }
 
-    pub fn fold_lt(&mut self, mut i: usize) -> G::T {
+    pub fn fold_lt(&self, mut i: usize) -> G::T {
         assert!(i <= self.size());
         let mut v = self.g.e();
         while i > 0 {

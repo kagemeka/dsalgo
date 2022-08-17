@@ -3,7 +3,7 @@ pub trait Monoid {
     fn op(l: Self::T, r: Self::T) -> Self::T;
     fn e() -> Self::T;
 }
-pub struct Fenwick<G: Monoid>(Vec<G::T>);
+pub struct Fenwick<G: Monoid>(pub(crate) Vec<G::T>);
 impl<G: Monoid> Fenwick<G>
 where
     G::T: Clone,
