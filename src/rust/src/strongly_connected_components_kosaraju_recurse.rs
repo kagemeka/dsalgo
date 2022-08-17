@@ -1,22 +1,22 @@
 use crate::strongly_connected_components_transpose::transpose;
 pub fn scc(g: &[Vec<usize>]) -> Vec<usize> {
-    fn dfs(
+    fn calc_topological_rev_ord(
         g: &[Vec<usize>], visited: &mut [bool], post_order: &mut Vec<usize>,
         u: usize,
     ) {
         visited[u] = true;
         for &v in g[u].iter() {
             if !visited[v] {
-                dfs(g, visited, post_order, v);
+                calc_topological_rev_ord(g, visited, post_order, v);
             }
         }
         post_order.push(u);
     }
-    fn rev_dfs(g: &[Vec<usize>], labels: &mut [usize], l: usize, u: usize) {
+    fn labeling(g: &[Vec<usize>], labels: &mut [usize], l: usize, u: usize) {
         labels[u] = l;
         for &v in g[u].iter() {
             if labels[v] == g.len() {
-                rev_dfs(g, labels, l, v);
+                labeling(g, labels, l, v);
             }
         }
     }
@@ -25,7 +25,7 @@ pub fn scc(g: &[Vec<usize>]) -> Vec<usize> {
     let mut post_order = Vec::with_capacity(n);
     for i in 0..n {
         if !visited[i] {
-            dfs(g, &mut visited, &mut post_order, i);
+            calc_topological_rev_ord(g, &mut visited, &mut post_order, i);
         }
     }
     let g = transpose(g);
@@ -33,7 +33,7 @@ pub fn scc(g: &[Vec<usize>]) -> Vec<usize> {
     let mut l = 0;
     for i in post_order.into_iter().rev() {
         if labels[i] == n {
-            rev_dfs(&g, &mut labels, l, i);
+            labeling(&g, &mut labels, l, i);
             l += 1;
         }
     }
