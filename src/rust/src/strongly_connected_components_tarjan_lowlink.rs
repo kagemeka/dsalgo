@@ -17,16 +17,17 @@ pub fn scc(adjacency_list: &[Vec<usize>]) -> Vec<usize> {
                     low_order[u] = low_order[u].min(low_order[v]);
                 }
             }
-            if low_order[u] == order[u] {
-                loop {
-                    let v = preorder.pop().unwrap();
-                    labels[v] = label;
-                    if v == u {
-                        break;
-                    }
-                }
-                label += 1;
+            if low_order[u] != order[u] {
+                continue;
             }
+            loop {
+                let v = preorder.pop().unwrap();
+                labels[v] = label;
+                if v == u {
+                    break;
+                }
+            }
+            label += 1;
             continue;
         }
         let u = u as usize;

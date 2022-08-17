@@ -384,6 +384,7 @@ pub mod fenwick_tree_with_static_commutative_monoid_1_indexed;
 pub mod fenwick_tree_xor;
 pub mod fermat_factorization_method;
 pub mod fft;
+pub mod strongly_connected_components_path_based_another;
 pub mod fibonacci_heap;
 pub mod fibonacci_number;
 pub mod fibonacci_sequence_modular;
