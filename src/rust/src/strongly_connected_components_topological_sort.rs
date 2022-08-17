@@ -1,5 +1,4 @@
-type L = Vec<usize>;
-pub(crate) fn toposort(labels: L) -> L {
+pub fn toposort(labels: Vec<usize>) -> Vec<usize> {
     let k = *labels.iter().max().unwrap();
-    labels.into_iter().map(|l| k - l).collect::<Vec<_>>()
+    labels.into_iter().map(|l| k - l).collect()
 }

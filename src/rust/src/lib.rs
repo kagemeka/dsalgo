@@ -882,7 +882,7 @@ pub mod randomized_binary_search_tree;
 pub mod range_tree;
 pub mod rank_of_permutation_for_small_n;
 pub mod rbst;
-pub mod reachability_based_scc;
+pub mod strongly_connected_components_reachability_based;
 pub mod rectangle_tree;
 pub mod red_black_tree;
 pub mod reduce;

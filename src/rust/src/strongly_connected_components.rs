@@ -3,57 +3,6 @@
 pub type G = Vec<Vec<usize>>;
 /// label
 pub type L = Vec<usize>;
-fn transpose(g: G) -> G {
-    let n = g.len();
-    let mut t = vec![vec![]; n];
-    for i in 0..n {
-        for j in g[i].clone() {
-            t[j].push(i);
-        }
-    }
-    t
-}
-pub fn kosaraju(g: G) -> L {
-    struct D {
-        g: G,
-        vis: Vec<bool>,
-        q: Vec<usize>,
-        l: L,
-    }
-    let n = g.len();
-    let mut d = D { g, vis: vec![false; n], q: vec![], l: vec![n; n] };
-    fn dfs(d: &mut D, u: usize) {
-        d.vis[u] = true;
-        for v in d.g[u].clone() {
-            if !d.vis[v] {
-                dfs(d, v);
-            }
-        }
-        d.q.push(u);
-    }
-    fn rds(d: &mut D, u: usize, l: usize) {
-        d.l[u] = l;
-        for v in d.g[u].clone() {
-            if d.l[v] == d.g.len() {
-                rds(d, v, l);
-            }
-        }
-    }
-    for i in 0..n {
-        if !d.vis[i] {
-            dfs(&mut d, i);
-        }
-    }
-    d.g = transpose(d.g);
-    let mut l = 0;
-    for i in d.q.clone().into_iter().rev() {
-        if d.l[i] == n {
-            rds(&mut d, i, l);
-            l += 1;
-        }
-    }
-    d.l
-}
 fn toposort(lb: L) -> L {
     let k = *lb.iter().max().unwrap();
     lb.into_iter().map(|l| k - l).collect::<Vec<_>>()
@@ -169,15 +118,4 @@ pub fn path_based(g: G) -> L {
         }
     }
     toposort(d.lb)
-}
-// TODO:
-// path based non recurse
-// TODO:
-/// reachability based
-pub fn reachable_based() {}
-// TODO
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn test() {}
 }
