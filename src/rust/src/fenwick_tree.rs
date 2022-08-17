@@ -1,9 +1,5 @@
 //! fenwick tree (binary indexed tree)
-use crate::{
-    algebraic_structure::*, binary_function::*,
-    least_significant_bit_number_from_lsb_usize::lsb_num,
-    reset_least_significant_bit_smart_u64::reset_lsb,
-};
+use crate::{algebraic_structure::*, binary_function::*};
 /// Node Indices
 /// (case $|given array| = 8$,
 /// internally 1-indexed implemetation)
@@ -21,42 +17,42 @@ where
     /// it might not be identity element.
     pub fn new(a: Vec<G::S>) -> Self {
         let n = a.len();
-        let mut d = vec![G::e()];
-        d.append(&mut a.to_vec());
+        let mut node = vec![G::e()];
+        node.append(&mut a.to_vec());
         for i in 1..n {
-            let j = i + lsb_num(i);
+            let j = i + (1 << i.trailing_zeros());
             if j <= n {
-                d[j] = G::op(d[j].clone(), d[i].clone());
+                node[j] = G::op(node[j].clone(), node[i].clone());
             }
         }
-        Self(d)
+        Self(node)
     }
 
     pub fn size(&self) -> usize { self.0.len() - 1 }
 
     /// a[i] += v
-    pub fn op(&mut self, mut i: usize, v: G::S) {
+    pub fn operate(&mut self, mut i: usize, v: G::S) {
         i += 1;
         while i <= self.size() {
             self.0[i] = G::op(self.0[i].clone(), v.clone());
-            i += lsb_num(i);
+            i += 1 << i.trailing_zeros();
         }
     }
 
     // \sum_{j=0}^{i-1} a[i].
-    pub fn get(&self, mut i: usize) -> G::S {
+    pub fn fold_lt(&self, mut i: usize) -> G::S {
         let mut v = G::e();
         while i > 0 {
             v = G::op(v, self.0[i].clone());
-            i = reset_lsb(i as u64) as usize;
+            i -= 1 << i.trailing_zeros();
         }
         v
     }
 
-    /// max i (l < i <= n) satisfying f(op(v, get(i))) is true.
-    /// f(op(v, get(i))) must be monotonous for i.
+    /// max i (l < i <= n) satisfying f(op(v, fold_lt(i))) is true.
+    /// f(op(v, fold_lt(i))) must be monotonous for i.
     /// l(true, .., true, false, .., false]n
-    /// if l == n or f(op(v, get(l + 1))) is false, return l.
+    /// if l == n or f(op(v, fold_lt(l + 1))) is false, return l.
     fn _max<F>(&self, f: &F, l: usize, mut v: G::S) -> usize
     where
         F: Fn(&G::S) -> bool,
@@ -81,8 +77,8 @@ where
         }
     }
 
-    /// max i satisfying f(get(i)) is true.
-    /// f(get(i)) must be monotonous for i. [tr, .., tr, fal, .., fal]
+    /// max i satisfying f(fold_lt(i)) is true.
+    /// f(fold_lt(i)) must be monotonous for i. [tr, .., tr, fal, .., fal]
     pub fn max<F>(&self, f: &F) -> usize
     where
         F: Fn(&G::S) -> bool,
@@ -95,22 +91,22 @@ where
     G: AbelianGroup,
     G::S: Clone,
 {
-    /// get range [l, r) = get(r) - get(l)
-    pub fn getr(&self, l: usize, r: usize) -> G::S {
+    /// get range [l, r) = fold_lt(r) - fold_lt(l)
+    pub fn fold(&self, l: usize, r: usize) -> G::S {
         assert!(l <= r);
-        G::op(G::inv(self.get(l)), self.get(r))
+        G::op(G::inv(self.fold_lt(l)), self.fold_lt(r))
     }
 
-    /// max i (l < i <= n) f(getr(l, i)) is true. l(tr, .., tr, fal, .. fal]n
+    /// max i (l < i <= n) f(fold(l, i)) is true. l(tr, .., tr, fal, .. fal]n
     /// or l
     pub fn max_from<F>(&self, f: &F, l: usize) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
-        self._max(f, l, G::inv(self.get(l)))
+        self._max(f, l, G::inv(self.fold_lt(l)))
     }
 
-    /// min i (0 <= i < r), f(getr(i, r)) is true. 0[fal, .. fal, tr, .. tr)r
+    /// min i (0 <= i < r), f(fold(i, r)) is true. 0[fal, .. fal, tr, .. tr)r
     /// or r
     pub fn min_from<F>(&self, f: &F, r: usize) -> usize
     where
@@ -122,7 +118,7 @@ where
             return 0;
         }
         let mut d = (n + 1).next_power_of_two();
-        let mut v = self.get(r);
+        let mut v = self.fold_lt(r);
         if f(&v) {
             return 0;
         }
@@ -164,10 +160,10 @@ where
     pub fn size(&self) -> usize { self.0.size() }
 
     /// a[i] += v (l <= i < n)
-    pub fn op(&mut self, i: usize, v: G::S) { self.0.op(i, v) }
+    pub fn operate_ge(&mut self, i: usize, v: G::S) { self.0.operate(i, v) }
 
     /// a[i]
-    pub fn get(&self, i: usize) -> G::S { self.0.get(i + 1) }
+    pub fn get(&self, i: usize) -> G::S { self.0.fold_lt(i + 1) }
 
     /// find first index i satisfying
     /// `is_ok(&self.get_point(i)) == true`
@@ -188,17 +184,17 @@ where
     G::S: Clone,
 {
     /// a[i] += v (l <= i < r)
-    pub fn opr(&mut self, l: usize, r: usize, v: G::S) {
+    pub fn operate(&mut self, l: usize, r: usize, v: G::S) {
         assert!(l < r && r <= self.size());
-        self.op(l, v.clone());
+        self.operate_ge(l, v.clone());
         if r < self.size() {
-            self.op(r, G::inv(v));
+            self.operate_ge(r, G::inv(v));
         }
     }
 
     /// prod[left, index) >= target_value - prod[0, left)
     /// prod[left, index) + prod[0, left) >= target_value
-    /// is_ok(G::operate(prod[left, index), prod[0, left)))
+    /// is_ok(G::operate_ge(prod[left, index), prod[0, left)))
     /// `is_ok`'s results must be mnotonous
     /// in the range of [left, self.size())
     /// [?, .., ?, false(left), .., false, true .., true]
@@ -238,13 +234,13 @@ mod tests {
         };
         let arr = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         let mut fw = Fw::<GroupApprox<i32, Additive>>::new(arr);
-        assert_eq!(fw.getr(0, 10), 45);
-        assert_eq!(fw.getr(6, 10), 30);
-        fw.op(5, 10);
-        assert_eq!(fw.getr(6, 10), 30);
-        assert_eq!(fw.get(5), 10);
-        assert_eq!(fw.get(6), 25);
-        assert_eq!(fw.getr(5, 6), 15);
+        assert_eq!(fw.fold(0, 10), 45);
+        assert_eq!(fw.fold(6, 10), 30);
+        fw.operate(5, 10);
+        assert_eq!(fw.fold(6, 10), 30);
+        assert_eq!(fw.fold_lt(5), 10);
+        assert_eq!(fw.fold_lt(6), 25);
+        assert_eq!(fw.fold(5, 6), 15);
         let is_ok = |x: &i32| *x <= 25;
         assert_eq!(fw.max(&is_ok), 6);
         assert_eq!(fw.max_from(&is_ok, 0), 6);
@@ -280,18 +276,18 @@ mod tests {
         assert_eq!(fw.get(1), 1);
         assert_eq!(fw.get(5), 15);
         assert_eq!(fw.get(9), 45);
-        fw.op(5, 2);
+        fw.operate_ge(5, 2);
         assert_eq!(fw.get(1), 1);
         assert_eq!(fw.get(5), 17);
         assert_eq!(fw.get(9), 47);
         assert_eq!(fw.search(&|value: &i32| *value >= 23), 6);
         assert_eq!(fw.search(&|value: &i32| *value >= 47), 9);
         assert_eq!(fw.search(&|value: &i32| *value > 47), 10);
-        fw.opr(2, 6, 1);
+        fw.operate(2, 6, 1);
         assert_eq!(fw.get(1), 1);
         assert_eq!(fw.get(5), 18);
         assert_eq!(fw.get(9), 47);
-        fw.opr(2, 6, -1);
+        fw.operate(2, 6, -1);
         assert_eq!(fw.search_from(&|value: &i32| *value >= 23, 0), 6);
         assert_eq!(fw.search_from(&|value: &i32| *value >= 47, 0), 9);
         assert_eq!(fw.search_from(&|value: &i32| *value > 47, 0), 10);
@@ -300,6 +296,4 @@ mod tests {
         assert_eq!(fw.search_from(&|value: &i32| *value >= 23, 7), 7);
         assert_eq!(fw.search_from(&|value: &i32| *value >= 23, 5), 6);
     }
-    #[test]
-    fn test_lazy() {}
 }
