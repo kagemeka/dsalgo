@@ -53,7 +53,7 @@ where
     /// f(op(v, fold_lt(i))) must be monotonous for i.
     /// l(true, .., true, false, .., false]n
     /// if l == n or f(op(v, fold_lt(l + 1))) is false, return l.
-    fn _max<F>(&self, f: &F, l: usize, mut v: G::S) -> usize
+    fn _max_right<F>(&self, f: &F, l: usize, mut v: G::S) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
@@ -79,11 +79,11 @@ where
 
     /// max i satisfying f(fold_lt(i)) is true.
     /// f(fold_lt(i)) must be monotonous for i. [tr, .., tr, fal, .., fal]
-    pub fn max<F>(&self, f: &F) -> usize
+    pub fn max_right<F>(&self, f: &F) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
-        self._max(f, 0, G::e())
+        self._max_right(f, 0, G::e())
     }
 }
 impl<G> Fw<G>
@@ -99,16 +99,16 @@ where
 
     /// max i (l < i <= n) f(fold(l, i)) is true. l(tr, .., tr, fal, .. fal]n
     /// or l
-    pub fn max_from<F>(&self, f: &F, l: usize) -> usize
+    pub fn max_right_from<F>(&self, f: &F, l: usize) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
-        self._max(f, l, G::inv(self.fold_lt(l)))
+        self._max_right(f, l, G::inv(self.fold_lt(l)))
     }
 
     /// min i (0 <= i < r), f(fold(i, r)) is true. 0[fal, .. fal, tr, .. tr)r
     /// or r
-    pub fn min_from<F>(&self, f: &F, r: usize) -> usize
+    pub fn min_left_from<F>(&self, f: &F, r: usize) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
@@ -175,7 +175,7 @@ where
     where
         F: Fn(&G::S) -> bool,
     {
-        self.0.max(&|prod: &G::S| !is_ok(prod))
+        self.0.max_right(&|prod: &G::S| !is_ok(prod))
     }
 }
 impl<G> Dual<G>
@@ -207,7 +207,7 @@ where
     {
         assert!(l <= self.size());
         let prod_lt = if l == 0 { G::e() } else { self.get(l - 1) };
-        self.0.max_from(
+        self.0.max_right_from(
             &|prod_ge: &G::S| !is_ok(&G::op(prod_lt.clone(), prod_ge.clone())),
             l,
         )
@@ -222,8 +222,6 @@ where
     //     assert!(right <= self.size());
     // }
 }
-pub struct FwLazyIntAdd {}
-// TODO: N-dim fenwick tree (recursive)
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -242,25 +240,25 @@ mod tests {
         assert_eq!(fw.fold_lt(6), 25);
         assert_eq!(fw.fold(5, 6), 15);
         let is_ok = |x: &i32| *x <= 25;
-        assert_eq!(fw.max(&is_ok), 6);
-        assert_eq!(fw.max_from(&is_ok, 0), 6);
+        assert_eq!(fw.max_right(&is_ok), 6);
+        assert_eq!(fw.max_right_from(&is_ok, 0), 6);
         let is_ok = |x: &i32| *x < 25;
-        assert_eq!(fw.max(&is_ok), 5);
-        assert_eq!(fw.max_from(&is_ok, 0), 5);
-        assert_eq!(fw.max_from(&is_ok, 4), 6);
-        assert_eq!(fw.max_from(&is_ok, 5), 7);
-        assert_eq!(fw.max_from(&is_ok, 6), 9);
-        assert_eq!(fw.max_from(&is_ok, 9), 10);
-        assert_eq!(fw.min_from(&is_ok, 10), 7);
-        assert_eq!(fw.min_from(&is_ok, 0), 0);
-        assert_eq!(fw.min_from(&is_ok, 6), 2);
-        assert_eq!(fw.min_from(&is_ok, 5), 0);
+        assert_eq!(fw.max_right(&is_ok), 5);
+        assert_eq!(fw.max_right_from(&is_ok, 0), 5);
+        assert_eq!(fw.max_right_from(&is_ok, 4), 6);
+        assert_eq!(fw.max_right_from(&is_ok, 5), 7);
+        assert_eq!(fw.max_right_from(&is_ok, 6), 9);
+        assert_eq!(fw.max_right_from(&is_ok, 9), 10);
+        assert_eq!(fw.min_left_from(&is_ok, 10), 7);
+        assert_eq!(fw.min_left_from(&is_ok, 0), 0);
+        assert_eq!(fw.min_left_from(&is_ok, 6), 2);
+        assert_eq!(fw.min_left_from(&is_ok, 5), 0);
         let is_ok = |x: &i32| *x < 15;
-        assert_eq!(fw.max_from(&is_ok, 5), 5);
-        assert_eq!(fw.min_from(&is_ok, 6), 6);
-        assert_eq!(fw.min_from(&is_ok, 10), 9);
+        assert_eq!(fw.max_right_from(&is_ok, 5), 5);
+        assert_eq!(fw.min_left_from(&is_ok, 6), 6);
+        assert_eq!(fw.min_left_from(&is_ok, 10), 9);
         let is_ok = |x: &i32| *x < 9;
-        assert_eq!(fw.min_from(&is_ok, 10), 10);
+        assert_eq!(fw.min_left_from(&is_ok, 10), 10);
     }
     #[test]
     fn test_dual() {
