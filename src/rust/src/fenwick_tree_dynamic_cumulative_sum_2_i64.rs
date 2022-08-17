@@ -9,8 +9,8 @@ impl CumulativeSum2 {
     pub fn size(&self) -> usize { self.0.size() }
 
     pub fn add(&mut self, i: usize, x: i64) {
-        self.0.add(i, (1 - i as i64) * x);
-        self.1.add(i, x);
+        self.0.add_ge(i, (1 - i as i64) * x);
+        self.1.add_ge(i, x);
     }
 
     pub fn get(&self, i: usize) -> i64 {
