@@ -1,31 +1,31 @@
-/// with tarjan's lowlink algorithm.
-pub fn tarjan(adj_list: &[Vec<usize>]) -> Vec<usize> {
-    let g = adj_list;
+use crate::strongly_connected_components_topological_sort::toposort;
+pub fn scc(adjacency_list: &[Vec<usize>]) -> Vec<usize> {
+    let g = adjacency_list;
     let n = g.len();
     let mut order = vec![n; n];
     let mut labels = vec![n; n];
-    let mut o = 0;
-    let mut l = 0;
-    let mut st = vec![];
-    let mut low_ord = vec![n; n];
+    let mut ord = 0;
+    let mut label = 0;
+    let mut preorder = vec![];
+    let mut low_order = vec![n; n];
     let mut st_dfs: Vec<isize> = (0..n as isize).rev().collect();
-    let mut parent = vec![n; n];
     while let Some(u) = st_dfs.pop() {
         if u < 0 {
             let u = !u as usize;
-            if low_ord[u] == order[u] {
+            for &v in g[u].iter() {
+                if labels[v] == n {
+                    low_order[u] = low_order[u].min(low_order[v]);
+                }
+            }
+            if low_order[u] == order[u] {
                 loop {
-                    let v = st.pop().unwrap();
-                    labels[v] = l;
+                    let v = preorder.pop().unwrap();
+                    labels[v] = label;
                     if v == u {
                         break;
                     }
                 }
-                l += 1;
-            }
-            let p = parent[u];
-            if p != n {
-                low_ord[p] = low_ord[p].min(low_ord[u]);
+                label += 1;
             }
             continue;
         }
@@ -34,19 +34,33 @@ pub fn tarjan(adj_list: &[Vec<usize>]) -> Vec<usize> {
             continue;
         }
         st_dfs.push(!(u as isize));
-        order[u] = o;
-        low_ord[u] = o;
-        o += 1;
-        st.push(u);
+        order[u] = ord;
+        low_order[u] = ord;
+        ord += 1;
+        preorder.push(u);
         for &v in g[u].iter() {
             if order[v] == n {
-                parent[v] = u;
                 st_dfs.push(v as isize);
-            } else if labels[v] == n {
-                low_ord[u] = low_ord[u].min(order[v]);
             }
         }
     }
-    use crate::strongly_connected_components_topological_sort::toposort;
     toposort(labels)
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test() {
+        let cases = vec![(
+            (6, vec![(1, 4), (5, 2), (3, 0), (5, 5), (4, 1), (0, 3), (4, 2)]),
+            vec![3, 1, 2, 3, 1, 0],
+        )];
+        for ((n, edges), ans) in cases {
+            let mut g = vec![vec![]; n];
+            for (u, v) in edges {
+                g[u].push(v);
+            }
+            assert_eq!(scc(&g), ans);
+        }
+    }
 }
