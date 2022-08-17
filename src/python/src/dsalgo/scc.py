@@ -1,64 +1,59 @@
+# mypy: ignore-errors
+
 from __future__ import annotations
 
 import typing
 import unittest
 
-G = typing.List[typing.List[int]]
-L = typing.List[int]
 
-
-def _trans(g: G) -> G:
+def transpose(
+    g: typing.List[typing.List[int]],
+) -> typing.List[typing.List[int]]:
     n = len(g)
-    t: G = [[] for _ in range(n)]
+    t = [[] for _ in range(n)]
     for u in range(n):
         for v in g[u]:
             t[v].append(u)
     return t
 
 
-def kosaraju(g: G) -> L:
-    n = len(g)
-    vis = [False] * n
-    q = []
-
+def scc(g: typing.List[typing.List[int]]) -> typing.List[int]:
     def dfs(u: int) -> None:
-        vis[u] = True
+        state[u] = n
         for v in g[u]:
-            if not vis[v]:
+            if not state[v]:
                 dfs(v)
-        q.append(u)
+        post_order.append(u)
+
+    def rdfs(u: int) -> None:
+        state[u] = label
+        for v in g[u]:
+            if state[v] == n:
+                rdfs(v)
+
+    n = len(g)
+    post_order = []
+    state = [0] * n
 
     for u in range(n):
-        if not vis[u]:
+        if not state[u]:
             dfs(u)
 
-    g = _trans(g)
-    label = [-1] * n
+    g = transpose(g)
+    label = 0
 
-    def rdfs(u: int, l: int) -> None:
-        label[u] = l
-        for v in g[u]:
-            if label[v] == -1:
-                rdfs(v, l)
-
-    l = 0
-    for u in q[::-1]:
-        if label[u] == -1:
-            rdfs(u, l)
-            l += 1
-    return label
-
-
-def _toposort(lb: L) -> L:
-    k = max(lb)
-    return [k - l for l in lb]
+    for u in post_order[::-1]:
+        if state[u] == n:
+            rdfs(u)
+            label += 1
+    return state
 
 
 class Tests(unittest.TestCase):
     def test(self) -> None:
-        g: G = [[1, 3], [2], [3], []]
+        g = [[1, 3], [2], [3], []]
         ans = [0, 1, 2, 3]
-        labels = kosaraju(g)
+        labels = scc(g)
         assert labels == ans
 
 

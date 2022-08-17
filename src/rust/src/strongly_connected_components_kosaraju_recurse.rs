@@ -1,13 +1,14 @@
 use crate::strongly_connected_components_transpose::transpose;
 pub fn scc(g: &[Vec<usize>]) -> Vec<usize> {
     fn calc_topological_rev_ord(
-        g: &[Vec<usize>], visited: &mut [bool], post_order: &mut Vec<usize>,
+        g: &[Vec<usize>], state: &mut [usize], post_order: &mut Vec<usize>,
         u: usize,
     ) {
-        visited[u] = true;
+        let n = g.len();
+        state[u] = n;
         for &v in g[u].iter() {
-            if !visited[v] {
-                calc_topological_rev_ord(g, visited, post_order, v);
+            if state[v] == 0 {
+                calc_topological_rev_ord(g, state, post_order, v);
             }
         }
         post_order.push(u);
@@ -21,23 +22,22 @@ pub fn scc(g: &[Vec<usize>]) -> Vec<usize> {
         }
     }
     let n = g.len();
-    let mut visited = vec![false; n];
+    let mut state = vec![0; n];
     let mut post_order = Vec::with_capacity(n);
     for i in 0..n {
-        if !visited[i] {
-            calc_topological_rev_ord(g, &mut visited, &mut post_order, i);
+        if state[i] == 0 {
+            calc_topological_rev_ord(g, &mut state, &mut post_order, i);
         }
     }
     let g = transpose(g);
-    let mut labels = vec![n; n];
     let mut l = 0;
     for i in post_order.into_iter().rev() {
-        if labels[i] == n {
-            labeling(&g, &mut labels, l, i);
+        if state[i] == n {
+            labeling(&g, &mut state, l, i);
             l += 1;
         }
     }
-    labels
+    state
 }
 #[cfg(test)]
 mod tests {

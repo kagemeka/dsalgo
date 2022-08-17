@@ -2,12 +2,11 @@ use crate::strongly_connected_components_transpose::transpose;
 pub fn scc(adjacency_list: &[Vec<usize>]) -> Vec<usize> {
     let g = adjacency_list;
     let n = g.len();
-    let mut visited = vec![false; n];
-    let mut labels = vec![n; n];
+    let mut state = vec![0; n];
     let mut post_order = vec![];
     let mut st = vec![];
     for i in 0..n {
-        if visited[i] {
+        if state[i] == n {
             continue;
         }
         st.push(i as isize);
@@ -16,39 +15,39 @@ pub fn scc(adjacency_list: &[Vec<usize>]) -> Vec<usize> {
                 post_order.push(!u as usize);
                 continue;
             }
-            if visited[u as usize] {
+            if state[u as usize] == n {
                 continue;
             }
             st.push(!u);
-            visited[u as usize] = true;
+            state[u as usize] = n;
             for &v in g[u as usize].iter() {
-                if !visited[v] {
+                if state[v] == 0 {
                     st.push(v as isize);
                 }
             }
         }
     }
     let g = transpose(&g);
-    let mut l = 0;
+    let mut label = 0;
     let mut st = vec![];
     for i in post_order.into_iter().rev() {
-        if labels[i] != n {
+        if state[i] != n {
             continue;
         }
-        labels[i] = l;
+        state[i] = label;
         st.push(i);
         while let Some(u) = st.pop() {
             for &v in g[u].iter() {
-                if labels[v] != n {
+                if state[v] != n {
                     continue;
                 }
-                labels[v] = l;
+                state[v] = label;
                 st.push(v);
             }
         }
-        l += 1;
+        label += 1;
     }
-    labels
+    state
 }
 #[cfg(test)]
 mod tests {
