@@ -386,6 +386,7 @@ pub mod fenwick_tree_xor;
 pub mod fermat_factorization_method;
 pub mod fft;
 pub mod scc;
+pub mod strongly_connected_components_path_based_recurse;
 pub mod strongly_connected_components_kosaraju_as_struct_recurse;
 pub mod strongly_connected_components_kosaraju_recurse;
 pub mod fibonacci_heap;
