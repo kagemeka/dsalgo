@@ -6,7 +6,7 @@ pub fn scc(adjacency_list: &[Vec<usize>]) -> Vec<usize> {
     let mut labels = vec![n; n];
     let mut ord = 0;
     let mut label = 0;
-    let mut preorder = vec![];
+    let mut preorder = Vec::with_capacity(n);
     let mut low_order = vec![n; n];
     let mut st_dfs: Vec<isize> = (0..n as isize).rev().collect();
     while let Some(u) = st_dfs.pop() {

@@ -54,91 +54,11 @@ def _toposort(lb: L) -> L:
     return [k - l for l in lb]
 
 
-# tarjan's lowlink algorithm
-def tarjan(g: G) -> L:
-    n = len(g)
-    s = []  # stack
-    od = [n] * n  # preorder
-    o = 0
-    lo = [n] * n  # low preorder
-    lb = [n] * n  # label
-    l = 0
-
-    def labeling(u: int) -> None:
-        nonlocal o, l
-        od[u] = lo[u] = o
-        o += 1
-        s.append(u)
-        for v in g[u]:
-            if od[v] == n:
-                labeling(v)
-                lo[u] = min(lo[u], lo[v])
-            elif lb[v] == n:
-                lo[u] = min(lo[u], od[v])
-
-        if lo[u] < od[u]:
-            return
-        while True:
-            v = s.pop()
-            lb[v] = l
-            if v == u:
-                break
-        l += 1
-
-    for i in range(n):
-        if od[i] == n:
-            labeling(i)
-    return _toposort(lb)
-
-
-# variant of tarjan
-def path_based(g: G) -> L:
-    n = len(g)
-    s = []
-    sl = []
-    od = [n] * n
-    o = 0
-    lb = [n] * n
-    l = 0
-
-    def labeling(u: int) -> None:
-        nonlocal o, l
-        od[u] = o
-        o += 1
-        s.append(u)
-        sl.append(u)
-        for v in g[u]:
-            if od[v] == n:
-                labeling(v)
-            elif lb[v] == n:
-                while od[sl[-1]] > od[v]:
-                    sl.pop()
-
-        if sl[-1] != u:
-            return
-        while True:
-            v = s.pop()
-            lb[v] = l
-            if v == u:
-                break
-        l += 1
-        sl.pop()
-
-    for i in range(n):
-        if od[i] == n:
-            labeling(i)
-    return _toposort(lb)
-
-
 class Tests(unittest.TestCase):
     def test(self) -> None:
         g: G = [[1, 3], [2], [3], []]
         ans = [0, 1, 2, 3]
         labels = kosaraju(g)
-        assert labels == ans
-        labels = tarjan(g)
-        assert labels == ans
-        labels = path_based(g)
         assert labels == ans
 
 
