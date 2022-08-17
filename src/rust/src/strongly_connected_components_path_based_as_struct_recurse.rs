@@ -1,3 +1,4 @@
+use crate::strongly_connected_components_topological_sort::toposort;
 pub struct SCC<'a> {
     g: &'a [Vec<usize>],
     preorder: Vec<usize>,
@@ -16,7 +17,7 @@ impl<'a> SCC<'a> {
                 scc.labeling(i);
             }
         }
-        Self::topological_sort(scc.labels)
+        toposort(scc.labels)
     }
 
     fn new(g: &'a [Vec<usize>]) -> Self {
@@ -59,11 +60,6 @@ impl<'a> SCC<'a> {
         }
         self.label += 1;
         self.low.pop();
-    }
-
-    fn topological_sort(labels: Vec<usize>) -> Vec<usize> {
-        let k = *labels.iter().max().unwrap();
-        labels.into_iter().map(|l| k - l).collect::<Vec<_>>()
     }
 }
 #[cfg(test)]

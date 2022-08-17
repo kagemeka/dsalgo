@@ -385,6 +385,8 @@ pub mod fenwick_tree_xor;
 pub mod fermat_factorization_method;
 pub mod fft;
 pub mod fibonacci_heap;
+pub mod strongly_connected_components_tarjan_lowlink_as_struct_recurse;
+pub mod strongly_connected_components_tarjan_lowlink_recurse;
 pub mod fibonacci_number;
 pub mod fibonacci_sequence_modular;
 pub mod field;
