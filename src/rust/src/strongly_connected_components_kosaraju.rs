@@ -1,10 +1,10 @@
 use crate::strongly_connected_components_transpose::transpose;
-pub fn scc(adj_list: Vec<Vec<usize>>) -> Vec<usize> {
-    let mut g = adj_list;
+pub fn scc(adjacency_list: &[Vec<usize>]) -> Vec<usize> {
+    let g = adjacency_list;
     let n = g.len();
     let mut visited = vec![false; n];
     let mut labels = vec![n; n];
-    let mut reverse_order = vec![];
+    let mut post_order = vec![];
     let mut st = vec![];
     for i in 0..n {
         if visited[i] {
@@ -13,7 +13,7 @@ pub fn scc(adj_list: Vec<Vec<usize>>) -> Vec<usize> {
         st.push(i as isize);
         while let Some(u) = st.pop() {
             if u < 0 {
-                reverse_order.push(!u as usize);
+                post_order.push(!u as usize);
                 continue;
             }
             if visited[u as usize] {
@@ -28,10 +28,10 @@ pub fn scc(adj_list: Vec<Vec<usize>>) -> Vec<usize> {
             }
         }
     }
-    g = transpose(g);
+    let g = transpose(&g);
     let mut l = 0;
     let mut st = vec![];
-    for i in reverse_order.into_iter().rev() {
+    for i in post_order.into_iter().rev() {
         if labels[i] != n {
             continue;
         }
@@ -64,7 +64,7 @@ mod tests {
             for (u, v) in edges {
                 g[u].push(v);
             }
-            assert_eq!(scc(g), ans);
+            assert_eq!(scc(&g), ans);
         }
     }
 }
