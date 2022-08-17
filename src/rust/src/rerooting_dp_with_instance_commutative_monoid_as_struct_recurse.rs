@@ -1,6 +1,6 @@
 pub trait Monoid {
     type T;
-    fn op(&self, _: Self::T, _: Self::T) -> Self::T;
+    fn op(&self, l: Self::T, r: Self::T) -> Self::T;
     fn e(&self) -> Self::T;
 }
 pub trait Edge {
@@ -115,5 +115,46 @@ mod tests {
         let map = |e: &E, x: u64| -> u64 { e.weight + x.max(d[e.to()]) };
         let res = ReRootingDP::calc(&g, M {}, &map);
         assert_eq!(res, [8, 6, 6]);
+    }
+    #[test]
+    fn test_abc220_f() {
+        // ref: https://atcoder.jp/contests/abc220/tasks/abc220_f
+        struct M;
+        impl Monoid for M {
+            type T = (usize, usize);
+
+            fn e(&self) -> Self::T { (0, 0) }
+
+            fn op(&self, l: Self::T, r: Self::T) -> Self::T {
+                (l.0 + r.0, l.1 + r.1)
+            }
+        }
+        #[derive(Clone)]
+        struct E(usize);
+        impl Edge for E {
+            fn to(&self) -> usize { self.0 }
+        }
+        let cases = vec![
+            ((3, vec![(1, 2), (2, 3)]), vec![3, 2, 3]),
+            ((2, vec![(1, 2)]), vec![1, 1]),
+            ((6, vec![(1, 6), (1, 5), (1, 3), (1, 4), (1, 2)]), vec![
+                5, 9, 9, 9, 9, 9, 9,
+            ]),
+        ];
+        for ((n, edges), ans) in cases {
+            let mut g = vec![vec![]; n];
+            for (u, v) in edges {
+                let u = u - 1;
+                let v = v - 1;
+                g[u].push(E(v));
+                g[v].push(E(u));
+            }
+            let res = ReRootingDP::calc(&g, M {}, |_, x: (usize, usize)| {
+                (x.0 + x.1 + 1, x.1 + 1)
+            });
+            for i in 0..n {
+                assert_eq!(res[i].0, ans[i]);
+            }
+        }
     }
 }
