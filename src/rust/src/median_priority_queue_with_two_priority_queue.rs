@@ -1,4 +1,4 @@
 //! functionality
 //! push arbitrary,
-//! pop arbitrary
+//! pop median
 //! find median,
