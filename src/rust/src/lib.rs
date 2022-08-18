@@ -375,6 +375,7 @@ pub mod fenwick_tree_i32_add_1_indexed;
 pub mod fenwick_tree_i64_gcd;
 pub mod fenwick_tree_min;
 pub mod fenwick_tree_multiset;
+pub mod sortable_fifo_queue;
 pub mod fenwick_tree_range_add_range_sum_i64;
 pub mod fenwick_tree_usize_add_1_indexed;
 pub mod fenwick_tree_with_instance_abelian_group_1_indexed;
