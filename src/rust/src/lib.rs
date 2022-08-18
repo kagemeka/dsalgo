@@ -11,6 +11,7 @@ pub mod a_star_search_algorithm;
 pub mod aa_tree;
 pub mod ab_tree;
 pub mod abs_diff;
+pub mod median_priority_queue_with_two_lazy_binary_heap;
 pub mod accumulate_iterator;
 pub mod accumulate_vec;
 pub mod adaptive_heap_sort;
