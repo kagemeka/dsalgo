@@ -21,7 +21,7 @@ impl<T> Fenwick<T> {
         }
     }
 
-    pub fn get(&self, mut i: usize) -> T
+    pub fn fold_lt(&self, mut i: usize) -> T
     where
         T: From<i32> + AddAssign + Clone,
     {
@@ -56,4 +56,9 @@ impl<T> Fenwick<T> {
             }
         }
     }
+}
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn test() {}
 }
