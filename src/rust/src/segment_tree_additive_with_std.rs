@@ -13,7 +13,7 @@ impl<T> Index<usize> for Segtree<T> {
     fn index(&self, i: usize) -> &Self::Output { &self.node[i + self.n()] }
 }
 impl<T: Add<Output = T> + Clone> Segtree<T> {
-    fn update(&mut self, i: usize) {
+    fn merge(&mut self, i: usize) {
         self.node[i] =
             self.node[i << 1].clone() + self.node[i << 1 | 1].clone();
     }
@@ -30,7 +30,7 @@ impl<T: Add<Output = T> + Clone> Segtree<T> {
         self.node[i] = x;
         while i > 1 {
             i >>= 1;
-            self.update(i);
+            self.merge(i);
         }
     }
 

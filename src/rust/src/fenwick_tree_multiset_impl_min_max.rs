@@ -1,4 +1,4 @@
-use crate::fenwick_tree_multiset_usize::*;
+use crate::fenwick_tree_multiset::*;
 impl Multiset {
     pub fn min(&self) -> Option<usize> { self.get(0) }
 
