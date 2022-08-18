@@ -12,16 +12,14 @@ impl<T: Ord> MinMaxQueue<T> {
     }
 
     pub fn remove(&mut self, x: &T, count: usize) {
-        *self.0.get_mut(x).unwrap() -= count;
+        let c = self.0.get_mut(x).unwrap();
+        *c -= count;
+        if *c == 0 {
+            self.0.remove(x);
+        }
     }
 
     pub fn min(&mut self) -> Option<&T> {
-        while let Some((_, &c)) = self.0.first_key_value() {
-            if c > 0 {
-                break;
-            }
-            self.0.pop_first();
-        }
         if let Some((x, _)) = self.0.first_key_value() {
             Some(x)
         } else {
@@ -30,12 +28,6 @@ impl<T: Ord> MinMaxQueue<T> {
     }
 
     pub fn max(&mut self) -> Option<&T> {
-        while let Some((_, &c)) = self.0.last_key_value() {
-            if c > 0 {
-                break;
-            }
-            self.0.pop_first();
-        }
         if let Some((x, _)) = self.0.last_key_value() {
             Some(x)
         } else {
