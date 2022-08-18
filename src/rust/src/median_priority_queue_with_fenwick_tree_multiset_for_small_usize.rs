@@ -1,1 +1,1 @@
-pub use crate::impl_median_queue_for_fenwick_tree_multiset::*;
+pub use crate::fenwick_tree_multiset_impl_median::*;

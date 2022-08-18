@@ -5,6 +5,7 @@
 #![feature(array_chunks)]
 #![feature(iterator_try_collect)]
 #![feature(slice_as_chunks)]
+#![feature(map_first_last)]
 // #![allow(dead_code)]
 pub mod a_star_search_algorithm;
 pub mod aa_tree;
@@ -374,11 +375,9 @@ pub mod fenwick_tree_i32_add_0_indexed;
 pub mod fenwick_tree_i32_add_1_indexed;
 pub mod fenwick_tree_i64_gcd;
 pub mod fenwick_tree_min;
+pub mod fenwick_tree_multiset_impl_median;
+pub mod fenwick_tree_multiset_impl_min_max;
 pub mod fenwick_tree_multiset_usize;
-pub mod sortable_fifo_queue;
-pub mod median_priority_queue_with_fenwick_tree_multiset_for_small_usize;
-pub mod impl_median_queue_for_fenwick_tree_multiset;
-pub mod impl_min_max_queue_for_fenwick_tree_multiset;
 pub mod fenwick_tree_range_add_range_sum_i64;
 pub mod fenwick_tree_usize_add_1_indexed;
 pub mod fenwick_tree_with_instance_abelian_group_1_indexed;
@@ -619,6 +618,7 @@ pub mod matrix_with_static_property;
 pub mod matrix_with_static_square_property_impl_semiring_with_std;
 pub mod maximum_cardinality_matching;
 pub mod maximum_flow;
+pub mod median_priority_queue_with_fenwick_tree_multiset_for_small_usize;
 pub mod median_priority_queue_with_two_binary_heap;
 pub mod merge_insertion_sort;
 pub mod merge_sort_bottom_up;
@@ -632,6 +632,8 @@ pub mod merkle_tree;
 pub mod metric_tree;
 pub mod min_max_pq;
 pub mod min_max_priority_queue_lazy_with_two_binary_heap;
+pub mod min_max_priority_queue_with_btree_map;
+pub mod min_max_priority_queue_with_fenwick;
 pub mod minimum_cost_arborescence;
 pub mod minimum_cost_elastic_matching;
 pub mod minimum_pair_sum_for_const_product;
@@ -1028,6 +1030,7 @@ pub mod smallest_enclosing_circle;
 pub mod smawk_algorithm;
 pub mod smoothsort;
 pub mod sort;
+pub mod sortable_fifo_queue;
 pub mod sorting_network;
 pub mod sorting_number;
 pub mod spaghetti_sort;

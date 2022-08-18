@@ -32,7 +32,7 @@ impl<T: Ord + std::hash::Hash + Clone> MinMaxQueue<T> {
     pub fn size(&self) -> usize { self.size }
 
     pub fn count(&self, x: &T) -> usize {
-        *self.cnt.get(&x).or_else(|| Some(&0)).unwrap()
+        *self.cnt.get(x).or_else(|| Some(&0)).unwrap()
     }
 
     pub fn contains(&self, x: &T) -> bool { self.count(x) > 0 }
