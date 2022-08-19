@@ -25,7 +25,6 @@ impl<T, const H: usize, const W: usize> IndexMut<usize> for Matrix<T, H, W> {
 }
 impl<T, const H: usize, const W: usize> std::fmt::Display for Matrix<T, H, W>
 where
-    [(); H * W]:,
     T: std::fmt::Debug + Copy,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
