@@ -7,7 +7,7 @@ use crate::{
 impl<T, P> Add for Matrix<T, P>
 where
     P: Shape,
-    T: AddAssign + Clone + From<i32>,
+    T: AddAssign + Clone,
 {
     type Output = Self;
 
@@ -24,7 +24,7 @@ where
 impl<T, P> AddAssign for Matrix<T, P>
 where
     P: Shape + Clone,
-    T: AddAssign + Clone + From<i32>,
+    T: AddAssign + Clone,
 {
     fn add_assign(&mut self, rhs: Self) { *self = self.clone() + rhs; }
 }
@@ -54,7 +54,7 @@ where
 
     fn mul(self, rhs: Self) -> Self::Output {
         let n = P::size();
-        let mut a = Self::new(0.into());
+        let mut a: Self = 0.into();
         for i in 0..n {
             for k in 0..n {
                 for j in 0..n {

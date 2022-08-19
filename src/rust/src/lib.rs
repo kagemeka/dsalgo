@@ -993,6 +993,7 @@ pub mod shortest_path_viterbi;
 pub mod const_generics_sized_square_matrix_impl_semiring_with_std_ops;
 pub mod shuffle_sort;
 pub mod sieve_of_atkin;
+pub mod matrix_with_static_semiring_and_property;
 pub mod sieve_of_eratosthenes_enumerate_primes_in_range_query_optim_u64;
 pub mod sieve_of_eratosthenes_enumerate_primes_in_range_query_usize;
 pub mod sieve_of_eratosthenes_enumerate_primes_in_range_usize;
