@@ -1222,6 +1222,7 @@ pub mod virtual_tree;
 pub mod viterbi_algorithm;
 pub mod volume_of_torus;
 pub mod vp_tree;
+pub mod sqrt_decomposition_range_minimum_i32;
 pub mod wavelet_matrix;
 pub mod wavl_tree;
 pub mod sqrt_decomposition_with_instance_monoid;

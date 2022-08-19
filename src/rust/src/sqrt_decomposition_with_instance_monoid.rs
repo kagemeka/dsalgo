@@ -32,8 +32,9 @@ where
         self.buckets[j] = self.data[j * n..self.size().min((j + 1) * n)]
             .iter()
             .cloned()
-            .reduce(|l, r| self.g.op(l, r))
-            .unwrap();
+            .fold(self.g.e(), |x, y| self.g.op(x, y))
+        // .reduce(|l, r| self.g.op(l, r))
+        // .unwrap();
     }
 
     pub fn set(&mut self, i: usize, x: G::T) {
