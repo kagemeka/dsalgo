@@ -1224,6 +1224,7 @@ pub mod volume_of_torus;
 pub mod vp_tree;
 pub mod wavelet_matrix;
 pub mod wavl_tree;
+pub mod sqrt_decomposition_with_instance_monoid;
 pub mod weak_avl_tree;
 pub mod weighted_union_algorithm;
 pub mod x_tree;
