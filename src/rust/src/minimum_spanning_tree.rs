@@ -1,6 +1,6 @@
 //! Minimum Spanning Tree
 //! reexporting
 pub use crate::{
-    linear_time_minimum_spanning_tree::*, mst_kruskal::*, mst_prim_dense::*,
-    mst_prim_sparse::*, mst_reverse_delete::*,
+    linear_time_minimum_spanning_tree::*, minimum_spanning_tree_kruskal::*, minimum_spanning_tree_prim_dense::*,
+    minimum_spanning_tree_prim_sparse::*, minimum_spanning_tree_reverse_delete::*,
 };
