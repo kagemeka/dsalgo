@@ -33,84 +33,20 @@ class UF:
     def size_of(self, u: int) -> int:
         return -self._a[self.root(u)]
 
+    def same(self, u: int, v: int) -> bool:
+        return self.root(u) == self.root(v)
 
-class Root(typing.Sized, typing.Protocol):
-    def root(self, u: int) -> int:
-        ...
-
-
-def same(uf: Root, u: int, v: int) -> bool:
-    return uf.root(u) == uf.root(v)
-
-
-def labels(uf: Root) -> list[int]:
-    n = len(uf)
-    lb = [-1] * n  # label
-    l = 0
-    for i in range(n):
-        r = uf.root(i)
-        if lb[r] == -1:
-            lb[r] = l
-            l += 1
-        lb[i] = lb[r]
-    return lb
-
-
-T = typing.TypeVar("T")
-
-
-class PotentialUF(typing.Generic[T]):
-    # potentialized union find
-
-    _g: Group[T]  # abelian
-    _a: typing.List[int]
-    _rp: typing.List[T]  # root: identity, other: rel potential from parrent.
-
-    def __init__(self, g: Group[T], n: int) -> None:
-        self._g = g
-        self._a = [-1] * n
-        self._rp = [g.e() for _ in range(n)]
-
-    def __len__(self) -> int:
-        return len(self._a)
-
-    def root(self, u: int) -> int:
-        a = self._a
-        if a[u] < 0:
-            return u
-        p = a[u]
-        a[u] = self.root(p)
-        rp = self._rp
-        rp[u] = self._g.op(rp[u], rp[p])
-        return a[u]
-
-    # potential from root
-    def h(self, u: int) -> T:
-        self.root(u)
-        return self._rp[u]
-
-    def diff(self, u: int, v: int) -> T:
-        assert self.root(u) == self.root(v)
-        return self._g.op(self._g.inv(self.h(u)), self.h(v))
-
-    def unite(self, u: int, v: int, d: T) -> None:
-        # d := potential diff v from u
-        g = self._g
-        d = g.op(g.op(self.h(u), d), g.inv(self.h(v)))
-        u, v = self.root(u), self.root(v)
-        if u == v:
-            assert d == g.e()
-            return
-        a = self._a
-        if a[u] > a[v]:
-            u, v = v, u
-            d = g.inv(d)
-        a[u] += a[v]
-        a[v] = u
-        self._rp[v] = d
-
-    def size_of(self, u: int) -> int:
-        return -self._a[self.root(u)]
+    def labels(self) -> list[int]:
+        n = len(self)
+        lb = [-1] * n  # label
+        l = 0
+        for i in range(n):
+            r = self.root(i)
+            if lb[r] == -1:
+                lb[r] = l
+                l += 1
+            lb[i] = lb[r]
+        return lb
 
 
 if __name__ == "__main__":

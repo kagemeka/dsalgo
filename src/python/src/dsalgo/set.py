@@ -2,17 +2,7 @@ from __future__ import annotations
 
 import typing
 
-import dsalgo.avl_tree_recurse
 import dsalgo.pivot_tree_array_recurse
-from dsalgo.avl_tree_recurse import K
-
-
-class FenwickTree:
-    ...
-
-
-class SegmentTree:
-    ...
 
 
 class PivotTree:
@@ -70,53 +60,3 @@ class PivotTree:
 
     def max(self) -> int | None:
         return None if self.__root is None else self[len(self) - 1]
-
-
-class PivotTreeArray(dsalgo.pivot_tree_array_recurse.PivotTreeArray):
-    ...
-
-
-class AVLTree(typing.Generic[K]):
-    __root: dsalgo.avl_tree_recurse.Node[K, None] | None
-
-    def __init__(self) -> None:
-        self.__root = None
-
-    def __len__(self) -> int:
-        return 0 if self.__root is None else self.__root.size
-
-    def __iter__(self) -> typing.Iterator[K]:
-        for node in dsalgo.avl_tree_recurse.iterate(self.__root):
-            yield node.key
-
-    def __contains__(self, key: K) -> bool:
-        return dsalgo.avl_tree_recurse.find(self.__root, key) is not None
-
-    def insert(self, key: K) -> None:
-        if key not in self:
-            self.__root = dsalgo.avl_tree_recurse.insert(
-                self.__root,
-                dsalgo.avl_tree_recurse.Node(key),
-            )
-
-    def remove(self, key: K) -> None:
-        if key in self:
-            self.__root = dsalgo.avl_tree_recurse.remove(self.__root, key)
-
-    def __getitem__(self, k: int) -> K | None:
-        assert 0 <= k < len(self), "index ouf of range."
-        assert self.__root is not None
-        node = dsalgo.avl_tree_recurse.get_kth_node(self.__root, k)
-        return None if node is None else node.key
-
-    def max(self) -> K | None:
-        return None if self.__root is None else self[len(self) - 1]
-
-    def min(self) -> K | None:
-        return None if self.__root is None else self[0]
-
-    def lower_bound(self, key: K) -> int:
-        return dsalgo.avl_tree_recurse.lower_bound(self.__root, key)
-
-    def upper_bound(self, key: K) -> int:
-        return dsalgo.avl_tree_recurse.upper_bound(self.__root, key)
