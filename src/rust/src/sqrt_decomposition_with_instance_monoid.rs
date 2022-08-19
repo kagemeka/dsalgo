@@ -49,19 +49,19 @@ where
         let lj = (l + n - 1) / n;
         let rj = r / n;
         if rj < lj {
-            for i in l..r {
-                v = self.g.op(v, self.data[i].clone());
+            for x in self.data[l..r].iter() {
+                v = self.g.op(v, x.clone());
             }
             return v;
         }
-        for i in l..lj * n {
-            v = self.g.op(v, self.data[i].clone());
+        for x in self.data[l..lj * n].iter() {
+            v = self.g.op(v, x.clone());
         }
-        for j in lj..rj {
-            v = self.g.op(v, self.buckets[j].clone());
+        for x in self.buckets[lj..rj].iter() {
+            v = self.g.op(v, x.clone());
         }
-        for i in rj * n..r {
-            v = self.g.op(v, self.data[i].clone());
+        for x in self.data[rj * n..r].iter() {
+            v = self.g.op(v, x.clone());
         }
         v
     }
@@ -106,7 +106,6 @@ where
         F: Fn(&G::T) -> bool,
     {
         let m = self.interval();
-        // let n = self.size();
         let rj = r / m;
         let mut v = self.g.e();
         for i in (rj * m..r).rev() {
