@@ -29,7 +29,7 @@ where
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self::Output {
-        let mut a = Matrix::<T, N>::new(0.into());
+        let mut a: Self = 0.into();
         for i in 0..N {
             for k in 0..N {
                 for j in 0..N {

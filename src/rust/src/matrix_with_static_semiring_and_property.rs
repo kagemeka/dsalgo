@@ -53,8 +53,6 @@ where
         Self(data.into_iter().map(|x| x.to_vec()).collect(), PhantomData)
     }
 }
-use std::ops::*;
-
 use crate::static_square_matrix_property_trait::Size;
 impl<R: Semiring, P> Add for Matrix<R, P>
 where
