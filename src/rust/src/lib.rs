@@ -1017,6 +1017,8 @@ pub mod sieve_of_eratosthenes_prime_factorize_table_in_range_query;
 pub mod sieve_of_eratosthenes_prime_factorize_table_usize;
 pub mod sieve_of_eratosthenes_range_sieve_enumerate;
 pub mod sieve_of_euler;
+pub mod matrix_frequent;
+pub mod static_matrix_property_frequent;
 pub mod random_sequence_generate;
 pub mod const_ascii_characters;
 pub mod longest_common_substring_find_all_ends;
