@@ -1235,6 +1235,7 @@ pub mod z_algorithm_find_all_substring_indices;
 pub mod zeller_day_of_week_congruence_formula;
 pub mod zero_element;
 pub mod zero_one_bfs;
+pub mod matrix_with_static_property_define_bitwise_xor_and_usize;
 pub mod zeta_transform_for_divisors_additive_with_std;
 pub mod zeta_transform_for_divisors_with_instant_func;
 pub mod zeta_transform_for_multiples_additive_with_std;
