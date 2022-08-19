@@ -19,6 +19,7 @@ mod tests {
     fn test() {
         // refs: en-wiki
         let cases = [
+            ("aaaaa", vec![-1, 0, 1, 2, 3, 4]),
             ("abcdabd", vec![-1, 0, 0, 0, 0, 1, 2, 0]),
             ("abacababc", vec![-1, 0, 0, 1, 0, 1, 2, 3, 2, 0]),
             ("abacababa", vec![-1, 0, 0, 1, 0, 1, 2, 3, 2, 3]),

@@ -9,7 +9,7 @@ pub fn z_algorithm<T: PartialEq>(a: &[T]) -> Vec<usize> {
             d += 1;
         }
         lcp[i] = d;
-        if r < i + d {
+        if i + d > r {
             l = i;
         }
     }
