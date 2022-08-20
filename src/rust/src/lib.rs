@@ -403,6 +403,8 @@ pub mod fenwick_tree_with_instance_commutative_monoid_1_indexed;
 pub mod fenwick_tree_with_static_abelian_group_1_indexed;
 pub mod fenwick_tree_with_static_commutative_monoid_1_indexed;
 pub mod fenwick_tree_xor;
+pub mod modular_linear_equation_with_chinese_remainder_theorem;
+pub mod chinese_remainder_theorem_extended_euclidean_gcd_reduce_i64_direct;
 pub mod fermat_factorization_method;
 pub mod fft;
 pub mod fibonacci_heap;
