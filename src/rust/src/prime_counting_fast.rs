@@ -1,10 +1,10 @@
-use crate::find_root::isqrt;
+use crate::integer_square_root_with_binary_search_u64::isqrt;
 /// O(N^{3/4})
 pub fn prime_pi_fast(n: u64) -> u64 {
     if n < 2 {
         return 0;
     }
-    let sqrt = isqrt::floor(n) as usize;
+    let sqrt = isqrt(n) as usize;
     let n = n as usize;
     // consider sieve of Eratosthenes' transitions.
     // S(j, p) := number of trues in [2, j] after sieving with prime p.

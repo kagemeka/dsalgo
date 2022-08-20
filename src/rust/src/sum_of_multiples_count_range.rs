@@ -1,4 +1,4 @@
-use crate::find_root::isqrt;
+use crate::integer_square_root_with_binary_search_u64::isqrt;
 /// [lo, hi]
 pub fn sum_of_multiples_count_range(limit: u64, lo: u64, mut hi: u64) -> u64 {
     // similar to sum of multiples sum.
@@ -24,7 +24,7 @@ pub fn sum_of_multiples_count_range(limit: u64, lo: u64, mut hi: u64) -> u64 {
         debug_assert!(hi * hi <= limit);
         return s;
     }
-    debug_assert!(k == isqrt::floor(limit) + 1);
+    debug_assert!(k == isqrt(limit) + 1);
     debug_assert!(lo <= k && k <= hi);
     for j in 1..=limit / k {
         let mut i_max = limit / j;

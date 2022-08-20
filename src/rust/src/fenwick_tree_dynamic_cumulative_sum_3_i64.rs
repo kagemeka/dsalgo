@@ -10,9 +10,9 @@ impl CumulativeSum3 {
 
     pub fn add(&mut self, i: usize, x: i64) {
         let j = i as i64;
-        self.0.add(i, (1 - j) * (2 - j) * x);
-        self.1.add(i, (3 - 2 * j) * x);
-        self.2.add(i, x);
+        self.0.add_ge(i, (1 - j) * (2 - j) * x);
+        self.1.add_ge(i, (3 - 2 * j) * x);
+        self.2.add_ge(i, x);
     }
 
     pub fn get(&self, i: usize) -> i64 {

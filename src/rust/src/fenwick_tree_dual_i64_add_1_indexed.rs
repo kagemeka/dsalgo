@@ -6,7 +6,7 @@ impl Fenwick {
     pub fn size(&self) -> usize { self.0.len() - 1 }
 
     /// add x to a_j (j >= i)
-    pub fn add(&mut self, mut i: usize, x: i64) {
+    pub fn add_ge(&mut self, mut i: usize, x: i64) {
         assert!(i < self.size());
         i += 1;
         while i <= self.size() {
@@ -33,7 +33,7 @@ mod tests {
     #[test]
     fn test() {
         let mut fw = Fenwick::new(10);
-        fw.add(5, 1); // add 1 for a_j (j >= i);
+        fw.add_ge(5, 1); // add 1 for a_j (j >= i);
         assert_eq!(fw.get(4), 0); // get a_4
         assert_eq!(fw.get(5), 1);
     }

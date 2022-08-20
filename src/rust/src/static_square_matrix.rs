@@ -45,7 +45,7 @@ impl<T: Clone, const N: usize> From<[[T; N]; N]> for Matrix<T> {
     fn from(data: [[T; N]; N]) -> Self {
         let n = Self::size();
         assert_eq!(N, n);
-        Self(data.into_iter().map(|x| x.to_vec()).collect())
+        Self(data.iter().map(|x| x.to_vec()).collect())
     }
 }
 impl<T: AddAssign + Clone + From<i32>> Add for Matrix<T> {

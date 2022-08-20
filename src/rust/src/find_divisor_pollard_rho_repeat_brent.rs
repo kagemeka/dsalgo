@@ -1,5 +1,5 @@
 use crate::{
-    find_divisor_pollard_rho_brent::find_divisor_pollard_rho_brent,
+    find_divisor_pollard_rho_with_brent_cycle_detection::*,
     montgomery_modular_multiplication_64::MontgomeryMultiplication64,
 };
 pub fn find_divisor_pollard_rho_repeat(

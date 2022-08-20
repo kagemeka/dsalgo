@@ -26,3 +26,21 @@ template<typename T, int n> struct matrix {
   auto operator+=(Self& rhs) { *this = *this + rhs; }
   auto debug() { rep(i, n) rep(j, n) cout << data[i][j] << " \n"[j == n - 1]; }
 };
+// bitwise xor and example
+uint const one = (1l << 32) - 1;
+struct R {
+  uint v;
+  R() = default;
+  static auto init(uint x) -> R {
+    R v;
+    v.v = x;
+    return v;
+  }
+  R(int x) {
+    assert(x == 0 || x == 1);
+    v = one * x;
+  }
+  auto operator*(R rhs) -> R { return R::init(v & rhs.v); }
+  auto operator+(R rhs) -> R { return R::init(v ^ rhs.v); }
+  auto operator+=(R rhs) { *this = *this + rhs; }
+};

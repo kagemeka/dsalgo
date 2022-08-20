@@ -10,8 +10,8 @@ pub fn enumerate_primes(less_than: usize) -> Vec<usize> {
             continue;
         }
         primes.push(i);
-        for j in (i * i >> 1..n >> 1).step_by(i) {
-            is_prime[j] = false;
+        for j in (i * i..n).step_by(i << 1) {
+            is_prime[j >> 1] = false;
         }
     }
     primes

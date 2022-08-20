@@ -18,4 +18,5 @@
 /html/*
 /log/*
 /site/*
+/pkg
 !.gitkeep

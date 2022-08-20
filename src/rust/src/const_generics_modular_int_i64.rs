@@ -1,4 +1,4 @@
-#[derive(Copy, Clone, Hash, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub struct Modint<const MOD: i64>(pub i64);
 impl<const MOD: i64> Modint<MOD> {
     pub const fn modulus() -> i64 { MOD }
@@ -157,6 +157,9 @@ impl<const MOD: i64> Modint<MOD> {
         }
         y
     }
+}
+impl<const MOD: i64> From<i32> for Modint<MOD> {
+    fn from(x: i32) -> Self { Self::new(x as i64) }
 }
 #[cfg(test)]
 mod tests {

@@ -26,6 +26,17 @@ def mul(mod: int, a: np.ndarray, b: np.ndarray) -> np.ndarray:
     return c % mod
 
 
+def power(mod: int, a: np.ndarray, n: int) -> np.ndarray:
+    if n == 0:
+        m = len(a)
+        return np.eye(m, dtype=np.int64)
+    y = power(mod, a, n >> 1)
+    y = mul(mod, y, y)
+    if n & 1:
+        y = mul(mod, y, a)
+    return y
+
+
 class Test(unittest.TestCase):
     def test(self) -> None:
         MOD = 1_000_000_007

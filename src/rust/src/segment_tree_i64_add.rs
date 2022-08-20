@@ -46,6 +46,38 @@ impl Segtree {
         }
         vl + vr
     }
+
+    pub fn max_right<F: Fn(&i64) -> bool>(&self, f: F, l: usize) -> usize {
+        assert!(l <= self.size);
+        if l == self.size {
+            return self.size;
+        }
+        let mut v = 0;
+        let n = self.n();
+        let mut i = l + n;
+        loop {
+            i >>= i.trailing_zeros();
+            let nv = v + self.node[i];
+            if !f(&nv) {
+                break;
+            }
+            v = nv;
+            i += 1;
+            if i.count_ones() == 1 {
+                return self.size;
+            }
+        }
+        while i < n {
+            i <<= 1;
+            let nv = v + self.node[i];
+            if !f(&nv) {
+                continue;
+            }
+            v = nv;
+            i += 1;
+        }
+        i - n
+    }
 }
 use std::ops::*;
 impl Index<usize> for Segtree {

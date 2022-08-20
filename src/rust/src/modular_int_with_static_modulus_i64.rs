@@ -1,8 +1,16 @@
-use std::marker::PhantomData;
+use std::{marker::PhantomData, ops::*};
 
-use crate::static_modulus_trait::Get;
-#[derive(Copy, Clone, Hash, PartialEq, Eq)]
+use crate::{
+    modular_inverse_euclidean_i64_no_error::modinv,
+    multiplicative_inverse::MulInv, static_modulus_trait::Get,
+};
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub struct Modint<M>(pub i64, PhantomData<M>);
+impl<M> std::fmt::Display for Modint<M> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
 impl<M: Get<T = i64>> Modint<M> {
     pub fn modulus() -> i64 { M::get() }
 
@@ -21,7 +29,6 @@ impl<M: Get<T = i64>> Modint<M> {
 
     pub fn new(v: i64) -> Self { Self(Self::normalize(v), PhantomData) }
 }
-use std::ops::*;
 impl<M: Get<T = i64>> Add for Modint<M> {
     type Output = Self;
 
@@ -54,10 +61,6 @@ impl<M: Get<T = i64>> Mul for Modint<M> {
         self
     }
 }
-use crate::{
-    modular_inverse_euclidean_i64_no_error::modinv,
-    multiplicative_inverse::MulInv,
-};
 impl<M: Get<T = i64>> MulInv for Modint<M> {
     type Output = Self;
 
@@ -163,6 +166,12 @@ impl<M: Get<T = i64> + Copy> Modint<M> {
         }
         y
     }
+}
+impl<M: Get<T = i64>> From<i32> for Modint<M> {
+    fn from(x: i32) -> Self { Self::new(x as i64) }
+}
+impl<M: Get<T = i64>> From<usize> for Modint<M> {
+    fn from(x: usize) -> Self { Self::new(x as i64) }
 }
 #[cfg(test)]
 mod tests {

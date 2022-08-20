@@ -1,8 +1,8 @@
 pub fn argsort(mut a: Vec<usize>) -> Vec<usize> {
     let n = a.len();
     let mut m = *a.iter().min().unwrap();
-    for i in 0..n {
-        a[i] -= m;
+    for x in a.iter_mut() {
+        *x -= m;
     }
     m = *a.iter().max().unwrap();
     let mut arg = vec![0; m + 1];
@@ -13,9 +13,9 @@ pub fn argsort(mut a: Vec<usize>) -> Vec<usize> {
         arg[i + 1] += arg[i];
     }
     let mut res = vec![0; n];
-    for i in (0..n).rev() {
-        arg[a[i]] -= 1;
-        res[arg[a[i]]] = i;
+    for (i, &x) in a.iter().enumerate().rev() {
+        arg[x] -= 1;
+        res[arg[x]] = i;
     }
     res
 }
