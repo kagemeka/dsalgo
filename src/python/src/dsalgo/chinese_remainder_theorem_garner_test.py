@@ -1,6 +1,6 @@
 import unittest
 
-import dsalgo.garner
+import dsalgo.chinese_remainder_theorem_garner
 
 
 class Test(unittest.TestCase):
@@ -10,7 +10,7 @@ class Test(unittest.TestCase):
             (17, 8),
         ]
         self.assertEqual(
-            dsalgo.garner.garner_form(pairs),
+            dsalgo.chinese_remainder_theorem_garner.garner_form(pairs),
             212,
         )
 
@@ -20,11 +20,11 @@ class Test(unittest.TestCase):
             (17, 8),
         ]
         self.assertEqual(
-            dsalgo.garner.garner_modular_form(998_244_353, pairs),
+            dsalgo.chinese_remainder_theorem_garner.garner_modular_form(998_244_353, pairs),
             212,
         )
         self.assertEqual(
-            dsalgo.garner.garner_modular_form(100, pairs),
+            dsalgo.chinese_remainder_theorem_garner.garner_modular_form(100, pairs),
             12,
         )
 
