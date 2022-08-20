@@ -1,6 +1,6 @@
 use crate::{
     modular_cumprod_i64::*, modular_factorial_table_i64::*,
-    modular_power_i32::*,
+    modular_power_with_neg_exp_i32::*,
 };
 /// modular m must be coprime with n < m;
 /// so lpf(m) >= size
