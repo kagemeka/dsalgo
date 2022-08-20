@@ -391,6 +391,7 @@ pub mod fenwick_tree_with_static_commutative_monoid_1_indexed;
 pub mod fenwick_tree_xor;
 pub mod fermat_factorization_method;
 pub mod fft;
+pub mod modular_linear_equation_with_extended_euclidean_gcd;
 pub mod modular_linear_equation_with_euler_theorem_i64;
 pub mod modular_power_recurse_i64;
 pub mod euler_totient_with_least_prime_factor_table_usize;
