@@ -7,6 +7,7 @@ pub fn safe_crt(
     r0 %= m0;
     r1 %= m1;
     if m0 < m1 {
+        // needed to avoid overflow
         swap(&mut r0, &mut r1);
         swap(&mut m0, &mut m1);
     }
