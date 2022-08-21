@@ -108,6 +108,7 @@ pub mod bit_length_with_count_leading_zeros_usize;
 pub mod bit_reverse_divide_and_conquer_butterfly_usize;
 pub mod bit_reverse_with_std_usize;
 pub mod bit_set;
+pub mod enumerate_subset_bits;
 pub mod bit_vector;
 pub mod bitonic_sort;
 pub mod bitops;
