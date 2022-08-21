@@ -12,7 +12,7 @@ mod tests {
     fn test() {
         let mut s = 0b000111;
         for _ in 0..10 {
-            println!("{:06b}", s);
+            println!("{:06b}, {}", s, s);
             s = next_combination(s);
         }
     }
