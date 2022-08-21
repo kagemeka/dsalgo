@@ -3,10 +3,7 @@ pub struct SqrtDecomposition {
     data: Vec<i64>,
     buckets: Vec<i64>,
 }
-impl SqrtDecomposition
-where
-    i64: Clone,
-{
+impl SqrtDecomposition {
     pub fn size(&self) -> usize { self.data.len() }
 
     pub fn interval(&self) -> usize {
