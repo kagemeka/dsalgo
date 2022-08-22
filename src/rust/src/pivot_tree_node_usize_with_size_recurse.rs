@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Node {
     pivot: usize,
     pub(crate) value: usize,
@@ -5,16 +6,12 @@ pub struct Node {
     right: Option<Box<Self>>,
     size: usize,
 }
-// fn capacity(pivot: usize) -> usize {
-//     assert!(pivot > 0);
-//     (1 << pivot.trailing_zeros() + 1) - 1
-// }
 impl Node {
     /// capacity: 1 <= value < 2^max_height
     /// 0 <= value < 2^max_height - 1 internally,
     pub fn new(max_height: usize, value: usize) -> Option<Box<Self>> {
         assert!(max_height > 0);
-        // assert!(1 <= value && value < 1 << max_height);
+        assert!(1 <= value && value < 1 << max_height);
         Some(Box::new(Self {
             pivot: 1 << (max_height - 1),
             value,
@@ -34,16 +31,14 @@ impl Node {
         }))
     }
 
-    // fn capacity(root: Option<&Box<Self>>) -> usize {
-    //     if let Some(root) = root { capacity(root.pivot) } else { 0 }
-    // }
     pub(crate) fn size(node: Option<&Box<Self>>) -> usize {
         if let Some(node) = node { node.size } else { 0 }
     }
 
     pub fn update(&mut self) {
-        self.size =
-            Self::size(self.left.as_ref()) + Self::size(self.right.as_ref());
+        self.size = Self::size(self.left.as_ref())
+            + Self::size(self.right.as_ref())
+            + 1;
     }
 
     pub fn insert(&mut self, mut v: usize) {
@@ -52,8 +47,7 @@ impl Node {
         let p = self.pivot;
         let d = 1 << p.trailing_zeros();
         assert!(d > 1 && p - d < v && v < p + d);
-        if v < self.value {}
-        if self.value.max(v) <= self.pivot {
+        if self.value.min(v) < self.pivot {
             if self.value < v {
                 swap(&mut self.value, &mut v);
             }
@@ -72,7 +66,7 @@ impl Node {
                 self.right = Self::with_pivot(p + (d >> 1), v);
             }
         }
-        self.size += 1;
+        self.update();
     }
 
     pub fn remove(mut root: Box<Self>, i: usize) -> Option<Box<Self>> {
@@ -87,7 +81,7 @@ impl Node {
             if let Some(right) = root.right.take() {
                 root.value = right.kth_node(0).value;
                 root.right = Self::remove(right, 0);
-            } else if let Some(left) = root.right.take() {
+            } else if let Some(left) = root.left.take() {
                 root.value = left.kth_node(lsize - 1).value;
                 root.left = Self::remove(left, lsize - 1);
             } else {

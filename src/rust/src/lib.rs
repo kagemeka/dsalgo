@@ -835,7 +835,7 @@ pub mod pivot_tree_node_usize_with_size_recurse;
 pub mod pivot_tree_node_with_size_recurse;
 pub mod pivot_tree_ordered_set;
 pub mod pivot_tree_ordered_set_simple;
-pub mod pivot_tree_with_vec;
+pub mod pivot_tree_ordered_set_usize_with_size_with_vec;
 pub mod pocket_modint_u32;
 pub mod pocket_tree_bfs_depth;
 pub mod pocket_tree_bfs_parent;
