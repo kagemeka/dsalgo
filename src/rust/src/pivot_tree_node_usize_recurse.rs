@@ -7,7 +7,7 @@ pub struct Node {
 impl Node {
     /// capacity: 2^max_height - 1
     /// 1 <= value < 2^max_height internally,
-    pub fn new(value: usize, max_height: usize) -> Option<Box<Self>> {
+    pub fn new(max_height: usize, value: usize) -> Option<Box<Self>> {
         assert!(max_height > 0);
         assert!(1 <= value && value < 1 << max_height);
         Some(Box::new(Self {

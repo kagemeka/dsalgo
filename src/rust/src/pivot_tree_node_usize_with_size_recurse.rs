@@ -1,16 +1,20 @@
 pub struct Node {
     pivot: usize,
-    value: usize,
+    pub(crate) value: usize,
     left: Option<Box<Self>>,
     right: Option<Box<Self>>,
     size: usize,
 }
+// fn capacity(pivot: usize) -> usize {
+//     assert!(pivot > 0);
+//     (1 << pivot.trailing_zeros() + 1) - 1
+// }
 impl Node {
     /// capacity: 1 <= value < 2^max_height
     /// 0 <= value < 2^max_height - 1 internally,
-    pub fn new(value: usize, max_height: usize) -> Option<Box<Self>> {
+    pub fn new(max_height: usize, value: usize) -> Option<Box<Self>> {
         assert!(max_height > 0);
-        assert!(1 <= value && value < 1 << max_height);
+        // assert!(1 <= value && value < 1 << max_height);
         Some(Box::new(Self {
             pivot: 1 << (max_height - 1),
             value,
@@ -30,7 +34,10 @@ impl Node {
         }))
     }
 
-    fn size(node: Option<&Box<Self>>) -> usize {
+    // fn capacity(root: Option<&Box<Self>>) -> usize {
+    //     if let Some(root) = root { capacity(root.pivot) } else { 0 }
+    // }
+    pub(crate) fn size(node: Option<&Box<Self>>) -> usize {
         if let Some(node) = node { node.size } else { 0 }
     }
 
@@ -68,29 +75,28 @@ impl Node {
         self.size += 1;
     }
 
-    // pub fn remove(root:
-
-    // def remove(
-    //     root: typing.Optional[Node[V]],
-    //     key: int,
-    // ) -> typing.Optional[Node[V]]:
-    //     if root is None:
-    //         return None
-    //     if key < root.key:
-    //         root.left = remove(root.left, key)
-    //     elif key > root.key:
-    //         root.right = remove(root.right, key)
-    //     else:
-    //         if root.left is None and root.right is None:
-    //             return None
-    //         if root.right is not None:
-    //             root.key, root.value = _get_min(root.right)
-    //             root.right = remove(root.right, root.key)
-    //         elif root.left is not None:
-    //             root.key, root.value = _get_max(root.left)
-    //             root.left = remove(root.left, root.key)
-    //     _update(root)
-    //     return root
+    pub fn remove(mut root: Box<Self>, i: usize) -> Option<Box<Self>> {
+        assert!(i < root.size);
+        let lsize = Self::size(root.left.as_ref());
+        if i < lsize {
+            root.left = Self::remove(root.left.take().unwrap(), i);
+        } else if i > lsize {
+            root.right =
+                Self::remove(root.right.take().unwrap(), i - lsize - 1);
+        } else {
+            if let Some(right) = root.right.take() {
+                root.value = right.kth_node(0).value;
+                root.right = Self::remove(right, 0);
+            } else if let Some(left) = root.right.take() {
+                root.value = left.kth_node(lsize - 1).value;
+                root.left = Self::remove(left, lsize - 1);
+            } else {
+                return None;
+            }
+        }
+        root.update();
+        Some(root)
+    }
 
     pub fn kth_node(&self, k: usize) -> &Self {
         assert!(k < self.size);
@@ -115,7 +121,7 @@ impl Node {
         if f(root.value) {
             Self::binary_search(f, root.left.as_ref())
         } else {
-            let offset = Self::size(root.left.as_ref());
+            let offset = Self::size(root.left.as_ref()) + 1;
             offset + Self::binary_search(f, root.right.as_ref())
         }
     }
