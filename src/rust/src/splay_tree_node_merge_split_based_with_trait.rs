@@ -7,7 +7,7 @@ use crate::{
     size,
     size::Size,
     split::Split,
-    tree_node::Get,
+    // tree_node::Get,
 };
 #[derive(Debug)]
 pub struct Node<T> {
@@ -242,7 +242,7 @@ mod tests {
         assert_eq!(root.size(), 2);
         assert_eq!(root.as_ref().unwrap().borrow().left.size(), 0);
         assert_eq!(root.as_ref().unwrap().borrow().right.size(), 1);
-        let (mut root, mut popped) = <Root as Pop>::pop(root, 0);
+        let (root, popped) = <Root as Pop>::pop(root, 0);
         assert_eq!(root.size(), 1);
         assert_eq!(popped.size(), 1);
         println!("{:?}", popped);

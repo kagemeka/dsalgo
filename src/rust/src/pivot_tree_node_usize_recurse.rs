@@ -29,7 +29,7 @@ impl Node {
         let d = 1 << p.trailing_zeros();
         assert!(d > 1 && p - d < v && v < p + d);
         if v < self.value {}
-        if self.value.max(v) <= self.pivot {
+        if self.value.min(v) < self.pivot {
             if self.value < v {
                 swap(&mut self.value, &mut v);
             }
