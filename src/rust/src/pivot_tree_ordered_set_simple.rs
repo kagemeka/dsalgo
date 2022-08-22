@@ -5,9 +5,9 @@ pub struct PivotSet {
     size: usize,
 }
 impl PivotSet {
-    pub fn new(max_size: usize) -> Self {
-        let max_height =
-            (max_size + 1).next_power_of_two().trailing_zeros() as usize;
+    /// deal with 0 <= x < 2^max_height - 1
+    /// without duplicates.
+    pub fn new(max_height: usize) -> Self {
         Self { root: None, max_height, size: 0 }
     }
 
@@ -58,15 +58,15 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        let mut s = PivotSet::new(1 << 30);
+        let h = 31;
+        let mut s = PivotSet::new(h);
         s.insert(1);
         assert_eq!(s.size(), 1);
         s.insert(0);
         assert_eq!(s.size(), 2);
-        let n = 1 << 30;
-        s.insert(n - 1);
+        s.insert(1 << (h - 1));
         assert_eq!(s.size(), 3);
-        assert_eq!(s.min_ge(2), Some(n - 1));
+        assert_eq!(s.min_ge(2), Some(1 << (h - 1)));
         assert_eq!(s.min_ge(1), Some(1));
         assert_eq!(s.min_ge(0), Some(0));
         assert_eq!(s.max_le(2), Some(1));
@@ -77,6 +77,39 @@ mod tests {
         assert!(!s.contains(0));
         for x in s.iter() {
             dbg!(x);
+        }
+    }
+    #[test]
+    fn test_abc217() {
+        let cases = vec![
+            (5, vec![((2, 2), 5), ((1, 3), 0), ((2, 2), 3)]),
+            (5, vec![((1, 2), 0), ((1, 4), 0), ((2, 3), 2)]),
+            (100, vec![
+                ((1, 31), 0),
+                ((2, 41), 69),
+                ((1, 59), 0),
+                ((2, 26), 31),
+                ((1, 53), 0),
+                ((2, 58), 6),
+                ((1, 97), 0),
+                ((2, 93), 38),
+                ((1, 23), 0),
+                ((2, 84), 38),
+            ]),
+        ];
+        for (l, q) in cases {
+            let mut s = PivotSet::new(30);
+            s.insert(0);
+            s.insert(l);
+            for ((t, x), ans) in q {
+                if t == 1 {
+                    s.insert(x);
+                } else {
+                    let hi = s.min_ge(x).unwrap();
+                    let lo = s.max_le(x).unwrap();
+                    assert_eq!(hi - lo, ans);
+                }
+            }
         }
     }
 }
