@@ -1,11 +1,14 @@
 use std::ops::*;
+
+use crate::enumerate_subset_bits::enumerate_subsets;
 pub fn fast_zeta_subset<T: Clone + Add<Output = T>>(mut f: Vec<T>) -> Vec<T> {
     let m = f.len();
     let n = m.next_power_of_two().trailing_zeros();
+    let full = (1 << n) - 1;
     for i in 0..n {
-        for s in 0..m {
+        for s in enumerate_subsets(full ^ (1 << i)) {
             let t = s | 1 << i;
-            if s < t && t < m {
+            if t < m {
                 f[t] = f[t].clone() + f[s].clone();
             }
         }
