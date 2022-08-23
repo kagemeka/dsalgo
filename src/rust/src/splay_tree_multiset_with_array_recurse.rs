@@ -1,4 +1,4 @@
-use crate::splay_tree_node_with_size_recurse::*;
+use crate::splay_tree_node_with_array_recurse::*;
 pub struct Multiset<T>(Option<Box<Node<T>>>);
 impl<T: Ord> Multiset<T> {
     pub fn new() -> Self { Self(None) }
