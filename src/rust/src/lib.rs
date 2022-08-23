@@ -1276,6 +1276,8 @@ pub mod vector_space;
 pub mod vector_unique;
 pub mod verbal_arithmetic;
 pub mod vertex_cut;
+pub mod splay_tree_multiset_unsafe;
+pub mod splay_tree_node_unsafe;
 pub mod vertex_seperator;
 pub mod virtual_tree;
 pub mod viterbi_algorithm;

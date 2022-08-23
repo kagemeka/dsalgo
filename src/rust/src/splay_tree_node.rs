@@ -153,6 +153,7 @@ impl<T> Node<T> {
         if let Some(r) = r.as_ref() {
             r.borrow_mut().p = None;
         }
+        root.borrow_mut().update();
         let c = Self::merge(l, r);
         (root, c)
     }
