@@ -34,7 +34,7 @@ impl<T: Ord> Multiset<T> {
 
     pub fn get(&mut self, i: usize) -> &T {
         self.0 = Some(Node::splay(self.0.take().unwrap(), i));
-        &self.0.as_ref().unwrap().value
+        &self.0.as_ref().unwrap().v
     }
 }
 #[cfg(test)]

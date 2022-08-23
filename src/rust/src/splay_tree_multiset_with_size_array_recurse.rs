@@ -1,4 +1,4 @@
-use crate::splay_tree_node_with_size_array_child_recurse::*;
+use crate::splay_tree_node_with_size_array_recurse::*;
 pub struct Multiset<T>(Option<Box<Node<T>>>);
 impl<T: Ord> Multiset<T> {
     pub fn new() -> Self { Self(None) }
@@ -34,7 +34,7 @@ impl<T: Ord> Multiset<T> {
 
     pub fn get(&mut self, i: usize) -> &T {
         self.0 = Some(Node::splay(self.0.take().unwrap(), i));
-        &self.0.as_ref().unwrap().value
+        &self.0.as_ref().unwrap().v
     }
 }
 #[cfg(test)]
