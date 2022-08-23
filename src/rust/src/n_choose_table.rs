@@ -1,2 +1,0 @@
-// TODO:
-// using factorial tables
