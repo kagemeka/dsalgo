@@ -37,10 +37,6 @@ def combinations_next_comb(
         s = next_combination(s)
 
 
-def next_combination(s: int) -> int:
-    lsb = s & -s
-    i = s + lsb
-    return (s & ~i) // lsb >> 1 | i
 
 
 def next_permutation(
