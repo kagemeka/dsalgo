@@ -7,7 +7,7 @@ pub fn fast_mobius_subset<T: Clone + Sub<Output = T>>(mut f: Vec<T>) -> Vec<T> {
         for s in 0..m {
             // it's not necessarily be iterated as (0..m).rev()
             // because for each bit, there are at most 2 states set/!set
-            // if other bits are same.
+            // if the other bits are same.
             let t = s | 1 << i;
             if s < t && t < m {
                 f[t] = f[t].clone() - f[s].clone();
