@@ -1,14 +1,12 @@
 use std::ops::*;
-/// O(N*2^N)
-pub fn fast_zeta_subset<T: Clone + Add<Output = T>>(mut f: Vec<T>) -> Vec<T> {
+/// O(3^N)
+pub fn zeta_subset<T: Clone + Add<Output = T>>(mut f: Vec<T>) -> Vec<T> {
     let m = f.len();
-    let n = m.next_power_of_two().trailing_zeros();
-    for i in 0..n {
-        for s in 0..m {
-            let t = s | 1 << i;
-            if s < t && t < m {
-                f[t] = f[t].clone() + f[s].clone();
-            }
+    for s in (0..m).rev() {
+        let mut t = s;
+        while t > 0 {
+            t = (t - 1) & s;
+            f[s] = f[s].clone() + f[t].clone();
         }
     }
     f
@@ -24,7 +22,7 @@ mod tests {
         for i in 0..n + 1 {
             f[1 << i] = 1;
         }
-        f = fast_zeta_subset(f);
+        f = zeta_subset(f);
         assert_eq!(f, [
             0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3,
         ]);

@@ -1269,6 +1269,7 @@ pub mod upper_bound_on_slice;
 pub mod usize_u64_impl_graph_edge_trait;
 pub mod van_emde_boas_tree;
 pub mod vector_dedup;
+pub mod zeta_transform_for_subset_additive_with_std;
 pub mod fast_zeta_transform_for_subset_additive_with_std_optim;
 pub mod number_of_edges_in_subgraph_with_subset_fast_zeta;
 pub mod number_of_edges_in_subgraph_with_subset_zeta;

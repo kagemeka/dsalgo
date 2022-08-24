@@ -1,6 +1,7 @@
 use std::ops::*;
 
 use crate::enumerate_subset_bits::enumerate_subsets;
+/// O(N*2^(N - 1))
 pub fn fast_zeta_subset<T: Clone + Add<Output = T>>(mut f: Vec<T>) -> Vec<T> {
     let m = f.len();
     let n = m.next_power_of_two().trailing_zeros();
