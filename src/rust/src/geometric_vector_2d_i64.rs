@@ -1,5 +1,5 @@
 use std::ops::*;
-#[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq, Hash, Ord)]
 pub struct Vector2D(i64, i64);
 impl From<(i64, i64)> for Vector2D {
     fn from(p: (i64, i64)) -> Self { Self(p.0, p.1) }
@@ -82,20 +82,61 @@ impl Vector2D {
     pub fn norm(&self) -> f64 { (self.norm2() as f64).sqrt() }
 }
 impl Vector2D {
-    /// self < rhs ?
-    pub fn angle_lt(&self, rhs: &Self) -> bool {
-        let sx = self.1.signum();
-        let sy = rhs.1.signum();
-        if sx * sy == -1 {
-            sx == -1
-        } else if sx == 0 && sy == 0 {
-            self.0 > rhs.0
-        } else {
-            self.cross(rhs) > 0
-        }
+    /// [0, \pi)
+    fn positive_angle(&self) -> bool {
+        self.1 > 0 || self.1 == 0 && self.0 == 0
     }
 
-    pub fn angle(&self) -> f64 { (self.1 as f64).atan2(self.0 as f64) }
+    /// self < rhs ?
+    /// [-\pi, \pi)
+    pub fn angle_lt(&self, rhs: &Self) -> bool {
+        let a = self.positive_angle();
+        let b = rhs.positive_angle();
+        if a != b { b } else { self.cross(rhs) > 0 }
+    }
+
+    pub fn radian(&self) -> f64 { (self.1 as f64).atan2(self.0 as f64) }
+}
+impl Vector2D {
+    pub fn is_acute(&self) -> bool { self.1 > 0 && self.0 > 0 }
+
+    pub fn is_othogonal(&self) -> bool { self.1 > 0 && self.0 == 0 }
+
+    pub fn is_obtuse(&self) -> bool { self.1 > 0 && self.0 < 0 }
+
+    pub fn acute(&self, other: &Self) -> bool {
+        self.cross(other) > 0 && self.dot(other) > 0
+    }
+
+    pub fn othogonal(&self, other: &Self) -> bool {
+        self.cross(other) > 0 && self.dot(other) == 0
+    }
+
+    pub fn obtuse(&self, other: &Self) -> bool {
+        self.cross(other) > 0 && self.dot(other) < 0
+    }
+}
+/// compare by angle
+impl PartialOrd for Vector2D {
+    fn lt(&self, other: &Self) -> bool { self.angle_lt(other) }
+
+    fn le(&self, other: &Self) -> bool { self == other && self <= other }
+
+    fn ge(&self, other: &Self) -> bool { !(self < other) }
+
+    fn gt(&self, other: &Self) -> bool { !(self <= other) }
+
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        use std::cmp::Ordering::*;
+        let res = if self == other {
+            Equal
+        } else if self < other {
+            Less
+        } else {
+            Greater
+        };
+        Some(res)
+    }
 }
 pub enum DirectionType {
     CCW,
@@ -148,7 +189,7 @@ mod tests {
         a /= 2;
         dbg!(a);
         dbg!(a.norm());
-        dbg!(a.angle());
+        dbg!(a.radian());
         assert!(!a.angle_lt(&(2, 3).into()));
     }
 }
