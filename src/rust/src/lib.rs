@@ -1267,6 +1267,8 @@ pub mod tree_diameter_path_unweighted;
 pub mod tree_edges_to_graph;
 pub mod tree_get_path_with_lifting;
 pub mod tree_node;
+pub mod polygon_area_2_times_2d;
+pub mod pick_theorem;
 pub mod tree_path_aggregation;
 pub mod tree_path_aggregation_with_binary_lifting;
 pub mod tree_path_aggregation_with_hld;
