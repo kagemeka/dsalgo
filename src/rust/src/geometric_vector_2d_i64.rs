@@ -75,6 +75,11 @@ impl Div<i64> for Vector2D {
 impl Vector2D {
     pub fn cross(&self, rhs: &Self) -> i64 { self.0 * rhs.1 - self.1 * rhs.0 }
 
+    /// self as origin.
+    pub fn cross2(&self, a: &Self, b: &Self) -> i64 {
+        (*a - *self).cross(&(*b - *self))
+    }
+
     pub fn dot(&self, rhs: &Self) -> i64 { *self * *rhs }
 
     pub fn norm2(&self) -> i64 { self.dot(self) }
@@ -120,7 +125,7 @@ impl Vector2D {
 impl PartialOrd for Vector2D {
     fn lt(&self, other: &Self) -> bool { self.angle_lt(other) }
 
-    fn le(&self, other: &Self) -> bool { self == other && self <= other }
+    fn le(&self, other: &Self) -> bool { self == other && self < other }
 
     fn ge(&self, other: &Self) -> bool { !(self < other) }
 
