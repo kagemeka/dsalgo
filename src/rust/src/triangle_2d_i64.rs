@@ -15,6 +15,17 @@ impl Triangle {
 }
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
-    fn test() {}
+    fn test_area() {
+        let cases = vec![
+            (((1, 0), (3, 0), (2, 5)), 5.0),
+            (((-1, -2), (3, 4), (5, 6)), 2.0),
+            (((298, 520), (903, 520), (4, 663)), 43257.5),
+        ];
+        for (p, ans) in cases {
+            let t = Triangle::from(p);
+            assert_eq!(t.area(), ans);
+        }
+    }
 }
