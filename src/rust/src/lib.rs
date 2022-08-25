@@ -1271,6 +1271,7 @@ pub mod two_three_four_tree;
 pub mod two_three_heap;
 pub mod two_three_tree;
 pub mod ub_tree;
+pub mod line_segment_2d_i64;
 pub mod vector_2d_i64_impl_angle_sort;
 pub mod const_generics_dimensional_geometric_vector_i64;
 pub mod const_generics_dimensional_geometric_vector;
