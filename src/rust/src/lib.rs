@@ -1286,6 +1286,7 @@ pub mod union_find_rollback;
 pub mod union_find_traits;
 pub mod union_find_weighted;
 pub mod upper_bound_on_slice;
+pub mod xor_prefix_set_hash;
 pub mod usize_u64_impl_graph_edge_trait;
 pub mod van_emde_boas_tree;
 pub mod vector_dedup;
