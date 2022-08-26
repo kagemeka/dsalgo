@@ -30,12 +30,14 @@ impl Complex {
         Self(r * theta.cos(), r * theta.sin())
     }
 
-    /// e^{a + bi} = e^a * e^{bi}
+    /// e^{a + bi} = e^a * e^{bi} = e^a * (cos(b) + i*sin(b))
     pub fn exp(&self) -> Self {
         Self(self.1.cos(), self.1.sin()) * self.0.exp()
     }
 
-    /// ln(z) = ln(|z|) + i*arg(z)
+    /// t := arg(z)
+    /// z = |z|*exp(i*t) = exp(ln(|z|) + i*t)
+    /// ln(z) = ln(|z|) + i*t
     pub fn ln(&self) -> Self { Self(self.norm().ln(), self.argument()) }
 
     pub fn sqrt(&self) -> Complex {
