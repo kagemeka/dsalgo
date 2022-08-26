@@ -10,6 +10,10 @@ impl From<(f64, f64)> for Complex {
 impl Complex {
     pub fn rint(&self) -> f64 { self.0.round() }
 
+    pub fn zero() -> Self { Self(0.0, 0.0) }
+
+    pub fn one() -> Self { Self(1.0, 0.0) }
+
     pub fn i() -> Self { Self(0.0, 1.0) }
 
     pub fn norm_square(&self) -> f64 { self.0 * self.0 + self.1 * self.1 }

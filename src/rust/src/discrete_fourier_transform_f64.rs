@@ -1,4 +1,4 @@
-// compute DFT complex f64
+/// compute DFT/IDFT on complex f64 precision
 use std::f64::consts::*;
 
 use crate::complex_number_f64::Complex;
@@ -12,7 +12,6 @@ pub fn dft(a: &[Complex]) -> Vec<Complex> {
                     1.0,
                     -TAU * i as f64 * j as f64 / n as f64,
                 );
-                // dbg!(i, j, b);
             }
             b
         })
