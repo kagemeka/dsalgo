@@ -8,6 +8,7 @@ impl From<(f64, f64)> for Complex {
     fn from(rect: (f64, f64)) -> Self { Self(rect.0, rect.1) }
 }
 impl Complex {
+    /// as f64 real integer
     pub fn rint(&self) -> f64 { self.0.round() }
 
     pub fn zero() -> Self { Self(0.0, 0.0) }

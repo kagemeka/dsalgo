@@ -10,7 +10,8 @@ pub fn dft(a: &[Complex]) -> Vec<Complex> {
             for (j, &a) in a.iter().enumerate() {
                 b += a * Complex::from_polar(
                     1.0,
-                    -TAU * i as f64 * j as f64 / n as f64,
+                    // -TAU * i as f64 * j as f64 / n as f64,
+                    -2. * PI * i as f64 * j as f64 / n as f64,
                 );
             }
             b
@@ -25,7 +26,8 @@ pub fn idft(b: &[Complex]) -> Vec<Complex> {
             for (j, &b) in b.iter().enumerate() {
                 a += b * Complex::from_polar(
                     1.0,
-                    TAU * i as f64 * j as f64 / n as f64,
+                    // TAU * i as f64 * j as f64 / n as f64,
+                    2. * PI * i as f64 * j as f64 / n as f64,
                 );
             }
             a / n as f64
