@@ -6,6 +6,8 @@ use std::ops::*;
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Polar(pub f64, pub f64);
 impl Polar {
+    pub fn i() -> Self { Self(1.0, std::f64::consts::PI / 2.0) }
+
     pub fn rectangular(&self) -> (f64, f64) {
         (self.0 * self.1.cos(), self.0 * self.1.sin())
     }
@@ -13,6 +15,9 @@ impl Polar {
     pub fn from_rect(x: f64, y: f64) -> Self { Self(x.hypot(y), y.atan2(x)) }
 
     pub fn mul_inv(&self) -> Self { Self(1.0 / self.0, -self.1) }
+}
+impl From<f64> for Polar {
+    fn from(real: f64) -> Self { Self(real, 0.) }
 }
 impl MulAssign<f64> for Polar {
     fn mul_assign(&mut self, x: f64) { self.0 *= x; }

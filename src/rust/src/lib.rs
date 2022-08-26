@@ -1265,6 +1265,8 @@ pub mod traveling_salesperson_give_and_take_mem_access_optim_with_inf;
 pub mod traveling_salesperson_giving_with_inf;
 pub mod traveling_salesperson_taking_with_inf;
 pub mod treap;
+pub mod discrete_fourier_transform_f64;
+pub mod inverse_discrete_fourier_transform_f64;
 pub mod complex_number_polar_form_f64;
 pub mod tree_bfs_parent_depth;
 pub mod tree_diameter_and_path_weigted_edge_find_farthest_2_times_with_dfs;

@@ -1,10 +1,15 @@
 /// rectangular form (real, imaginary)
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Complex(pub f64, pub f64);
+impl From<f64> for Complex {
+    fn from(real: f64) -> Self { Self(real, 0.0) }
+}
 impl From<(f64, f64)> for Complex {
     fn from(rect: (f64, f64)) -> Self { Self(rect.0, rect.1) }
 }
 impl Complex {
+    pub fn rint(&self) -> f64 { self.0.round() }
+
     pub fn i() -> Self { Self(0.0, 1.0) }
 
     pub fn norm_square(&self) -> f64 { self.0 * self.0 + self.1 * self.1 }
@@ -112,7 +117,7 @@ impl Mul for Complex {
 
     fn mul(self, rhs: Self) -> Self::Output {
         Self(
-            self.0 * self.0 - self.1 * rhs.1,
+            self.0 * rhs.0 - self.1 * rhs.1,
             self.0 * rhs.1 + self.1 * rhs.0,
         )
     }
