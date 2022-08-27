@@ -1,5 +1,3 @@
-use std::mem::swap;
-
 use crate::tree_bfs_parent_depth::bfs;
 pub struct TreePath {
     parent: Vec<usize>,
