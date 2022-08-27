@@ -2,7 +2,7 @@
 use std::f64::consts::*;
 
 use crate::complex_number_f64::Complex;
-pub fn dft(a: &[Complex]) -> Vec<Complex> {
+fn dft_core(a: &[Complex], zeta_sign: f64) -> Vec<Complex> {
     let n = a.len();
     (0..n)
         .map(|i| {
@@ -10,29 +10,21 @@ pub fn dft(a: &[Complex]) -> Vec<Complex> {
             for (j, &a) in a.iter().enumerate() {
                 b += a * Complex::from_polar(
                     1.0,
-                    // -TAU * i as f64 * j as f64 / n as f64,
-                    -2. * PI * i as f64 * j as f64 / n as f64,
+                    zeta_sign * 2. * PI * i as f64 * j as f64 / n as f64,
                 );
             }
             b
         })
         .collect()
 }
+pub fn dft(a: &[Complex]) -> Vec<Complex> { dft_core(a, -1.0) }
 pub fn idft(b: &[Complex]) -> Vec<Complex> {
-    let n = b.len();
-    (0..n)
-        .map(|i| {
-            let mut a = Complex(0., 0.);
-            for (j, &b) in b.iter().enumerate() {
-                a += b * Complex::from_polar(
-                    1.0,
-                    // TAU * i as f64 * j as f64 / n as f64,
-                    2. * PI * i as f64 * j as f64 / n as f64,
-                );
-            }
-            a / n as f64
-        })
-        .collect()
+    let mut a = dft_core(b, 1.0);
+    let n = a.len() as f64;
+    for x in a.iter_mut() {
+        *x /= n;
+    }
+    a
 }
 #[cfg(test)]
 mod tests {

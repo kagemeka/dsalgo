@@ -1,11 +1,16 @@
+//! Fast Fourier Transform
+//! Cooley-Tukey's Algorithm
+//! Iterative Inplace
 use std::f64::consts::*;
 
 use crate::complex_number_f64::*;
-pub fn fft(mut a: Vec<Complex>, bit_len: usize) -> Vec<Complex> {
+fn fft_core(
+    mut a: Vec<Complex>, bit_len: usize, zeta_sign: f64,
+) -> Vec<Complex> {
     use std::mem::size_of;
     let n = 1 << bit_len;
     a.resize(n, Complex::zero());
-    // bit reversal permutate (buttefly)
+    // bit reversal permutate (butterfly)
     for i in 0..n {
         let j = i.reverse_bits() >> (size_of::<usize>() << 3) - bit_len;
         if i < j {
@@ -16,7 +21,8 @@ pub fn fft(mut a: Vec<Complex>, bit_len: usize) -> Vec<Complex> {
     let mut d = 1;
     while d < n {
         for j in 0..d {
-            let w = Complex::from_polar(1.0, -PI / d as f64 * j as f64);
+            let w =
+                Complex::from_polar(1.0, zeta_sign * PI / d as f64 * j as f64);
             for i in (j..n).step_by(d << 1) {
                 let s = a[i];
                 let t = a[i + d] * w;
@@ -28,31 +34,14 @@ pub fn fft(mut a: Vec<Complex>, bit_len: usize) -> Vec<Complex> {
     }
     a
 }
+pub fn fft(a: Vec<Complex>, bit_len: usize) -> Vec<Complex> {
+    fft_core(a, bit_len, -1.0)
+}
 pub fn ifft(mut a: Vec<Complex>, bit_len: usize) -> Vec<Complex> {
-    use std::mem::size_of;
-    let n = 1 << bit_len;
-    a.resize(n, Complex::zero());
-    for i in 0..n {
-        let j = i.reverse_bits() >> (size_of::<usize>() << 3) - bit_len;
-        if i < j {
-            a.swap(i, j);
-        }
-    }
-    let mut d = 1;
-    while d < n {
-        for j in 0..d {
-            let w = Complex::from_polar(1.0, PI / d as f64 * j as f64);
-            for i in (j..n).step_by(d << 1) {
-                let s = a[i];
-                let t = a[i + d] * w;
-                a[i] = s + t;
-                a[i + d] = s - t;
-            }
-        }
-        d <<= 1;
-    }
+    a = fft_core(a, bit_len, 1.0);
+    let n = a.len() as f64;
     for x in a.iter_mut() {
-        *x /= n as f64;
+        *x /= n;
     }
     a
 }
