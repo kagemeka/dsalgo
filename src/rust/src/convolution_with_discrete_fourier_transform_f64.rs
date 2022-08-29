@@ -33,7 +33,7 @@ mod tests {
             for (i, &(a, b)) in ab.iter().enumerate() {
                 f[i + 1] = a;
                 g[i + 1] = b;
-            } 
+            }
             let h = from_i64(&f, &g);
             assert_eq!(&h[1..=n << 1], ans);
         }
