@@ -681,6 +681,7 @@ pub mod matrix_rotate_counterclockwise_270;
 pub mod matrix_rotate_counterclockwise_90;
 pub mod matrix_subtraction_i64;
 pub mod matrix_transpose;
+pub mod matrix_transpose_with_option;
 pub mod matrix_with_static_property;
 pub mod matrix_with_static_property_define_bitwise_xor_and_usize;
 pub mod matrix_with_static_semiring_and_property;
