@@ -6,8 +6,8 @@
 //     let mut parent = vec![n; n];
 //     parent[0] = 0;
 //     fn dfs(
-//         g: &[Vec<usize>], on_cycle: &mut [bool], parent: &mut [usize], u: usize,
-//     ) {
+//         g: &[Vec<usize>], on_cycle: &mut [bool], parent: &mut [usize], u:
+// usize,     ) {
 //         let n = g.len();
 //         for &v in g[u].iter() {
 //             if v == parent[u] {
