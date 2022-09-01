@@ -1,6 +1,6 @@
-use crate::matrix_transpose_with_option::transpose;
+use crate::matrix_transpose::transpose;
 pub fn rot90<T: Clone>(mut a: Vec<Vec<T>>) -> Vec<Vec<T>> {
-    a = transpose(&a);
+    a = transpose(a);
     a.reverse();
     a
 }
