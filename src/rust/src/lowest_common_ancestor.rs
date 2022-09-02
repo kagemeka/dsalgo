@@ -3,7 +3,8 @@ pub mod tree {
     //! LCA for undirected tree.
     use crate::{
         bit_length_with_count_leading_zeros_u64::bit_length,
-        treeops::{tree_depths, tree_parents},
+        tree_bfs_depth_with_abstract::tree_depths,
+        tree_bfs_parent_with_abstract::tree_parents,
     };
     pub struct Doubling {
         a: Vec<Vec<usize>>, // ancestor
