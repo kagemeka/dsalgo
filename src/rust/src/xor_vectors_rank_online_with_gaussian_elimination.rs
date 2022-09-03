@@ -11,12 +11,13 @@ impl XorVectorsRank {
     pub fn get_rank(&self) -> usize { self.rank }
 
     pub fn freedom_bits(&self) -> usize {
-        let mut s = 0;
-        for (i, b) in self.basis.iter().enumerate() {
-            if b != &0 {
+        let mut s: usize = 0;
+        for (i, &b) in self.basis.iter().enumerate() {
+            if b != 0 {
                 s |= 1 << i;
             }
         }
+        debug_assert_eq!(s.count_ones() as usize, self.rank);
         s
     }
 
