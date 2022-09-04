@@ -1,5 +1,5 @@
 use crate::{
-    adjacency_list_graph::AdjacencyList,
+    adjacency_list_graph_old::AdjacencyList,
     dijkstra_sparse_queue::DijkstraSparseQueue,
     negative_cycle::NegativeCycleError,
     shortest_path_potential::{

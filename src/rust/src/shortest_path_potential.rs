@@ -1,5 +1,5 @@
 use crate::{
-    adjacency_list_graph::AdjacencyList,
+    adjacency_list_graph_old::AdjacencyList,
     graph::edge::{From, To, Weight},
     negative_cycle::NegativeCycleError,
     spfa::spfa,
