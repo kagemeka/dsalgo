@@ -6,6 +6,7 @@
 #![feature(iterator_try_collect)]
 #![feature(slice_as_chunks)]
 #![feature(map_first_last)]
+#![feature(is_sorted)]
 // #![allow(dead_code)]
 pub mod a_star_search_algorithm;
 pub mod aa_tree;
@@ -1324,6 +1325,15 @@ pub mod traveling_salesperson_give_and_take_mem_access_optim_with_inf;
 pub mod traveling_salesperson_giving_with_inf;
 pub mod traveling_salesperson_taking_with_inf;
 pub mod treap;
+pub mod fraction_i64;
+pub mod is_bipartite_graph;
+pub mod label_bipartite_graph_with_bfs;
+pub mod dense_graph_from_not_simple_edges_with_inf;
+pub mod dense_graph_from_edges_with_inf;
+pub mod compressed_sparse_graph_from_dense_with_inf;
+pub mod graph_bfs_level;
+pub mod check_compressed_sparse_graph_is_sorted;
+pub mod compressed_sparse_graph_from_edges;
 pub mod tree_bfs_abstract;
 pub mod tree_bfs_depth_with_abstract;
 pub mod tree_bfs_parent;

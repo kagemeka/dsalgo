@@ -1,2 +1,3 @@
 pub use crate::bit_array::*;
-// TODO: now bit array, but bit vector has dynamic size.
+// TODO: currently, this is just a alias of bit array,
+// but bit vector has dynamic size.
