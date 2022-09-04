@@ -4,7 +4,8 @@ pub fn doubling_table(f: &[usize], max_exp: usize) -> Vec<Vec<usize>> {
     let mut a = Vec::with_capacity(max_exp + 1);
     a.push(f.to_owned());
     for i in 0..max_exp {
-        a.push((0..n).map(|j| a[i][a[i][j]]).collect());
+        let row = &a[i];
+        a.push((0..n).map(|j| row[row[j]]).collect());
     }
     a
 }

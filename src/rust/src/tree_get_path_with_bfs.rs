@@ -1,15 +1,9 @@
-use crate::tree_bfs_parent::*;
-pub fn tree_path(g: &[Vec<usize>], mut u: usize, v: usize) -> Vec<usize> {
-    let p = tree_bfs_parent(&g, v);
-    let mut path = Vec::new();
-    loop {
-        path.push(u);
-        if u == v {
-            break;
-        }
-        u = p[u];
-    }
-    path
+use crate::{
+    tree_bfs_parent::*, tree_restore_path_from_parents::restore_tree_path,
+};
+pub fn tree_path(g: &[Vec<usize>], u: usize, v: usize) -> Vec<usize> {
+    let p = tree_bfs_parent(&g, u);
+    restore_tree_path(&p, v)
 }
 #[cfg(test)]
 mod tests {
