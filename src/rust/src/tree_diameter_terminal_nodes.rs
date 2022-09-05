@@ -7,4 +7,4 @@ pub fn diameter_ends(g: &[Vec<usize>]) -> (usize, usize) {
 mod tests {
     #[test]
     fn test() {}
-} 
+}
