@@ -87,17 +87,17 @@ impl Vector2D {
     pub fn norm(&self) -> f64 { (self.norm2() as f64).sqrt() }
 }
 impl Vector2D {
-    /// [0, \pi)
-    fn positive_angle(&self) -> bool {
-        self.1 > 0 || self.1 == 0 && self.0 == 0
+    /// [0, \pi): true, [-\pi, 0): false
+    fn has_positive_angle(&self) -> bool {
+        self.1 > 0 || self.1 == 0 && self.0 > 0
     }
 
     /// self < rhs ?
     /// [-\pi, \pi)
     pub fn angle_lt(&self, rhs: &Self) -> bool {
-        let a = self.positive_angle();
-        let b = rhs.positive_angle();
-        if a != b { b } else { self.cross(rhs) > 0 }
+        let f = self.has_positive_angle();
+        let g = rhs.has_positive_angle();
+        if f != g { g } else { self.cross(rhs) > 0 }
     }
 
     pub fn radian(&self) -> f64 { (self.1 as f64).atan2(self.0 as f64) }
@@ -142,6 +142,14 @@ impl PartialOrd for Vector2D {
         };
         Some(res)
     }
+}
+/// rotate counter clockwise by 90k degree. (k = 1, 2, 3)
+impl Vector2D {
+    pub fn rot90(&self) -> Self { Self(-self.1, self.0) }
+
+    pub fn rot180(&self) -> Self { Self(-self.0, -self.1) }
+
+    pub fn rot270(&self) -> Self { Self(self.1, -self.0) }
 }
 pub enum DirectionType {
     CCW,

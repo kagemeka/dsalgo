@@ -1,4 +1,4 @@
-use crate::greatest_common_divisor_euclidean::gcd;
+use crate::greatest_common_divisor_euclidean_recurse_i64::gcd;
 pub fn lcm(a: i64, b: i64) -> i64 {
     if a == 0 && b == 0 { 0 } else { (a / gcd(a, b) * b).abs() }
 }

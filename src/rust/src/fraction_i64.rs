@@ -36,6 +36,12 @@ impl Fraction {
         self.make_denominator_positive();
     }
 
+    pub fn normalize_neg_inf_as_inf(&mut self) {
+        if self.0 == -1 && self.1 == 0 {
+            self.0 = 1;
+        }
+    }
+
     pub fn floor(&self) -> i64 { self.0.div_euclid(self.1) }
 
     pub fn ceil(&self) -> i64 {
