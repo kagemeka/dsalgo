@@ -17,7 +17,7 @@ source ~/.bashrc
 install_poetry() {
     apt update
     apt install -y curl
-    curl -sSL https://install.python-poetry.org | python -
+    curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/.poetry python -
     echo "source $HOME/.poetry/env" >>~/.bashrc
     python3 -m pip install -U pip
     source $HOME/.poetry/env
