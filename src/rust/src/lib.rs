@@ -1335,6 +1335,7 @@ pub mod top_tree;
 pub mod topological_sort;
 pub mod topology;
 pub mod torus;
+pub mod modular_power_of_power_for_prime_modulus;
 pub mod caesar_cipher;
 pub mod ascii_characters;
 pub mod vector_rotate_counterclockwise_180_2d_i64;
