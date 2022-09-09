@@ -13,6 +13,7 @@ pub mod aa_tree;
 pub mod tree_dfs_parent_depth_size;
 pub mod tree_dfs_size_recurse;
 pub mod ab_tree;
+pub mod graph_bfs_abstract;
 pub mod abs_diff;
 pub mod accumulate_iterator;
 pub mod accumulate_vec;
