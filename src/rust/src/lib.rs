@@ -1387,6 +1387,7 @@ pub mod two_three_tree;
 pub mod ub_tree;
 pub mod undirected_bridge_detection_chain_decomposition;
 pub mod undirected_bridge_detection_lowlink;
+pub mod undirected_edges_to_bidirected;
 pub mod undirected_lowlink;
 pub mod undirected_tuple_edges_to_adjacency_list;
 pub mod undirected_tuple_edges_with_data_to_adjacency_list;
