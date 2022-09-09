@@ -18,6 +18,7 @@ pub mod adaptive_heap_sort;
 pub mod add_middle_nodes_and_make_double_tree_undirected_tuple_edges;
 pub mod add_with_xor_and_bitwise_and;
 pub mod addressable_heap;
+pub mod strict_bellman_ford_abstract;
 pub mod adjacency_list_graph_from_edges;
 pub mod adjacency_list_graph_from_edges_weighted;
 pub mod adjacency_list_graph_old;
