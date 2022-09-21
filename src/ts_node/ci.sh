@@ -10,10 +10,20 @@ install_typescript() {
     npm install -g typescript ts-node
 }
 
+install_jest() {
+    npm install --save-dev jest ts-jest @types/jest
+}
+
+install_prettier() {
+    npm install --save-dev prettier
+}
+
 setup() {
     apt update
     install_nodejs
     install_typescript
+    install_jest
+    install_prettier
 }
 
 setup

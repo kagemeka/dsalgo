@@ -25,7 +25,6 @@ mod tests {
                 Some((76959154983203952, 38774484298448350)),
             ),
         ];
-
         for (mr, ans) in cases {
             assert_eq!(crt_prod(&mr), ans);
         }

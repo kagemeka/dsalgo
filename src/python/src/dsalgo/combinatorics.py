@@ -7,16 +7,6 @@ import python.src.dsalgo.algebraic_structure
 from dsalgo.type import T
 
 
-def n_choose_table(p: int, n: int, kmax: int) -> list[int]:
-    assert 0 <= kmax <= n
-    a = list(range(n + 1, n - kmax, -1))
-    a[0] = 1
-    a = dsalgo.modular_int.cumprod(p, a)
-    b = dsalgo.modular_int.factorial_inverse(p, kmax + 1)
-    for i in range(kmax + 1):
-        a[i] *= b[i]
-        a[i] %= p
-    return a
 
 
 def combinations_next_comb(
@@ -37,10 +27,6 @@ def combinations_next_comb(
         s = next_combination(s)
 
 
-def next_combination(s: int) -> int:
-    lsb = s & -s
-    i = s + lsb
-    return (s & ~i) // lsb >> 1 | i
 
 
 def next_permutation(

@@ -14,7 +14,7 @@ def mul(mod: int, a: np.ndarray, b: np.ndarray) -> np.ndarray:
     B = 16
     MASK = (1 << B) - 1
     assert np.ndim(a) == np.ndim(b) == 2 and a.shape[1] == b.shape[0]
-    assert 0 < mod < 1 << (1 << B)
+    assert 0 < mod < 1 << (B << 1)
     a %= mod
     b %= mod
     a0, a1, b0, b1 = a & MASK, a >> B, b & MASK, b >> B

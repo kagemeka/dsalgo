@@ -1,3 +1,5 @@
+// TODO: currently, this is implemented as dynamic sized.
+// but bit array should have static size.
 const K: usize = 6; // chunk size = 2^K
 const M: usize = (1 << K) - 1;
 fn bucket(index: usize) -> usize { index >> K }

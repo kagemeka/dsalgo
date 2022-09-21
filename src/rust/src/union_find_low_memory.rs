@@ -6,11 +6,11 @@ impl UnionFind {
 
     pub fn root(&mut self, u: usize) -> usize {
         if self.0[u] < 0 {
-            u
-        } else {
-            self.0[u] = self.root(self.0[u] as usize) as isize;
-            self.0[u] as usize
+            return u;
         }
+        let r = self.root(self.0[u] as usize);
+        self.0[u] = r as isize;
+        return r;
     }
 
     pub fn unite(&mut self, mut u: usize, mut v: usize) {

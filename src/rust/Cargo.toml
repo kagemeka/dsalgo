@@ -1,9 +1,6 @@
 [package]
-authors = ["Hiroshi Tsuyuki <kagemeka1@gmail.com>"]
-categories = [
-  "algorithms",
-  "data-structures",
-]
+authors = ["kagemeka <kagemeka1@gmail.com>"]
+categories = ["algorithms", "data-structures"]
 description = "A package for Datastructures and Algorithms."
 documentation = "https://docs.rs/dsalgo"
 edition = "2021"
@@ -18,12 +15,8 @@ version = "0.3.7"
 # workspace = "."
 build = false # "scripts/build.rs"
 # default-run = "main"
-exclude = [
-  "/docker/",
-  "/scripts/",
-]
+exclude = ["/docker/", "/scripts/"]
 include = []
-
 [dependencies]
 lazy_static = "1.4.0"
 rand = "0.8.5"

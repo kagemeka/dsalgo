@@ -1,6 +1,9 @@
 //! heavy light decomposition
 //! an algorithm on undirected tree.
-use crate::{tree_edges_to_graph::tree_edges_to_graph, treeops::tree_sizes};
+use crate::{
+    tree_dfs_size_with_abstract::tree_sizes,
+    tree_edges_to_graph::tree_edges_to_graph,
+};
 /// return root of component which each node belongs to.
 pub fn heavy_light_decompose(
     tree_edges: &[(usize, usize)], root: usize,
