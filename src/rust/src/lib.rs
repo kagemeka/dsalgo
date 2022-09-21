@@ -10,7 +10,9 @@
 // #![allow(dead_code)]
 pub mod a_star_search_algorithm;
 pub mod aa_tree;
+pub mod heavy_light_decomposition_labeling_post_order_more_than_half;
 pub mod ab_tree;
+pub mod lowest_common_ancestor_offline_tarjan;
 pub mod abs_diff;
 pub mod accumulate_iterator;
 pub mod accumulate_vec;
@@ -300,6 +302,7 @@ pub mod directed_lowlink;
 pub mod discrete_fourier_transform_f64;
 pub mod discrete_logarithm;
 pub mod dist_2d_to_the_power_of_2;
+pub mod distance_on_tree_query_with_lca_doubling;
 pub mod divisor;
 pub mod divisor_function;
 pub mod divisor_function_table_naive;
@@ -714,7 +717,8 @@ pub mod longest_increasing_subsequence;
 pub mod longest_non_decreasing_sequence;
 pub mod longest_palindromic_substring;
 pub mod lower_bound_on_slice;
-pub mod lowest_common_ancestor;
+pub mod lowest_common_ancestor_old;
+pub mod lowest_common_ancestor_with_binary_lifting;
 pub mod lowlink;
 pub mod lsm_tree;
 pub mod lucas_number;
