@@ -11,6 +11,7 @@
 pub mod a_star_search_algorithm;
 pub mod aa_tree;
 pub mod ab_tree;
+pub mod lowest_common_ancestor_offline_tarjan;
 pub mod abs_diff;
 pub mod accumulate_iterator;
 pub mod accumulate_vec;
