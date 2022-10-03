@@ -18,12 +18,17 @@ install_prettier() {
     npm install --save-dev prettier
 }
 
+install_node_modules() {
+    npm install --save-dev @types/node
+}
+
 setup() {
     apt update
     install_nodejs
     install_typescript
     install_jest
     install_prettier
+    install_node_modules
 }
 
 setup
