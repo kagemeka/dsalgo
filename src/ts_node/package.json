@@ -120,7 +120,7 @@
     "js-yaml": "^3.14.1",
     "jsesc": "^2.5.2",
     "json-parse-even-better-errors": "^2.3.1",
-    "json5": "^2.2.1",
+    "json5": "^2.2.2",
     "kleur": "^3.0.3",
     "leven": "^3.1.0",
     "lines-and-columns": "^1.2.4",
