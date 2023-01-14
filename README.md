@@ -15,14 +15,3 @@ A Package for Datastructures and Algorithms
 [pre-commit-url]: https://github.com/pre-commit/pre-commit
 [codeql-badge]: https://github.com/kagemeka/dsalgo-python/actions/workflows/codeql-analysis.yml/badge.svg
 [codeql-url]: https://github.com/kagemeka/dsalgo-python/actions/workflows/codeql-analysis.yml
-
-## Languages
-
-- [python](./src/python/)
-- [rust](./src/rust/)
-- [go](./src/go/)
-- [cplusplus](./src/cplusplus)
-
-## Contributing
-
-see [CONTRIBUTING](./CONTRIBUTING.md) guide.
