@@ -26,14 +26,14 @@ jobs:
           curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/.poetry python3 -
       - name: Change Directory
         run: |
-          cd src/python
+          cd python
       - name: Install dependencies
         run: |
-          cd src/python
+          cd python
           source $HOME/.poetry/env
           poetry install
       - name: format and lint and test
         run: |
-          cd src/python
+          cd python
           source $HOME/.poetry/env
           ./ci.sh
