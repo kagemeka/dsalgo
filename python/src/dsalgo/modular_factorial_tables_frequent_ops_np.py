@@ -1,10 +1,10 @@
 # mypy: ignore-errors
 
 
+import typing
 import unittest
 
 import numpy as np
-import typing
 
 
 def cumprod(mod: int, a: np.ndarray) -> np.ndarray:

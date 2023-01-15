@@ -1,27 +1,29 @@
 #!/bin/bash
-source ~/.bashrc
 
-# apt install -y \
-#     python3-neovim \
-#     python3-pip
-# PYVER=3.9
-# add-apt-repository -y ppa:deadsnakes/ppa
-# apt update
-# apt install -y \
-#     python$PYVER \
-#     python$PYVER-distutils \
-#     python$PYVER-dev
-# ln -fns /usr/bin/python$PYVER /usr/bin/python3
-# ln -fns /usr/bin/python3 /usr/bin/python
-
-install_poetry() {
+setup_python() {
     apt update
-    apt install -y curl
-    curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/.poetry python -
-    echo "source $HOME/.poetry/env" >>~/.bashrc
-    python3 -m pip install -U pip
-    source $HOME/.poetry/env
-    # please run `source ~/.bashrc` in command line.
+
+    # PYVER=3.11
+    # add-apt-repository -y ppa:deadsnakes/ppa
+    # apt update
+    # apt install -y \
+    #     python$PYVER \
+    #     python$PYVER-distutils \
+    #     python$PYVER-dev
+    # ln -fns /usr/bin/python$PYVER /usr/bin/python3
+    # ln -fns /usr/bin/python3 /usr/bin/python
+
+    apt install -y \
+        software-properties-common \
+        pip
+}
+
+setup_poetry() {
+    curl -sSL https://install.python-poetry.org | python3 -
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >>~/.bashrc
+    source ~/.bashrc
+    poetry -V # check poetry command
+    poetry self update
 }
 
 update_toolchain() {
@@ -29,17 +31,37 @@ update_toolchain() {
 }
 
 setup() {
-    apt update
-    apt install -y apt-utils git
-    ln -fns /usr/bin/python3 /usr/bin/python
-    install_poetry
+    setup_python
+    setup_poetry
     update_toolchain
-    poetry install
 }
+
+setup
 
 lint() {
     poetry run mypy .
-    poetry run pflake8 .
+    poetry run flake8 .
+}
+
+format() {
+    poetry run isort .
+    poetry run black .
+    ./../ci.sh
+}
+
+test() {
+    poetry run pytest
+    #     poetry run pytest \
+    #         --asyncio-mode=strict \
+    #         --verbose . \
+    #         --ignore=docs \
+    #         --ignore=src/dsalgo_numba \
+    #         --ignore=src/dsalgo_numpy \
+    #         --ignore=prime_text
+    #     # --testpaths="**/src/dsalgo/*.py"
+    #     # --testpaths=tests/
+    #     # --python
+
 }
 
 publish_dry() {
@@ -51,28 +73,6 @@ publish_dry() {
         -n \
         --dry-run
 }
-
-format() {
-    poetry run isort .
-    poetry run black .
-    ./../../scripts/pre-commit.sh
-}
-
-test() {
-    poetry run pytest \
-        --asyncio-mode=strict \
-        --verbose . \
-        --ignore=docs \
-        --ignore=src/dsalgo_numba \
-        --ignore=src/dsalgo_numpy \
-        --ignore=prime_text
-    # --testpaths="**/src/dsalgo/*.py"
-    # --testpaths=tests/
-    # --python
-
-}
-
-# region extra commands
 
 clear_cache() {
     poetry cache clear pypi --all
@@ -87,8 +87,6 @@ update_docs() {
     ./scripts/build_sphinx_docs.sh
 
 }
-
-# endregion
 
 ci() {
     source ~/.bashrc

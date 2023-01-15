@@ -7,8 +7,6 @@ import python.src.dsalgo.algebraic_structure
 from dsalgo.type import T
 
 
-
-
 def combinations_next_comb(
     n: int,
     k: int,
@@ -25,8 +23,6 @@ def combinations_next_comb(
     while s < limit:
         yield tuple(a[i] for i in range(n) if s >> i & 1)
         s = next_combination(s)
-
-
 
 
 def next_permutation(

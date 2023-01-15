@@ -4,7 +4,6 @@ import numba as nb
 import numpy as np
 
 
-
 # 2d fenwick tree (set point add, get range sum)
 @nb.njit
 def fw2d_build(a: np.ndarray) -> np.ndarray:

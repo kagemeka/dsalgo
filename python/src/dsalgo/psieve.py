@@ -93,7 +93,6 @@ if __name__ == "__main__":
     import doctest
 
     # unittest.main()
-
     # doctest.testmod(verbose=True)
     for x in enumerate_primes(100000000):
         # print(x)
