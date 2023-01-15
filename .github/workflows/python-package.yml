@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd python
-          poetry nstall
+          poetry install
       - name: format and lint and test
         run: |
           cd python
