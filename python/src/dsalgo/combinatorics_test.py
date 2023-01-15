@@ -5,7 +5,6 @@ import python.src.dsalgo.algebraic_structure
 
 
 class Test(unittest.TestCase):
-
     def test_permutations(self) -> None:
 
         ANSWER_4_2 = [
@@ -54,7 +53,6 @@ class Test(unittest.TestCase):
             list(dsalgo.combinatorics.permutations_next_perm(3)),
             ANSWER_3,
         )
-
 
 
 if __name__ == "__main__":

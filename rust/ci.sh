@@ -30,7 +30,7 @@ setup() {
 update_toolchain() {
 	rustup toolchain install nightly
 	rustup default nightly
-	rustup component add rustfmt
+	rustup component add rustfmt clippy
 	rustup update
 	cargo update --verbose
 
@@ -59,6 +59,11 @@ test() {
 	# --offline
 	# --timings html
 	# --unit-graph \
+}
+
+
+lint() {
+	cargo clippy
 }
 
 format() {
@@ -91,6 +96,7 @@ ci() {
 
 	cargo package --list --allow-dirty
 
+	lint
 	format
 	test
 

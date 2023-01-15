@@ -18,7 +18,3 @@ DsAlgo is a package for Datastructures and Algorithms written in Python.
 ```bash
 python3 -m pip install -U dsalgo
 ```
-
-## Contributing
-
-see [CONTRIBUTING.md](./CONTRIBUTING.md)

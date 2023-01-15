@@ -1,9 +1,9 @@
-/**/__pycache__/*
+__pycache__
 /**/.gnupg/*
 /**/.ipynb_checkpoints/*
 /**/.mypy_cache/*
 .pyre/*
-.pytest_cache/*
+.pytest_cache
 .redhat/*
 .vscode/*
 .vscode-server/*

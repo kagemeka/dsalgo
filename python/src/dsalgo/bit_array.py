@@ -1,6 +1,7 @@
 # mypy: ignore-errors
 
 import typing
+
 from dsalgo.popcount import popcount
 
 Self = typing.TypeVar("Self")

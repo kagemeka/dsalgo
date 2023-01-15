@@ -6,7 +6,6 @@ import numpy as np
 from dsalgo.constant import INT_INF
 
 
-
 @nb.njit
 def csgraph_to_directed(g: np.ndarray) -> np.ndarray:
     m = len(g)

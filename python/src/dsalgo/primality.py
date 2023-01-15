@@ -132,6 +132,7 @@ class TestFermat(unittest.TestCase):
         for x in _NON_PRIEMS:
             assert not fermat(bases, x)
 
+
 if __name__ == "__main__":
     import doctest
 
