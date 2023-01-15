@@ -1,2 +1,0 @@
-blacklisted-names = ["foo", "baz", "quux"]
-zero_divided_by_zero = false
