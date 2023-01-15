@@ -67,7 +67,7 @@ format() {
         --manifest-path=Cargo.toml \
         --message-format=human
     # --check
-    ./../scripts/ci.sh
+    ./../ci.sh
 }
 
 doc() {
@@ -84,7 +84,7 @@ ci() {
         echo "command not found"
         setup
     fi
-
+    setup
     update_toolchain
 
     cargo package --list --allow-dirty

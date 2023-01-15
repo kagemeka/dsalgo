@@ -1,4 +1,7 @@
-/.vscode
+# editor configs
+.vscode
+.idea
+
 /build
 /bin
 /pkg
