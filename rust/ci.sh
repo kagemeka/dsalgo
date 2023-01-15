@@ -67,7 +67,7 @@ format() {
         --manifest-path=Cargo.toml \
         --message-format=human
     # --check
-    ./../../scripts/pre-commit.sh
+    ./../scripts/ci.sh
 }
 
 doc() {
