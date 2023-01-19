@@ -2,7 +2,9 @@
 .vscode
 .idea
 
+.*
 /build
 /bin
 /pkg
+!/.github
 !.gitkeep
