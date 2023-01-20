@@ -103,7 +103,8 @@ format() {
 }
 
 lint() {
-    swiftlint
+    swiftlint lint
+    # check options by: swiftlint lint --help
 }
 
 ci() {
