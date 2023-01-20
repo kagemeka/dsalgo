@@ -1,7 +1,7 @@
 #!/bin/bash
 
 setup() {
-    apt update 
+    apt update
     apt install -y curl
 
     # https://www.scala-lang.org/download/
@@ -11,9 +11,9 @@ setup() {
 
     # https://techviewleo.com/how-to-install-scala-on-ubuntu-linux/
     echo 'export PATH="$PATH:$HOME/.local/share/coursier/bin/"' >> ~/.bashrc
-    
+
     # check to be installed
-    source ~/.bashrc 
+    source ~/.bashrc
     scala -version
 }
 
