@@ -1,8 +1,10 @@
 #!/bin/bash
 
 install_swift() {
-    # reference
+    # references
     # https://www.swift.org/getting-started/
+    # https://www.swift.org/download/
+    # https://github.com/apple/swift-docker/blob/59e3cc2532e57bb75b406bb9c589b62bd12edd5c/5.7/ubuntu/22.04/Dockerfile
 
     apt update
     export DEBIAN_FRONTEND=noninteractive
@@ -32,7 +34,7 @@ install_swift() {
     SWIFT_VERSION=swift-$SWIFT_VERSION_NUMBER-RELEASE
     SWIFT_WEBROOT=https://download.swift.org
 
-    # check os architecture
+    # check OS architecture
     # e.g.
     # ubuntu on docker on ubuntu: "amd64"
     # ubuntu on docker on M1 Mac: "arm64"
