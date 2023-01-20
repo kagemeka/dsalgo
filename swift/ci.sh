@@ -67,7 +67,7 @@ install_swift() {
 
 install_swiftlint() {
     git clone https://github.com/realm/SwiftLint.git
-    p=$(pwd)
+    p=$(pwd) # snapshot
     cd SwiftLint
     swift build -c release
     mv .build/release/swiftlint /usr/local/bin/
@@ -76,7 +76,7 @@ install_swiftlint() {
 }
 
 install_swift-format() {
-    BRANCH=release/5.6
+    BRANCH=release/5.7
     git clone -b $BRANCH https://github.com/apple/swift-format.git
     p=$(pwd)
     cd swift-format
@@ -87,14 +87,19 @@ install_swift-format() {
 }
 
 setup() {
-    install_swift
+    # install_swift
     # install_swiftlint
-    # install_swift-format
+    install_swift-format
 }
 
 format() {
-    swift-format -p -r -i .
-    ./../../scripts/pre-commit.sh
+    swift-format format \
+        --parallel \
+        --recursive \
+        --in-place \
+        --configuration .swift-format \
+        .
+    # ./../ci.sh
 }
 
 lint() {
@@ -106,8 +111,9 @@ ci() {
         echo "command not found"
         setup
     fi
-    # format
-    # swiftlint
+
+    lint
+    format
 }
 
 ci

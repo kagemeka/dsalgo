@@ -3,11 +3,15 @@
 import PackageDescription
 
 let package = Package(
-  name: "dsalgo", products: [.library(name: "dsalgo", targets: ["dsalgo"])],
+  name: "Dsalgo",
+  products: [.library(name: "Dsalgo", targets: ["Dsalgo"])],
   dependencies: [],
 
   targets: [
     .target(
-      name: "dsalgo", dependencies: [], resources: [.process("Sources/")]),
-    .testTarget(name: "swift", dependencies: ["swift"]),
-  ])
+      name: "Dsalgo",
+      dependencies: [],
+      resources: [.process("Sources/")]
+    ), .testTarget(name: "swift", dependencies: ["swift"]),
+  ]
+)

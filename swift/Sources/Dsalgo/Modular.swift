@@ -37,7 +37,8 @@ struct DynamicMod: Modulus {
       assert(!isSet, "value is already set")
       assert(
         2 <= newValue && newValue < 1 << 31,
-        "2 <= value < 2^31 should be satisfied.")
+        "2 <= value < 2^31 should be satisfied."
+      )
       self.internalValue = newValue
       self.isSet = true
     }

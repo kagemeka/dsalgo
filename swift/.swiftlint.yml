@@ -1,7 +1,7 @@
 file_length:
   warning: 256
   error: 512
-line_length: 79
+line_length: 80
 type_name:
   min_length:
     warning: 1
