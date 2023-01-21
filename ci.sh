@@ -19,19 +19,13 @@ precommit() {
 
 # chmod -R +x ./**/*.sh
 
-apt update
-apt install -y \
-    git \
-    neovim \
-    software-properties-common \
-    curl \
-    wget \
-    sudo \
-    git \
-    xclip \
-    xsel
+# apt update
+# apt install -y \
+#     neovim \
+#     xclip \
+#     xsel
 
-rm -rf /var/lib/apt/lists/*
-apt clean -y
+# rm -rf /var/lib/apt/lists/*
+# apt clean -y
 
 precommit
