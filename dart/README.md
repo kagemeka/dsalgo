@@ -1,6 +1,8 @@
 # dsalgo Dart
 
-## Setup & CI
+## development
+
+### Setup & CI
 
 prerequisites
 
@@ -11,3 +13,7 @@ prerequisites
 ./ci.sh
 source ~/.bashrc
 ```
+
+### VSCode Extensions
+
+- Dart

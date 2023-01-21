@@ -15,3 +15,13 @@ A Package for Datastructures and Algorithms
 [pre-commit-url]: https://github.com/pre-commit/pre-commit
 [codeql-badge]: https://github.com/kagemeka/dsalgo-python/actions/workflows/codeql-analysis.yml/badge.svg
 [codeql-url]: https://github.com/kagemeka/dsalgo-python/actions/workflows/codeql-analysis.yml
+
+## Development
+
+### Common VSCode Extensions
+
+- markdownlint
+- shell-format
+- Bash IDE
+- Even Better TOML
+- YAML

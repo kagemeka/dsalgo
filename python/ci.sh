@@ -19,12 +19,13 @@ install_python() {
 }
 
 install_poetry() {
+    apt install -y curl
     curl -sSL https://install.python-poetry.org | python3 -
     echo 'export PATH=$HOME/.local/bin:$PATH' >>~/.bashrc
     export PATH=$HOME/.local/bin:$PATH
     # run source ~/.bashrc in terminal
 
-    poetry -V # check poetry command
+    poetry --version # check poetry command
     poetry self update
 }
 
