@@ -6,6 +6,7 @@ install_dart() {
     # References
     # https://dart.dev/get-dart#install-a-debian-package
     # https://dart.dev/get-dart/archive
+
     apt update
     apt install -y unzip wget
     BASE=https://storage.googleapis.com/dart-archive/channels/
@@ -19,13 +20,22 @@ install_dart() {
     wget $URL
     unzip $FILE_NAME
     rm $FILE_NAME
-    mv dart-sdk /usr/lib/dart/
 
-    echo 'export PATH=$PATH:/usr/lib/dart/bin' >>~/.bashrc
+    DART_PATH=/usr/bin/dart
+    DART_BIN=$DART_PATH/bin/
 
-    source ~/.bashrc
+    mv dart-sdk $DART_PATH
+
+    echo "export PATH=$PATH:$DART_BIN" >>~/.bashrc
+
+    export PATH=$PATH:$DART_BIN
     dart --version
+
+    # run source ~/.bashrc on terminal
 
 }
 
-install_dart
+if ! command -v dart &>/dev/null; then
+    echo "command not found"
+    install_dart
+fi
