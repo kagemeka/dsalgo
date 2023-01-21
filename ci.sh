@@ -2,7 +2,7 @@
 
 install_pre-commit() {
     apt update
-    apt install -y python3-pip
+    apt install -y git python3-pip
     pip install -U pip
     pip install pre-commit
 }
@@ -23,15 +23,10 @@ apt update
 apt install -y \
     git \
     neovim \
-    software-properties-common \
-    curl \
-    wget \
-    sudo \
-    git \
     xclip \
     xsel
 
-rm -rf /var/lib/apt/lists/*
-apt clean -y
+# rm -rf /var/lib/apt/lists/*
+# apt clean -y
 
 precommit

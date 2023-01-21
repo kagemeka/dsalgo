@@ -34,10 +34,10 @@ install_swift() {
     SWIFT_VERSION=swift-$SWIFT_VERSION_NUMBER-RELEASE
     SWIFT_WEBROOT=https://download.swift.org
 
-    # check OS architecture
+    # check processor architecture
     # e.g.
-    # ubuntu on docker on ubuntu: "amd64"
-    # ubuntu on docker on M1 Mac: "arm64"
+    # Ubuntu on Intel CPU: amd64(x86_64, x64)
+    # M1 Macbook: arm64(aarch64)
     set -e
     ARCH_NAME="$(dpkg --print-architecture)"
     url=
@@ -64,6 +64,10 @@ install_swift() {
         --transform=s/$FILE_NAME/swift/
 
     echo 'export PATH=/usr/local/swift/usr/bin:$PATH' >>~/.bashrc
+
+    # run source ~/.bashrc in terminal
+
+    export PATH=/usr/local/swift/usr/bin:$PATH
 }
 
 if ! command -v swift &>/dev/null; then

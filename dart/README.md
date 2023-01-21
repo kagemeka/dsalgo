@@ -1,12 +1,13 @@
 # dsalgo Dart
 
-## Setup
+## Setup & CI
 
-please run commands on ubuntu.
+prerequisites
+
+- ubuntu/debian
+  - amd64/arm64
 
 ```sh
-./setup_amd64.sh # for amd64 processor
-./setup_arm64.sh # for arm64 processor
+./ci.sh
+source ~/.bashrc
 ```
-
-## CI

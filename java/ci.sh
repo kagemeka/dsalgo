@@ -1,8 +1,8 @@
 #!/bin/bash
 
-setup() {
+install_java() {
     apt update
-    apt install -y default-jre
+    apt install -y openjdk-19-jdk
 }
 
-setup
+install_java

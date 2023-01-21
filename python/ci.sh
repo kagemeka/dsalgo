@@ -1,6 +1,6 @@
 #!/bin/bash
 
-setup_python() {
+install_python() {
     apt update
 
     # PYVER=3.11
@@ -15,28 +15,29 @@ setup_python() {
 
     apt install -y \
         software-properties-common \
-        pip
+        python3-pip
 }
 
-setup_poetry() {
+install_poetry() {
     curl -sSL https://install.python-poetry.org | python3 -
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >>~/.bashrc
-    source ~/.bashrc
+    echo 'export PATH=$HOME/.local/bin:$PATH' >>~/.bashrc
+    export PATH=$HOME/.local/bin:$PATH
+    # run source ~/.bashrc in terminal
+
     poetry -V # check poetry command
     poetry self update
 }
 
 update_toolchain() {
     poetry update
+    poetry install
 }
 
 setup() {
-    setup_python
-    setup_poetry
+    install_python
+    install_poetry
     update_toolchain
 }
-
-setup
 
 lint() {
     poetry run mypy .
@@ -89,7 +90,6 @@ update_docs() {
 }
 
 ci() {
-    source ~/.bashrc
     if ! command -v poetry &>/dev/null; then
         echo "command not found"
         setup
