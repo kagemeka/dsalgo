@@ -18,3 +18,7 @@ Data Structures and Algorithms for Rust.
 ./ci.sh
 source ~/.bashrc
 ```
+
+### VSCode Extensions
+
+- rust-analyzer

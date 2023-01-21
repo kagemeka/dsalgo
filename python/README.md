@@ -36,3 +36,7 @@ please run after setup
 poetry env info
 poetry env list
 ```
+
+### VSCode Extensions
+
+- Python

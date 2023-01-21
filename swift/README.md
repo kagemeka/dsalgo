@@ -1,14 +1,16 @@
 # dsalgo Swift
 
-## setup
+## Development
 
-```sh
-./setup.sh
-source ~/.bashrc
-```
-
-## CI
+### setup & CI
 
 ```sh
 ./ci.sh
+source ~/.bashrc
 ```
+
+### VSCode Extensions
+
+- Swift
+- SwiftLint
+- apple-swift-format
