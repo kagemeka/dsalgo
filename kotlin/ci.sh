@@ -20,7 +20,8 @@ install_java() {
     # https://linuxhint.com/install-java-ubuntu-22-04/
 
     apt update
-    apt install -y openjdk-18-jdk
+    apt install -y openjdk-19-jdk
+    java -version
 }
 
 install_kotlin() {
