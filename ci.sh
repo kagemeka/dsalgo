@@ -17,7 +17,7 @@ precommit() {
 
 }
 
-chmod -R +x ./**/*.sh
+# chmod -R +x ./**/*.sh
 
 apt update
 apt install -y \

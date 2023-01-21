@@ -7,11 +7,11 @@
   "indentation": {
     "spaces": 2
   },
-  "lineBreakAroundMultilineExpressionChainComponents": false,
-  "lineBreakBeforeControlFlowKeywords": false,
-  "lineBreakBeforeEachArgument": false,
-  "lineBreakBeforeEachGenericRequirement": false,
-  "lineLength": 79,
+  "lineBreakAroundMultilineExpressionChainComponents": true,
+  "lineBreakBeforeControlFlowKeywords": true,
+  "lineBreakBeforeEachArgument": true,
+  "lineBreakBeforeEachGenericRequirement": true,
+  "lineLength": 80,
   "maximumBlankLines": 1,
   "prioritizeKeepingFunctionOutputTogether": false,
   "respectsExistingLineBreaks": false,
