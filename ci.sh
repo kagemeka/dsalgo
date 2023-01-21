@@ -2,7 +2,7 @@
 
 install_pre-commit() {
     apt update
-    apt install -y python3-pip
+    apt install -y git python3-pip
     pip install -U pip
     pip install pre-commit
 }
@@ -19,11 +19,12 @@ precommit() {
 
 # chmod -R +x ./**/*.sh
 
-# apt update
-# apt install -y \
-#     neovim \
-#     xclip \
-#     xsel
+apt update
+apt install -y \
+    git \
+    neovim \
+    xclip \
+    xsel
 
 # rm -rf /var/lib/apt/lists/*
 # apt clean -y

@@ -1,6 +1,8 @@
 # dsalgo Kotlin
 
+## setup & CI
 
-## setup
-```setup.sh
+```sh
+./ci.sh
+source ~/.bashrc
 ```

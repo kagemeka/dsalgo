@@ -9,3 +9,12 @@ Data Structures and Algorithms for Rust.
 [crates-url]: https://crates.io/crates/dsalgo
 [actions-badge]: https://github.com/kagemeka/dsalgo/actions/workflows/rust.yml/badge.svg
 [actions-url]: https://github.com/kagemeka/dsalgo/actions/workflows/rust.yml
+
+## Development
+
+### setup & CI
+
+```sh
+./ci.sh
+source ~/.bashrc
+```
