@@ -1,3 +1,4 @@
+# https://doc.rust-lang.org/cargo/reference/manifest.html
 [package]
 authors = ["kagemeka <kagemeka1@gmail.com>"]
 categories = ["algorithms", "data-structures"]
