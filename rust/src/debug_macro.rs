@@ -1,6 +1,7 @@
 /// reference
 /// https://users.rust-lang.org/t/show-value-only-in-debug-mode/43686/3
 #[macro_export]
+
 // #[allow(unused_macros)]
 macro_rules! dbg {
     ($($x:tt)*) => {
@@ -19,11 +20,16 @@ macro_rules! dbg {
         }
     }
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test_dbg() {
         let a = 1;
+
         dbg!(dbg!(a) + 1);
     }
 }

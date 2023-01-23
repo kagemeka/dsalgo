@@ -17,16 +17,11 @@ precommit() {
 
 }
 
-# chmod -R +x ./**/*.sh
-
 apt update
 apt install -y \
     git \
     neovim \
-    xclip \
-    xsel
+    shfmt
 
-# rm -rf /var/lib/apt/lists/*
-# apt clean -y
-
+shfmt -w **/*.sh
 precommit

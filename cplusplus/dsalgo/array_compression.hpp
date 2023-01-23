@@ -18,7 +18,7 @@ template<typename T> struct array_compression {
   template<typename A> static auto once(A a) -> std::vector<int> {
     auto f = array_compression(a);
     vector<int> indices(a.size());
-    for(int i = 0; i < (int)a.size(); ++i) indices[i] = f(a[i]);
+    for (int i = 0; i < (int)a.size(); ++i) indices[i] = f(a[i]);
     return indices;
   }
 };

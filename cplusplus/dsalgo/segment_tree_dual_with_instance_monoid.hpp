@@ -15,7 +15,7 @@ template<typename G> class dual_segtree {
   auto n() -> int { return node.size() >> 1; }
   auto height() -> int { return bit_length(n()); }
   void pull(int i) {
-    for(int j = height() - 1; j > 0; j--) propagate(i >> j);
+    for (int j = height() - 1; j > 0; j--) propagate(i >> j);
   }
 
 public:
@@ -25,7 +25,7 @@ public:
     int n = 1 << bit_length(size - 1);
     node.resize(n << 1, g.e());
   }
-  auto operator[](int i) -> T& {
+  auto operator[](int i) -> T & {
     assert(0 <= i && i < size);
     i += n();
     pull(i);
@@ -36,9 +36,11 @@ public:
     int n = this->n();
     l += n, r += n;
     pull(l / (l & -l)), pull(r / (r & -r) - 1);
-    while(l < r) {
-      if(l & 1) operate_node(l++, x);
-      if(r & 1) operate_node(--r, x);
+    while (l < r) {
+      if (l & 1)
+        operate_node(l++, x);
+      if (r & 1)
+        operate_node(--r, x);
       l >>= 1, r >>= 1;
     }
   }
@@ -47,6 +49,6 @@ public:
 struct M {
   using T = long;
   static constexpr long none = 1l << 60;
-  auto op(const T& a, const T& b) -> T { return b == e() ? a : b; }
+  auto op(const T &a, const T &b) -> T { return b == e() ? a : b; }
   auto e() -> T { return none; }
 };

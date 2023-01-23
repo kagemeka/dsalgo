@@ -11,7 +11,8 @@ public:
     inv_fact = inverse_factorial_table<S>(size);
   }
   auto p(int n, int k) -> S {
-    if(k < 0 || n < k) return 0;
+    if (k < 0 || n < k)
+      return 0;
     return fact[n] * inv_fact[n - k];
   }
   auto c(int n, int k) -> S { return p(n, k) * inv_fact[k]; }

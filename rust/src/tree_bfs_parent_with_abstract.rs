@@ -1,5 +1,9 @@
 use crate::tree_bfs_abstract::tree_bfs;
-pub fn tree_parents(e: &[(usize, usize)], r: usize) -> Vec<Option<usize>> {
+
+pub fn tree_parents(
+    e: &[(usize, usize)],
+    r: usize,
+) -> Vec<Option<usize>> {
     tree_bfs::<Option<usize>, _>(
         e,
         r,
@@ -9,8 +13,12 @@ pub fn tree_parents(e: &[(usize, usize)], r: usize) -> Vec<Option<usize>> {
         },
     )
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

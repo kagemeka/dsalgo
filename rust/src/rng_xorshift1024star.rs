@@ -2,20 +2,29 @@ pub struct Xorshift1024Star {
     seeds: [u64; 16],
     index: usize,
 }
+
 impl Xorshift1024Star {
     pub fn new(seeds: [u64; 16]) -> Self { Self { seeds, index: 0 } }
 
     pub fn next(&mut self) -> u64 {
         let x = self.seeds[self.index];
+
         self.index = (self.index + 1) & 15;
+
         let mut y = self.seeds[self.index];
+
         y ^= y << 31;
+
         y ^= y >> 11;
+
         y ^= x ^ (x >> 30);
+
         self.seeds[self.index] = y;
+
         y.wrapping_mul(1181783497276652981u64)
     }
 }
+
 impl Default for Xorshift1024Star {
     fn default() -> Self {
         Self::new([
@@ -38,9 +47,13 @@ impl Default for Xorshift1024Star {
         ])
     }
 }
+
 // TODO:
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

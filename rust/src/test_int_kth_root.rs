@@ -1,4 +1,5 @@
 #[allow(dead_code)]
+
 pub(crate) const CASES_ITERATIVE: &'static [(u64, u8, u64)] = &[
     (100, 1, 100),
     (100, 2, 10),
@@ -18,7 +19,9 @@ pub(crate) const CASES_ITERATIVE: &'static [(u64, u8, u64)] = &[
     (18446744073709551615, 63, 2),
     (18446744073709551615, 64, 1),
 ];
+
 #[allow(dead_code)]
+
 pub(crate) const CASES_LINEAR: &'static [(u64, u8, u64)] = &[
     (std::u64::MAX, 10, 84),
     (std::u64::MAX, 11, 56),
@@ -32,9 +35,13 @@ pub(crate) const CASES_LINEAR: &'static [(u64, u8, u64)] = &[
     (std::u64::MAX, 19, 10),
     (std::u64::MAX, 20, 9),
 ];
+
 #[allow(dead_code)]
-pub(crate) fn test_int_kth_root<F>(int_kth_root: &F, cases: &[(u64, u8, u64)])
-where
+
+pub(crate) fn test_int_kth_root<F>(
+    int_kth_root: &F,
+    cases: &[(u64, u8, u64)],
+) where
     F: Fn(u64, u8) -> u64,
 {
     for &(n, k, ans) in cases {

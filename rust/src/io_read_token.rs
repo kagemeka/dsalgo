@@ -1,11 +1,12 @@
 pub fn read_token<R, T>(
-    reader: &mut R,
+    reader: &mut R
 ) -> Result<T, <T as std::str::FromStr>::Err>
 where
     R: std::io::Read,
     T: std::str::FromStr,
 {
     use std::io::Read;
+
     reader
         .by_ref()
         .bytes()
@@ -15,8 +16,12 @@ where
         .collect::<String>()
         .parse::<T>()
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

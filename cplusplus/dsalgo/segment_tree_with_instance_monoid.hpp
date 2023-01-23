@@ -18,7 +18,7 @@ public:
   }
   auto set(int i, T x) {
     assert(0 <= i && i < size);
-    for(data[i += n()] = x, i >>= 1; i >= 1; i >>= 1) merge(i);
+    for (data[i += n()] = x, i >>= 1; i >= 1; i >>= 1) merge(i);
   }
   auto operator[](int i) -> T { return data[i + n()]; }
   auto operator[](pair<int, int> lr) -> T {
@@ -27,9 +27,11 @@ public:
     T vl = g.e(), vr = g.e();
     l += n();
     r += n();
-    while(l < r) {
-      if(l & 1) vl = g.op(vl, data[l++]);
-      if(r & 1) vr = g.op(data[--r], vr);
+    while (l < r) {
+      if (l & 1)
+        vl = g.op(vl, data[l++]);
+      if (r & 1)
+        vr = g.op(data[--r], vr);
       l >>= 1;
       r >>= 1;
     }
@@ -37,21 +39,25 @@ public:
   }
   template<typename F> auto max_right(F f, int l) const -> int {
     assert(0 <= l && l <= size);
-    if(l == size) return size;
+    if (l == size)
+      return size;
     T v = g.e();
     int i = l + n();
-    while(true) {
+    while (true) {
       i /= i & -i;
       T nv = g.op(v, data[i]);
-      if(!f(nv)) break;
+      if (!f(nv))
+        break;
       v = nv;
       i++;
-      if(__builtin_popcount(i) == 1) return size;
+      if (__builtin_popcount(i) == 1)
+        return size;
     }
-    while(i < n()) {
+    while (i < n()) {
       i <<= 1;
       T nv = g.op(v, data[i]);
-      if(!f(nv)) continue;
+      if (!f(nv))
+        continue;
       v = nv;
       i++;
     }
@@ -59,21 +65,25 @@ public:
   }
   template<typename F> auto min_left(F f, int r) const -> int {
     assert(0 <= r && r <= size);
-    if(r == 0) return 0;
+    if (r == 0)
+      return 0;
     T v = g.e();
     int i = r + n();
-    while(true) {
+    while (true) {
       i /= i & -i;
       T nv = g.op(data[i - 1], v);
-      if(!f(nv)) break;
+      if (!f(nv))
+        break;
       i--;
       v = nv;
-      if(__builtin_popcount(i) == 1) return 0;
+      if (__builtin_popcount(i) == 1)
+        return 0;
     }
-    while(i < n()) {
+    while (i < n()) {
       i <<= 1;
       T nv = g.op(data[i - 1], v);
-      if(!f(nv)) continue;
+      if (!f(nv))
+        continue;
       i--;
       v = nv;
     }
@@ -84,7 +94,7 @@ public:
 struct M {
   int const inf = 1 << 30;
   using T = pair<int, int>;
-  auto op(const T& a, const T& b) -> T {
+  auto op(const T &a, const T &b) -> T {
     return {min(a.first, a.second + b.first), a.second + b.second};
   }
   auto e() -> T { return {inf, 0}; }

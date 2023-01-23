@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import enum
-import typing
 
 import sphinx_theme_pd
 

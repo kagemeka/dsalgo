@@ -1,6 +1,5 @@
 /* cut below */
 
-
 extension BitCount on int {
   int get bitCount {
     int n = this;

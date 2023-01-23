@@ -22,13 +22,15 @@ public:
     level[source] = 0;
     queue<int> que;
     que.push(source);
-    while(!que.empty()) {
+    while (!que.empty()) {
       int u = que.front();
       que.pop();
-      for(auto const& p: edges[u]) {
+      for (auto const &p: edges[u]) {
         int v = p.first;
         Edge<T> e = p.second;
-        if(level[v] != -1) { continue; }
+        if (level[v] != -1) {
+          continue;
+        }
         level[v] = level[u] + 1;
         que.push(v);
       }

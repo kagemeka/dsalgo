@@ -1,5 +1,6 @@
 #[macro_export]
 #[allow(unused_macros)]
+
 macro_rules! write_vec {
     ($writer:ident, $values:expr) => {
         write_vec!($writer, $values, sep: ' ');
@@ -22,8 +23,12 @@ macro_rules! write_vec {
         writeln!($writer, "{}", $values[n - 1]).unwrap();
     };
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

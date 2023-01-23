@@ -1,5 +1,9 @@
 use crate::tree_dfs_abstract::tree_dfs;
-pub fn tree_sizes(tree_edges: &[(usize, usize)], root: usize) -> Vec<usize> {
+
+pub fn tree_sizes(
+    tree_edges: &[(usize, usize)],
+    root: usize,
+) -> Vec<usize> {
     tree_dfs::<usize, _>(
         tree_edges,
         root,
@@ -9,8 +13,12 @@ pub fn tree_sizes(tree_edges: &[(usize, usize)], root: usize) -> Vec<usize> {
         },
     )
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

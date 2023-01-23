@@ -18,6 +18,8 @@ auto ctz(u128 x) -> u32 {
   // this fails due to annoying bug.
   // 64 == 64 is false!? wtf.
   auto c = ctz((u64)x);
-  if(c == 64) { c += ctz((u64)(x >> 64)); }
+  if (c == 64) {
+    c += ctz((u64)(x >> 64));
+  }
   return c;
 }

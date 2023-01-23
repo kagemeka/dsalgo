@@ -2,11 +2,17 @@
 //! push arbitrary,
 //! pop median
 //! find median,
-use std::{cmp::Reverse, collections::BinaryHeap};
+
+use std::{
+    cmp::Reverse,
+    collections::BinaryHeap,
+};
+
 pub struct MedianQueue<T> {
     low_que: BinaryHeap<T>,
     high_que: BinaryHeap<Reverse<T>>,
 }
+
 impl<T: Clone + Ord> MedianQueue<T> {
     pub fn new() -> Self {
         Self { low_que: BinaryHeap::new(), high_que: BinaryHeap::new() }
@@ -33,15 +39,20 @@ impl<T: Clone + Ord> MedianQueue<T> {
             0 | 1 => (),
             _ => panic!("cannot be"),
         }
+
         debug_assert!(self.balance() == 0 || self.balance() == 1);
     }
 
-    pub fn push(&mut self, x: T) {
+    pub fn push(
+        &mut self,
+        x: T,
+    ) {
         if self.balance() == 1 {
             self.low_que.push(x);
         } else {
             self.high_que.push(Reverse(x));
         }
+
         self.rebalance();
     }
 
@@ -59,7 +70,9 @@ impl<T: Clone + Ord> MedianQueue<T> {
 
     pub fn pop_low(&mut self) -> Option<T> {
         let v = self.low_que.pop();
+
         self.rebalance();
+
         v
     }
 
@@ -71,30 +84,50 @@ impl<T: Clone + Ord> MedianQueue<T> {
         } else {
             None
         };
+
         self.rebalance();
+
         v
     }
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         let mut que = MedianQueue::new();
+
         for i in 0..10 {
             que.push(i);
         }
+
         assert_eq!(que.size(), 10);
+
         assert_eq!(que.low(), Some(&4));
+
         assert_eq!(que.high(), Some(&5));
+
         assert_eq!(que.pop_low(), Some(4));
+
         assert_eq!(que.low(), Some(&5));
+
         assert_eq!(que.high(), Some(&5));
+
         assert_eq!(que.pop_high(), Some(5));
+
         assert_eq!(que.low(), Some(&3));
+
         assert_eq!(que.high(), Some(&6));
+
         que.push(4);
+
         assert_eq!(que.low(), Some(&4));
+
         assert_eq!(que.high(), Some(&4));
     }
 }

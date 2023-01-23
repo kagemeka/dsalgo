@@ -1,7 +1,5 @@
 import 'dart:io';
 
-
-
 class WriteStdout {
   void call(Object x) {
     print(x);

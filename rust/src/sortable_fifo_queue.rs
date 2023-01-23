@@ -1,11 +1,16 @@
 use std::{
     cmp::Reverse,
-    collections::{BinaryHeap, VecDeque},
+    collections::{
+        BinaryHeap,
+        VecDeque,
+    },
 };
+
 pub struct SortableQueue<T> {
     que: VecDeque<T>,
     hq: BinaryHeap<Reverse<T>>,
 }
+
 impl<T: Ord> SortableQueue<T> {
     pub fn new() -> Self {
         Self { que: VecDeque::new(), hq: BinaryHeap::new() }
@@ -13,7 +18,12 @@ impl<T: Ord> SortableQueue<T> {
 
     pub fn size(&self) -> usize { self.que.len() + self.hq.len() }
 
-    pub fn push(&mut self, x: T) { self.que.push_back(x); }
+    pub fn push(
+        &mut self,
+        x: T,
+    ) {
+        self.que.push_back(x);
+    }
 
     pub fn sort(&mut self) {
         while let Some(x) = self.que.pop_front() {
@@ -25,6 +35,7 @@ impl<T: Ord> SortableQueue<T> {
         if self.size() == 0 {
             return None;
         }
+
         Some(if self.hq.is_empty() {
             self.que.pop_front().unwrap()
         } else {
@@ -32,10 +43,15 @@ impl<T: Ord> SortableQueue<T> {
         })
     }
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         let cases = vec![
             vec![
@@ -60,8 +76,10 @@ mod tests {
                 ((2, -1), 5),
             ],
         ];
+
         for queries in cases {
             let mut que = SortableQueue::new();
+
             for ((t, x), ans) in queries {
                 if t == 1 {
                     que.push(x);
