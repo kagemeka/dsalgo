@@ -22,3 +22,28 @@ source ~/.bashrc
 ### VSCode Extensions
 
 - rust-analyzer
+
+### see document
+
+- <https://doc.rust-lang.org/cargo/commands/cargo-doc.html>
+
+```sh
+cargo doc --open
+```
+
+### clean targets
+
+- <https://doc.rust-lang.org/cargo/commands/cargo-clean.html>
+- use when something is wrong.
+
+```sh
+cargo clean
+```
+
+### check easy compilation errors
+
+- <https://doc.rust-lang.org/cargo/commands/cargo-check.html>
+
+```sh
+cargo check
+```

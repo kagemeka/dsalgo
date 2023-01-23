@@ -3,51 +3,51 @@
 source ~/.bashrc
 
 install_sdkman() {
-    # https://sdkman.io/install
-    apt update
-    apt install -y \
-        curl \
-        unzip \
-        zip
+	# https://sdkman.io/install
+	apt update
+	apt install -y \
+		curl \
+		unzip \
+		zip
 
-    curl -s https://get.sdkman.io | bash
-    echo "source $HOME/.sdkman/bin/sdkman-init.sh" >>~/.bashrc
-    source $HOME/.sdkman/bin/sdkman-init.sh
-    sdk version
+	curl -s https://get.sdkman.io | bash
+	echo "source $HOME/.sdkman/bin/sdkman-init.sh" >>~/.bashrc
+	source $HOME/.sdkman/bin/sdkman-init.sh
+	sdk version
 }
 
 install_java() {
-    # https://linuxhint.com/install-java-ubuntu-22-04/
+	# https://linuxhint.com/install-java-ubuntu-22-04/
 
-    apt update
-    apt install -y openjdk-19-jdk
-    java -version
+	apt update
+	apt install -y openjdk-19-jdk
+	java -version
 }
 
 install_kotlin() {
-    # https://kotlinlang.org/docs/command-line.html
+	# https://kotlinlang.org/docs/command-line.html
 
-    if ! command -v sdk &>/dev/null; then
-        echo "command not found"
-        install_sdkman
-    fi
+	if ! command -v sdk &>/dev/null; then
+		echo "command not found"
+		install_sdkman
+	fi
 
-    if ! command -v java &>/dev/null; then
-        echo "command not found"
-        install_java
-    fi
+	if ! command -v java &>/dev/null; then
+		echo "command not found"
+		install_java
+	fi
 
-    sdk install kotlin
-    kotlin -version
+	sdk install kotlin
+	kotlin -version
 
-    # run source ~/.bashrc in console.
+	# run source ~/.bashrc in console.
 }
 
 ci() {
-    if ! command -v kotlin &>/dev/null; then
-        echo "command not found"
-        install_kotlin
-    fi
+	if ! command -v kotlin &>/dev/null; then
+		echo "command not found"
+		install_kotlin
+	fi
 
 }
 
