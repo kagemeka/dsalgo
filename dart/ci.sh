@@ -67,7 +67,7 @@ ci() {
 	dart format --fix -l 80 .
 	dart fix --apply
 	dart analyze
-
+	dart test
 }
 
 ci

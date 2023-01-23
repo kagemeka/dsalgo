@@ -41,3 +41,20 @@ dart -v
 ```sh
 dart format -v
 ```
+
+### lint
+
+add `lints` package
+
+```sh
+ dart pub add --dev lints
+
+```
+
+- <https://dart.dev/guides/language/analysis-options>
+- <https://dart.dev/tools/linter-rules#error-rules>
+
+### test
+
+- <https://dart.dev/guides/testing>
+- <https://pub.dev/packages/test>
