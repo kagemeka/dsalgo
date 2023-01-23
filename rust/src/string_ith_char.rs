@@ -1,4 +1,9 @@
-pub fn get(s: &str, i: usize) -> char { s.chars().nth(i).unwrap() }
+pub fn get(
+    s: &str,
+    i: usize,
+) -> char {
+    s.chars().nth(i).unwrap()
+}
 #[cfg(test)]
 mod tests {
     use super::*;

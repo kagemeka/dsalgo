@@ -8,16 +8,14 @@ impl<T: Clone> Deque<T> {
     pub fn new(buf_size: usize) -> Self {
         Self { data: vec![None; buf_size], left: 0, right: 0, size: 0 }
     }
-
     pub fn size(&self) -> usize { self.size }
-
     pub fn buf_size(&self) -> usize { self.data.len() }
-
     pub fn is_full(&self) -> bool { self.size() == self.buf_size() }
-
     pub fn is_empty(&self) -> bool { self.size() == 0 }
-
-    pub fn push_right(&mut self, x: T) {
+    pub fn push_right(
+        &mut self,
+        x: T,
+    ) {
         assert!(!self.is_full());
         debug_assert!(self.data[self.right].is_none());
         self.data[self.right] = Some(x);
@@ -27,8 +25,10 @@ impl<T: Clone> Deque<T> {
             self.right = 0;
         }
     }
-
-    pub fn push_left(&mut self, x: T) {
+    pub fn push_left(
+        &mut self,
+        x: T,
+    ) {
         assert!(!self.is_full());
         if self.left == 0 {
             self.left = self.buf_size();
@@ -38,7 +38,6 @@ impl<T: Clone> Deque<T> {
         self.data[self.left] = Some(x);
         self.size += 1;
     }
-
     pub fn pop_right(&mut self) -> Option<T> {
         if self.is_empty() {
             return None;
@@ -52,7 +51,6 @@ impl<T: Clone> Deque<T> {
         debug_assert!(v.is_some());
         v
     }
-
     pub fn pop_left(&mut self) -> Option<T> {
         if self.is_empty() {
             return None;

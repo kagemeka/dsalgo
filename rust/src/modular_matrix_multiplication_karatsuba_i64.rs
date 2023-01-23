@@ -1,8 +1,13 @@
 use crate::{
-    matrix_addition_i64::add, matrix_multiplication_i64::mul,
+    matrix_addition_i64::add,
+    matrix_multiplication_i64::mul,
     matrix_subtraction_i64::sub,
 };
-pub fn mod_mul(modulus: i64, a: &[Vec<i64>], b: &[Vec<i64>]) -> Vec<Vec<i64>> {
+pub fn mod_mul(
+    modulus: i64,
+    a: &[Vec<i64>],
+    b: &[Vec<i64>],
+) -> Vec<Vec<i64>> {
     const B: u8 = 16;
     const M: i64 = (1 << B) - 1;
     assert!(modulus < 1 << (B << 1));

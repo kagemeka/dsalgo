@@ -10,14 +10,11 @@ pub struct SqrtBucket<T> {
 }
 impl<T> SqrtBucket<T> {
     pub fn new() -> Self { Self { buckets: vec![vec![]], size: 0 } }
-
     pub fn size(&self) -> usize { self.size }
-
     fn max_interval(&self) -> usize {
         // isqrt(self.size) << 4;
         self.buckets.len() * 170
     }
-
     fn rebalance(&mut self) {
         use std::mem::swap;
         if self.size == 0 {
@@ -33,9 +30,11 @@ impl<T> SqrtBucket<T> {
             self.buckets[i / s].push(x);
         }
     }
-
     /// false, false, ..., true, true
-    pub(crate) fn search_bucket<F>(&self, is_ok: F) -> usize
+    pub(crate) fn search_bucket<F>(
+        &self,
+        is_ok: F,
+    ) -> usize
     where
         F: Fn(&T) -> bool,
     {
@@ -46,16 +45,21 @@ impl<T> SqrtBucket<T> {
             self.buckets.len() - 1,
         )
     }
-
-    pub(crate) fn search_on_bucket<F>(&self, j: usize, is_ok: F) -> usize
+    pub(crate) fn search_on_bucket<F>(
+        &self,
+        j: usize,
+        is_ok: F,
+    ) -> usize
     where
         F: Fn(&T) -> bool,
     {
         let b = &self.buckets[j];
         binary_search(|i| is_ok(&b[i]), 0, b.len())
     }
-
-    pub(crate) fn search_node<F>(&self, is_ok: F) -> (usize, usize)
+    pub(crate) fn search_node<F>(
+        &self,
+        is_ok: F,
+    ) -> (usize, usize)
     where
         F: Fn(&T) -> bool,
     {
@@ -63,16 +67,21 @@ impl<T> SqrtBucket<T> {
         let k = self.search_on_bucket(j, &is_ok);
         (j, k)
     }
-
-    pub(crate) fn index_of(&self, j: usize, k: usize) -> usize {
+    pub(crate) fn index_of(
+        &self,
+        j: usize,
+        k: usize,
+    ) -> usize {
         let mut i = 0;
         for b in self.buckets[..j].iter() {
             i += b.len();
         }
         i + k
     }
-
-    pub(crate) fn node_of(&self, mut i: usize) -> (usize, usize) {
+    pub(crate) fn node_of(
+        &self,
+        mut i: usize,
+    ) -> (usize, usize) {
         assert!(i <= self.size);
         for (j, b) in self.buckets[..self.buckets.len() - 1].iter().enumerate()
         {
@@ -83,37 +92,51 @@ impl<T> SqrtBucket<T> {
         }
         (self.buckets.len() - 1, i)
     }
-
-    pub fn binary_search<F>(&self, is_ok: F) -> usize
+    pub fn binary_search<F>(
+        &self,
+        is_ok: F,
+    ) -> usize
     where
         F: Fn(&T) -> bool,
     {
         let (j, k) = self.search_node(is_ok);
         self.index_of(j, k)
     }
-
-    pub(crate) fn insert_at(&mut self, j: usize, k: usize, x: T) {
+    pub(crate) fn insert_at(
+        &mut self,
+        j: usize,
+        k: usize,
+        x: T,
+    ) {
         self.buckets[j].insert(k, x);
         self.size += 1;
         if self.buckets[j].len() > self.max_interval() {
             self.rebalance();
         }
     }
-
-    pub fn insert(&mut self, i: usize, x: T) {
+    pub fn insert(
+        &mut self,
+        i: usize,
+        x: T,
+    ) {
         let (j, k) = self.node_of(i);
         self.insert_at(j, k, x);
     }
-
-    pub(crate) fn remove_at(&mut self, j: usize, k: usize) {
+    pub(crate) fn remove_at(
+        &mut self,
+        j: usize,
+        k: usize,
+    ) {
         self.buckets[j].remove(k);
         self.size -= 1;
         if self.buckets[j].len() == 0 {
             self.rebalance();
         }
     }
-
-    pub fn remove(&mut self, i: usize) {
+    pub fn remove(
+        &mut self,
+        i: usize,
+    ) {
         assert!(i < self.size);
         let (j, k) = self.node_of(i);
         self.remove_at(j, k);
@@ -122,14 +145,19 @@ impl<T> SqrtBucket<T> {
 use std::ops::*;
 impl<T> Index<usize> for SqrtBucket<T> {
     type Output = T;
-
-    fn index(&self, i: usize) -> &Self::Output {
+    fn index(
+        &self,
+        i: usize,
+    ) -> &Self::Output {
         let (j, k) = self.node_of(i);
         &self.buckets[j][k]
     }
 }
 impl<T> IndexMut<usize> for SqrtBucket<T> {
-    fn index_mut(&mut self, i: usize) -> &mut Self::Output {
+    fn index_mut(
+        &mut self,
+        i: usize,
+    ) -> &mut Self::Output {
         let (j, k) = self.node_of(i);
         &mut self.buckets[j][k]
     }

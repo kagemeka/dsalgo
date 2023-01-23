@@ -3,7 +3,10 @@
 /// we convert parameters to i64 internally.
 /// so be careful not to pass modulus > 2^63 because it overflows.
 /// it's `trivial` that inverse of 0 is undefined, so if n = 0, it panics.
-pub fn mod_gcd_inv(modulus: u64, n: u64) -> (u64, u64) {
+pub fn mod_gcd_inv(
+    modulus: u64,
+    n: u64,
+) -> (u64, u64) {
     assert!(0 < n && n < modulus);
     let (mut a, mut b) = (n as i64, modulus as i64);
     let (mut x00, mut x01) = (1, 0);

@@ -1,4 +1,7 @@
-use std::{cell::RefCell, rc::Rc};
+use std::{
+    cell::RefCell,
+    rc::Rc,
+};
 pub struct Node<T> {
     p: ON<T>,
     l: ON<T>,
@@ -15,17 +18,12 @@ impl<T> Node<T> {
     pub fn new(v: T) -> N<T> {
         Rc::new(RefCell::new(Self { p: None, l: None, r: None, size: 1, v }))
     }
-
     pub(crate) fn size(root: ORN<T>) -> usize {
         root.map_or(0, |root| root.borrow().size)
     }
-
     fn lsize(&self) -> usize { self.l.as_ref().map_or(0, |l| l.borrow().size) }
-
     fn rsize(&self) -> usize { self.r.as_ref().map_or(0, |r| r.borrow().size) }
-
     fn update(&mut self) { self.size = self.lsize() + self.rsize() + 1; }
-
     fn state(&self) -> isize {
         if let Some(p) = self.p.as_ref() {
             if p.borrow().l.is_some()
@@ -39,7 +37,6 @@ impl<T> Node<T> {
             0
         }
     }
-
     fn rotate(node: &N<T>) {
         let s = node.borrow().state();
         assert!(s == -1 || s == 1);
@@ -71,7 +68,6 @@ impl<T> Node<T> {
         p.borrow_mut().update();
         node.borrow_mut().update();
     }
-
     pub fn splay(node: &N<T>) {
         loop {
             let s = node.borrow().state();
@@ -88,8 +84,10 @@ impl<T> Node<T> {
             Self::rotate(node);
         }
     }
-
-    pub fn get(mut root: N<T>, mut i: usize) -> N<T> {
+    pub fn get(
+        mut root: N<T>,
+        mut i: usize,
+    ) -> N<T> {
         loop {
             assert!(i < root.borrow().size);
             let lsize = root.borrow().lsize();
@@ -106,8 +104,10 @@ impl<T> Node<T> {
             }
         }
     }
-
-    pub fn merge(l: ON<T>, r: ON<T>) -> ON<T> {
+    pub fn merge(
+        l: ON<T>,
+        r: ON<T>,
+    ) -> ON<T> {
         if r.is_none() {
             return l;
         }
@@ -120,8 +120,10 @@ impl<T> Node<T> {
         r.borrow_mut().update();
         Some(r)
     }
-
-    pub fn split(root: ON<T>, i: usize) -> (ON<T>, ON<T>) {
+    pub fn split(
+        root: ON<T>,
+        i: usize,
+    ) -> (ON<T>, ON<T>) {
         let size = Self::size(root.as_ref());
         assert!(i <= size);
         if i == size {
@@ -136,14 +138,19 @@ impl<T> Node<T> {
         root.borrow_mut().update();
         (l, Some(root))
     }
-
-    pub fn insert(root: ON<T>, i: usize, node: ON<T>) -> ON<T> {
+    pub fn insert(
+        root: ON<T>,
+        i: usize,
+        node: ON<T>,
+    ) -> ON<T> {
         assert!(i <= Self::size(root.as_ref()));
         let (l, r) = Self::split(root, i);
         Self::merge(Self::merge(l, node), r)
     }
-
-    pub fn pop(mut root: N<T>, i: usize) -> (N<T>, ON<T>) {
+    pub fn pop(
+        mut root: N<T>,
+        i: usize,
+    ) -> (N<T>, ON<T>) {
         root = Self::get(root, i);
         let l = root.borrow_mut().l.take();
         let r = root.borrow_mut().r.take();
@@ -157,8 +164,10 @@ impl<T> Node<T> {
         let c = Self::merge(l, r);
         (root, c)
     }
-
-    pub fn binary_search<F>(f: F, root: ORN<T>) -> usize
+    pub fn binary_search<F>(
+        f: F,
+        root: ORN<T>,
+    ) -> usize
     where
         F: Fn(&T) -> bool,
     {

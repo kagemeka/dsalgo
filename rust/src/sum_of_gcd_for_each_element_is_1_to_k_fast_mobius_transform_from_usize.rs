@@ -6,7 +6,10 @@ use crate::power_multiplicative_semigroup_with_std_ops::power;
 // for detail: https://37zigen.com/linear-sieve/#i-3
 // current: O(k|log\log{k} + k\log{N})
 use crate::sieve_of_eratosthenes_enumerate_primes_u32::enumerate_primes;
-pub fn sum_of_gcd<T>(k: usize, n: usize) -> T
+pub fn sum_of_gcd<T>(
+    k: usize,
+    n: usize,
+) -> T
 where
     T: Clone
         + MulAssign

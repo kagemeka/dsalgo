@@ -1,4 +1,7 @@
-use std::sync::atomic::{AtomicI64, Ordering::SeqCst};
+use std::sync::atomic::{
+    AtomicI64,
+    Ordering::SeqCst,
+};
 #[derive(Copy, Clone, Hash, PartialEq, Eq)]
 pub struct Modint(pub i64);
 impl Modint {
@@ -6,13 +9,9 @@ impl Modint {
         static CELL: AtomicI64 = AtomicI64::new(0);
         &CELL
     }
-
     pub fn get_mod() -> i64 { Self::cell().load(SeqCst) }
-
     fn m() -> i64 { Self::get_mod() }
-
     pub fn set_mod(value: i64) { Self::cell().store(value, SeqCst); }
-
     pub fn normalize(mut v: i64) -> i64 {
         let m = Self::m();
         if v < -Self::m() || v >= m {
@@ -23,14 +22,15 @@ impl Modint {
         }
         v
     }
-
     pub fn new(v: i64) -> Self { Self(Self::normalize(v)) }
 }
 use std::ops::*;
 impl Add for Modint {
     type Output = Self;
-
-    fn add(mut self, rhs: Self) -> Self::Output {
+    fn add(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         self.0 += rhs.0;
         if self.0 >= Self::m() {
             self.0 -= Self::m();
@@ -40,7 +40,6 @@ impl Add for Modint {
 }
 impl Neg for Modint {
     type Output = Self;
-
     fn neg(mut self) -> Self::Output {
         if self.0 != 0 {
             self.0 = Self::m() - self.0;
@@ -50,8 +49,10 @@ impl Neg for Modint {
 }
 impl Mul for Modint {
     type Output = Self;
-
-    fn mul(mut self, rhs: Self) -> Self::Output {
+    fn mul(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         self.0 *= rhs.0;
         if self.0 >= Self::m() {
             self.0 %= Self::m();
@@ -65,7 +66,6 @@ use crate::{
 };
 impl MulInv for Modint {
     type Output = Self;
-
     fn mul_inv(mut self) -> Self::Output {
         self.0 = modinv(Self::m(), self.0);
         self
@@ -73,80 +73,143 @@ impl MulInv for Modint {
 }
 impl Sub for Modint {
     type Output = Self;
-
-    fn sub(self, rhs: Self) -> Self::Output { self + -rhs }
+    fn sub(
+        self,
+        rhs: Self,
+    ) -> Self::Output {
+        self + -rhs
+    }
 }
 impl Div for Modint {
     type Output = Self;
-
-    fn div(self, rhs: Self) -> Self::Output { self * rhs.mul_inv() }
+    fn div(
+        self,
+        rhs: Self,
+    ) -> Self::Output {
+        self * rhs.mul_inv()
+    }
 }
 impl Add<i64> for Modint {
     type Output = Self;
-
-    fn add(self, rhs: i64) -> Self::Output { self + Self::new(rhs) }
+    fn add(
+        self,
+        rhs: i64,
+    ) -> Self::Output {
+        self + Self::new(rhs)
+    }
 }
 impl Sub<i64> for Modint {
     type Output = Self;
-
-    fn sub(self, rhs: i64) -> Self::Output { self - Self::new(rhs) }
+    fn sub(
+        self,
+        rhs: i64,
+    ) -> Self::Output {
+        self - Self::new(rhs)
+    }
 }
 impl Mul<i64> for Modint {
     type Output = Self;
-
-    fn mul(self, rhs: i64) -> Self::Output { self * Self::new(rhs) }
+    fn mul(
+        self,
+        rhs: i64,
+    ) -> Self::Output {
+        self * Self::new(rhs)
+    }
 }
 impl Div<i64> for Modint {
     type Output = Self;
-
-    fn div(self, rhs: i64) -> Self::Output { self / Self::new(rhs) }
+    fn div(
+        self,
+        rhs: i64,
+    ) -> Self::Output {
+        self / Self::new(rhs)
+    }
 }
 impl Add<Modint> for i64 {
     type Output = Modint;
-
-    fn add(self, rhs: Modint) -> Self::Output { Modint::new(self) + rhs }
+    fn add(
+        self,
+        rhs: Modint,
+    ) -> Self::Output {
+        Modint::new(self) + rhs
+    }
 }
 impl Sub<Modint> for i64 {
     type Output = Modint;
-
-    fn sub(self, rhs: Modint) -> Self::Output { Modint::new(self) - rhs }
+    fn sub(
+        self,
+        rhs: Modint,
+    ) -> Self::Output {
+        Modint::new(self) - rhs
+    }
 }
 impl Mul<Modint> for i64 {
     type Output = Modint;
-
-    fn mul(self, rhs: Modint) -> Self::Output { Modint::new(self) * rhs }
+    fn mul(
+        self,
+        rhs: Modint,
+    ) -> Self::Output {
+        Modint::new(self) * rhs
+    }
 }
 impl Div<Modint> for i64 {
     type Output = Modint;
-
-    fn div(self, rhs: Modint) -> Self::Output { Modint::new(self) / rhs }
+    fn div(
+        self,
+        rhs: Modint,
+    ) -> Self::Output {
+        Modint::new(self) / rhs
+    }
 }
 impl<T> AddAssign<T> for Modint
 where
     Self: Add<T, Output = Self>,
 {
-    fn add_assign(&mut self, rhs: T) { *self = *self + rhs; }
+    fn add_assign(
+        &mut self,
+        rhs: T,
+    ) {
+        *self = *self + rhs;
+    }
 }
 impl<T> SubAssign<T> for Modint
 where
     Self: Sub<T, Output = Self>,
 {
-    fn sub_assign(&mut self, rhs: T) { *self = *self - rhs; }
+    fn sub_assign(
+        &mut self,
+        rhs: T,
+    ) {
+        *self = *self - rhs;
+    }
 }
 impl<T> MulAssign<T> for Modint
 where
     Self: Mul<T, Output = Self>,
 {
-    fn mul_assign(&mut self, rhs: T) { *self = *self * rhs; }
+    fn mul_assign(
+        &mut self,
+        rhs: T,
+    ) {
+        *self = *self * rhs;
+    }
 }
 impl<T> DivAssign<T> for Modint
 where
     Self: Div<T, Output = Self>,
 {
-    fn div_assign(&mut self, rhs: T) { *self = *self / rhs; }
+    fn div_assign(
+        &mut self,
+        rhs: T,
+    ) {
+        *self = *self / rhs;
+    }
 }
 impl Modint {
-    pub fn pow(self, n: i64) -> Self {
+    pub fn pow(
+        self,
+        n: i64,
+    ) -> Self {
         if n < 0 {
             return self.mul_inv().pow(-n);
         }

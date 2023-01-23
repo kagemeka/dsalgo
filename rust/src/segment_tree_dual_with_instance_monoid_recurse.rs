@@ -1,6 +1,10 @@
 pub trait Monoid {
     type T;
-    fn op(&self, l: Self::T, r: Self::T) -> Self::T;
+    fn op(
+        &self,
+        l: Self::T,
+        r: Self::T,
+    ) -> Self::T;
     fn e(&self) -> Self::T;
 }
 pub struct DualSegtree<G: Monoid> {
@@ -12,33 +16,46 @@ impl<G: Monoid> DualSegtree<G>
 where
     G::T: Clone,
 {
-    pub fn new(g: G, size: usize) -> Self {
+    pub fn new(
+        g: G,
+        size: usize,
+    ) -> Self {
         assert!(size > 0);
         let n = size.next_power_of_two();
         let node = vec![g.e(); n << 1];
         Self { g, node, size }
     }
-
     pub fn size(&self) -> usize { self.size }
-
     fn n(&self) -> usize { self.node.len() >> 1 }
-
-    fn operate_node(&mut self, i: usize, x: G::T) {
+    fn operate_node(
+        &mut self,
+        i: usize,
+        x: G::T,
+    ) {
         self.node[i] = self.g.op(self.node[i].clone(), x);
     }
-
-    fn propagate(&mut self, i: usize) {
+    fn propagate(
+        &mut self,
+        i: usize,
+    ) {
         self.operate_node(i << 1, self.node[i].clone());
         self.operate_node(i << 1 | 1, self.node[i].clone());
         self.node[i] = self.g.e();
     }
-
-    pub fn get(&mut self, i: usize) -> &mut G::T {
+    pub fn get(
+        &mut self,
+        i: usize,
+    ) -> &mut G::T {
         assert!(i < self.size());
         self._get(i, 0, self.n(), 1)
     }
-
-    fn _get(&mut self, i: usize, cl: usize, cr: usize, ci: usize) -> &mut G::T {
+    fn _get(
+        &mut self,
+        i: usize,
+        cl: usize,
+        cr: usize,
+        ci: usize,
+    ) -> &mut G::T {
         assert!(cl <= i && i < cr);
         if cr - cl == 1 {
             return &mut self.node[ci];
@@ -51,14 +68,23 @@ where
             self._get(i, c, cr, ci << 1 | 1)
         }
     }
-
-    pub fn operate(&mut self, l: usize, r: usize, x: G::T) {
+    pub fn operate(
+        &mut self,
+        l: usize,
+        r: usize,
+        x: G::T,
+    ) {
         assert!(l <= r && r <= self.size);
         self._operate(l, r, 0, self.n(), 1, x);
     }
-
     fn _operate(
-        &mut self, l: usize, r: usize, cl: usize, cr: usize, i: usize, x: G::T,
+        &mut self,
+        l: usize,
+        r: usize,
+        cl: usize,
+        cr: usize,
+        i: usize,
+        x: G::T,
     ) {
         if cr <= l || r <= cl {
             return;
@@ -81,9 +107,13 @@ mod tests {
         struct M;
         impl Monoid for M {
             type T = i64;
-
-            fn op(&self, l: Self::T, r: Self::T) -> Self::T { l + r }
-
+            fn op(
+                &self,
+                l: Self::T,
+                r: Self::T,
+            ) -> Self::T {
+                l + r
+            }
             fn e(&self) -> Self::T { 0 }
         }
         let n = 5;

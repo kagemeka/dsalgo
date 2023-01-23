@@ -1,11 +1,13 @@
-use crate::{const_modulus_trait::Modulus, static_modulus_trait::Get};
+use crate::{
+    const_modulus_trait::Modulus,
+    static_modulus_trait::Get,
+};
 macro_rules! define_const_mod_old {
     ($name:ident, $uint:ty, $value:expr) => {
         #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
         pub struct $name;
         impl Modulus for $name {
             type T = $uint;
-
             const MOD: Self::T = $value;
         }
     };

@@ -1,6 +1,7 @@
 use crate::union_find_low_memory::UnionFind;
 pub fn connected_components(
-    v_size: usize, edges: &[(usize, usize)],
+    v_size: usize,
+    edges: &[(usize, usize)],
 ) -> Vec<usize> {
     let mut uf = UnionFind::new(v_size);
     for &(u, v) in edges {

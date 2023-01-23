@@ -4,12 +4,13 @@ pub struct PotentialUnionFind {
 }
 impl PotentialUnionFind {
     pub fn size(&self) -> usize { self.a.len() }
-
     pub fn new(size: usize) -> Self {
         Self { a: vec![-1; size], rh: vec![0; size] }
     }
-
-    pub fn root(&mut self, u: usize) -> usize {
+    pub fn root(
+        &mut self,
+        u: usize,
+    ) -> usize {
         if self.a[u] < 0 {
             return u;
         }
@@ -18,30 +19,44 @@ impl PotentialUnionFind {
         self.rh[u] += self.rh[p];
         self.a[u] as usize
     }
-
-    fn h(&mut self, u: usize) -> i64 {
+    fn h(
+        &mut self,
+        u: usize,
+    ) -> i64 {
         self.root(u);
         self.rh[u]
     }
-
-    pub fn size_of(&mut self, u: usize) -> usize {
+    pub fn size_of(
+        &mut self,
+        u: usize,
+    ) -> usize {
         let u = self.root(u);
         -self.a[u] as usize
     }
-
-    pub fn same(&mut self, u: usize, v: usize) -> bool {
+    pub fn same(
+        &mut self,
+        u: usize,
+        v: usize,
+    ) -> bool {
         self.root(u) == self.root(v)
     }
-
-    pub fn diff(&mut self, u: usize, v: usize) -> Result<i64, &'static str> {
+    pub fn diff(
+        &mut self,
+        u: usize,
+        v: usize,
+    ) -> Result<i64, &'static str> {
         if !self.same(u, v) {
             Err("belongs to different components")
         } else {
             Ok(self.h(v) - self.h(u))
         }
     }
-
-    pub fn unite(&mut self, mut u: usize, mut v: usize, diff: i64) {
+    pub fn unite(
+        &mut self,
+        mut u: usize,
+        mut v: usize,
+        diff: i64,
+    ) {
         let mut d = self.h(u) + diff - self.h(v);
         u = self.root(u);
         v = self.root(v);

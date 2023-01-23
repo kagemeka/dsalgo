@@ -1,7 +1,11 @@
 use crate::integer_square_root_with_binary_search_usize::isqrt;
 pub trait Monoid {
     type T;
-    fn op(&self, l: Self::T, r: Self::T) -> Self::T;
+    fn op(
+        &self,
+        l: Self::T,
+        r: Self::T,
+    ) -> Self::T;
     fn e(&self) -> Self::T;
 }
 pub struct DualSqrtDecomposition<G: Monoid> {
@@ -14,20 +18,23 @@ where
     G::T: Clone + Eq,
 {
     pub fn size(&self) -> usize { self.data.len() }
-
     pub fn interval(&self) -> usize {
         let n = self.buckets.len();
         (self.size() + n - 1) / n
     }
-
-    pub fn new(g: G, size: usize) -> Self {
+    pub fn new(
+        g: G,
+        size: usize,
+    ) -> Self {
         let data = vec![g.e(); size];
         let m = isqrt(size);
         let buckets = vec![g.e(); (size + m - 1) / m];
         Self { g, data, buckets }
     }
-
-    fn propagate(&mut self, j: usize) {
+    fn propagate(
+        &mut self,
+        j: usize,
+    ) {
         let m = self.interval();
         let n = self.size();
         let x = self.buckets[j].clone();
@@ -39,14 +46,20 @@ where
         }
         self.buckets[j] = self.g.e();
     }
-
-    pub fn get(&mut self, i: usize) -> &mut G::T {
+    pub fn get(
+        &mut self,
+        i: usize,
+    ) -> &mut G::T {
         let m = self.interval();
         self.propagate(i / m);
         &mut self.data[i]
     }
-
-    pub fn operate(&mut self, l: usize, r: usize, x: G::T) {
+    pub fn operate(
+        &mut self,
+        l: usize,
+        r: usize,
+        x: G::T,
+    ) {
         assert!(l <= r && r <= self.size());
         let n = self.interval();
         self.propagate(l / n);
@@ -80,9 +93,13 @@ mod tests {
         struct M;
         impl Monoid for M {
             type T = i64;
-
-            fn op(&self, l: Self::T, r: Self::T) -> Self::T { l + r }
-
+            fn op(
+                &self,
+                l: Self::T,
+                r: Self::T,
+            ) -> Self::T {
+                l + r
+            }
             fn e(&self) -> Self::T { 0 }
         }
         let n = 5;

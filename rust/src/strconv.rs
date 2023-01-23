@@ -3,7 +3,8 @@ pub fn str_to_byte_vec(s: &str) -> Vec<u8> { s.bytes().collect::<Vec<_>>() }
 pub fn str_to_char_vec(s: &str) -> Vec<char> { s.chars().collect::<Vec<_>>() }
 pub fn char_slice_to_string(s: &[char]) -> String { s.iter().collect() }
 pub fn chars_to_byte_vec<I: Iterator<Item = char>>(
-    chars: I, offset: u8,
+    chars: I,
+    offset: u8,
 ) -> Vec<u8> {
     chars.map(|c| c as u8 - offset).collect::<Vec<_>>()
 }

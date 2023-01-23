@@ -1,7 +1,7 @@
 use std::ops::*;
 /// O(N*2^N)
 pub fn fast_mobius_superset<T: Clone + Sub<Output = T>>(
-    mut f: Vec<T>,
+    mut f: Vec<T>
 ) -> Vec<T> {
     let m = f.len();
     let n = m.next_power_of_two().trailing_zeros();

@@ -8,11 +8,15 @@ impl TwoSat {
     pub fn new(size: usize) -> Self {
         Self { g: vec![vec![]; size << 1], solution: None, updated: false }
     }
-
     fn n(&self) -> usize { self.g.len() >> 1 }
-
     /// add a clause (i-th node is f) or (j-th node is g)
-    pub fn add_clause(&mut self, i: usize, f: bool, j: usize, g: bool) {
+    pub fn add_clause(
+        &mut self,
+        i: usize,
+        f: bool,
+        j: usize,
+        g: bool,
+    ) {
         let f = f as usize;
         let g = g as usize;
         self.g[i << 1 | f].push(j << 1 | (g ^ 1));
@@ -21,7 +25,6 @@ impl TwoSat {
         // true: 2k + 1
         self.updated = false;
     }
-
     fn update(&mut self) {
         if self.updated {
             return;
@@ -41,12 +44,10 @@ impl TwoSat {
         }
         self.solution = Some(res)
     }
-
     pub fn is_satisfiable(&mut self) -> bool {
         self.update();
         self.solution.is_some()
     }
-
     /// one of the solutions
     pub fn solve(&mut self) -> Option<Vec<bool>> {
         self.update();

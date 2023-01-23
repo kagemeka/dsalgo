@@ -1,5 +1,8 @@
 use std::ops::*;
-pub fn normalize<T>(mut a: Vec<T>, offset: T) -> Vec<T>
+pub fn normalize<T>(
+    mut a: Vec<T>,
+    offset: T,
+) -> Vec<T>
 where
     T: Add<Output = T> + Sub<Output = T> + Ord + From<i32> + Clone,
 {

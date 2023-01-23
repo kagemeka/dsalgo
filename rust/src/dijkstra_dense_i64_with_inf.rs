@@ -1,4 +1,8 @@
-pub fn dijkstra_dense(inf: i64, g: &[Vec<i64>], src: usize) -> Vec<i64> {
+pub fn dijkstra_dense(
+    inf: i64,
+    g: &[Vec<i64>],
+    src: usize,
+) -> Vec<i64> {
     let n = g.len();
     let mut dist = vec![inf; n];
     dist[src] = 0;

@@ -5,11 +5,9 @@ pub struct MedianQueue<T> {
 }
 impl<T: Ord + Clone> MedianQueue<T> {
     pub fn new() -> Self { Self { lo: Multiset::new(), hi: Multiset::new() } }
-
     fn balance(&self) -> isize {
         self.lo.size() as isize - self.hi.size() as isize
     }
-
     fn rebalance(&mut self) {
         let b = self.balance();
         if b == 2 {
@@ -22,12 +20,17 @@ impl<T: Ord + Clone> MedianQueue<T> {
             self.lo.insert(x, 1);
         }
     }
-
     pub fn size(&self) -> usize { self.lo.size() + self.hi.size() }
-
-    pub fn count(&self, x: &T) -> usize { self.lo.count(x) + self.hi.count(x) }
-
-    pub fn insert(&mut self, x: T) {
+    pub fn count(
+        &self,
+        x: &T,
+    ) -> usize {
+        self.lo.count(x) + self.hi.count(x)
+    }
+    pub fn insert(
+        &mut self,
+        x: T,
+    ) {
         if self.balance() == 1 {
             self.lo.insert(x, 1);
         } else {
@@ -35,14 +38,18 @@ impl<T: Ord + Clone> MedianQueue<T> {
         }
         self.rebalance();
     }
-
     pub fn low(&self) -> Option<&T> { self.lo.max() }
-
     pub fn high(&self) -> Option<&T> {
-        if self.balance() == 1 { self.low() } else { self.hi.min() }
+        if self.balance() == 1 {
+            self.low()
+        } else {
+            self.hi.min()
+        }
     }
-
-    pub fn remove(&mut self, x: &T) {
+    pub fn remove(
+        &mut self,
+        x: &T,
+    ) {
         assert!(self.count(x) > 0);
         if self.lo.count(x) > 0 {
             self.lo.remove(x, 1);

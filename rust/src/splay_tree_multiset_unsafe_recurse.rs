@@ -5,7 +5,6 @@ use crate::splay_tree_node_unsafe_recurse::*;
 pub struct Multiset<T>(*mut Node<T>);
 impl<T: Ord> Multiset<T> {
     pub fn new() -> Self { Self(null_mut()) }
-
     #[allow(dead_code)]
     pub(crate) fn dbg(&self)
     where
@@ -17,37 +16,52 @@ impl<T: Ord> Multiset<T> {
             dbg!(self.0);
         }
     }
-
     pub fn size(&self) -> usize { Node::size(self.0) }
-
-    pub fn lower_bound(&self, v: &T) -> usize {
+    pub fn lower_bound(
+        &self,
+        v: &T,
+    ) -> usize {
         Node::binary_search(|x| x >= v, self.0)
     }
-
-    pub fn upper_bound(&self, v: &T) -> usize {
+    pub fn upper_bound(
+        &self,
+        v: &T,
+    ) -> usize {
         Node::binary_search(|x| x > v, self.0)
     }
-
-    pub fn count(&self, v: &T) -> usize {
+    pub fn count(
+        &self,
+        v: &T,
+    ) -> usize {
         self.upper_bound(v) - self.lower_bound(v)
     }
-
-    pub fn contains(&self, v: &T) -> bool { self.count(v) > 0 }
-
-    pub fn insert(&mut self, v: T) {
+    pub fn contains(
+        &self,
+        v: &T,
+    ) -> bool {
+        self.count(v) > 0
+    }
+    pub fn insert(
+        &mut self,
+        v: T,
+    ) {
         let i = self.lower_bound(&v);
         self.0 = Node::insert(self.0, i, Box::leak(Box::new(Node::new(v))));
     }
-
-    pub fn remove(&mut self, v: &T) {
+    pub fn remove(
+        &mut self,
+        v: &T,
+    ) {
         if !self.contains(v) {
             return;
         }
         let i = self.lower_bound(v);
         self.0 = unsafe { self.0.as_mut().unwrap() }.pop(i).1;
     }
-
-    pub fn get(&mut self, i: usize) -> T
+    pub fn get(
+        &mut self,
+        i: usize,
+    ) -> T
     where
         T: Clone,
     {
@@ -65,18 +79,21 @@ mod tests {
         let cases = vec![
             (5, vec![((2, 2), 5), ((1, 3), 0), ((2, 2), 3)]),
             (5, vec![((1, 2), 0), ((1, 4), 0), ((2, 3), 2)]),
-            (100, vec![
-                ((1, 31), 0),
-                ((2, 41), 69),
-                ((1, 59), 0),
-                ((2, 26), 31),
-                ((1, 53), 0),
-                ((2, 58), 6),
-                ((1, 97), 0),
-                ((2, 93), 38),
-                ((1, 23), 0),
-                ((2, 84), 38),
-            ]),
+            (
+                100,
+                vec![
+                    ((1, 31), 0),
+                    ((2, 41), 69),
+                    ((1, 59), 0),
+                    ((2, 26), 31),
+                    ((1, 53), 0),
+                    ((2, 58), 6),
+                    ((1, 97), 0),
+                    ((2, 93), 38),
+                    ((1, 23), 0),
+                    ((2, 84), 38),
+                ],
+            ),
         ];
         for (l, q) in cases {
             let mut s = Multiset::new();

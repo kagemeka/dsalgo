@@ -26,10 +26,13 @@ mod tests {
             ("abcdabd", vec![-1, 0, 0, 0, -1, 0, 2, 0]),
             ("abacababc", vec![-1, 0, -1, 1, -1, 0, -1, 3, 2, 0]),
             ("abacababa", vec![-1, 0, -1, 1, -1, 0, -1, 3, -1, 3]),
-            ("participate in parachute", vec![
-                -1, 0, 0, 0, 0, 0, 0, -1, 0, 2, 0, 0, 0, 0, 0, -1, 0, 0, 3, 0,
-                0, 0, 0, 0, 0,
-            ]),
+            (
+                "participate in parachute",
+                vec![
+                    -1, 0, 0, 0, 0, 0, 0, -1, 0, 2, 0, 0, 0, 0, 0, -1, 0, 0, 3,
+                    0, 0, 0, 0, 0, 0,
+                ],
+            ),
         ];
         for (s, ans) in cases {
             assert_eq!(kmp_table(s.as_bytes()), ans);

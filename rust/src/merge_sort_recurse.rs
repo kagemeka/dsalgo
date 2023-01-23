@@ -34,9 +34,10 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        let cases = vec![(vec![8, 5, 9, 2, 6, 3, 7, 1, 10, 4], vec![
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-        ])];
+        let cases = vec![(
+            vec![8, 5, 9, 2, 6, 3, 7, 1, 10, 4],
+            vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        )];
         for (a, ans) in cases {
             assert_eq!(merge_sort(a), ans);
         }

@@ -3,7 +3,11 @@ use crate::{
     modular_inverse_euler_theorem_i64::modinv,
 };
 /// find a solution for ax = b (mod m)
-pub fn mod_linear_equation(mut m: i64, mut a: i64, mut b: i64) -> Option<i64> {
+pub fn mod_linear_equation(
+    mut m: i64,
+    mut a: i64,
+    mut b: i64,
+) -> Option<i64> {
     let g = gcd(m, a);
     if b % g != 0 {
         return None;

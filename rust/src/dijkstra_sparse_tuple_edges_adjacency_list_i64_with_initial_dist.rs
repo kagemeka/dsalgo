@@ -1,4 +1,7 @@
-pub fn dijkstra(g: &[Vec<(usize, i64)>], mut dist: Vec<i64>) -> Vec<i64> {
+pub fn dijkstra(
+    g: &[Vec<(usize, i64)>],
+    mut dist: Vec<i64>,
+) -> Vec<i64> {
     use std::cmp::Reverse;
     let n = g.len();
     assert_eq!(dist.len(), n);

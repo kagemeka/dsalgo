@@ -11,28 +11,43 @@ impl PivotTreeSet {
         let n = 1 << max_height;
         Self { data: vec![None; n], size: vec![0; n], max_height }
     }
-
     fn root_pivot(&self) -> usize { 1 << self.max_height - 1 }
-
-    fn left_size(&self, p: usize) -> usize {
-        if p & 1 == 1 { 0 } else { self.size[left(p)] }
+    fn left_size(
+        &self,
+        p: usize,
+    ) -> usize {
+        if p & 1 == 1 {
+            0
+        } else {
+            self.size[left(p)]
+        }
     }
-
-    fn right_size(&self, p: usize) -> usize {
-        if p & 1 == 1 { 0 } else { self.size[right(p)] }
+    fn right_size(
+        &self,
+        p: usize,
+    ) -> usize {
+        if p & 1 == 1 {
+            0
+        } else {
+            self.size[right(p)]
+        }
     }
-
     pub fn size(&self) -> usize { self.size[self.root_pivot()] }
-
-    fn update(&mut self, p: usize) {
+    fn update(
+        &mut self,
+        p: usize,
+    ) {
         if self.data[p].is_none() {
             self.size[p] = 0;
             return;
         }
         self.size[p] = self.left_size(p) + self.right_size(p) + 1;
     }
-
-    pub fn _insert(&mut self, p: usize, mut v: usize) {
+    pub fn _insert(
+        &mut self,
+        p: usize,
+        mut v: usize,
+    ) {
         use std::mem::swap;
         let value = self.data[p];
         if value.is_none() {
@@ -62,8 +77,11 @@ impl PivotTreeSet {
         }
         self.update(p);
     }
-
-    fn _remove(&mut self, p: usize, i: usize) {
+    fn _remove(
+        &mut self,
+        p: usize,
+        i: usize,
+    ) {
         assert!(i < self.size[p]);
         let lsize = self.left_size(p);
         if i < lsize {
@@ -85,8 +103,11 @@ impl PivotTreeSet {
         }
         self.update(p);
     }
-
-    fn kth_value(&self, p: usize, k: usize) -> usize {
+    fn kth_value(
+        &self,
+        p: usize,
+        k: usize,
+    ) -> usize {
         assert!(k < self.size[p]);
         let lsize = self.left_size(p);
         if k < lsize {
@@ -97,8 +118,11 @@ impl PivotTreeSet {
             self.kth_value(right(p), k - lsize - 1)
         }
     }
-
-    fn binary_search<F>(&self, f: F, p: usize) -> usize
+    fn binary_search<F>(
+        &self,
+        f: F,
+        p: usize,
+    ) -> usize
     where
         F: Fn(usize) -> bool,
     {
@@ -108,32 +132,50 @@ impl PivotTreeSet {
         }
         let v = v.unwrap();
         if f(v) {
-            if p & 1 == 1 { 0 } else { self.binary_search(f, left(p)) }
+            if p & 1 == 1 {
+                0
+            } else {
+                self.binary_search(f, left(p))
+            }
         } else {
             let i = self.left_size(p) + 1;
             i + if p & 1 == 1 { 0 } else { self.binary_search(f, right(p)) }
         }
     }
-
-    pub fn get(&self, i: usize) -> usize {
+    pub fn get(
+        &self,
+        i: usize,
+    ) -> usize {
         self.kth_value(self.root_pivot(), i) - 1
     }
-
-    pub fn lower_bound(&self, x: usize) -> usize {
+    pub fn lower_bound(
+        &self,
+        x: usize,
+    ) -> usize {
         self.binary_search(|v| v >= x + 1, self.root_pivot())
     }
-
-    pub fn upper_bound(&self, x: usize) -> usize {
+    pub fn upper_bound(
+        &self,
+        x: usize,
+    ) -> usize {
         self.binary_search(|v| v > x + 1, self.root_pivot())
     }
-
-    pub fn count(&self, x: usize) -> usize {
+    pub fn count(
+        &self,
+        x: usize,
+    ) -> usize {
         self.upper_bound(x) - self.lower_bound(x)
     }
-
-    pub fn contains(&self, x: usize) -> bool { self.count(x) > 0 }
-
-    pub fn insert(&mut self, mut x: usize) {
+    pub fn contains(
+        &self,
+        x: usize,
+    ) -> bool {
+        self.count(x) > 0
+    }
+    pub fn insert(
+        &mut self,
+        mut x: usize,
+    ) {
         assert!(x < (1 << self.max_height) - 1);
         if self.contains(x) {
             return;
@@ -141,8 +183,10 @@ impl PivotTreeSet {
         x += 1;
         self._insert(self.root_pivot(), x);
     }
-
-    pub fn remove(&mut self, x: usize) {
+    pub fn remove(
+        &mut self,
+        x: usize,
+    ) {
         if !self.contains(x) {
             return;
         }
@@ -175,18 +219,21 @@ mod tests {
         let cases = vec![
             (5, vec![((2, 2), 5), ((1, 3), 0), ((2, 2), 3)]),
             (5, vec![((1, 2), 0), ((1, 4), 0), ((2, 3), 2)]),
-            (100, vec![
-                ((1, 31), 0),
-                ((2, 41), 69),
-                ((1, 59), 0),
-                ((2, 26), 31),
-                ((1, 53), 0),
-                ((2, 58), 6),
-                ((1, 97), 0),
-                ((2, 93), 38),
-                ((1, 23), 0),
-                ((2, 84), 38),
-            ]),
+            (
+                100,
+                vec![
+                    ((1, 31), 0),
+                    ((2, 41), 69),
+                    ((1, 59), 0),
+                    ((2, 26), 31),
+                    ((1, 53), 0),
+                    ((2, 58), 6),
+                    ((1, 97), 0),
+                    ((2, 93), 38),
+                    ((1, 23), 0),
+                    ((2, 84), 38),
+                ],
+            ),
         ];
         for (l, q) in cases {
             let mut s = PivotTreeSet::new(20);

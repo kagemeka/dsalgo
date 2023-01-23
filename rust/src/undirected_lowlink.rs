@@ -1,6 +1,7 @@
 use crate::lowlink::LowlinkResult;
 pub fn undirected_lowlink(
-    v_size: usize, undirected_edges: &[(usize, usize)],
+    v_size: usize,
+    undirected_edges: &[(usize, usize)],
 ) -> LowlinkResult {
     let mut g = vec![vec![]; v_size];
     for (i, &(u, v)) in undirected_edges.iter().enumerate() {
@@ -11,8 +12,12 @@ pub fn undirected_lowlink(
     let mut order = 0;
     let mut low_orders = vec![v_size; v_size];
     fn compute_low_order(
-        g: &[Vec<(usize, usize)>], orders: &mut [usize], order: &mut usize,
-        low_orders: &mut [usize], u: usize, edge_from: usize,
+        g: &[Vec<(usize, usize)>],
+        orders: &mut [usize],
+        order: &mut usize,
+        low_orders: &mut [usize],
+        u: usize,
+        edge_from: usize,
     ) {
         orders[u] = *order;
         low_orders[u] = *order;

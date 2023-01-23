@@ -1,5 +1,8 @@
 pub fn a_star<F: Fn(usize) -> i64>(
-    inf: i64, g: &[Vec<(usize, i64)>], src: usize, dst: usize,
+    inf: i64,
+    g: &[Vec<(usize, i64)>],
+    src: usize,
+    dst: usize,
     heuristic_func: F,
 ) -> i64 {
     use std::cmp::Reverse;

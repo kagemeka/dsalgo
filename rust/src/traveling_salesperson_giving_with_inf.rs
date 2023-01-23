@@ -1,5 +1,9 @@
 use std::ops::*;
-pub fn tsp<T>(inf: T, g: &[Vec<T>], src: usize) -> T
+pub fn tsp<T>(
+    inf: T,
+    g: &[Vec<T>],
+    src: usize,
+) -> T
 where
     T: Clone + Add<Output = T> + Ord,
 {

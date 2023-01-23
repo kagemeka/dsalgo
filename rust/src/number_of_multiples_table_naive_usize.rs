@@ -1,8 +1,6 @@
 /// O(N)
 pub fn number_of_multiples(size: usize) -> Vec<usize> {
-    (0..size)
-        .map(|x| if x == 0 { 0 } else { (size - 1) / x })
-        .collect()
+    (0..size).map(|x| if x == 0 { 0 } else { (size - 1) / x }).collect()
 }
 #[cfg(test)]
 mod tests {

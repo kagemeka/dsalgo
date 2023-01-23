@@ -2,7 +2,10 @@
 //! push arbitrary,
 //! pop median
 //! find median,
-use std::{cmp::Reverse, collections::BinaryHeap};
+use std::{
+    cmp::Reverse,
+    collections::BinaryHeap,
+};
 pub struct MedianQueue<T> {
     low_que: BinaryHeap<T>,
     high_que: BinaryHeap<Reverse<T>>,
@@ -11,21 +14,16 @@ impl<T: Clone + Ord> MedianQueue<T> {
     pub fn new() -> Self {
         Self { low_que: BinaryHeap::new(), high_que: BinaryHeap::new() }
     }
-
     pub fn size(&self) -> usize { self.low_que.len() + self.high_que.len() }
-
     fn low_to_high(&mut self) {
         self.high_que.push(Reverse(self.low_que.pop().unwrap()));
     }
-
     fn high_to_low(&mut self) {
         self.low_que.push(self.high_que.pop().unwrap().0);
     }
-
     fn balance(&self) -> isize {
         self.low_que.len() as isize - self.high_que.len() as isize
     }
-
     fn rebalance(&mut self) {
         match self.balance() {
             2 => self.low_to_high(),
@@ -35,8 +33,10 @@ impl<T: Clone + Ord> MedianQueue<T> {
         }
         debug_assert!(self.balance() == 0 || self.balance() == 1);
     }
-
-    pub fn push(&mut self, x: T) {
+    pub fn push(
+        &mut self,
+        x: T,
+    ) {
         if self.balance() == 1 {
             self.low_que.push(x);
         } else {
@@ -44,9 +44,7 @@ impl<T: Clone + Ord> MedianQueue<T> {
         }
         self.rebalance();
     }
-
     pub fn low(&self) -> Option<&T> { self.low_que.peek() }
-
     pub fn high(&self) -> Option<&T> {
         if self.balance() == 1 {
             self.low_que.peek()
@@ -56,13 +54,11 @@ impl<T: Clone + Ord> MedianQueue<T> {
             None
         }
     }
-
     pub fn pop_low(&mut self) -> Option<T> {
         let v = self.low_que.pop();
         self.rebalance();
         v
     }
-
     pub fn pop_high(&mut self) -> Option<T> {
         let v = if self.balance() == 1 {
             self.low_que.pop()

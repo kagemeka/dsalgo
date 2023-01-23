@@ -47,9 +47,7 @@ where
     M::T: Element,
 {
     pub fn modulus() -> M::T { M::get() }
-
     fn m() -> M::T { M::get() }
-
     pub fn normalize(mut v: M::T) -> M::T {
         let m = Self::m();
         if v < -Self::m() || v >= m {
@@ -60,7 +58,6 @@ where
         }
         v
     }
-
     pub fn new(v: M::T) -> Self { Self(Self::normalize(v)) }
 }
 impl<M: Get> Add for Modint<M>
@@ -68,8 +65,10 @@ where
     M::T: Element,
 {
     type Output = Self;
-
-    fn add(mut self, rhs: Self) -> Self::Output {
+    fn add(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         self.0 += rhs.0;
         if self.0 >= Self::m() {
             self.0 -= Self::m();
@@ -82,7 +81,6 @@ where
     M::T: Element,
 {
     type Output = Self;
-
     fn neg(mut self) -> Self::Output {
         if self.0 != 0.into() {
             self.0 = Self::m() - self.0;
@@ -95,8 +93,10 @@ where
     M::T: Element,
 {
     type Output = Self;
-
-    fn mul(mut self, rhs: Self) -> Self::Output {
+    fn mul(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         self.0 *= rhs.0;
         if self.0 >= Self::m() {
             self.0 %= Self::m();
@@ -113,7 +113,6 @@ where
     M::T: Element,
 {
     type Output = Self;
-
     fn mul_inv(mut self) -> Self::Output {
         self.0 = (modinv(Self::m().into(), self.0.into()) as i32).into();
         self
@@ -124,50 +123,81 @@ where
     M::T: Element,
 {
     type Output = Self;
-
-    fn sub(self, rhs: Self) -> Self::Output { self + -rhs }
+    fn sub(
+        self,
+        rhs: Self,
+    ) -> Self::Output {
+        self + -rhs
+    }
 }
 impl<M: Get> Div for Modint<M>
 where
     M::T: Element,
 {
     type Output = Self;
-
-    fn div(self, rhs: Self) -> Self::Output { self * rhs.mul_inv() }
+    fn div(
+        self,
+        rhs: Self,
+    ) -> Self::Output {
+        self * rhs.mul_inv()
+    }
 }
 impl<M: Get + Copy, T> AddAssign<T> for Modint<M>
 where
     Self: Add<T, Output = Self>,
     M::T: Element,
 {
-    fn add_assign(&mut self, rhs: T) { *self = *self + rhs; }
+    fn add_assign(
+        &mut self,
+        rhs: T,
+    ) {
+        *self = *self + rhs;
+    }
 }
 impl<M: Get + Copy, T> SubAssign<T> for Modint<M>
 where
     Self: Sub<T, Output = Self>,
     M::T: Element,
 {
-    fn sub_assign(&mut self, rhs: T) { *self = *self - rhs; }
+    fn sub_assign(
+        &mut self,
+        rhs: T,
+    ) {
+        *self = *self - rhs;
+    }
 }
 impl<M: Get + Copy, T> MulAssign<T> for Modint<M>
 where
     Self: Mul<T, Output = Self>,
     M::T: Element,
 {
-    fn mul_assign(&mut self, rhs: T) { *self = *self * rhs; }
+    fn mul_assign(
+        &mut self,
+        rhs: T,
+    ) {
+        *self = *self * rhs;
+    }
 }
 impl<M: Get + Copy, T> DivAssign<T> for Modint<M>
 where
     Self: Div<T, Output = Self>,
     M::T: Element,
 {
-    fn div_assign(&mut self, rhs: T) { *self = *self / rhs; }
+    fn div_assign(
+        &mut self,
+        rhs: T,
+    ) {
+        *self = *self / rhs;
+    }
 }
 impl<M: Get + Copy> Modint<M>
 where
     M::T: Element,
 {
-    pub fn pow(self, n: i64) -> Self {
+    pub fn pow(
+        self,
+        n: i64,
+    ) -> Self {
         if n < 0 {
             return self.mul_inv().pow(-n);
         }

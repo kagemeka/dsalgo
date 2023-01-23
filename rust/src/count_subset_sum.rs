@@ -1,4 +1,7 @@
-pub fn subset_sum_counting_table<T>(values: &[u64], size: usize) -> Vec<T>
+pub fn subset_sum_counting_table<T>(
+    values: &[u64],
+    size: usize,
+) -> Vec<T>
 where
     T: std::ops::Add<Output = T> + From<u64> + Clone,
 {

@@ -1,6 +1,13 @@
 /// number of a prime factor in factorial.
-pub fn legendre(n: usize, p: usize) -> usize {
-    if n == 0 { 0 } else { n / p + legendre(n / p, p) }
+pub fn legendre(
+    n: usize,
+    p: usize,
+) -> usize {
+    if n == 0 {
+        0
+    } else {
+        n / p + legendre(n / p, p)
+    }
 }
 #[cfg(test)]
 mod tests {

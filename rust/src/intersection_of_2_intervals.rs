@@ -1,8 +1,17 @@
 /// intersection of [l0, r0), [l1, r1)
-pub fn intersection(l0: i64, r0: i64, l1: i64, r1: i64) -> Option<(i64, i64)> {
+pub fn intersection(
+    l0: i64,
+    r0: i64,
+    l1: i64,
+    r1: i64,
+) -> Option<(i64, i64)> {
     let l = l0.max(l1);
     let r = r0.min(r1);
-    if r < l { None } else { Some((l, r)) }
+    if r < l {
+        None
+    } else {
+        Some((l, r))
+    }
 }
 #[cfg(test)]
 mod tests {

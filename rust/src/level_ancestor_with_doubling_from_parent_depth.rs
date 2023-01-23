@@ -7,18 +7,20 @@ pub struct LevelAncestor {
     pub depth: Vec<usize>,
 }
 impl LevelAncestor {
-    pub fn new(parent: Vec<usize>, depth: Vec<usize>) -> Self {
-        let k = depth
-            .iter()
-            .max()
-            .unwrap()
-            .next_power_of_two()
-            .trailing_zeros() as usize;
+    pub fn new(
+        parent: Vec<usize>,
+        depth: Vec<usize>,
+    ) -> Self {
+        let k = depth.iter().max().unwrap().next_power_of_two().trailing_zeros()
+            as usize;
         let ancestor = doubling_table(&parent, k + 1);
         Self { ancestor, depth }
     }
-
-    pub fn get(&self, mut u: usize, mut k: usize) -> usize {
+    pub fn get(
+        &self,
+        mut u: usize,
+        mut k: usize,
+    ) -> usize {
         assert!(k <= self.depth[u]);
         for (i, a) in self.ancestor.iter().enumerate() {
             if k >> i & 1 == 0 {

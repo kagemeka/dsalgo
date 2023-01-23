@@ -3,7 +3,7 @@ use crate::is_undirected_dense_graph::is_undirected_dense_graph;
 /// the algorithm start from vertex 0.
 /// O(V^2)
 pub fn mst_prim_dense(
-    undirected_dense_graph: &[Vec<Option<i64>>],
+    undirected_dense_graph: &[Vec<Option<i64>>]
 ) -> Vec<(usize, usize)> {
     let g = undirected_dense_graph;
     let n = g.len();

@@ -10,7 +10,6 @@ where
     F: Fn(T, T) -> T,
 {
     type Item = T;
-
     fn next(&mut self) -> Option<Self::Item> {
         if self.cur.is_none() {
             return None;
@@ -24,7 +23,10 @@ where
         Some(cur)
     }
 }
-pub fn accumulate<T, F, I>(f: F, mut iter: I) -> Iter<T, F, I>
+pub fn accumulate<T, F, I>(
+    f: F,
+    mut iter: I,
+) -> Iter<T, F, I>
 where
     T: Clone,
     F: Fn(T, T) -> T,

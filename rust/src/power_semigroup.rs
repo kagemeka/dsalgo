@@ -1,4 +1,8 @@
-pub fn pow_semigroup<F, X>(f: F, mut x: X, mut exp: u64) -> X
+pub fn pow_semigroup<F, X>(
+    f: F,
+    mut x: X,
+    mut exp: u64,
+) -> X
 where
     F: Fn(X, X) -> X,
     X: Clone,

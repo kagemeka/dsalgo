@@ -6,18 +6,24 @@ fn test() {
     }
     pub trait Update {
         type T;
-        fn update(self, x: Self::T);
+        fn update(
+            self,
+            x: Self::T,
+        );
     }
     struct A(usize);
     impl<'a> Get for &'a mut A {
         type S = &'a mut usize;
-
         fn get(self) -> Self::S { &mut self.0 }
     }
     impl Update for &mut A {
         type T = A;
-
-        fn update(self, x: A) { *self = x }
+        fn update(
+            self,
+            x: A,
+        ) {
+            *self = x
+        }
     }
     let mut a = A(2);
     a.update(A(3));

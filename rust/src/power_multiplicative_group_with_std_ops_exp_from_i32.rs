@@ -1,5 +1,8 @@
 use std::ops::*;
-pub fn power<T, Z>(mut x: T, mut n: Z) -> T
+pub fn power<T, Z>(
+    mut x: T,
+    mut n: Z,
+) -> T
 where
     T: Clone + MulAssign + Div<Output = T> + From<i32>,
     Z: From<i32>

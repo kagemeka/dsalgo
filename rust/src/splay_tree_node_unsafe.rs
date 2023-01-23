@@ -5,26 +5,30 @@ pub struct Node<T> {
     size: usize,
     pub(crate) v: T,
 }
-use std::ptr::{eq, null_mut};
+use std::ptr::{
+    eq,
+    null_mut,
+};
 impl<T> Node<T> {
     pub fn new(v: T) -> Self { Self { e: [null_mut(); 3], size: 1, v } }
-
     pub(crate) fn size(root: *const Self) -> usize {
         unsafe { root.as_ref() }.map_or(0, |root| root.size)
     }
-
     fn update(&mut self) {
         self.size = 1;
         for i in 0..2 {
             self.size += Self::size(self.e[i]);
         }
     }
-
     fn state(&self) -> usize {
-        unsafe { self.e[2].as_ref() }
-            .map_or(2, |p| if eq(p.e[0], self) { 0 } else { 1 })
+        unsafe { self.e[2].as_ref() }.map_or(2, |p| {
+            if eq(p.e[0], self) {
+                0
+            } else {
+                1
+            }
+        })
     }
-
     fn rotate(&mut self) {
         let s = self.state();
         assert!(s < 2);
@@ -45,7 +49,6 @@ impl<T> Node<T> {
         p.update();
         self.update();
     }
-
     fn splay(&mut self) {
         loop {
             let s = self.state();
@@ -62,8 +65,10 @@ impl<T> Node<T> {
             self.rotate();
         }
     }
-
-    pub fn get(&mut self, mut i: usize) -> &mut Self {
+    pub fn get(
+        &mut self,
+        mut i: usize,
+    ) -> &mut Self {
         let mut node = self;
         loop {
             assert!(i < node.size);
@@ -79,8 +84,10 @@ impl<T> Node<T> {
             }
         }
     }
-
-    pub fn merge(l: *mut Self, r: *mut Self) -> *mut Self {
+    pub fn merge(
+        l: *mut Self,
+        r: *mut Self,
+    ) -> *mut Self {
         if r.is_null() {
             return l;
         }
@@ -92,8 +99,10 @@ impl<T> Node<T> {
         r.update();
         r
     }
-
-    pub fn split(root: *mut Self, i: usize) -> (*mut Self, *mut Self) {
+    pub fn split(
+        root: *mut Self,
+        i: usize,
+    ) -> (*mut Self, *mut Self) {
         let size = Self::size(root);
         assert!(i <= size);
         if i == size {
@@ -108,13 +117,18 @@ impl<T> Node<T> {
         root.update();
         (l, root)
     }
-
-    pub fn insert(root: *mut Self, i: usize, node: *mut Self) -> *mut Self {
+    pub fn insert(
+        root: *mut Self,
+        i: usize,
+        node: *mut Self,
+    ) -> *mut Self {
         let (l, r) = Self::split(root, i);
         Self::merge(Self::merge(l, node), r)
     }
-
-    pub fn pop(&mut self, i: usize) -> (&mut Self, *mut Self) {
+    pub fn pop(
+        &mut self,
+        i: usize,
+    ) -> (&mut Self, *mut Self) {
         let root = self.get(i);
         let l = root.e[0];
         let r = root.e[1];
@@ -129,8 +143,10 @@ impl<T> Node<T> {
         root.update();
         (root, Self::merge(l, r))
     }
-
-    pub fn binary_search<F>(f: F, mut root: *mut Self) -> usize
+    pub fn binary_search<F>(
+        f: F,
+        mut root: *mut Self,
+    ) -> usize
     where
         F: Fn(&T) -> bool,
     {

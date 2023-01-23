@@ -1,5 +1,8 @@
 use crate::tree_bfs_abstract::tree_bfs;
-pub fn tree_depths(tree_edges: &[(usize, usize)], root: usize) -> Vec<usize> {
+pub fn tree_depths(
+    tree_edges: &[(usize, usize)],
+    root: usize,
+) -> Vec<usize> {
     tree_bfs::<usize, _>(
         tree_edges,
         root,

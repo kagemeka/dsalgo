@@ -1,5 +1,6 @@
 pub fn dijkstra<const INF: i64>(
-    g: &[Vec<(usize, i64)>], src: usize,
+    g: &[Vec<(usize, i64)>],
+    src: usize,
 ) -> Vec<i64> {
     use std::cmp::Reverse;
     let n = g.len();

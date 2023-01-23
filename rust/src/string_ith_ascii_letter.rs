@@ -1,5 +1,10 @@
 // split by not char, but ascii chunks
-pub fn get(s: &str, i: usize) -> u8 { s.as_bytes()[i] }
+pub fn get(
+    s: &str,
+    i: usize,
+) -> u8 {
+    s.as_bytes()[i]
+}
 #[cfg(test)]
 mod tests {
     use super::*;

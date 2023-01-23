@@ -21,8 +21,11 @@ where
             inv_fact: inverse_factorial_table::<T>(size),
         }
     }
-
-    pub fn calc(&self, n: usize, k: usize) -> T {
+    pub fn calc(
+        &self,
+        n: usize,
+        k: usize,
+    ) -> T {
         if k > n {
             return 0.into();
         }
@@ -30,8 +33,11 @@ where
             * self.inv_fact[n - k].clone()
             * self.inv_fact[k].clone()
     }
-
-    pub fn inv(&self, n: usize, k: usize) -> T {
+    pub fn inv(
+        &self,
+        n: usize,
+        k: usize,
+    ) -> T {
         assert!(k <= n); // (n, k) := 0 if k > n, so the inverse is undefined.
         self.inv_fact[n].clone()
             * self.fact[k].clone()

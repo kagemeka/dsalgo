@@ -24,10 +24,13 @@ mod tests {
             ("abcdabd", vec![0, 0, 0, 0, 1, 2, 0]),
             ("abacababc", vec![0, 0, 1, 0, 1, 2, 3, 2, 0]),
             ("abacababa", vec![0, 0, 1, 0, 1, 2, 3, 2, 3]),
-            ("participate in parachute", vec![
-                0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 1, 2, 3, 0, 0, 0,
-                0, 0, 0,
-            ]),
+            (
+                "participate in parachute",
+                vec![
+                    0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 1, 2, 3, 0, 0,
+                    0, 0, 0, 0,
+                ],
+            ),
         ];
         for (s, ans) in cases {
             assert_eq!(longest_border(s.as_bytes()), ans);

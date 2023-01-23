@@ -18,17 +18,20 @@ mod tests {
     fn test() {
         let gpf = greatest_prime_factor(100);
         assert_eq!(gpf[51], Some(17));
-        assert_eq!(gpf.into_iter().take(10).collect::<Vec<_>>(), vec![
-            None,
-            None,
-            Some(2),
-            Some(3),
-            Some(2),
-            Some(5),
-            Some(3),
-            Some(7),
-            Some(2),
-            Some(3),
-        ],);
+        assert_eq!(
+            gpf.into_iter().take(10).collect::<Vec<_>>(),
+            vec![
+                None,
+                None,
+                Some(2),
+                Some(3),
+                Some(2),
+                Some(5),
+                Some(3),
+                Some(7),
+                Some(2),
+                Some(3),
+            ],
+        );
     }
 }

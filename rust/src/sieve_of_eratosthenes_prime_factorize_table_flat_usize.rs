@@ -20,27 +20,30 @@ mod tests {
     #[test]
     fn test() {
         let a = prime_factorize(20);
-        assert_eq!(a, vec![
-            vec![],
-            vec![],
-            vec![2,],
-            vec![3,],
-            vec![2, 2,],
-            vec![5,],
-            vec![2, 3,],
-            vec![7,],
-            vec![2, 2, 2,],
-            vec![3, 3,],
-            vec![2, 5,],
-            vec![11,],
-            vec![2, 2, 3,],
-            vec![13,],
-            vec![2, 7,],
-            vec![3, 5,],
-            vec![2, 2, 2, 2,],
-            vec![17,],
-            vec![2, 3, 3,],
-            vec![19,],
-        ]);
+        assert_eq!(
+            a,
+            vec![
+                vec![],
+                vec![],
+                vec![2,],
+                vec![3,],
+                vec![2, 2,],
+                vec![5,],
+                vec![2, 3,],
+                vec![7,],
+                vec![2, 2, 2,],
+                vec![3, 3,],
+                vec![2, 5,],
+                vec![11,],
+                vec![2, 2, 3,],
+                vec![13,],
+                vec![2, 7,],
+                vec![3, 5,],
+                vec![2, 2, 2, 2,],
+                vec![17,],
+                vec![2, 3, 3,],
+                vec![19,],
+            ]
+        );
     }
 }

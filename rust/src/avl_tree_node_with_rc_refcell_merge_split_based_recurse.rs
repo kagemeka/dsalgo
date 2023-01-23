@@ -1,4 +1,7 @@
-use std::{cell::RefCell, rc::Rc};
+use std::{
+    cell::RefCell,
+    rc::Rc,
+};
 pub type Cell<T> = Rc<RefCell<Node<T>>>;
 #[derive(Debug)]
 pub struct Node<T> {
@@ -18,15 +21,20 @@ impl<T> Node<T> {
             value,
         }))
     }
-
     pub(crate) fn height(node: Option<&Cell<T>>) -> usize {
-        if let Some(node) = node { node.borrow().height } else { 0 }
+        if let Some(node) = node {
+            node.borrow().height
+        } else {
+            0
+        }
     }
-
     pub(crate) fn size(node: Option<&Cell<T>>) -> usize {
-        if let Some(node) = node { node.borrow().size } else { 0 }
+        if let Some(node) = node {
+            node.borrow().size
+        } else {
+            0
+        }
     }
-
     pub(crate) fn balance(node: Option<&Cell<T>>) -> isize {
         if let Some(node) = node {
             Self::height(node.borrow().right.as_ref()) as isize
@@ -35,7 +43,6 @@ impl<T> Node<T> {
             0
         }
     }
-
     pub(crate) fn update(&mut self) {
         let hl = Self::height(self.left.as_ref());
         let hr = Self::height(self.right.as_ref());
@@ -44,7 +51,6 @@ impl<T> Node<T> {
         let sr = Self::size(self.right.as_ref());
         self.size = sl + sr + 1;
     }
-
     pub(crate) fn rotate_left(root: Cell<T>) -> Cell<T> {
         let new_root = root.borrow_mut().right.take().unwrap();
         root.borrow_mut().right = new_root.borrow_mut().left.take();
@@ -53,7 +59,6 @@ impl<T> Node<T> {
         new_root.borrow_mut().update();
         new_root
     }
-
     pub(crate) fn rotate_right(root: Cell<T>) -> Cell<T> {
         let new_root = root.borrow_mut().left.take().unwrap();
         root.borrow_mut().left = new_root.borrow_mut().right.take();
@@ -62,7 +67,6 @@ impl<T> Node<T> {
         new_root.borrow_mut().update();
         new_root
     }
-
     pub(crate) fn rebalance(root: Cell<T>) -> Cell<T> {
         root.borrow_mut().update();
         let b = Self::balance(Some(&root));
@@ -85,7 +89,6 @@ impl<T> Node<T> {
         }
         root
     }
-
     pub(crate) fn pop_last(root: Cell<T>) -> (Cell<T>, Option<Cell<T>>) {
         if root.borrow().right.is_none() {
             let new_root = root.borrow_mut().left.take();
@@ -96,9 +99,9 @@ impl<T> Node<T> {
         root.borrow_mut().right = new_right;
         (last_node, Some(Self::rebalance(root)))
     }
-
     pub fn merge(
-        left: Option<Cell<T>>, right: Option<Cell<T>>,
+        left: Option<Cell<T>>,
+        right: Option<Cell<T>>,
     ) -> Option<Cell<T>> {
         if left.is_none() {
             return right;
@@ -108,9 +111,9 @@ impl<T> Node<T> {
         root.borrow_mut().right = right;
         Some(Self::rebalance(root))
     }
-
     pub fn split(
-        root: Option<Cell<T>>, i: usize,
+        root: Option<Cell<T>>,
+        i: usize,
     ) -> (Option<Cell<T>>, Option<Cell<T>>) {
         assert!(i <= Self::size(root.as_ref()));
         if root.is_none() {
@@ -132,27 +135,33 @@ impl<T> Node<T> {
             (Some(Self::rebalance(root)), right)
         }
     }
-
     pub fn insert(
-        root: Option<Cell<T>>, i: usize, node: Option<Cell<T>>,
+        root: Option<Cell<T>>,
+        i: usize,
+        node: Option<Cell<T>>,
     ) -> Option<Cell<T>> {
         let (left, right) = Self::split(root, i);
         Self::merge(Self::merge(left, node), right)
     }
-
     pub fn remove_range(
-        root: Option<Cell<T>>, l: usize, r: usize,
+        root: Option<Cell<T>>,
+        l: usize,
+        r: usize,
     ) -> Option<Cell<T>> {
         let (left, right) = Self::split(root, l);
         let (_, right) = Self::split(right, r - l);
         Self::merge(left, right)
     }
-
-    pub fn remove(root: Option<Cell<T>>, i: usize) -> Option<Cell<T>> {
+    pub fn remove(
+        root: Option<Cell<T>>,
+        i: usize,
+    ) -> Option<Cell<T>> {
         Self::remove_range(root, i, i + 1)
     }
-
-    pub fn kth_node(root: Cell<T>, k: usize) -> (Cell<T>, Cell<T>) {
+    pub fn kth_node(
+        root: Cell<T>,
+        k: usize,
+    ) -> (Cell<T>, Cell<T>) {
         assert!(k < root.borrow().size);
         let lsize = Self::size(root.borrow().left.as_ref());
         let ret: Cell<T>;
@@ -173,8 +182,10 @@ impl<T> Node<T> {
         }
         (ret, Self::rebalance(root))
     }
-
-    pub fn binary_search<F>(f: F, root: Option<&Cell<T>>) -> usize
+    pub fn binary_search<F>(
+        f: F,
+        root: Option<&Cell<T>>,
+    ) -> usize
     where
         F: Fn(&T) -> bool,
     {

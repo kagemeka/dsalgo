@@ -1,6 +1,9 @@
 use crate::extended_euclidean_gcd_i64_recurse::extgcd;
 pub fn safe_crt(
-    mut m0: i64, mut r0: i64, mut m1: i64, mut r1: i64,
+    mut m0: i64,
+    mut r0: i64,
+    mut m1: i64,
+    mut r1: i64,
 ) -> Option<(i64, i64)> {
     use std::mem::swap;
     assert!(0 < m0 && 0 < m1);

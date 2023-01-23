@@ -1,5 +1,8 @@
 pub fn merge_sort<T: Ord + Clone>(mut a: Vec<T>) -> Vec<T> {
-    fn merge<T: Ord + Clone>(a: &mut [T], m: usize) {
+    fn merge<T: Ord + Clone>(
+        a: &mut [T],
+        m: usize,
+    ) {
         let n = a.len();
         if n <= m || a[m - 1] <= a[m] {
             return;
@@ -38,9 +41,10 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        let cases = vec![(vec![8, 5, 9, 2, 6, 3, 7, 1, 10, 4], vec![
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-        ])];
+        let cases = vec![(
+            vec![8, 5, 9, 2, 6, 3, 7, 1, 10, 4],
+            vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        )];
         for (a, ans) in cases {
             assert_eq!(merge_sort(a), ans);
         }

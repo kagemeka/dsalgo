@@ -3,11 +3,14 @@ pub struct PascalRule<T> {
 }
 impl<T> PascalRule<T> {
     pub fn new() -> Self { Self { cache: std::collections::HashMap::new() } }
-
     /// interface is not u64 but u32
     /// to avoid key's overflow but memory overflow or infinite run time.
     /// memory overflow should not be handled here (low level API).
-    pub fn calc(&mut self, n: u32, k: u32) -> T
+    pub fn calc(
+        &mut self,
+        n: u32,
+        k: u32,
+    ) -> T
     where
         T: std::ops::Add<Output = T> + From<usize> + Copy,
     {

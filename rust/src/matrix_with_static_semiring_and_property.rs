@@ -1,9 +1,18 @@
-use std::{marker::PhantomData, ops::*};
+use std::{
+    marker::PhantomData,
+    ops::*,
+};
 pub trait Semiring {
     type T;
-    fn add(l: Self::T, r: Self::T) -> Self::T;
+    fn add(
+        l: Self::T,
+        r: Self::T,
+    ) -> Self::T;
     fn zero() -> Self::T;
-    fn mul(l: Self::T, r: Self::T) -> Self::T;
+    fn mul(
+        l: Self::T,
+        r: Self::T,
+    ) -> Self::T;
     fn one() -> Self::T;
 }
 use crate::static_matrix_property_trait::Shape;
@@ -26,11 +35,20 @@ where
 }
 impl<R: Semiring, P> Index<usize> for Matrix<R, P> {
     type Output = [R::T];
-
-    fn index(&self, i: usize) -> &Self::Output { &self.0[i] }
+    fn index(
+        &self,
+        i: usize,
+    ) -> &Self::Output {
+        &self.0[i]
+    }
 }
 impl<R: Semiring, P> IndexMut<usize> for Matrix<R, P> {
-    fn index_mut(&mut self, i: usize) -> &mut Self::Output { &mut self.0[i] }
+    fn index_mut(
+        &mut self,
+        i: usize,
+    ) -> &mut Self::Output {
+        &mut self.0[i]
+    }
 }
 impl<R: Semiring, P: Shape> From<Vec<Vec<R::T>>> for Matrix<R, P> {
     fn from(data: Vec<Vec<R::T>>) -> Self {
@@ -60,8 +78,10 @@ where
     R::T: AddAssign + Clone,
 {
     type Output = Self;
-
-    fn add(mut self, rhs: Self) -> Self::Output {
+    fn add(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         let (h, w) = P::shape();
         for i in 0..h {
             for j in 0..w {
@@ -77,7 +97,12 @@ where
     R: Clone,
     R::T: AddAssign + Clone,
 {
-    fn add_assign(&mut self, rhs: Self) { *self = self.clone() + rhs; }
+    fn add_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = self.clone() + rhs;
+    }
 }
 impl<R: Semiring, P> From<i32> for Matrix<R, P>
 where
@@ -102,8 +127,10 @@ where
     R::T: Mul<Output = R::T> + AddAssign + Clone,
 {
     type Output = Self;
-
-    fn mul(self, rhs: Self) -> Self::Output {
+    fn mul(
+        self,
+        rhs: Self,
+    ) -> Self::Output {
         let n = P::size();
         let mut a: Self = 0.into();
         for i in 0..n {
@@ -122,7 +149,12 @@ where
     R: Clone,
     R::T: Mul<Output = R::T> + AddAssign + Clone,
 {
-    fn mul_assign(&mut self, rhs: Self) { *self = self.clone() * rhs; }
+    fn mul_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = self.clone() * rhs;
+    }
 }
 #[cfg(test)]
 mod tests {
@@ -138,13 +170,19 @@ mod tests {
         struct R;
         impl Semiring for R {
             type T = i64;
-
-            fn add(l: Self::T, r: Self::T) -> Self::T { l + r }
-
-            fn mul(l: Self::T, r: Self::T) -> Self::T { l * r }
-
+            fn add(
+                l: Self::T,
+                r: Self::T,
+            ) -> Self::T {
+                l + r
+            }
+            fn mul(
+                l: Self::T,
+                r: Self::T,
+            ) -> Self::T {
+                l * r
+            }
             fn zero() -> Self::T { 0 }
-
             fn one() -> Self::T { 1 }
         }
         type Mat = Matrix<R, P>;

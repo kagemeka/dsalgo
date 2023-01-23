@@ -1,5 +1,6 @@
 pub fn desopo_pape<T>(
-    adj_list: &[Vec<(usize, T)>], src: usize,
+    adj_list: &[Vec<(usize, T)>],
+    src: usize,
 ) -> Vec<Option<T>>
 where
     T: Ord + std::ops::Add<Output = T> + Copy + Default,
@@ -32,11 +33,11 @@ where
                 State::Popped => {
                     q.push_back(v);
                     state[v] = State::OnStack
-                },
+                }
                 State::None => {
                     q.push_front(v);
                     state[v] = State::OnStack;
-                },
+                }
             }
         }
     }

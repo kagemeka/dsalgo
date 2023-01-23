@@ -1,4 +1,8 @@
-pub fn pow_semigroup_recurse<F, X>(f: F, x: X, exp: u64) -> X
+pub fn pow_semigroup_recurse<F, X>(
+    f: F,
+    x: X,
+    exp: u64,
+) -> X
 where
     F: Fn(X, X) -> X,
     X: Clone,

@@ -8,7 +8,6 @@ pub struct XorShift96 {
 }
 impl XorShift96 {
     pub fn new(seeds: [u32; 3]) -> Self { Self { seeds } }
-
     pub fn next(&mut self) -> u32 {
         self.seeds = xorshift96(self.seeds);
         self.seeds[2]

@@ -19,9 +19,7 @@ pub fn phi_table(size: usize) -> Vec<usize> {
     };
     u = zeta(u);
     d = zeta(d);
-    (0..size)
-        .map(|i| if i == 0 { 0 } else { i / d[i] * u[i] })
-        .collect()
+    (0..size).map(|i| if i == 0 { 0 } else { i / d[i] * u[i] }).collect()
 }
 #[cfg(test)]
 mod tests {

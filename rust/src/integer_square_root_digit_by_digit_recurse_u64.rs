@@ -4,7 +4,11 @@ pub fn isqrt(n: u64) -> u64 {
         return n;
     }
     let x = isqrt(n >> 2) << 1;
-    if (x + 1).pow(2) <= n { x + 1 } else { x }
+    if (x + 1).pow(2) <= n {
+        x + 1
+    } else {
+        x
+    }
 }
 #[cfg(test)]
 mod tests {

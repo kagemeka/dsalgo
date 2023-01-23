@@ -3,7 +3,10 @@ use crate::{
     read_weigted_edges::read_weighted_edges,
 };
 pub fn read_weigted_graph<T: std::str::FromStr + Clone>(
-    n: usize, m: usize, offset: usize, directed: bool,
+    n: usize,
+    m: usize,
+    offset: usize,
+    directed: bool,
 ) -> Vec<Vec<(usize, T)>> {
     graph_from_weigted_edges(n, &read_weighted_edges(m, offset), directed)
 }

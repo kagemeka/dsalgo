@@ -9,7 +9,10 @@ pub struct Node {
 impl Node {
     /// capacity: 1 <= value < 2^max_height
     /// 0 <= value < 2^max_height - 1 internally,
-    pub fn new(max_height: usize, value: usize) -> Option<Box<Self>> {
+    pub fn new(
+        max_height: usize,
+        value: usize,
+    ) -> Option<Box<Self>> {
         assert!(max_height > 0);
         assert!(1 <= value && value < 1 << max_height);
         Some(Box::new(Self {
@@ -20,28 +23,28 @@ impl Node {
             size: 1,
         }))
     }
-
-    fn with_pivot(pivot: usize, value: usize) -> Option<Box<Self>> {
-        Some(Box::new(Self {
-            pivot,
-            value,
-            left: None,
-            right: None,
-            size: 1,
-        }))
+    fn with_pivot(
+        pivot: usize,
+        value: usize,
+    ) -> Option<Box<Self>> {
+        Some(Box::new(Self { pivot, value, left: None, right: None, size: 1 }))
     }
-
     pub(crate) fn size(node: Option<&Box<Self>>) -> usize {
-        if let Some(node) = node { node.size } else { 0 }
+        if let Some(node) = node {
+            node.size
+        } else {
+            0
+        }
     }
-
     pub fn update(&mut self) {
         self.size = Self::size(self.left.as_ref())
             + Self::size(self.right.as_ref())
             + 1;
     }
-
-    pub fn insert(&mut self, mut v: usize) {
+    pub fn insert(
+        &mut self,
+        mut v: usize,
+    ) {
         use std::mem::swap;
         assert!(v != self.value);
         let p = self.pivot;
@@ -68,8 +71,10 @@ impl Node {
         }
         self.update();
     }
-
-    pub fn remove(mut root: Box<Self>, i: usize) -> Option<Box<Self>> {
+    pub fn remove(
+        mut root: Box<Self>,
+        i: usize,
+    ) -> Option<Box<Self>> {
         assert!(i < root.size);
         let lsize = Self::size(root.left.as_ref());
         if i < lsize {
@@ -91,8 +96,10 @@ impl Node {
         root.update();
         Some(root)
     }
-
-    pub fn kth_node(&self, k: usize) -> &Self {
+    pub fn kth_node(
+        &self,
+        k: usize,
+    ) -> &Self {
         assert!(k < self.size);
         let lsize = Self::size(self.left.as_ref());
         if k < lsize {
@@ -103,8 +110,10 @@ impl Node {
             self.right.as_ref().unwrap().kth_node(k - lsize - 1)
         }
     }
-
-    pub fn binary_search<F>(f: F, root: Option<&Box<Self>>) -> usize
+    pub fn binary_search<F>(
+        f: F,
+        root: Option<&Box<Self>>,
+    ) -> usize
     where
         F: Fn(usize) -> bool,
     {
@@ -119,10 +128,12 @@ impl Node {
             offset + Self::binary_search(f, root.right.as_ref())
         }
     }
-
     pub fn iter<'a>(&'a self) -> std::vec::IntoIter<&'a usize> {
         let mut inorder = vec![];
-        fn dfs<'b>(res: &mut Vec<&'b usize>, node: &'b Node) {
+        fn dfs<'b>(
+            res: &mut Vec<&'b usize>,
+            node: &'b Node,
+        ) {
             if let Some(left) = node.left.as_ref() {
                 dfs(res, left);
             }

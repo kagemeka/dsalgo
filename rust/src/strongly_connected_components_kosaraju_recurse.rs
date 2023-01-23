@@ -1,7 +1,9 @@
 use crate::strongly_connected_components_transpose::transpose;
 pub fn scc(g: &[Vec<usize>]) -> Vec<usize> {
     fn calc_topological_rev_ord(
-        g: &[Vec<usize>], state: &mut [usize], post_order: &mut Vec<usize>,
+        g: &[Vec<usize>],
+        state: &mut [usize],
+        post_order: &mut Vec<usize>,
         u: usize,
     ) {
         let n = g.len();
@@ -13,7 +15,12 @@ pub fn scc(g: &[Vec<usize>]) -> Vec<usize> {
         }
         post_order.push(u);
     }
-    fn labeling(g: &[Vec<usize>], labels: &mut [usize], l: usize, u: usize) {
+    fn labeling(
+        g: &[Vec<usize>],
+        labels: &mut [usize],
+        l: usize,
+        u: usize,
+    ) {
         labels[u] = l;
         for &v in g[u].iter() {
             if labels[v] == g.len() {

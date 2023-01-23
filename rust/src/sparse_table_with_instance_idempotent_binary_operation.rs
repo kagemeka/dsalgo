@@ -3,7 +3,10 @@ pub struct SparseTable<T, F> {
     f: F,
 }
 impl<T: Clone, F: Fn(T, T) -> T> SparseTable<T, F> {
-    pub fn new(f: F, a: &[T]) -> Self {
+    pub fn new(
+        f: F,
+        a: &[T],
+    ) -> Self {
         let n = a.len();
         assert!(n > 0);
         let h = n.next_power_of_two().trailing_zeros().max(1) as usize;
@@ -19,10 +22,12 @@ impl<T: Clone, F: Fn(T, T) -> T> SparseTable<T, F> {
         }
         Self { node, f }
     }
-
     pub fn size(&self) -> usize { self.node[0].len() }
-
-    pub fn get(&self, l: usize, r: usize) -> T {
+    pub fn get(
+        &self,
+        l: usize,
+        r: usize,
+    ) -> T {
         assert!(l < r && r <= self.size());
         if r - l == 1 {
             return self.node[0][l].clone();

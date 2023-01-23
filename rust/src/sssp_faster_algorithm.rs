@@ -1,11 +1,15 @@
 use crate::{
-    graph::edge::{To, Weight},
+    graph::edge::{
+        To,
+        Weight,
+    },
     negative_cycle::NegativeCycleError,
 };
 /// BFS based bellman ford
 /// O(VE) but usually faster than bellman ford.
 pub fn spfa<E>(
-    sparse_graph: &[Vec<E>], src: usize,
+    sparse_graph: &[Vec<E>],
+    src: usize,
 ) -> Result<Vec<Option<i64>>, NegativeCycleError>
 where
     E: To<V = usize> + Weight<i64>,

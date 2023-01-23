@@ -1,6 +1,6 @@
 pub fn sa_is(mut a: Vec<usize>) -> Vec<usize> {
     fn preprocess(
-        a: &[usize],
+        a: &[usize]
     ) -> (Vec<bool>, Vec<bool>, Vec<usize>, Vec<usize>, Vec<usize>) {
         let n = a.len();
         let m = a.iter().max().unwrap() + 1;
@@ -31,7 +31,10 @@ pub fn sa_is(mut a: Vec<usize>) -> Vec<usize> {
         (is_s, is_lms, lms, arg_l, arg_r)
     }
     fn induced_sort(
-        a: &[usize], is_s: &[bool], lms: &[usize], arg_l: &[usize],
+        a: &[usize],
+        is_s: &[bool],
+        lms: &[usize],
+        arg_l: &[usize],
         arg_r: &[usize],
     ) -> Vec<usize> {
         let n = a.len();
@@ -66,8 +69,12 @@ pub fn sa_is(mut a: Vec<usize>) -> Vec<usize> {
         sa
     }
     fn compute_lms_rank(
-        a: &[usize], is_s: &[bool], is_lms: &[bool], lms: &[usize],
-        arg_l: &[usize], arg_r: &[usize],
+        a: &[usize],
+        is_s: &[bool],
+        is_lms: &[bool],
+        lms: &[usize],
+        arg_l: &[usize],
+        arg_r: &[usize],
     ) -> Vec<usize> {
         let n = a.len();
         let l = lms.len();
@@ -132,12 +139,14 @@ mod tests {
     #[test]
     fn suffix_array() {
         let cases = vec![
-            (vec![1, 1, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 2, 2, 0, 0], vec![
-                15, 14, 10, 6, 2, 11, 7, 3, 1, 0, 13, 12, 9, 5, 8, 4,
-            ]),
-            (vec![1, 0, 3, 3, 0, 3, 3, 0, 2, 2, 0], vec![
-                10, 7, 4, 1, 0, 9, 8, 6, 3, 5, 2,
-            ]),
+            (
+                vec![1, 1, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 2, 2, 0, 0],
+                vec![15, 14, 10, 6, 2, 11, 7, 3, 1, 0, 13, 12, 9, 5, 8, 4],
+            ),
+            (
+                vec![1, 0, 3, 3, 0, 3, 3, 0, 2, 2, 0],
+                vec![10, 7, 4, 1, 0, 9, 8, 6, 3, 5, 2],
+            ),
         ];
         for (s, ans) in cases {
             assert_eq!(sa_is(s), ans);

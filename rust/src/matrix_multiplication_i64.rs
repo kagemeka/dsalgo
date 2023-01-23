@@ -1,4 +1,7 @@
-pub fn mul(a: &[Vec<i64>], b: &[Vec<i64>]) -> Vec<Vec<i64>> {
+pub fn mul(
+    a: &[Vec<i64>],
+    b: &[Vec<i64>],
+) -> Vec<Vec<i64>> {
     let h = a.len();
     let n = a[0].len();
     assert_eq!(b.len(), n);

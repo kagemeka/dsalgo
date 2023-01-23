@@ -1,7 +1,10 @@
 use crate::extended_euclidean_modular_gcd_inverse_usize_with_extgcd::*;
 /// avoid overflows unless lcm(m0, m1) overflows.
 pub fn safe_crt(
-    mut m0: usize, mut r0: usize, mut m1: usize, mut r1: usize,
+    mut m0: usize,
+    mut r0: usize,
+    mut m1: usize,
+    mut r1: usize,
 ) -> Option<(usize, usize)> {
     use std::mem::swap;
     assert!(0 < m0 && 0 < m1);

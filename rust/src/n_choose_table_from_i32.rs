@@ -1,7 +1,10 @@
 use std::ops::*;
 
 use crate::inverse_factorial_table_from_i32::inverse_factorial;
-pub fn n_choose<T>(n: usize, size: usize) -> Vec<T>
+pub fn n_choose<T>(
+    n: usize,
+    size: usize,
+) -> Vec<T>
 where
     T: Mul<Output = T> + Div<Output = T> + From<i32> + Clone,
 {
@@ -30,10 +33,13 @@ mod tests {
             .into_iter()
             .map(|x| x.0)
             .collect::<Vec<i64>>();
-        assert_eq!(res, [
-            1, 1000000000, 28, 999999923, 210, 999999545, 924, 999998291, 3003,
-            999995002, 8008, 999987631, 18564, 999972875, 38760, 999945743,
-            74613, 999899060, 134596, 999822907
-        ]);
+        assert_eq!(
+            res,
+            [
+                1, 1000000000, 28, 999999923, 210, 999999545, 924, 999998291,
+                3003, 999995002, 8008, 999987631, 18564, 999972875, 38760,
+                999945743, 74613, 999899060, 134596, 999822907
+            ]
+        );
     }
 }

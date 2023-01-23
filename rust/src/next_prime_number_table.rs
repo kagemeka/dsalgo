@@ -19,9 +19,12 @@ mod tests {
     #[test]
     fn test() {
         let next_prime = next_prime_table(20);
-        assert_eq!(next_prime, vec![
-            2, 2, 2, 3, 5, 5, 7, 7, 11, 11, 11, 11, 13, 13, 17, 17, 17, 17, 19,
-            19,
-        ],)
+        assert_eq!(
+            next_prime,
+            vec![
+                2, 2, 2, 3, 5, 5, 7, 7, 11, 11, 11, 11, 13, 13, 17, 17, 17, 17,
+                19, 19,
+            ],
+        )
     }
 }

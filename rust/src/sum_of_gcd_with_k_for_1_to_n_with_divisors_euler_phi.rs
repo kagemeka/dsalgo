@@ -3,7 +3,10 @@ use crate::{
     find_divisors_trial_division_u64::find_divisors,
 };
 /// sum(gcd(i, k)) for i = 1..=n
-pub fn sum_of_gcd(n: u64, k: u64) -> u64 {
+pub fn sum_of_gcd(
+    n: u64,
+    k: u64,
+) -> u64 {
     let mut s = 0;
     for d in find_divisors(k).into_iter() {
         s += n / d * phi(d);

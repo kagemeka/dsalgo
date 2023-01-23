@@ -4,7 +4,11 @@ pub struct PrefixSum {
     start: usize,
 }
 impl PrefixSum {
-    pub fn new(f: &[usize], src: usize, a: &[usize]) -> Self {
+    pub fn new(
+        f: &[usize],
+        src: usize,
+        a: &[usize],
+    ) -> Self {
         let (nodes, start) = functional_graph_prop(f, src);
         let mut s: Vec<_> = nodes.into_iter().map(|i| a[i].clone()).collect();
         for i in 1..s.len() {
@@ -15,9 +19,11 @@ impl PrefixSum {
         }
         Self { s, start }
     }
-
     /// 0-indexed
-    pub fn calc(&self, mut k: usize) -> usize {
+    pub fn calc(
+        &self,
+        mut k: usize,
+    ) -> usize {
         let j = self.start;
         let s = &self.s;
         if k < j {

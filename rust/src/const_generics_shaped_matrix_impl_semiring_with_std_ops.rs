@@ -6,8 +6,10 @@ where
     T: Clone + AddAssign,
 {
     type Output = Self;
-
-    fn add(mut self, rhs: Self) -> Self::Output {
+    fn add(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         for i in 0..H {
             for j in 0..W {
                 self[i][j] += rhs[i][j].clone();
@@ -20,7 +22,12 @@ impl<T, const H: usize, const W: usize> AddAssign for Matrix<T, H, W>
 where
     T: Clone + AddAssign,
 {
-    fn add_assign(&mut self, rhs: Self) { *self = self.clone() + rhs; }
+    fn add_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = self.clone() + rhs;
+    }
 }
 impl<T, const H: usize, const K: usize, const W: usize> Mul<Matrix<T, K, W>>
     for Matrix<T, H, K>
@@ -28,8 +35,10 @@ where
     T: Copy + AddAssign + From<i32> + Mul<Output = T>,
 {
     type Output = Matrix<T, H, W>;
-
-    fn mul(self, rhs: Matrix<T, K, W>) -> Self::Output {
+    fn mul(
+        self,
+        rhs: Matrix<T, K, W>,
+    ) -> Self::Output {
         let mut a = Matrix::<T, H, W>::new(0.into());
         for i in 0..H {
             for k in 0..K {
@@ -45,7 +54,12 @@ impl<T, const N: usize> MulAssign for Matrix<T, N, N>
 where
     T: Copy + AddAssign + From<i32> + Mul<Output = T>,
 {
-    fn mul_assign(&mut self, rhs: Matrix<T, N, N>) { *self = *self * rhs; }
+    fn mul_assign(
+        &mut self,
+        rhs: Matrix<T, N, N>,
+    ) {
+        *self = *self * rhs;
+    }
 }
 impl<T, const N: usize> From<i32> for Matrix<T, N, N>
 where

@@ -2,7 +2,8 @@ use std::ops::*;
 
 use crate::sieve_of_eratosthenes_enumerate_primes_usize::enumerate_primes;
 pub fn fast_mobius_multiples<T: Clone, F: Fn(T, T) -> T>(
-    op: F, mut f: Vec<T>,
+    op: F,
+    mut f: Vec<T>,
 ) -> Vec<T> {
     let n = f.len();
     for p in enumerate_primes(n) {

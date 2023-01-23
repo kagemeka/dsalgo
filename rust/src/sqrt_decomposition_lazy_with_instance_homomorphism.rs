@@ -2,11 +2,23 @@ use crate::integer_square_root_with_binary_search_usize::isqrt;
 pub trait Ops {
     type S;
     type F;
-    fn op(&self, a: Self::S, b: Self::S) -> Self::S;
+    fn op(
+        &self,
+        a: Self::S,
+        b: Self::S,
+    ) -> Self::S;
     fn e(&self) -> Self::S;
-    fn compose(&self, f: Self::F, g: Self::F) -> Self::F;
+    fn compose(
+        &self,
+        f: Self::F,
+        g: Self::F,
+    ) -> Self::F;
     fn id(&self) -> Self::F;
-    fn map(&self, f: Self::F, x: Self::S) -> Self::S;
+    fn map(
+        &self,
+        f: Self::F,
+        x: Self::S,
+    ) -> Self::S;
 }
 pub struct LazySqrtDecomposition<O: Ops> {
     ops: O,
@@ -20,21 +32,24 @@ where
     O::F: Clone + PartialEq,
 {
     pub fn size(&self) -> usize { self.data.len() }
-
     pub fn interval(&self) -> usize {
         let n = self.buckets.len();
         (self.size() + n - 1) / n
     }
-
-    pub fn new(ops: O, size: usize) -> Self {
+    pub fn new(
+        ops: O,
+        size: usize,
+    ) -> Self {
         let data = vec![ops.e(); size];
         let m = isqrt(size);
         let buckets = vec![ops.e(); (size + m - 1) / m];
         let lazy = vec![ops.id(); (size + m - 1) / m];
         Self { ops, data, buckets, lazy }
     }
-
-    fn merge(&mut self, j: usize) {
+    fn merge(
+        &mut self,
+        j: usize,
+    ) {
         let m = self.interval();
         let n = self.size();
         self.buckets[j] = self.data[j * m..n.min((j + 1) * m)]
@@ -42,8 +57,10 @@ where
             .cloned()
             .fold(self.ops.e(), |x, y| self.ops.op(x, y))
     }
-
-    fn propagate(&mut self, j: usize) {
+    fn propagate(
+        &mut self,
+        j: usize,
+    ) {
         let m = self.interval();
         let n = self.size();
         let f = self.lazy[j].clone();
@@ -55,8 +72,11 @@ where
         }
         self.lazy[j] = self.ops.id();
     }
-
-    fn pull_range(&mut self, l: usize, r: usize) {
+    fn pull_range(
+        &mut self,
+        l: usize,
+        r: usize,
+    ) {
         let m = self.interval();
         if l % m != 0 {
             self.propagate(l / m);
@@ -65,8 +85,11 @@ where
             self.propagate((r - 1) / m);
         }
     }
-
-    fn merge_range(&mut self, l: usize, r: usize) {
+    fn merge_range(
+        &mut self,
+        l: usize,
+        r: usize,
+    ) {
         let m = self.interval();
         if l % m != 0 {
             self.merge(l / m);
@@ -75,20 +98,28 @@ where
             self.merge((r - 1) / m);
         }
     }
-
-    pub fn get(&mut self, i: usize) -> &O::S {
+    pub fn get(
+        &mut self,
+        i: usize,
+    ) -> &O::S {
         self.propagate(i / self.interval());
         &self.data[i]
     }
-
-    pub fn set(&mut self, i: usize, x: O::S) {
+    pub fn set(
+        &mut self,
+        i: usize,
+        x: O::S,
+    ) {
         let j = i / self.interval();
         self.propagate(j);
         self.data[i] = x;
         self.merge(j);
     }
-
-    pub fn fold(&mut self, l: usize, r: usize) -> O::S {
+    pub fn fold(
+        &mut self,
+        l: usize,
+        r: usize,
+    ) -> O::S {
         assert!(l <= r && r <= self.size());
         let m = self.interval();
         let mut v = self.ops.e();
@@ -112,8 +143,12 @@ where
         }
         v
     }
-
-    pub fn apply(&mut self, l: usize, r: usize, f: O::F) {
+    pub fn apply(
+        &mut self,
+        l: usize,
+        r: usize,
+        f: O::F,
+    ) {
         assert!(l <= r && r <= self.size());
         let m = self.interval();
         self.pull_range(l, r);
@@ -129,9 +164,8 @@ where
         for v in self.data[l..lj * m].iter_mut() {
             *v = self.ops.map(f.clone(), v.clone());
         }
-        for (v, g) in self.buckets[lj..rj]
-            .iter_mut()
-            .zip(self.lazy[lj..rj].iter_mut())
+        for (v, g) in
+            self.buckets[lj..rj].iter_mut().zip(self.lazy[lj..rj].iter_mut())
         {
             *v = self.ops.map(f.clone(), v.clone());
             *g = self.ops.compose(f.clone(), g.clone());
@@ -141,8 +175,11 @@ where
         }
         self.merge_range(l, r);
     }
-
-    pub fn max_right<F>(&mut self, is_ok: F, l: usize) -> usize
+    pub fn max_right<F>(
+        &mut self,
+        is_ok: F,
+        l: usize,
+    ) -> usize
     where
         F: Fn(&O::S) -> bool,
     {
@@ -182,8 +219,11 @@ where
         }
         i
     }
-
-    pub fn min_left<F>(&mut self, is_ok: F, r: usize) -> usize
+    pub fn min_left<F>(
+        &mut self,
+        is_ok: F,
+        r: usize,
+    ) -> usize
     where
         F: Fn(&O::S) -> bool,
     {
@@ -247,18 +287,27 @@ mod tests {
         impl Ops for Lz {
             type F = i64;
             type S = (i64, usize);
-
-            fn op(&self, a: Self::S, b: Self::S) -> Self::S {
+            fn op(
+                &self,
+                a: Self::S,
+                b: Self::S,
+            ) -> Self::S {
                 (a.0 + b.0, a.1 + b.1)
             }
-
             fn e(&self) -> Self::S { (0, 0) }
-
-            fn compose(&self, f: Self::F, g: Self::F) -> Self::F { f + g }
-
+            fn compose(
+                &self,
+                f: Self::F,
+                g: Self::F,
+            ) -> Self::F {
+                f + g
+            }
             fn id(&self) -> Self::F { 0 }
-
-            fn map(&self, f: Self::F, x: Self::S) -> Self::S {
+            fn map(
+                &self,
+                f: Self::F,
+                x: Self::S,
+            ) -> Self::S {
                 (x.0 + x.1 as i64 * f, x.1)
             }
         }

@@ -9,11 +9,9 @@ impl<T: Ord + Clone + std::hash::Hash> MedianQueue<T> {
     pub fn new() -> Self {
         Self { lo: LazyBinaryHeap::new(), hi: LazyBinaryHeap::new() }
     }
-
     fn balance(&self) -> isize {
         self.lo.size() as isize - self.hi.size() as isize
     }
-
     fn rebalance(&mut self) {
         let b = self.balance();
         if b == 2 {
@@ -26,14 +24,17 @@ impl<T: Ord + Clone + std::hash::Hash> MedianQueue<T> {
             self.lo.insert(x.0);
         }
     }
-
     pub fn size(&self) -> usize { self.lo.size() + self.hi.size() }
-
-    pub fn count(&self, x: &T) -> usize {
+    pub fn count(
+        &self,
+        x: &T,
+    ) -> usize {
         self.lo.count(x) as usize + self.hi.count(&Reverse(x.clone())) as usize
     }
-
-    pub fn insert(&mut self, x: T) {
+    pub fn insert(
+        &mut self,
+        x: T,
+    ) {
         if self.balance() == 1 {
             self.lo.insert(x);
         } else {
@@ -41,9 +42,7 @@ impl<T: Ord + Clone + std::hash::Hash> MedianQueue<T> {
         }
         self.rebalance();
     }
-
     pub fn low(&mut self) -> Option<&T> { self.lo.peek() }
-
     pub fn high(&mut self) -> Option<&T> {
         if self.balance() == 1 {
             self.low()
@@ -55,8 +54,10 @@ impl<T: Ord + Clone + std::hash::Hash> MedianQueue<T> {
             }
         }
     }
-
-    pub fn remove(&mut self, x: &T) {
+    pub fn remove(
+        &mut self,
+        x: &T,
+    ) {
         assert!(self.count(x) > 0);
         if self.lo.count(x) > 0 {
             self.lo.remove(x.clone());

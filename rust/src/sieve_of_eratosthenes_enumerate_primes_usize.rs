@@ -18,7 +18,8 @@ pub fn enumerate_primes(less_than: usize) -> Vec<usize> {
 }
 #[test]
 fn test() {
-    assert_eq!(enumerate_primes(50), vec![
-        2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47
-    ],)
+    assert_eq!(
+        enumerate_primes(50),
+        vec![2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47],
+    )
 }

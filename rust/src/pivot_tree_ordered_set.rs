@@ -5,24 +5,35 @@ pub struct PivotSet {
 }
 impl PivotSet {
     pub fn new(max_height: usize) -> Self { Self { root: None, max_height } }
-
     pub fn size(&self) -> usize { Node::size(self.root.as_ref()) }
-
-    pub fn lower_bound(&self, x: usize) -> usize {
+    pub fn lower_bound(
+        &self,
+        x: usize,
+    ) -> usize {
         Node::binary_search(|v| v >= x + 1, self.root.as_ref())
     }
-
-    pub fn upper_bound(&self, x: usize) -> usize {
+    pub fn upper_bound(
+        &self,
+        x: usize,
+    ) -> usize {
         Node::binary_search(|v| v > x + 1, self.root.as_ref())
     }
-
-    pub fn count(&self, x: usize) -> usize {
+    pub fn count(
+        &self,
+        x: usize,
+    ) -> usize {
         self.upper_bound(x) - self.lower_bound(x)
     }
-
-    pub fn contains(&self, x: usize) -> bool { self.count(x) > 0 }
-
-    pub fn insert(&mut self, mut x: usize) {
+    pub fn contains(
+        &self,
+        x: usize,
+    ) -> bool {
+        self.count(x) > 0
+    }
+    pub fn insert(
+        &mut self,
+        mut x: usize,
+    ) {
         assert!(x < (1 << self.max_height) - 1);
         if self.contains(x) {
             return;
@@ -34,20 +45,23 @@ impl PivotSet {
             self.root = Node::new(self.max_height, x);
         }
     }
-
-    pub fn remove(&mut self, x: usize) {
+    pub fn remove(
+        &mut self,
+        x: usize,
+    ) {
         if !self.contains(x) {
             return;
         }
         let i = self.lower_bound(x);
         self.root = Node::remove(self.root.take().unwrap(), i);
     }
-
     pub fn iter<'a>(&'a self) -> std::vec::IntoIter<&'a usize> {
         self.root.as_ref().unwrap().iter()
     }
-
-    pub fn get(&self, i: usize) -> usize {
+    pub fn get(
+        &self,
+        i: usize,
+    ) -> usize {
         self.root.as_ref().unwrap().kth_node(i).value - 1
     }
 }
@@ -79,18 +93,21 @@ mod tests {
         let cases = vec![
             (5, vec![((2, 2), 5), ((1, 3), 0), ((2, 2), 3)]),
             (5, vec![((1, 2), 0), ((1, 4), 0), ((2, 3), 2)]),
-            (100, vec![
-                ((1, 31), 0),
-                ((2, 41), 69),
-                ((1, 59), 0),
-                ((2, 26), 31),
-                ((1, 53), 0),
-                ((2, 58), 6),
-                ((1, 97), 0),
-                ((2, 93), 38),
-                ((1, 23), 0),
-                ((2, 84), 38),
-            ]),
+            (
+                100,
+                vec![
+                    ((1, 31), 0),
+                    ((2, 41), 69),
+                    ((1, 59), 0),
+                    ((2, 26), 31),
+                    ((1, 53), 0),
+                    ((2, 58), 6),
+                    ((1, 97), 0),
+                    ((2, 93), 38),
+                    ((1, 23), 0),
+                    ((2, 84), 38),
+                ],
+            ),
         ];
         for (l, q) in cases {
             let mut s = PivotSet::new(30);

@@ -1,5 +1,8 @@
 /// parent of root := root
-pub fn tree_bfs_parent(g: &[Vec<usize>], root: usize) -> Vec<usize> {
+pub fn tree_bfs_parent(
+    g: &[Vec<usize>],
+    root: usize,
+) -> Vec<usize> {
     let n = g.len();
     let mut parent = vec![n; n];
     parent[root] = root;

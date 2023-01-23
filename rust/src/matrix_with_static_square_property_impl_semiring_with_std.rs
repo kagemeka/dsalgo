@@ -1,7 +1,8 @@
 use std::ops::*;
 
 use crate::{
-    matrix_with_static_property::Matrix, static_matrix_property_trait::Shape,
+    matrix_with_static_property::Matrix,
+    static_matrix_property_trait::Shape,
     static_square_matrix_property_trait::Size,
 };
 impl<T, P> Add for Matrix<T, P>
@@ -10,8 +11,10 @@ where
     T: AddAssign + Clone,
 {
     type Output = Self;
-
-    fn add(mut self, rhs: Self) -> Self::Output {
+    fn add(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         let (h, w) = P::shape();
         for i in 0..h {
             for j in 0..w {
@@ -26,7 +29,12 @@ where
     P: Shape + Clone,
     T: AddAssign + Clone,
 {
-    fn add_assign(&mut self, rhs: Self) { *self = self.clone() + rhs; }
+    fn add_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = self.clone() + rhs;
+    }
 }
 impl<T, P> From<i32> for Matrix<T, P>
 where
@@ -51,8 +59,10 @@ where
     T: Mul<Output = T> + AddAssign + Clone + From<i32>,
 {
     type Output = Self;
-
-    fn mul(self, rhs: Self) -> Self::Output {
+    fn mul(
+        self,
+        rhs: Self,
+    ) -> Self::Output {
         let n = P::size();
         let mut a: Self = 0.into();
         for i in 0..n {
@@ -70,7 +80,12 @@ where
     P: Size + Clone,
     T: Mul<Output = T> + AddAssign + Clone + From<i32>,
 {
-    fn mul_assign(&mut self, rhs: Self) { *self = self.clone() * rhs; }
+    fn mul_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = self.clone() * rhs;
+    }
 }
 #[cfg(test)]
 mod tests {

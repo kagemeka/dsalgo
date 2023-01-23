@@ -4,7 +4,8 @@ use crate::{
     tree_diameter_terminal_nodes::diameter_ends,
 };
 pub fn kth_nodes(
-    g: &[Vec<usize>], queries: &[(usize, usize)],
+    g: &[Vec<usize>],
+    queries: &[(usize, usize)],
 ) -> Vec<Option<usize>> {
     let (u, v) = diameter_ends(g);
     let res0 = level_ancestor(g, u, queries);

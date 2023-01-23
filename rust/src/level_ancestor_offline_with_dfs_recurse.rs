@@ -1,5 +1,7 @@
 pub fn level_ancestor(
-    g: &[Vec<usize>], root: usize, queries: &[(usize, usize)],
+    g: &[Vec<usize>],
+    root: usize,
+    queries: &[(usize, usize)],
 ) -> Vec<Option<usize>> {
     let n = g.len();
     let mut st = Vec::new();
@@ -9,8 +11,12 @@ pub fn level_ancestor(
         q[u].push((i, k));
     }
     fn dfs(
-        g: &[Vec<usize>], q: &[Vec<(usize, usize)>], res: &mut [Option<usize>],
-        st: &mut Vec<usize>, u: usize, p: usize,
+        g: &[Vec<usize>],
+        q: &[Vec<(usize, usize)>],
+        res: &mut [Option<usize>],
+        st: &mut Vec<usize>,
+        u: usize,
+        p: usize,
     ) {
         st.push(u);
         for &(i, k) in q[u].iter() {

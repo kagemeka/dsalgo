@@ -9,10 +9,13 @@ impl GetNodesInRectangle {
         nodes.sort();
         Self { nodes }
     }
-
     /// x0 <= x < x1, y0 <= y < y1
     pub fn enumerate_nodes(
-        &self, x0: i64, y0: i64, x1: i64, y1: i64,
+        &self,
+        x0: i64,
+        y0: i64,
+        x1: i64,
+        y1: i64,
     ) -> Vec<usize> {
         let i0 = lower_bound(&self.nodes, &(x0, y0, 0));
         let i1 = lower_bound(&self.nodes, &(x1 - 1, y1, 0));

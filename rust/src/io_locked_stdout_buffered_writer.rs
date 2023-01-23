@@ -1,5 +1,5 @@
-pub fn locked_stdout_buf_writer()
--> std::io::BufWriter<std::io::StdoutLock<'static>> {
+pub fn locked_stdout_buf_writer(
+) -> std::io::BufWriter<std::io::StdoutLock<'static>> {
     let stdout = Box::leak(Box::new(std::io::stdout()));
     std::io::BufWriter::new(stdout.lock())
 }

@@ -1,5 +1,8 @@
 #![allow(dead_code)]
-use std::{cell::RefCell, rc::Rc};
+use std::{
+    cell::RefCell,
+    rc::Rc,
+};
 #[derive(Debug)]
 pub(crate) struct Node<T, U> {
     pub(crate) edges: Vec<Rc<RefCell<Edge<U, T>>>>,
@@ -15,7 +18,10 @@ pub(crate) struct Edge<T, U> {
 }
 /// avoid cycle reference
 impl<T: std::fmt::Debug, U> std::fmt::Debug for Edge<T, U> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(
+        &self,
+        f: &mut std::fmt::Formatter<'_>,
+    ) -> std::fmt::Result {
         write!(f, "Edge {{ data: {:?} }}", self.data)
     }
 }
@@ -25,7 +31,6 @@ pub struct UndirectedGraph<T, U> {
 }
 impl<T, U> UndirectedGraph<T, U> {
     pub fn size(&self) -> usize { self.nodes.len() }
-
     pub fn new(size: usize) -> Self
     where
         T: Default,
@@ -36,15 +41,18 @@ impl<T, U> UndirectedGraph<T, U> {
                 .collect(),
         }
     }
-
     pub fn add_node(&mut self)
     where
         T: Default,
     {
         self.nodes.push(Rc::new(RefCell::new(Node::default())));
     }
-
-    pub fn add_edge(&mut self, lhs: usize, rhs: usize, data: U) {
+    pub fn add_edge(
+        &mut self,
+        lhs: usize,
+        rhs: usize,
+        data: U,
+    ) {
         assert!(lhs < self.size() && rhs < self.size());
         let edge = Rc::new(RefCell::new(Edge {
             lhs: self.nodes[lhs].clone(),

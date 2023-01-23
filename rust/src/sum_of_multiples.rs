@@ -1,4 +1,7 @@
-pub fn sum_of_multiples(limit: u64, n: u64) -> u64 {
+pub fn sum_of_multiples(
+    limit: u64,
+    n: u64,
+) -> u64 {
     let cnt = limit / n;
     (1 + cnt) * cnt / 2 * n
 }

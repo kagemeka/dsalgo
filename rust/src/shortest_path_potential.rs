@@ -1,6 +1,10 @@
 use crate::{
     adjacency_list_graph_old::AdjacencyList,
-    graph::edge::{From, To, Weight},
+    graph::edge::{
+        From,
+        To,
+        Weight,
+    },
     negative_cycle::NegativeCycleError,
     spfa::spfa,
 };
@@ -23,7 +27,8 @@ impl<T> ShortestPathPotentialEdge for T where
 /// before calling Dijkstra's algorithm multiple times
 /// on a graph which might be containing negative weighted edges.
 pub fn shortest_path_potential<E>(
-    v_size: usize, mut directed_edges: Vec<E>,
+    v_size: usize,
+    mut directed_edges: Vec<E>,
 ) -> Result<Vec<i64>, NegativeCycleError>
 where
     E: ShortestPathPotentialEdge,
@@ -34,7 +39,7 @@ where
         Ok(mut potential) => {
             potential.pop();
             Ok(potential.into_iter().map(|x| x.unwrap()).collect())
-        },
+        }
         Err(e) => Err(e),
     }
 }

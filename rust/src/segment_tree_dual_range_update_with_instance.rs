@@ -7,11 +7,17 @@ impl<T> Update<T> {
 }
 impl<T> Monoid for Update<T> {
     type T = Option<T>;
-
     fn e(&self) -> Self::T { None }
-
-    fn op(&self, l: Self::T, r: Self::T) -> Self::T {
-        if r.is_none() { l } else { r }
+    fn op(
+        &self,
+        l: Self::T,
+        r: Self::T,
+    ) -> Self::T {
+        if r.is_none() {
+            l
+        } else {
+            r
+        }
     }
 }
 #[cfg(test)]

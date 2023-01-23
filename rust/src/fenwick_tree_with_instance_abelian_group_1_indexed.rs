@@ -1,17 +1,27 @@
 use crate::fenwick_tree_with_instance_commutative_monoid_1_indexed::*;
 pub trait AbelianGroup: Monoid {
-    fn inv(&self, x: Self::T) -> Self::T;
+    fn inv(
+        &self,
+        x: Self::T,
+    ) -> Self::T;
 }
 impl<G: AbelianGroup> Fenwick<G>
 where
     G::T: Clone,
 {
-    pub fn fold(&self, l: usize, r: usize) -> G::T {
+    pub fn fold(
+        &self,
+        l: usize,
+        r: usize,
+    ) -> G::T {
         assert!(l <= r);
         self.g.op(self.g.inv(self.fold_lt(l)), self.fold_lt(r))
     }
-
-    pub fn max_right_from<F>(&self, is_ok: F, l: usize) -> usize
+    pub fn max_right_from<F>(
+        &self,
+        is_ok: F,
+        l: usize,
+    ) -> usize
     where
         F: Fn(&G::T) -> bool,
     {
@@ -36,8 +46,11 @@ where
             }
         }
     }
-
-    pub fn min_left_from<F>(&self, is_ok: F, r: usize) -> usize
+    pub fn min_left_from<F>(
+        &self,
+        is_ok: F,
+        r: usize,
+    ) -> usize
     where
         F: Fn(&G::T) -> bool,
     {
@@ -79,13 +92,22 @@ mod tests {
         struct G;
         impl Monoid for G {
             type T = i32;
-
             fn e(&self) -> Self::T { 0 }
-
-            fn op(&self, l: Self::T, r: Self::T) -> Self::T { l + r }
+            fn op(
+                &self,
+                l: Self::T,
+                r: Self::T,
+            ) -> Self::T {
+                l + r
+            }
         }
         impl AbelianGroup for G {
-            fn inv(&self, x: Self::T) -> Self::T { -x }
+            fn inv(
+                &self,
+                x: Self::T,
+            ) -> Self::T {
+                -x
+            }
         }
         let a = vec![0, 1, 0, 0];
         let n = a.len();

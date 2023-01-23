@@ -3,8 +3,10 @@ struct Container {
 }
 impl Container {
     fn new(data: Vec<usize>) -> Self { Self { data } }
-
-    fn add_sum(&mut self, i: usize) -> usize {
+    fn add_sum(
+        &mut self,
+        i: usize,
+    ) -> usize {
         self.data[i] += 1;
         if i == self.data.len() - 1 {
             return self.data[i];

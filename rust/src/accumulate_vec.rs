@@ -1,4 +1,7 @@
-pub fn accumulate<T, F>(f: F, mut a: Vec<T>) -> Vec<T>
+pub fn accumulate<T, F>(
+    f: F,
+    mut a: Vec<T>,
+) -> Vec<T>
 where
     T: Clone,
     F: Fn(T, T) -> T,

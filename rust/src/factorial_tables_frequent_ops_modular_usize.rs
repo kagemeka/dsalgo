@@ -1,5 +1,6 @@
 use crate::{
-    modular_factorial_table_usize::*, modular_inverse_factorial_table_usize::*,
+    modular_factorial_table_usize::*,
+    modular_inverse_factorial_table_usize::*,
 };
 pub struct FactorialTablesFrequentOps {
     pub p: usize,
@@ -7,38 +8,62 @@ pub struct FactorialTablesFrequentOps {
     pub inv_fact: Vec<usize>,
 }
 impl FactorialTablesFrequentOps {
-    pub fn new(p: usize, size: usize) -> Self {
+    pub fn new(
+        p: usize,
+        size: usize,
+    ) -> Self {
         let fact = factorial(p, size);
         let inv_fact = inverse_factorial(p, size);
         Self { p, fact, inv_fact }
     }
-
-    pub fn p(&self, n: usize, k: usize) -> usize {
+    pub fn p(
+        &self,
+        n: usize,
+        k: usize,
+    ) -> usize {
         if n < k {
             0
         } else {
             self.fact[n] * self.inv_fact[n - k] % self.p
         }
     }
-
-    pub fn c(&self, n: usize, k: usize) -> usize {
+    pub fn c(
+        &self,
+        n: usize,
+        k: usize,
+    ) -> usize {
         self.p(n, k) * self.inv_fact[k] % self.p
     }
-
-    pub fn h(&self, n: usize, k: usize) -> usize {
-        if n == 0 { 0 } else { self.c(n - 1 + k, k) }
+    pub fn h(
+        &self,
+        n: usize,
+        k: usize,
+    ) -> usize {
+        if n == 0 {
+            0
+        } else {
+            self.c(n - 1 + k, k)
+        }
     }
-
-    pub fn inv(&self, n: usize) -> usize {
+    pub fn inv(
+        &self,
+        n: usize,
+    ) -> usize {
         self.fact[n - 1] * self.inv_fact[n] % self.p
     }
-
-    pub fn inv_p(&self, n: usize, k: usize) -> usize {
+    pub fn inv_p(
+        &self,
+        n: usize,
+        k: usize,
+    ) -> usize {
         assert!(k <= n);
         self.inv_fact[n] * self.fact[n - k] % self.p
     }
-
-    pub fn inv_c(&self, n: usize, k: usize) -> usize {
+    pub fn inv_c(
+        &self,
+        n: usize,
+        k: usize,
+    ) -> usize {
         self.inv_p(n, k) * self.fact[k] % self.p
     }
 }

@@ -3,9 +3,15 @@ use std::ops::*;
 pub struct Value<T>(Option<T>);
 impl<T> Add for Value<T> {
     type Output = Self;
-
-    fn add(self, rhs: Self) -> Self::Output {
-        if rhs.0.is_none() { self } else { rhs }
+    fn add(
+        self,
+        rhs: Self,
+    ) -> Self::Output {
+        if rhs.0.is_none() {
+            self
+        } else {
+            rhs
+        }
     }
 }
 impl<T> From<i32> for Value<T> {

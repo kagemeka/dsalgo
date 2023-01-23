@@ -1,5 +1,8 @@
 use crate::divmod::divmod;
-pub fn ceil_div(mut a: i64, mut b: i64) -> i64 {
+pub fn ceil_div(
+    mut a: i64,
+    mut b: i64,
+) -> i64 {
     if b < 0 {
         a = -a;
         b = -b;

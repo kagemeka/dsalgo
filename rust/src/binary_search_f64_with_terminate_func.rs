@@ -1,5 +1,9 @@
 pub fn binary_search<F, G>(
-    is_ok: F, is_done: G, max_epoch: usize, mut ng: f64, mut ok: f64,
+    is_ok: F,
+    is_done: G,
+    max_epoch: usize,
+    mut ng: f64,
+    mut ok: f64,
 ) -> f64
 where
     F: Fn(f64) -> bool,

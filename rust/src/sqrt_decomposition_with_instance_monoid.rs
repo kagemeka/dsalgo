@@ -1,7 +1,11 @@
 use crate::integer_square_root_with_binary_search_usize::isqrt;
 pub trait Monoid {
     type T;
-    fn op(&self, l: Self::T, r: Self::T) -> Self::T;
+    fn op(
+        &self,
+        l: Self::T,
+        r: Self::T,
+    ) -> Self::T;
     fn e(&self) -> Self::T;
 }
 pub struct SqrtDecomposition<G: Monoid> {
@@ -14,20 +18,23 @@ where
     G::T: Clone,
 {
     pub fn size(&self) -> usize { self.data.len() }
-
     pub fn interval(&self) -> usize {
         let n = self.buckets.len();
         (self.size() + n - 1) / n
     }
-
-    pub fn new(g: G, size: usize) -> Self {
+    pub fn new(
+        g: G,
+        size: usize,
+    ) -> Self {
         let data = vec![g.e(); size];
         let m = isqrt(size);
         let buckets = vec![g.e(); (size + m - 1) / m];
         Self { g, data, buckets }
     }
-
-    fn merge(&mut self, j: usize) {
+    fn merge(
+        &mut self,
+        j: usize,
+    ) {
         let n = self.interval();
         self.buckets[j] = self.data[j * n..self.size().min((j + 1) * n)]
             .iter()
@@ -36,13 +43,19 @@ where
         // .reduce(|l, r| self.g.op(l, r))
         // .unwrap();
     }
-
-    pub fn set(&mut self, i: usize, x: G::T) {
+    pub fn set(
+        &mut self,
+        i: usize,
+        x: G::T,
+    ) {
         self.data[i] = x;
         self.merge(i / self.interval());
     }
-
-    pub fn fold(&self, l: usize, r: usize) -> G::T {
+    pub fn fold(
+        &self,
+        l: usize,
+        r: usize,
+    ) -> G::T {
         assert!(l <= r && r <= self.size());
         let n = self.interval();
         let mut v = self.g.e();
@@ -65,8 +78,11 @@ where
         }
         v
     }
-
-    pub fn max_right<F>(&self, is_ok: F, l: usize) -> usize
+    pub fn max_right<F>(
+        &self,
+        is_ok: F,
+        l: usize,
+    ) -> usize
     where
         F: Fn(&G::T) -> bool,
     {
@@ -100,8 +116,11 @@ where
         }
         i
     }
-
-    pub fn min_left<F>(&self, is_ok: F, r: usize) -> usize
+    pub fn min_left<F>(
+        &self,
+        is_ok: F,
+        r: usize,
+    ) -> usize
     where
         F: Fn(&G::T) -> bool,
     {
@@ -138,8 +157,12 @@ where
 use std::ops::*;
 impl<G: Monoid> Index<usize> for SqrtDecomposition<G> {
     type Output = G::T;
-
-    fn index(&self, i: usize) -> &Self::Output { &self.data[i] }
+    fn index(
+        &self,
+        i: usize,
+    ) -> &Self::Output {
+        &self.data[i]
+    }
 }
 impl<G: Monoid> From<(G, &[G::T])> for SqrtDecomposition<G>
 where
@@ -160,9 +183,13 @@ mod tests {
     struct G;
     impl Monoid for G {
         type T = i32;
-
-        fn op(&self, x: i32, y: i32) -> i32 { x + y }
-
+        fn op(
+            &self,
+            x: i32,
+            y: i32,
+        ) -> i32 {
+            x + y
+        }
         fn e(&self) -> i32 { 0 }
     }
     use super::*;

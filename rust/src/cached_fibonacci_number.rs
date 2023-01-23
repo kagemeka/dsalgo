@@ -3,8 +3,10 @@ pub struct CachedFibonacci<T> {
 }
 impl<T> CachedFibonacci<T> {
     pub fn new() -> Self { Self { fib: vec![] } }
-
-    pub fn calc(&mut self, n: usize) -> T
+    pub fn calc(
+        &mut self,
+        n: usize,
+    ) -> T
     where
         T: From<u64> + Clone + std::ops::Add<Output = T>,
     {
@@ -19,7 +21,7 @@ impl<T> CachedFibonacci<T> {
             1 => self.fib[1] = Some(1.into()),
             _ => {
                 self.fib[n] = Some(self.calc(n - 1).clone() + self.calc(n - 2));
-            },
+            }
         }
         self.fib[n].clone().unwrap()
     }

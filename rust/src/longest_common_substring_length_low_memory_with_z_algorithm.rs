@@ -1,5 +1,8 @@
 use crate::z_algorithm::*;
-pub fn lcs_len<T: Eq + Clone>(a: &[T], b: &[T]) -> usize {
+pub fn lcs_len<T: Eq + Clone>(
+    a: &[T],
+    b: &[T],
+) -> usize {
     let n = a.len();
     let mut mx = 0;
     for i in 0..n {

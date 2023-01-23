@@ -6,7 +6,7 @@ use crate::{
 /// O(V^3)
 /// all pairs shortest path
 pub fn johnson_dense(
-    dense_graph: &[Vec<Option<i64>>],
+    dense_graph: &[Vec<Option<i64>>]
 ) -> Result<Vec<Vec<Option<i64>>>, NegativeCycleError> {
     let n = dense_graph.len();
     let mut edges = vec![];

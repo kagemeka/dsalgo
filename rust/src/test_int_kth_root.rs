@@ -33,8 +33,10 @@ pub(crate) const CASES_LINEAR: &'static [(u64, u8, u64)] = &[
     (std::u64::MAX, 20, 9),
 ];
 #[allow(dead_code)]
-pub(crate) fn test_int_kth_root<F>(int_kth_root: &F, cases: &[(u64, u8, u64)])
-where
+pub(crate) fn test_int_kth_root<F>(
+    int_kth_root: &F,
+    cases: &[(u64, u8, u64)],
+) where
     F: Fn(u64, u8) -> u64,
 {
     for &(n, k, ans) in cases {

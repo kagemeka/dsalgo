@@ -5,9 +5,12 @@ impl<T: Ord> ArrayCompression<T> {
         a.dedup();
         Self(a)
     }
-
-    pub fn encode(&self, v: &T) -> usize { self.0.binary_search(v).unwrap() }
-
+    pub fn encode(
+        &self,
+        v: &T,
+    ) -> usize {
+        self.0.binary_search(v).unwrap()
+    }
     pub fn once(a: &[T]) -> Vec<usize>
     where
         T: Clone,
@@ -19,8 +22,12 @@ impl<T: Ord> ArrayCompression<T> {
 use std::ops::*;
 impl<T: Ord> Index<usize> for ArrayCompression<T> {
     type Output = T;
-
-    fn index(&self, i: usize) -> &Self::Output { &self.0[i] }
+    fn index(
+        &self,
+        i: usize,
+    ) -> &Self::Output {
+        &self.0[i]
+    }
 }
 #[cfg(test)]
 mod tests {

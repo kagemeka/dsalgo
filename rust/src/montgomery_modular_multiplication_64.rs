@@ -9,7 +9,6 @@ pub struct MontgomeryMultiplication64 {
 impl MontgomeryMultiplication64 {
     const MASK: u128 = std::u64::MAX as u128;
     const R: u128 = 1 << 64;
-
     pub fn new(modulus: u64) -> Self {
         assert!(modulus & 1 == 1 && modulus >= 3);
         let n = modulus as u128;
@@ -27,8 +26,10 @@ impl MontgomeryMultiplication64 {
         let nr = n * Self::R;
         Self { n, r2, n_dash, nr }
     }
-
-    fn reduce(&self, mut t: u128) -> u64 {
+    fn reduce(
+        &self,
+        mut t: u128,
+    ) -> u64 {
         assert!(t < self.nr);
         t = (t + ((t & Self::MASK) * self.n_dash & Self::MASK) * self.n) >> 64;
         if t >= self.n {
@@ -37,11 +38,18 @@ impl MontgomeryMultiplication64 {
         debug_assert!(t < self.n);
         t as u64
     }
-
     #[allow(dead_code)]
-    fn form(&self, x: u64) -> u128 { self.reduce(x as u128 * self.r2) as u128 }
-
-    pub fn mul(&self, x: u64, y: u64) -> u64 {
+    fn form(
+        &self,
+        x: u64,
+    ) -> u128 {
+        self.reduce(x as u128 * self.r2) as u128
+    }
+    pub fn mul(
+        &self,
+        x: u64,
+        y: u64,
+    ) -> u64 {
         self.reduce(self.reduce(x as u128 * y as u128) as u128 * self.r2) as u64
     }
 }

@@ -1,5 +1,12 @@
-use std::{iter::Sum, ops::*};
-pub fn xor_of_all_bitwise_and<T>(a0: &[T], a1: &[T], max_bit: usize) -> T
+use std::{
+    iter::Sum,
+    ops::*,
+};
+pub fn xor_of_all_bitwise_and<T>(
+    a0: &[T],
+    a1: &[T],
+    max_bit: usize,
+) -> T
 where
     T: Clone
         + Shl<usize, Output = T>

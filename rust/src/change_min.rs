@@ -1,4 +1,7 @@
-pub fn chmin<T: Ord>(a: &mut T, b: T) {
+pub fn chmin<T: Ord>(
+    a: &mut T,
+    b: T,
+) {
     if b < *a {
         *a = b;
     }

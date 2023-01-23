@@ -1,5 +1,6 @@
 pub fn csgraph_from_dense<T: Eq>(
-    inf: &T, g: Vec<Vec<T>>,
+    inf: &T,
+    g: Vec<Vec<T>>,
 ) -> Vec<(usize, usize, T)> {
     let mut cs = Vec::new();
     for (u, row) in g.into_iter().enumerate() {

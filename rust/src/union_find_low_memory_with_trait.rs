@@ -9,7 +9,10 @@ impl Size for UnionFind {
     fn size(&self) -> usize { self.0.len() }
 }
 impl Root for UnionFind {
-    fn root(&mut self, u: usize) -> usize {
+    fn root(
+        &mut self,
+        u: usize,
+    ) -> usize {
         if self.0[u] < 0 {
             return u;
         }
@@ -18,7 +21,11 @@ impl Root for UnionFind {
     }
 }
 impl Unite for UnionFind {
-    fn unite(&mut self, u: usize, v: usize) {
+    fn unite(
+        &mut self,
+        u: usize,
+        v: usize,
+    ) {
         let mut u = self.root(u);
         let mut v = self.root(v);
         if u == v {
@@ -32,7 +39,10 @@ impl Unite for UnionFind {
     }
 }
 impl SizeOf for UnionFind {
-    fn size_of(&mut self, u: usize) -> usize {
+    fn size_of(
+        &mut self,
+        u: usize,
+    ) -> usize {
         let u = self.root(u);
         -self.0[u] as usize
     }

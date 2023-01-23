@@ -1,5 +1,6 @@
 pub fn tree_bfs_depth(
-    adjacency_list: Vec<Vec<usize>>, root: usize,
+    adjacency_list: Vec<Vec<usize>>,
+    root: usize,
 ) -> Vec<usize> {
     let g = adjacency_list;
     let n = g.len();

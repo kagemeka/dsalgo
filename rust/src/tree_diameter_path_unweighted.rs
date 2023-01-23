@@ -1,4 +1,7 @@
-use crate::{argmax::argmax, tree_bfs_parent_depth::bfs};
+use crate::{
+    argmax::argmax,
+    tree_bfs_parent_depth::bfs,
+};
 pub fn diameter_path(g: &[Vec<usize>]) -> Vec<usize> {
     let (_, dep) = bfs(&g, 0);
     let (parent, dep) = bfs(&g, argmax(&dep));

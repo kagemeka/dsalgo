@@ -2,7 +2,8 @@
 // use generic minimum queue
 // use generic edge type
 pub fn mst_prim_sparse(
-    v_size: usize, undirected_edges: &[(usize, usize, i64)],
+    v_size: usize,
+    undirected_edges: &[(usize, usize, i64)],
 ) -> Vec<usize> {
     use std::cmp::Reverse;
     let mut g = vec![vec![]; v_size];

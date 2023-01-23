@@ -1,5 +1,8 @@
 //! fenwick tree (binary indexed tree)
-use crate::{algebraic_structure::*, binary_function::*};
+use crate::{
+    algebraic_structure::*,
+    binary_function::*,
+};
 /// Node Indices
 /// (case $|given array| = 8$,
 /// internally 1-indexed implemetation)
@@ -27,20 +30,24 @@ where
         }
         Self(node)
     }
-
     pub fn size(&self) -> usize { self.0.len() - 1 }
-
     /// a[i] += v
-    pub fn operate(&mut self, mut i: usize, v: G::S) {
+    pub fn operate(
+        &mut self,
+        mut i: usize,
+        v: G::S,
+    ) {
         i += 1;
         while i <= self.size() {
             self.0[i] = G::op(self.0[i].clone(), v.clone());
             i += 1 << i.trailing_zeros();
         }
     }
-
     // \sum_{j=0}^{i-1} a[i].
-    pub fn fold_lt(&self, mut i: usize) -> G::S {
+    pub fn fold_lt(
+        &self,
+        mut i: usize,
+    ) -> G::S {
         let mut v = G::e();
         while i > 0 {
             v = G::op(v, self.0[i].clone());
@@ -48,12 +55,16 @@ where
         }
         v
     }
-
     /// max i (l < i <= n) satisfying f(op(v, fold_lt(i))) is true.
     /// f(op(v, fold_lt(i))) must be monotonous for i.
     /// l(true, .., true, false, .., false]n
     /// if l == n or f(op(v, fold_lt(l + 1))) is false, return l.
-    fn _max_right<F>(&self, f: &F, l: usize, mut v: G::S) -> usize
+    fn _max_right<F>(
+        &self,
+        f: &F,
+        l: usize,
+        mut v: G::S,
+    ) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
@@ -76,10 +87,12 @@ where
             }
         }
     }
-
     /// max i satisfying f(fold_lt(i)) is true.
     /// f(fold_lt(i)) must be monotonous for i. [tr, .., tr, fal, .., fal]
-    pub fn max_right<F>(&self, f: &F) -> usize
+    pub fn max_right<F>(
+        &self,
+        f: &F,
+    ) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
@@ -92,23 +105,33 @@ where
     G::S: Clone,
 {
     /// get range [l, r) = fold_lt(r) - fold_lt(l)
-    pub fn fold(&self, l: usize, r: usize) -> G::S {
+    pub fn fold(
+        &self,
+        l: usize,
+        r: usize,
+    ) -> G::S {
         assert!(l <= r);
         G::op(G::inv(self.fold_lt(l)), self.fold_lt(r))
     }
-
     /// max i (l < i <= n) f(fold(l, i)) is true. l(tr, .., tr, fal, .. fal]n
     /// or l
-    pub fn max_right_from<F>(&self, f: &F, l: usize) -> usize
+    pub fn max_right_from<F>(
+        &self,
+        f: &F,
+        l: usize,
+    ) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
         self._max_right(f, l, G::inv(self.fold_lt(l)))
     }
-
     /// min i (0 <= i < r), f(fold(i, r)) is true. 0[fal, .. fal, tr, .. tr)r
     /// or r
-    pub fn min_left_from<F>(&self, f: &F, r: usize) -> usize
+    pub fn min_left_from<F>(
+        &self,
+        f: &F,
+        r: usize,
+    ) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
@@ -156,22 +179,32 @@ where
         }
         Self(Fw::new(a))
     }
-
     pub fn size(&self) -> usize { self.0.size() }
-
     /// a[i] += v (l <= i < n)
-    pub fn operate_ge(&mut self, i: usize, v: G::S) { self.0.operate(i, v) }
-
+    pub fn operate_ge(
+        &mut self,
+        i: usize,
+        v: G::S,
+    ) {
+        self.0.operate(i, v)
+    }
     /// a[i]
-    pub fn get(&self, i: usize) -> G::S { self.0.fold_lt(i + 1) }
-
+    pub fn get(
+        &self,
+        i: usize,
+    ) -> G::S {
+        self.0.fold_lt(i + 1)
+    }
     /// find first index i satisfying
     /// `is_ok(&self.get_point(i)) == true`
     /// Constraints:
     /// `is_ok(&self.get_point(i))` must be monotonous [false,
     /// false, .., true, true] if such an i is not found,
     /// return `self.size()`
-    pub fn search<F>(&self, is_ok: &F) -> usize
+    pub fn search<F>(
+        &self,
+        is_ok: &F,
+    ) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
@@ -184,14 +217,18 @@ where
     G::S: Clone,
 {
     /// a[i] += v (l <= i < r)
-    pub fn operate(&mut self, l: usize, r: usize, v: G::S) {
+    pub fn operate(
+        &mut self,
+        l: usize,
+        r: usize,
+        v: G::S,
+    ) {
         assert!(l < r && r <= self.size());
         self.operate_ge(l, v.clone());
         if r < self.size() {
             self.operate_ge(r, G::inv(v));
         }
     }
-
     /// prod[left, index) >= target_value - prod[0, left)
     /// prod[left, index) + prod[0, left) >= target_value
     /// is_ok(G::operate_ge(prod[left, index), prod[0, left)))
@@ -201,7 +238,11 @@ where
     /// where first false index corresponds
     /// to the given left, it might be there exists no
     /// false.
-    pub fn search_from<F>(&self, is_ok: &F, l: usize) -> usize
+    pub fn search_from<F>(
+        &self,
+        is_ok: &F,
+        l: usize,
+    ) -> usize
     where
         F: Fn(&G::S) -> bool,
     {
@@ -228,7 +269,8 @@ mod tests {
     #[test]
     fn test_fw() {
         use crate::{
-            algebraic_structure_impl::GroupApprox, group_theory_id::Additive,
+            algebraic_structure_impl::GroupApprox,
+            group_theory_id::Additive,
         };
         let arr = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         let mut fw = Fw::<GroupApprox<i32, Additive>>::new(arr);
@@ -263,7 +305,8 @@ mod tests {
     #[test]
     fn test_dual() {
         use crate::{
-            algebraic_structure_impl::GroupApprox, group_theory_id::Additive,
+            algebraic_structure_impl::GroupApprox,
+            group_theory_id::Additive,
         };
         let mut a = (0..10).collect::<Vec<_>>();
         for i in 0..9 {

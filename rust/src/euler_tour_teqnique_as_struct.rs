@@ -6,7 +6,10 @@ pub struct EulerTour {
     pub edge_out_idx: Vec<usize>,
 }
 impl EulerTour {
-    pub fn new(g: &[Vec<usize>], root: usize) -> Self {
+    pub fn new(
+        g: &[Vec<usize>],
+        root: usize,
+    ) -> Self {
         let n = g.len();
         let mut tour = Vec::with_capacity(n << 1);
         let mut parent = vec![n; n];
@@ -42,7 +45,6 @@ impl EulerTour {
             edge_out_idx: out_idx,
         }
     }
-
     pub fn tour_nodes(&self) -> Vec<usize> {
         let n = self.tour_edges.len() - 1;
         self.tour_edges[..n]
@@ -52,17 +54,12 @@ impl EulerTour {
             )
             .collect()
     }
-
     pub fn node_first_idx(&self) -> Vec<usize> { self.edge_in_idx.clone() }
-
     pub fn node_last_idx(&self) -> Vec<usize> {
         let n = self.edge_in_idx.len();
         let mut last_idx = vec![0; n];
-        for (i, (&j, &k)) in self
-            .edge_in_idx
-            .iter()
-            .zip(self.edge_out_idx.iter())
-            .enumerate()
+        for (i, (&j, &k)) in
+            self.edge_in_idx.iter().zip(self.edge_out_idx.iter()).enumerate()
         {
             if j + 1 == k {
                 last_idx[i] = i;
@@ -92,9 +89,10 @@ mod tests {
             vec![4],
         ];
         let et = EulerTour::new(&g, 0);
-        assert_eq!(et.tour_edges, [
-            0, 2, -3, 1, 5, -6, 4, 6, -7, -5, 3, -4, -2, -1,
-        ]);
+        assert_eq!(
+            et.tour_edges,
+            [0, 2, -3, 1, 5, -6, 4, 6, -7, -5, 3, -4, -2, -1,]
+        );
         assert_eq!(et.tour_nodes(), [0, 2, 0, 1, 5, 1, 4, 6, 4, 1, 3, 1, 0]);
     }
 }

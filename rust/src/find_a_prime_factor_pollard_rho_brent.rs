@@ -3,7 +3,9 @@ use crate::{
     montgomery_modular_multiplication_64::*,
 };
 pub fn find_prime_factor_pollard_rho<F>(
-    is_prime: &F, mut n: u64, epochs: u8,
+    is_prime: &F,
+    mut n: u64,
+    epochs: u8,
 ) -> Result<u64, &'static str>
 where
     F: Fn(u64) -> bool,

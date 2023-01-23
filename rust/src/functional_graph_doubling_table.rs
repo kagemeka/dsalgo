@@ -1,5 +1,8 @@
 /// able to compute (k <= 2^max_exp)-th from any node in O(max_exp) time
-pub fn doubling_table(f: &[usize], n_bits: usize) -> Vec<Vec<usize>> {
+pub fn doubling_table(
+    f: &[usize],
+    n_bits: usize,
+) -> Vec<Vec<usize>> {
     assert!(n_bits > 0);
     let n = f.len();
     let mut a = Vec::with_capacity(n_bits);

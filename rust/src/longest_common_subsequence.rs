@@ -2,7 +2,10 @@
 //! not confused with Longest Common Substring
 /// compute dp table.
 #[allow(dead_code)]
-pub(crate) fn dp<T: PartialEq>(a: &[T], b: &[T]) -> Vec<Vec<usize>> {
+pub(crate) fn dp<T: PartialEq>(
+    a: &[T],
+    b: &[T],
+) -> Vec<Vec<usize>> {
     let n = a.len();
     let m = b.len();
     let mut l = vec![vec![0; m + 1]; n + 1]; // l
@@ -19,11 +22,17 @@ pub(crate) fn dp<T: PartialEq>(a: &[T], b: &[T]) -> Vec<Vec<usize>> {
     l
 }
 /// lcs length.
-pub fn len<T: PartialEq>(a: &[T], b: &[T]) -> usize {
+pub fn len<T: PartialEq>(
+    a: &[T],
+    b: &[T],
+) -> usize {
     dp(a, b)[a.len()][b.len()]
 }
 /// compute lcs length with O(N) space.
-pub fn len_lowmem<T: PartialEq>(a: &[T], b: &[T]) -> usize {
+pub fn len_lowmem<T: PartialEq>(
+    a: &[T],
+    b: &[T],
+) -> usize {
     let m = b.len();
     let mut l = vec![0; m + 1];
     for x in a {
@@ -61,11 +70,11 @@ pub(crate) fn restore(dp: &[Vec<usize>]) -> Vec<(usize, usize)> {
     idx.reverse();
     idx
 }
-pub fn struct_one<T: PartialEq + Clone>(a: &[T], b: &[T]) -> Vec<T> {
-    restore(&dp(a, b))
-        .into_iter()
-        .map(|(i, _)| a[i].clone())
-        .collect()
+pub fn struct_one<T: PartialEq + Clone>(
+    a: &[T],
+    b: &[T],
+) -> Vec<T> {
+    restore(&dp(a, b)).into_iter().map(|(i, _)| a[i].clone()).collect()
 }
 #[cfg(test)]
 mod tests {

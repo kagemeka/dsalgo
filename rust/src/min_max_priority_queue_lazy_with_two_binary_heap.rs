@@ -1,6 +1,9 @@
 use std::{
     cmp::Reverse,
-    collections::{BinaryHeap, HashMap},
+    collections::{
+        BinaryHeap,
+        HashMap,
+    },
 };
 pub struct MinMaxQueue<T> {
     min_que: BinaryHeap<Reverse<T>>,
@@ -17,8 +20,11 @@ impl<T: Ord + std::hash::Hash + Clone> MinMaxQueue<T> {
             size: 0,
         }
     }
-
-    pub fn insert(&mut self, x: T, count: usize) {
+    pub fn insert(
+        &mut self,
+        x: T,
+        count: usize,
+    ) {
         assert!(count > 0);
         let c = self.cnt.entry(x.clone()).or_insert(0);
         if *c == 0 {
@@ -28,21 +34,28 @@ impl<T: Ord + std::hash::Hash + Clone> MinMaxQueue<T> {
         *c += count;
         self.size += count;
     }
-
     pub fn size(&self) -> usize { self.size }
-
-    pub fn count(&self, x: &T) -> usize {
+    pub fn count(
+        &self,
+        x: &T,
+    ) -> usize {
         *self.cnt.get(x).or_else(|| Some(&0)).unwrap()
     }
-
-    pub fn contains(&self, x: &T) -> bool { self.count(x) > 0 }
-
-    pub fn remove(&mut self, x: &T, count: usize) {
+    pub fn contains(
+        &self,
+        x: &T,
+    ) -> bool {
+        self.count(x) > 0
+    }
+    pub fn remove(
+        &mut self,
+        x: &T,
+        count: usize,
+    ) {
         assert!(self.count(x) >= count && count > 0);
         *self.cnt.get_mut(&x).unwrap() -= count;
         self.size -= count;
     }
-
     fn lazy_discard_false_min(&mut self) {
         while let Some(Reverse(x)) = self.min_que.peek() {
             if self.count(x) == 0 {
@@ -52,7 +65,6 @@ impl<T: Ord + std::hash::Hash + Clone> MinMaxQueue<T> {
             break;
         }
     }
-
     fn lazy_discard_false_max(&mut self) {
         while let Some(x) = self.max_que.peek() {
             if self.count(x) == 0 {
@@ -62,7 +74,6 @@ impl<T: Ord + std::hash::Hash + Clone> MinMaxQueue<T> {
             break;
         }
     }
-
     fn min(&mut self) -> Option<&T> {
         self.lazy_discard_false_min();
         if let Some(Reverse(x)) = self.min_que.peek() {
@@ -71,12 +82,10 @@ impl<T: Ord + std::hash::Hash + Clone> MinMaxQueue<T> {
             None
         }
     }
-
     fn max(&mut self) -> Option<&T> {
         self.lazy_discard_false_max();
         self.max_que.peek()
     }
-
     pub fn pop_min(&mut self) -> Option<T> {
         let v = self.min();
         if v.is_none() {
@@ -88,7 +97,6 @@ impl<T: Ord + std::hash::Hash + Clone> MinMaxQueue<T> {
         self.size -= 1;
         Some(v)
     }
-
     pub fn pop_max(&mut self) -> Option<T> {
         let v = self.max();
         if v.is_none() {

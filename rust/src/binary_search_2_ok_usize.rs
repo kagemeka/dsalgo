@@ -1,5 +1,9 @@
 //! for sequence, see crate::binary_search_on_sequence.
-pub fn binary_search<F>(is_ok: F, mut lo_ok: usize, mut hi_ok: usize) -> usize
+pub fn binary_search<F>(
+    is_ok: F,
+    mut lo_ok: usize,
+    mut hi_ok: usize,
+) -> usize
 where
     F: Fn(usize) -> bool,
 {

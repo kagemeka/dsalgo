@@ -46,9 +46,7 @@ impl<T, U> DirectedGraph<T, U> {
     {
         Self { node_datas: vec![T::default(); size], edges: vec![vec![]; size] }
     }
-
     pub fn size(&self) -> usize { self.node_datas.len() }
-
     pub fn add_node(&mut self)
     where
         T: Default,
@@ -56,13 +54,20 @@ impl<T, U> DirectedGraph<T, U> {
         self.node_datas.push(T::default());
         self.edges.push(vec![]);
     }
-
-    pub fn add_edge(&mut self, from: usize, to: usize, data: U) {
+    pub fn add_edge(
+        &mut self,
+        from: usize,
+        to: usize,
+        data: U,
+    ) {
         assert!(from < self.size() && to < self.size());
         self.edges[from].push(DirectedEdge { from, to, data });
     }
 }
-use std::{cell::RefCell, rc::Rc};
+use std::{
+    cell::RefCell,
+    rc::Rc,
+};
 #[derive(Debug)]
 pub struct UndirectedGraph<T = (), U = ()> {
     pub node_datas: Vec<T>,
@@ -76,9 +81,7 @@ impl<T, U> UndirectedGraph<T, U> {
     {
         Self { node_datas: vec![T::default(); size], edges: vec![vec![]; size] }
     }
-
     pub fn size(&self) -> usize { self.node_datas.len() }
-
     pub fn add_node(&mut self)
     where
         T: Default,
@@ -86,8 +89,12 @@ impl<T, U> UndirectedGraph<T, U> {
         self.node_datas.push(T::default());
         self.edges.push(vec![]);
     }
-
-    pub fn add_edge(&mut self, left: usize, right: usize, data: U) {
+    pub fn add_edge(
+        &mut self,
+        left: usize,
+        right: usize,
+        data: U,
+    ) {
         assert!(left < self.size() && right < self.size());
         let edge = Rc::new(RefCell::new(UndirectedEdge { left, right, data }));
         self.edges[left].push(edge.clone());
@@ -110,9 +117,7 @@ impl<T, U> DenseGraph<T, U> {
             edge_datas: vec![vec![U::default(); size]; size],
         }
     }
-
     pub fn size(&self) -> usize { self.node_datas.len() }
-
     pub fn add_node(&mut self)
     where
         T: Default,

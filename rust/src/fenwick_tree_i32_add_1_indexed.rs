@@ -1,10 +1,12 @@
 pub struct Fenwick(Vec<i32>);
 impl Fenwick {
     pub fn new(size: usize) -> Self { Self(vec![0; size + 1]) }
-
     pub fn size(&self) -> usize { self.0.len() - 1 }
-
-    pub fn add(&mut self, mut i: usize, x: i32) {
+    pub fn add(
+        &mut self,
+        mut i: usize,
+        x: i32,
+    ) {
         let n = self.size();
         assert!(i < n);
         i += 1;
@@ -13,8 +15,10 @@ impl Fenwick {
             i += 1 << i.trailing_zeros();
         }
     }
-
-    pub fn sum_lt(&self, mut i: usize) -> i32 {
+    pub fn sum_lt(
+        &self,
+        mut i: usize,
+    ) -> i32 {
         assert!(i <= self.size());
         let mut v = 0;
         while i > 0 {

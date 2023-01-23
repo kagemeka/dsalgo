@@ -23,8 +23,9 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        assert_eq!(enumerate_prime_candidates(10u64.pow(18)), [
-            2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,
-        ]);
+        assert_eq!(
+            enumerate_prime_candidates(10u64.pow(18)),
+            [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,]
+        );
     }
 }

@@ -1,4 +1,7 @@
-pub fn chmax<T: Ord>(a: &mut T, b: T) {
+pub fn chmax<T: Ord>(
+    a: &mut T,
+    b: T,
+) {
     if b > *a {
         *a = b;
     }

@@ -1,4 +1,7 @@
-pub fn combinations(n: usize, k: usize) -> Vec<Vec<usize>> {
+pub fn combinations(
+    n: usize,
+    k: usize,
+) -> Vec<Vec<usize>> {
     assert!(k <= n);
     let mut res = vec![];
     let mut a: Vec<_> = (0..k).collect();
@@ -26,17 +29,20 @@ mod tests {
     #[test]
     fn test() {
         let res = combinations(5, 3);
-        assert_eq!(res, [
-            [0, 1, 2],
-            [0, 1, 3],
-            [0, 1, 4],
-            [0, 2, 3],
-            [0, 2, 4],
-            [0, 3, 4],
-            [1, 2, 3],
-            [1, 2, 4],
-            [1, 3, 4],
-            [2, 3, 4]
-        ]);
+        assert_eq!(
+            res,
+            [
+                [0, 1, 2],
+                [0, 1, 3],
+                [0, 1, 4],
+                [0, 2, 3],
+                [0, 2, 4],
+                [0, 3, 4],
+                [1, 2, 3],
+                [1, 2, 4],
+                [1, 3, 4],
+                [2, 3, 4]
+            ]
+        );
     }
 }

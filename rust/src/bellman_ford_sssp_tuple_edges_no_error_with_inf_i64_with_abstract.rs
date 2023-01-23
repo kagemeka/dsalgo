@@ -1,6 +1,9 @@
 use crate::bellman_ford_abstract_dp::bellman_ford_abstract;
 pub fn bellman_ford(
-    inf: i64, v_size: usize, edges: &[(usize, usize, i64)], src: usize,
+    inf: i64,
+    v_size: usize,
+    edges: &[(usize, usize, i64)],
+    src: usize,
 ) -> Vec<i64> {
     let mut dist = vec![inf; v_size];
     dist[src] = 0;

@@ -5,33 +5,39 @@ pub struct SqrtDecomposition {
 }
 impl SqrtDecomposition {
     pub fn size(&self) -> usize { self.data.len() }
-
     pub fn interval(&self) -> usize {
         let n = self.buckets.len();
         (self.size() + n - 1) / n
     }
-
     pub fn new(size: usize) -> Self {
         let data = vec![0; size];
         let m = isqrt(size);
         let buckets = vec![0; (size + m - 1) / m];
         Self { data, buckets }
     }
-
-    fn merge(&mut self, j: usize) {
+    fn merge(
+        &mut self,
+        j: usize,
+    ) {
         let n = self.interval();
         self.buckets[j] = self.data[j * n..self.size().min((j + 1) * n)]
             .iter()
             .cloned()
             .fold(0, |x, y| x + y)
     }
-
-    pub fn set(&mut self, i: usize, x: i64) {
+    pub fn set(
+        &mut self,
+        i: usize,
+        x: i64,
+    ) {
         self.data[i] = x;
         self.merge(i / self.interval());
     }
-
-    pub fn fold(&self, l: usize, r: usize) -> i64 {
+    pub fn fold(
+        &self,
+        l: usize,
+        r: usize,
+    ) -> i64 {
         assert!(l <= r && r <= self.size());
         let n = self.interval();
         let mut v = 0;
@@ -54,8 +60,11 @@ impl SqrtDecomposition {
         }
         v
     }
-
-    pub fn max_right<F>(&self, is_ok: F, l: usize) -> usize
+    pub fn max_right<F>(
+        &self,
+        is_ok: F,
+        l: usize,
+    ) -> usize
     where
         F: Fn(&i64) -> bool,
     {
@@ -89,8 +98,11 @@ impl SqrtDecomposition {
         }
         i
     }
-
-    pub fn min_left<F>(&self, is_ok: F, r: usize) -> usize
+    pub fn min_left<F>(
+        &self,
+        is_ok: F,
+        r: usize,
+    ) -> usize
     where
         F: Fn(&i64) -> bool,
     {
@@ -127,8 +139,12 @@ impl SqrtDecomposition {
 use std::ops::*;
 impl Index<usize> for SqrtDecomposition {
     type Output = i64;
-
-    fn index(&self, i: usize) -> &Self::Output { &self.data[i] }
+    fn index(
+        &self,
+        i: usize,
+    ) -> &Self::Output {
+        &self.data[i]
+    }
 }
 impl From<&[i64]> for SqrtDecomposition {
     fn from(data: &[i64]) -> Self {

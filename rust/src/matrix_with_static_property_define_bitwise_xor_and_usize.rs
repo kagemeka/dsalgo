@@ -10,19 +10,28 @@ impl From<i32> for R {
 use std::ops::*;
 impl Add for R {
     type Output = Self;
-
-    fn add(mut self, rhs: Self) -> Self::Output {
+    fn add(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         self.0 ^= rhs.0;
         self
     }
 }
 impl AddAssign for R {
-    fn add_assign(&mut self, rhs: Self) { *self = self.clone() + rhs; }
+    fn add_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = self.clone() + rhs;
+    }
 }
 impl Mul for R {
     type Output = Self;
-
-    fn mul(mut self, rhs: Self) -> Self::Output {
+    fn mul(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         self.0 &= rhs.0;
         self
     }

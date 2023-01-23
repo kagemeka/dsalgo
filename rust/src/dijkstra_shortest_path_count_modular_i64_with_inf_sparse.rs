@@ -1,5 +1,8 @@
 pub fn dijkstra(
-    inf: i64, g: &[Vec<(usize, i64)>], src: usize, modulus: usize,
+    inf: i64,
+    g: &[Vec<(usize, i64)>],
+    src: usize,
+    modulus: usize,
 ) -> Vec<usize> {
     use std::collections::BinaryHeap;
     let n = g.len();

@@ -1,4 +1,7 @@
-use crate::doubly_linked_list_node::{Cell, Node};
+use crate::doubly_linked_list_node::{
+    Cell,
+    Node,
+};
 pub struct Deque<T> {
     left: Option<Cell<T>>,
     right: Option<Cell<T>>,
@@ -6,12 +9,12 @@ pub struct Deque<T> {
 }
 impl<T: Clone> Deque<T> {
     pub fn new() -> Self { Self { left: None, right: None, size: 0 } }
-
     pub fn size(&self) -> usize { self.size }
-
     pub fn is_empty(&self) -> bool { self.size == 0 }
-
-    pub fn push_right(&mut self, x: T) {
+    pub fn push_right(
+        &mut self,
+        x: T,
+    ) {
         let x = Node::new(x);
         let right = Node::add_right(self.right.take(), x);
         if self.size == 0 {
@@ -20,8 +23,10 @@ impl<T: Clone> Deque<T> {
         self.right = Some(right);
         self.size += 1;
     }
-
-    pub fn push_left(&mut self, x: T) {
+    pub fn push_left(
+        &mut self,
+        x: T,
+    ) {
         let x = Node::new(x);
         let left = Node::add_left(self.left.take(), x);
         if self.size == 0 {
@@ -30,7 +35,6 @@ impl<T: Clone> Deque<T> {
         self.left = Some(left);
         self.size += 1;
     }
-
     pub fn pop_right(&mut self) -> Option<T> {
         if self.size == 0 {
             return None;
@@ -44,7 +48,6 @@ impl<T: Clone> Deque<T> {
         self.right = right;
         Some(v)
     }
-
     pub fn pop_left(&mut self) -> Option<T> {
         if self.size == 0 {
             return None;

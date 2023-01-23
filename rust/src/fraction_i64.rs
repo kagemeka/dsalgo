@@ -1,49 +1,50 @@
-use std::{ops::*, str::FromStr};
+use std::{
+    ops::*,
+    str::FromStr,
+};
 
 use crate::{
     greatest_common_divisor_euclidean_recurse_i64::gcd,
-    least_common_multiple_with_gcd_i64::lcm, multiplicative_inverse::MulInv,
+    least_common_multiple_with_gcd_i64::lcm,
+    multiplicative_inverse::MulInv,
 };
 /// (numerator, denominator)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Ord)]
 pub struct Fraction(pub i64, pub i64);
 impl Fraction {
     /// lower != 0, but accept infinity ?
-    pub fn new(upper: i64, lower: i64) -> Self {
+    pub fn new(
+        upper: i64,
+        lower: i64,
+    ) -> Self {
         // assert!(lower != 0);
         assert!(upper != 0 || lower != 0);
         let mut v = Self(upper, lower);
         v.normalize();
         v
     }
-
     fn make_denominator_positive(&mut self) {
         if self.1 < 0 {
             self.0 = -self.0;
             self.1 = -self.1;
         }
     }
-
     fn reduction(&mut self) {
         let g = gcd(self.0, self.1);
         debug_assert!(g != 0);
         self.0 /= g;
         self.1 /= g;
     }
-
     fn normalize(&mut self) {
         self.reduction();
         self.make_denominator_positive();
     }
-
     pub fn normalize_neg_inf_as_inf(&mut self) {
         if self.0 == -1 && self.1 == 0 {
             self.0 = 1;
         }
     }
-
     pub fn floor(&self) -> i64 { self.0.div_euclid(self.1) }
-
     pub fn ceil(&self) -> i64 {
         let mut v = self.floor();
         if v * self.1 != self.0 {
@@ -54,7 +55,6 @@ impl Fraction {
 }
 impl FromStr for Fraction {
     type Err = Box<dyn std::error::Error>;
-
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let parts: Vec<_> = s.split('.').collect();
         assert!(parts.len() <= 2);
@@ -69,15 +69,34 @@ impl FromStr for Fraction {
     }
 }
 impl PartialOrd for Fraction {
-    fn ge(&self, other: &Self) -> bool { !(self < other) }
-
-    fn gt(&self, other: &Self) -> bool { !(self <= other) }
-
-    fn le(&self, other: &Self) -> bool { self < other || self == other }
-
-    fn lt(&self, other: &Self) -> bool { (*self - *other).0 < 0 }
-
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+    fn ge(
+        &self,
+        other: &Self,
+    ) -> bool {
+        !(self < other)
+    }
+    fn gt(
+        &self,
+        other: &Self,
+    ) -> bool {
+        !(self <= other)
+    }
+    fn le(
+        &self,
+        other: &Self,
+    ) -> bool {
+        self < other || self == other
+    }
+    fn lt(
+        &self,
+        other: &Self,
+    ) -> bool {
+        (*self - *other).0 < 0
+    }
+    fn partial_cmp(
+        &self,
+        other: &Self,
+    ) -> Option<std::cmp::Ordering> {
         use std::cmp::Ordering::*;
         Some(if self < other {
             Less
@@ -90,32 +109,49 @@ impl PartialOrd for Fraction {
 }
 impl Add for Fraction {
     type Output = Self;
-
-    fn add(self, rhs: Self) -> Self::Output {
+    fn add(
+        self,
+        rhs: Self,
+    ) -> Self::Output {
         let l = lcm(self.1, rhs.1);
         Self(l / self.1 * self.0 + l / rhs.1 * rhs.0, l)
     }
 }
 impl AddAssign for Fraction {
-    fn add_assign(&mut self, rhs: Self) { *self = *self + rhs; }
+    fn add_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = *self + rhs;
+    }
 }
 impl Neg for Fraction {
     type Output = Self;
-
     fn neg(self) -> Self::Output { Self(-self.0, self.1) }
 }
 impl Sub for Fraction {
     type Output = Self;
-
-    fn sub(self, rhs: Self) -> Self::Output { self + -rhs }
+    fn sub(
+        self,
+        rhs: Self,
+    ) -> Self::Output {
+        self + -rhs
+    }
 }
 impl SubAssign for Fraction {
-    fn sub_assign(&mut self, rhs: Self) { *self = *self - rhs; }
+    fn sub_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = *self - rhs;
+    }
 }
 impl Mul for Fraction {
     type Output = Self;
-
-    fn mul(mut self, mut rhs: Self) -> Self::Output {
+    fn mul(
+        mut self,
+        mut rhs: Self,
+    ) -> Self::Output {
         let mut g = gcd(self.0, rhs.1);
         self.0 /= g;
         rhs.1 /= g;
@@ -128,11 +164,15 @@ impl Mul for Fraction {
     }
 }
 impl MulAssign for Fraction {
-    fn mul_assign(&mut self, rhs: Self) { *self = *self * rhs; }
+    fn mul_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = *self * rhs;
+    }
 }
 impl MulInv for Fraction {
     type Output = Self;
-
     fn mul_inv(mut self) -> Self::Output {
         use std::mem::swap;
         swap(&mut self.0, &mut self.1);
@@ -142,11 +182,20 @@ impl MulInv for Fraction {
 }
 impl Div for Fraction {
     type Output = Self;
-
-    fn div(self, rhs: Self) -> Self::Output { self * rhs.mul_inv() }
+    fn div(
+        self,
+        rhs: Self,
+    ) -> Self::Output {
+        self * rhs.mul_inv()
+    }
 }
 impl DivAssign for Fraction {
-    fn div_assign(&mut self, rhs: Self) { *self = *self / rhs; }
+    fn div_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = *self / rhs;
+    }
 }
 #[cfg(test)]
 mod tests {

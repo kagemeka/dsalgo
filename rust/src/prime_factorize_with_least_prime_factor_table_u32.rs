@@ -4,8 +4,10 @@ pub struct PrimeFactorize {
 }
 impl PrimeFactorize {
     pub fn new(size: usize) -> Self { Self { lpf: least_prime_factor(size) } }
-
-    pub fn factorize(&self, mut n: u32) -> Vec<(u32, u32)> {
+    pub fn factorize(
+        &self,
+        mut n: u32,
+    ) -> Vec<(u32, u32)> {
         assert!((n as usize) < self.lpf.len());
         let mut factors = vec![];
         while n > 1 {

@@ -7,14 +7,19 @@ impl From<((i64, i64), (i64, i64))> for Segment {
     }
 }
 impl Segment {
-    pub fn across(&self, other: &Self) -> bool {
+    pub fn across(
+        &self,
+        other: &Self,
+    ) -> bool {
         let v0 = self.1 - self.0;
         let v1 = other.0 - self.0;
         let v2 = other.1 - self.0;
         v0.cross(&v1).signum() * v0.cross(&v2).signum() <= 0
     }
-
-    pub fn intersect(&self, other: &Self) -> bool {
+    pub fn intersect(
+        &self,
+        other: &Self,
+    ) -> bool {
         self.across(other) && other.across(self)
     }
 }

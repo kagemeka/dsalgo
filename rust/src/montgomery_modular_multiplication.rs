@@ -19,7 +19,8 @@ impl MontgomeryMultiplication {
         let r = 1u128 << n_bit_len; // gcd(r, n) = 1, r > n, 2^?
         let r2 = (1u128 << (n_bit_len << 1)) % n;
         let mask = r - 1;
-        let mut n_dash = 0; // n*n_dash \equiv -1 \mod r
+        let mut n_dash = 0;
+        // n*n_dash \equiv -1 \mod r
         // decide n_dash so that n*n_dash \equiv -1 \equiv r - 1 = mask
         let mut t = 0;
         // t = n*n_dash (manage upper than or equal to i-th bit)
@@ -36,9 +37,11 @@ impl MontgomeryMultiplication {
         let nr = n * r;
         Self { n, n_bit_len, mask, r2, n_dash, nr }
     }
-
     /// return tr^{-1} mod n
-    fn reduce(&self, mut t: u128) -> u64 {
+    fn reduce(
+        &self,
+        mut t: u128,
+    ) -> u64 {
         assert!(t < self.nr);
         t = (t + ((t & self.mask) * self.n_dash & self.mask) * self.n)
             >> self.n_bit_len;
@@ -48,14 +51,21 @@ impl MontgomeryMultiplication {
         debug_assert!(t < self.n);
         t as u64
     }
-
     /// return xr mod n
     /// (xr^2)r^{-1} \equiv xr
     #[allow(dead_code)]
-    fn form(&self, x: u64) -> u128 { self.reduce(x as u128 * self.r2) as u128 }
-
+    fn form(
+        &self,
+        x: u64,
+    ) -> u128 {
+        self.reduce(x as u128 * self.r2) as u128
+    }
     /// return (a * b) mod n
-    pub fn mul(&self, x: u64, y: u64) -> u64 {
+    pub fn mul(
+        &self,
+        x: u64,
+        y: u64,
+    ) -> u64 {
         self.reduce(self.reduce(x as u128 * y as u128) as u128 * self.r2) as u64
         // ((xyr^{-1})r^2)r^{-1} \equiv xy
         // equivalent to: reduce(form(x) * form(y))

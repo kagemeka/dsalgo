@@ -2,7 +2,10 @@
 use std::f64::consts::*;
 
 use crate::complex_number_f64::Complex;
-fn dft_core(a: &[Complex], zeta_sign: f64) -> Vec<Complex> {
+fn dft_core(
+    a: &[Complex],
+    zeta_sign: f64,
+) -> Vec<Complex> {
     let n = a.len();
     (0..n)
         .map(|i| {
@@ -31,9 +34,10 @@ mod tests {
     use super::*;
     #[test]
     fn test_atc001_fft_c_convolution() {
-        let cases = vec![(vec![(1, 1), (2, 2), (3, 4), (4, 8)], vec![
-            0, 1, 4, 11, 26, 36, 40, 32,
-        ])];
+        let cases = vec![(
+            vec![(1, 1), (2, 2), (3, 4), (4, 8)],
+            vec![0, 1, 4, 11, 26, 36, 40, 32],
+        )];
         for (ab, ans) in cases {
             let n = ab.len();
             let dft_len = (n << 1) + 1;

@@ -3,12 +3,14 @@ use crate::{
     dijkstra_sparse_queue::DijkstraSparseQueue,
     negative_cycle::NegativeCycleError,
     shortest_path_potential::{
-        shortest_path_potential, ShortestPathPotentialEdge,
+        shortest_path_potential,
+        ShortestPathPotentialEdge,
     },
     sssp_dijkstra_sparse_with_general::dijkstra_sparse,
 };
 pub fn johnson_sparse<E, Q>(
-    v_size: usize, directed_edges: Vec<E>,
+    v_size: usize,
+    directed_edges: Vec<E>,
 ) -> Result<Vec<Vec<Option<i64>>>, NegativeCycleError>
 where
     E: ShortestPathPotentialEdge + Clone,

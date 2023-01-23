@@ -1,4 +1,7 @@
-pub fn jacobi_symbol_recurse(n: u64, mut a: u64) -> i8 {
+pub fn jacobi_symbol_recurse(
+    n: u64,
+    mut a: u64,
+) -> i8 {
     assert!(a < n && n & 1 == 1);
     if a == 0 {
         return if n != 1 { 0 } else { 1 };

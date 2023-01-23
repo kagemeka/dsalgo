@@ -8,7 +8,10 @@ pub(crate) struct Node<K, V> {
     pub size: usize,
 }
 impl<K: PartialOrd, V> Node<K, V> {
-    pub fn new(key: K, value: V) -> Box<Self> {
+    pub fn new(
+        key: K,
+        value: V,
+    ) -> Box<Self> {
         Box::new(Self {
             key,
             value,
@@ -18,15 +21,20 @@ impl<K: PartialOrd, V> Node<K, V> {
             size: 1,
         })
     }
-
     pub(crate) fn get_height(root: Option<&Box<Self>>) -> usize {
-        if let Some(node) = root { node.height } else { 0 }
+        if let Some(node) = root {
+            node.height
+        } else {
+            0
+        }
     }
-
     pub(crate) fn get_size(root: Option<&Box<Self>>) -> usize {
-        if let Some(node) = root { node.size } else { 0 }
+        if let Some(node) = root {
+            node.size
+        } else {
+            0
+        }
     }
-
     pub(crate) fn get_balance(root: Option<&Box<Self>>) -> isize {
         if let Some(node) = root {
             Self::get_height(node.right.as_ref()) as isize
@@ -35,7 +43,6 @@ impl<K: PartialOrd, V> Node<K, V> {
             0
         }
     }
-
     pub(crate) fn update(root: &mut Box<Self>) {
         // use std::borrow::BorrowMut;
         root.height = std::cmp::max(
@@ -46,7 +53,6 @@ impl<K: PartialOrd, V> Node<K, V> {
             + Self::get_size(root.right.as_ref())
             + 1;
     }
-
     pub(crate) fn rotate_left(mut root: Box<Self>) -> Box<Self> {
         assert!(root.right.is_some());
         let mut new_root = root.right.take().unwrap();
@@ -57,7 +63,6 @@ impl<K: PartialOrd, V> Node<K, V> {
         Self::update(&mut new_root);
         new_root
     }
-
     pub(crate) fn rotate_right(mut root: Box<Self>) -> Box<Self> {
         assert!(root.left.is_some());
         let mut new_root = root.left.take().unwrap();
@@ -68,7 +73,6 @@ impl<K: PartialOrd, V> Node<K, V> {
         Self::update(&mut new_root);
         new_root
     }
-
     pub(crate) fn balance_tree(mut root: Box<Self>) -> Box<Self> {
         Self::update(&mut root);
         let balance = Self::get_balance(Some(&root));
@@ -89,10 +93,9 @@ impl<K: PartialOrd, V> Node<K, V> {
         }
         root
     }
-
     /// return (popped, new_root)
     pub(crate) fn pop_max_node(
-        mut root: Box<Self>,
+        mut root: Box<Self>
     ) -> (Box<Self>, Option<Box<Self>>) {
         if root.right.is_none() {
             let new_root = root.left.take();
@@ -104,8 +107,10 @@ impl<K: PartialOrd, V> Node<K, V> {
         root.right = new_right;
         (max_node, Some(Self::balance_tree(root)))
     }
-
-    pub fn insert(root: Option<Box<Self>>, node: Box<Self>) -> Box<Self> {
+    pub fn insert(
+        root: Option<Box<Self>>,
+        node: Box<Self>,
+    ) -> Box<Self> {
         if let Some(mut root) = root {
             if node.key <= root.key {
                 root.left = Some(Self::insert(root.left.take(), node));
@@ -117,8 +122,10 @@ impl<K: PartialOrd, V> Node<K, V> {
             node
         }
     }
-
-    pub fn remove(root: Option<Box<Self>>, key: &K) -> Option<Box<Self>> {
+    pub fn remove(
+        root: Option<Box<Self>>,
+        key: &K,
+    ) -> Option<Box<Self>> {
         if root.is_none() {
             return None;
         }
@@ -139,9 +146,9 @@ impl<K: PartialOrd, V> Node<K, V> {
         }
         Some(Self::balance_tree(root))
     }
-
     pub fn get_kth_node(
-        root: Option<&Box<Self>>, k: usize,
+        root: Option<&Box<Self>>,
+        k: usize,
     ) -> Option<&Box<Self>> {
         if root.is_none() {
             return None;
@@ -157,8 +164,10 @@ impl<K: PartialOrd, V> Node<K, V> {
             Self::get_kth_node(root.right.as_ref(), k - current_index - 1)
         }
     }
-
-    pub fn lower_bound(root: Option<&Box<Self>>, key: &K) -> usize {
+    pub fn lower_bound(
+        root: Option<&Box<Self>>,
+        key: &K,
+    ) -> usize {
         if root.is_none() {
             return 0;
         }
@@ -171,8 +180,10 @@ impl<K: PartialOrd, V> Node<K, V> {
                 + Self::lower_bound(root.right.as_ref(), key)
         }
     }
-
-    pub fn upper_bound(root: Option<&Box<Self>>, key: &K) -> usize {
+    pub fn upper_bound(
+        root: Option<&Box<Self>>,
+        key: &K,
+    ) -> usize {
         if root.is_none() {
             return 0;
         }
@@ -185,9 +196,9 @@ impl<K: PartialOrd, V> Node<K, V> {
                 + Self::upper_bound(root.right.as_ref(), key)
         }
     }
-
     pub fn find<'a>(
-        root: Option<&'a Box<Self>>, key: &K,
+        root: Option<&'a Box<Self>>,
+        key: &K,
     ) -> Option<&'a Box<Self>> {
         if root.is_none() {
             return None;

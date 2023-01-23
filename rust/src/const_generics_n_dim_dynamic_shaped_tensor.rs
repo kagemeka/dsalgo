@@ -15,7 +15,6 @@ pub struct NdimDynamicTensor<T, const D: usize> {
 // }
 impl<T, const D: usize> NdimDynamicTensor<T, D> {
     pub const fn shape(&self) -> &[usize; D] { &self.shape }
-
     pub fn strides(&self) -> [usize; D] {
         let mut strides: [usize; D] = self.shape.into();
         if D > 0 {
@@ -26,7 +25,6 @@ impl<T, const D: usize> NdimDynamicTensor<T, D> {
         }
         strides
     }
-
     pub(crate) fn compute_size(shape: &[usize]) -> usize {
         let mut size = 1;
         for &dim in shape {
@@ -34,7 +32,6 @@ impl<T, const D: usize> NdimDynamicTensor<T, D> {
         }
         size
     }
-
     pub fn size(&self) -> usize { self.data.len() }
 }
 impl<T: Default, const D: usize> NdimDynamicTensor<T, D> {
@@ -48,7 +45,10 @@ impl<T: Default, const D: usize> NdimDynamicTensor<T, D> {
     }
 }
 impl<T, const D: usize> NdimDynamicTensor<T, D> {
-    fn flatten_index(&self, index: [usize; D]) -> usize {
+    fn flatten_index(
+        &self,
+        index: [usize; D],
+    ) -> usize {
         let mut idx = 0;
         let strides = self.strides();
         for i in 0..D {
@@ -61,15 +61,20 @@ impl<T, const D: usize> std::ops::Index<[usize; D]>
     for NdimDynamicTensor<T, D>
 {
     type Output = T;
-
-    fn index(&self, index: [usize; D]) -> &Self::Output {
+    fn index(
+        &self,
+        index: [usize; D],
+    ) -> &Self::Output {
         &self.data[self.flatten_index(index)]
     }
 }
 impl<T, const D: usize> std::ops::IndexMut<[usize; D]>
     for NdimDynamicTensor<T, D>
 {
-    fn index_mut(&mut self, index: [usize; D]) -> &mut Self::Output {
+    fn index_mut(
+        &mut self,
+        index: [usize; D],
+    ) -> &mut Self::Output {
         let idx = self.flatten_index(index);
         &mut self.data[idx]
     }
@@ -80,8 +85,10 @@ where
     T: Copy + Default + std::ops::Add<Output = T> + std::ops::Mul<Output = T>,
 {
     type Output = Self;
-
-    fn mul(self, rhs: Self) -> Self {
+    fn mul(
+        self,
+        rhs: Self,
+    ) -> Self {
         assert_eq!(self.shape[1], rhs.shape[0]);
         let h = self.shape[0];
         let w = rhs.shape[1];

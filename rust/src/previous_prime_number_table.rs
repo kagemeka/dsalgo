@@ -19,17 +19,20 @@ mod tests {
     #[test]
     fn test() {
         let prev = previous_prime_table(20);
-        assert_eq!(prev.into_iter().take(10).collect::<Vec<_>>(), vec![
-            None,
-            None,
-            Some(2),
-            Some(3),
-            Some(3),
-            Some(5),
-            Some(5),
-            Some(7),
-            Some(7),
-            Some(7),
-        ],);
+        assert_eq!(
+            prev.into_iter().take(10).collect::<Vec<_>>(),
+            vec![
+                None,
+                None,
+                Some(2),
+                Some(3),
+                Some(3),
+                Some(5),
+                Some(5),
+                Some(7),
+                Some(7),
+                Some(7),
+            ],
+        );
     }
 }

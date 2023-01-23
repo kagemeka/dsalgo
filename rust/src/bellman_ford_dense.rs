@@ -2,7 +2,8 @@
 use crate::negative_cycle::NegativeCycleError;
 /// O(V^3)
 pub(crate) fn bellman_ford_dense(
-    g: &Vec<Vec<i64>>, src: usize,
+    g: &Vec<Vec<i64>>,
+    src: usize,
 ) -> Result<Vec<i64>, NegativeCycleError> {
     let n = g.len();
     let inf = std::i64::MAX;

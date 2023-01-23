@@ -23,54 +23,69 @@ where
         let lazy = vec![F::e(); n];
         Self { data, lazy, size }
     }
-
     pub fn size(&self) -> usize { self.size }
-
     fn n(&self) -> usize { self.lazy.len() }
-
     fn height(&self) -> usize { bit_length(self.n()) }
-
-    fn merge(&mut self, i: usize) {
+    fn merge(
+        &mut self,
+        i: usize,
+    ) {
         self.data[i] =
             self.data[i << 1].clone() + self.data[i << 1 | 1].clone();
     }
-
-    fn apply_node(&mut self, i: usize, f: F) {
+    fn apply_node(
+        &mut self,
+        i: usize,
+        f: F,
+    ) {
         self.data[i] = self.data[i].clone() + f.clone();
         if i < self.n() {
             self.lazy[i] = self.lazy[i].clone() + f;
         }
     }
-
-    fn propagate(&mut self, i: usize) {
+    fn propagate(
+        &mut self,
+        i: usize,
+    ) {
         let f = self.lazy[i].clone();
         self.apply_node(i << 1, f.clone());
         self.apply_node(i << 1 | 1, f);
         self.lazy[i] = F::e();
     }
-
-    fn pull(&mut self, i: usize) {
+    fn pull(
+        &mut self,
+        i: usize,
+    ) {
         for j in (1..self.height()).rev() {
             self.propagate(i >> j);
         }
     }
-
-    fn merge_above(&mut self, mut i: usize) {
+    fn merge_above(
+        &mut self,
+        mut i: usize,
+    ) {
         while i > 1 {
             i >>= 1;
             self.merge(i);
         }
     }
-
-    pub fn set(&mut self, mut i: usize, x: S) {
+    pub fn set(
+        &mut self,
+        mut i: usize,
+        x: S,
+    ) {
         assert!(i < self.size);
         i += self.n();
         self.pull(i);
         self.data[i] = x;
         self.merge_above(i);
     }
-
-    pub fn apply(&mut self, mut l: usize, mut r: usize, f: F) {
+    pub fn apply(
+        &mut self,
+        mut l: usize,
+        mut r: usize,
+        f: F,
+    ) {
         assert!(l <= r && r <= self.size);
         let n = self.n();
         l += n;
@@ -94,15 +109,20 @@ where
         self.merge_above(l0);
         self.merge_above(r0);
     }
-
-    pub fn get(&mut self, mut i: usize) -> S {
+    pub fn get(
+        &mut self,
+        mut i: usize,
+    ) -> S {
         assert!(i < self.size);
         i += self.n();
         self.pull(i);
         self.data[i].clone()
     }
-
-    pub fn fold(&mut self, mut l: usize, mut r: usize) -> S {
+    pub fn fold(
+        &mut self,
+        mut l: usize,
+        mut r: usize,
+    ) -> S {
         assert!(l <= r && r <= self.size);
         let n = self.n();
         l += n;
@@ -125,8 +145,11 @@ where
         }
         vl + vr
     }
-
-    pub fn max_right<G>(&mut self, is_ok: G, l: usize) -> usize
+    pub fn max_right<G>(
+        &mut self,
+        is_ok: G,
+        l: usize,
+    ) -> usize
     where
         G: Fn(&S) -> bool,
     {
@@ -162,8 +185,11 @@ where
         }
         i - n
     }
-
-    pub fn min_left<G>(&mut self, is_ok: G, r: usize) -> usize
+    pub fn min_left<G>(
+        &mut self,
+        is_ok: G,
+        r: usize,
+    ) -> usize
     where
         G: Fn(&S) -> bool,
     {
@@ -215,15 +241,19 @@ mod tests {
         }
         impl Add for S {
             type Output = Self;
-
-            fn add(self, rhs: Self) -> Self::Output {
+            fn add(
+                self,
+                rhs: Self,
+            ) -> Self::Output {
                 Self(self.0 + rhs.0, self.1 + rhs.1)
             }
         }
         impl Add<F> for S {
             type Output = S;
-
-            fn add(self, rhs: F) -> Self::Output {
+            fn add(
+                self,
+                rhs: F,
+            ) -> Self::Output {
                 Self(self.0 + self.1 as i64 * rhs.0, self.1)
             }
         }
@@ -231,8 +261,12 @@ mod tests {
         struct F(i64);
         impl Add for F {
             type Output = Self;
-
-            fn add(self, rhs: Self) -> Self::Output { Self(self.0 + rhs.0) }
+            fn add(
+                self,
+                rhs: Self,
+            ) -> Self::Output {
+                Self(self.0 + rhs.0)
+            }
         }
         impl Identity for F {
             fn e() -> Self { Self(0) }

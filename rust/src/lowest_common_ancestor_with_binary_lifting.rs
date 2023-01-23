@@ -8,14 +8,20 @@ pub struct LCA {
     ancestor: Vec<Vec<usize>>,
 }
 impl LCA {
-    pub fn new(g: &[Vec<usize>], root: usize) -> Self {
+    pub fn new(
+        g: &[Vec<usize>],
+        root: usize,
+    ) -> Self {
         let (parent, depth) = bfs(g, root);
         let k = bit_length(*depth.iter().max().unwrap());
         let ancestor = doubling_table(&parent, k.max(1));
         Self { ancestor, depth }
     }
-
-    pub fn get(&self, mut u: usize, mut v: usize) -> usize {
+    pub fn get(
+        &self,
+        mut u: usize,
+        mut v: usize,
+    ) -> usize {
         if self.depth[u] > self.depth[v] {
             std::mem::swap(&mut u, &mut v);
         }

@@ -2,8 +2,10 @@ use crate::sieve_of_eratosthenes_least_prime_factor_table_usize_optim2::*;
 pub struct PrimeFactorize(Vec<usize>);
 impl PrimeFactorize {
     pub fn new(size: usize) -> Self { Self(least_prime_factor(size)) }
-
-    pub fn factorize(&self, mut n: usize) -> Vec<(usize, usize)> {
+    pub fn factorize(
+        &self,
+        mut n: usize,
+    ) -> Vec<(usize, usize)> {
         assert!(n < self.0.len());
         let mut factors = vec![];
         while n > 1 {

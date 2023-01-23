@@ -1,6 +1,10 @@
 pub trait Monoid {
     type T;
-    fn op(&self, l: Self::T, r: Self::T) -> Self::T;
+    fn op(
+        &self,
+        l: Self::T,
+        r: Self::T,
+    ) -> Self::T;
     fn e(&self) -> Self::T;
 }
 pub trait Edge {
@@ -19,22 +23,32 @@ where
     M::T: Clone + std::fmt::Debug,
     E: Clone + Edge,
 {
-    fn new(g: &'a [Vec<E>], m: M, f: F) -> Self {
+    fn new(
+        g: &'a [Vec<E>],
+        m: M,
+        f: F,
+    ) -> Self {
         let n = g.len();
         let dp_from_childs = vec![m.e(); n];
         let dp = vec![m.e(); n];
         let rev_edge = vec![None; n];
         Self { g, m, f, rev_edge, dp_from_childs, dp }
     }
-
-    pub fn calc(g: &'a [Vec<E>], m: M, f: F) -> Vec<M::T> {
+    pub fn calc(
+        g: &'a [Vec<E>],
+        m: M,
+        f: F,
+    ) -> Vec<M::T> {
         let mut wrapper = Self::new(g, m, f);
         wrapper.tree_dp(0, 0);
         wrapper.reroot(0, 0, wrapper.m.e());
         wrapper.dp
     }
-
-    fn tree_dp(&mut self, u: usize, parent: usize) {
+    fn tree_dp(
+        &mut self,
+        u: usize,
+        parent: usize,
+    ) {
         for e in self.g[u].iter() {
             let v = e.to();
             if v == parent {
@@ -48,8 +62,12 @@ where
             );
         }
     }
-
-    fn reroot(&mut self, u: usize, parent: usize, x: M::T) {
+    fn reroot(
+        &mut self,
+        u: usize,
+        parent: usize,
+        x: M::T,
+    ) {
         self.dp[u] = self.m.op(x.clone(), self.dp_from_childs[u].clone());
         let n = self.g[u].len();
         let mut dp_r = vec![self.m.e(); n + 1];
@@ -91,9 +109,13 @@ mod tests {
         struct M;
         impl Monoid for M {
             type T = u64;
-
-            fn op(&self, lhs: Self::T, rhs: Self::T) -> Self::T { lhs.max(rhs) }
-
+            fn op(
+                &self,
+                lhs: Self::T,
+                rhs: Self::T,
+            ) -> Self::T {
+                lhs.max(rhs)
+            }
             fn e(&self) -> Self::T { 0 }
         }
         #[derive(Clone)]
@@ -102,15 +124,21 @@ mod tests {
             weight: u64,
         }
         impl E {
-            pub fn new(to: usize, weight: u64) -> Self { Self { to, weight } }
+            pub fn new(
+                to: usize,
+                weight: u64,
+            ) -> Self {
+                Self { to, weight }
+            }
         }
         impl Edge for E {
             fn to(&self) -> usize { self.to }
         }
-        let g =
-            vec![vec![E::new(1, 2)], vec![E::new(0, 2), E::new(2, 3)], vec![
-                E::new(1, 3),
-            ]];
+        let g = vec![
+            vec![E::new(1, 2)],
+            vec![E::new(0, 2), E::new(2, 3)],
+            vec![E::new(1, 3)],
+        ];
         let d = vec![1, 2, 3];
         let map = |e: &E, x: u64| -> u64 { e.weight + x.max(d[e.to()]) };
         let res = ReRootingDP::calc(&g, M {}, &map);
@@ -122,10 +150,12 @@ mod tests {
         struct M;
         impl Monoid for M {
             type T = (usize, usize);
-
             fn e(&self) -> Self::T { (0, 0) }
-
-            fn op(&self, l: Self::T, r: Self::T) -> Self::T {
+            fn op(
+                &self,
+                l: Self::T,
+                r: Self::T,
+            ) -> Self::T {
                 (l.0 + r.0, l.1 + r.1)
             }
         }
@@ -137,9 +167,10 @@ mod tests {
         let cases = vec![
             ((3, vec![(1, 2), (2, 3)]), vec![3, 2, 3]),
             ((2, vec![(1, 2)]), vec![1, 1]),
-            ((6, vec![(1, 6), (1, 5), (1, 3), (1, 4), (1, 2)]), vec![
-                5, 9, 9, 9, 9, 9, 9,
-            ]),
+            (
+                (6, vec![(1, 6), (1, 5), (1, 3), (1, 4), (1, 2)]),
+                vec![5, 9, 9, 9, 9, 9, 9],
+            ),
         ];
         for ((n, edges), ans) in cases {
             let mut g = vec![vec![]; n];

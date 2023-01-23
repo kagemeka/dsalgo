@@ -2,7 +2,10 @@
 //! input: bidirected adjacency list (undirected graph)
 //! output: undirected edges [(u, v)] u < v. (but not sorted vertically)
 //! (deal with no given priority between u and v, and among edges.)
-pub fn bfs_tree(g: &[Vec<usize>], root: usize) -> Vec<(usize, usize)> {
+pub fn bfs_tree(
+    g: &[Vec<usize>],
+    root: usize,
+) -> Vec<(usize, usize)> {
     let n = g.len();
     let mut used = Vec::with_capacity(n - 1);
     let mut que = std::collections::VecDeque::new();

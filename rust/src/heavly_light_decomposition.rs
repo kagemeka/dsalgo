@@ -6,7 +6,8 @@ use crate::{
 };
 /// return root of component which each node belongs to.
 pub fn heavy_light_decompose(
-    tree_edges: &[(usize, usize)], root: usize,
+    tree_edges: &[(usize, usize)],
+    root: usize,
 ) -> Vec<usize> {
     let graph = tree_edges_to_graph(tree_edges);
     let n = graph.len();

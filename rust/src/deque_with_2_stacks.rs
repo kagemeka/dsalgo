@@ -5,15 +5,20 @@ pub struct Deque<T> {
 }
 impl<T> Deque<T> {
     pub fn new() -> Self { Self { st_l: vec![], st_r: vec![] } }
-
     pub fn size(&self) -> usize { self.st_l.len() + self.st_r.len() }
-
     fn swap_lr(&mut self) { swap(&mut self.st_l, &mut self.st_r); }
-
-    pub fn push_right(&mut self, x: T) { self.st_r.push(x); }
-
-    pub fn push_left(&mut self, x: T) { self.st_l.push(x); }
-
+    pub fn push_right(
+        &mut self,
+        x: T,
+    ) {
+        self.st_r.push(x);
+    }
+    pub fn push_left(
+        &mut self,
+        x: T,
+    ) {
+        self.st_l.push(x);
+    }
     pub fn pop_right(&mut self) -> Option<T> {
         if !self.st_r.is_empty() {
             return self.st_r.pop();
@@ -26,7 +31,6 @@ impl<T> Deque<T> {
         self.swap_lr();
         self.st_r.pop()
     }
-
     pub fn pop_left(&mut self) -> Option<T> {
         self.swap_lr();
         let v = self.pop_right();

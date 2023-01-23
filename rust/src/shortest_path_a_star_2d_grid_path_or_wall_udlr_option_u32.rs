@@ -1,5 +1,9 @@
 pub fn a_star(
-    is_path: &[Vec<bool>], sy: usize, sx: usize, gy: usize, gx: usize,
+    is_path: &[Vec<bool>],
+    sy: usize,
+    sx: usize,
+    gy: usize,
+    gx: usize,
 ) -> Option<u32> {
     use std::cmp::Reverse;
     let hf = |y, x| {

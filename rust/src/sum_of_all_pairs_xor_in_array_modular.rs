@@ -1,5 +1,12 @@
-use std::{iter::Sum, ops::*};
-pub fn sum_of_xor<T>(modulus: T, a: &[T], max_bit: usize) -> T
+use std::{
+    iter::Sum,
+    ops::*,
+};
+pub fn sum_of_xor<T>(
+    modulus: T,
+    a: &[T],
+    max_bit: usize,
+) -> T
 where
     T: Copy
         + Shl<usize, Output = T>

@@ -1,9 +1,15 @@
 use crate::{
-    graph::edge::{From, To, Value},
+    graph::edge::{
+        From,
+        To,
+        Value,
+    },
     negative_cycle::NegativeCycleError,
 };
 pub fn bellman_ford<E>(
-    v_size: usize, directed_edges: &[E], src: usize,
+    v_size: usize,
+    directed_edges: &[E],
+    src: usize,
 ) -> Result<Vec<Option<i64>>, NegativeCycleError>
 where
     E: From<V = usize> + To<V = usize> + Value<T = i64>,

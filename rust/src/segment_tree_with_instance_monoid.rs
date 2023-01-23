@@ -1,6 +1,10 @@
 pub trait Monoid {
     type T;
-    fn op(&self, l: Self::T, r: Self::T) -> Self::T;
+    fn op(
+        &self,
+        l: Self::T,
+        r: Self::T,
+    ) -> Self::T;
     fn e(&self) -> Self::T;
 }
 pub struct SegmentTree<G: Monoid> {
@@ -14,27 +18,38 @@ impl<G: Monoid> SegmentTree<G> {
 use std::ops::*;
 impl<G: Monoid> Index<usize> for SegmentTree<G> {
     type Output = G::T;
-
-    fn index(&self, i: usize) -> &Self::Output { &self.data[i + self.n()] }
+    fn index(
+        &self,
+        i: usize,
+    ) -> &Self::Output {
+        &self.data[i + self.n()]
+    }
 }
 impl<G: Monoid> SegmentTree<G>
 where
     G::T: Clone,
 {
-    fn merge(&mut self, i: usize) {
-        self.data[i] = self
-            .g
-            .op(self.data[i << 1].clone(), self.data[i << 1 | 1].clone());
+    fn merge(
+        &mut self,
+        i: usize,
+    ) {
+        self.data[i] =
+            self.g.op(self.data[i << 1].clone(), self.data[i << 1 | 1].clone());
     }
-
-    pub fn new(g: G, size: usize) -> Self {
+    pub fn new(
+        g: G,
+        size: usize,
+    ) -> Self {
         assert!(size > 0);
         let n = size.next_power_of_two();
         let data = vec![g.e(); n << 1];
         Self { g, size, data }
     }
-
-    pub fn set(&mut self, mut i: usize, x: G::T) {
+    pub fn set(
+        &mut self,
+        mut i: usize,
+        x: G::T,
+    ) {
         assert!(i < self.size);
         i += self.n();
         self.data[i] = x;
@@ -43,8 +58,11 @@ where
             self.merge(i);
         }
     }
-
-    pub fn fold(&self, mut l: usize, mut r: usize) -> G::T {
+    pub fn fold(
+        &self,
+        mut l: usize,
+        mut r: usize,
+    ) -> G::T {
         assert!(l <= r && r <= self.size);
         let mut vl = self.g.e();
         let mut vr = self.g.e();
@@ -65,8 +83,11 @@ where
         }
         self.g.op(vl, vr)
     }
-
-    pub fn max_right<F: Fn(&G::T) -> bool>(&self, f: F, l: usize) -> usize {
+    pub fn max_right<F: Fn(&G::T) -> bool>(
+        &self,
+        f: F,
+        l: usize,
+    ) -> usize {
         assert!(l <= self.size);
         if l == self.size {
             return self.size;
@@ -97,8 +118,11 @@ where
         }
         i - n
     }
-
-    pub fn min_left<F: Fn(&G::T) -> bool>(&self, f: F, r: usize) -> usize {
+    pub fn min_left<F: Fn(&G::T) -> bool>(
+        &self,
+        f: F,
+        r: usize,
+    ) -> usize {
         assert!(r <= self.size);
         if r == 0 {
             return 0;
@@ -135,9 +159,13 @@ mod tests {
     struct G;
     impl Monoid for G {
         type T = i32;
-
-        fn op(&self, x: i32, y: i32) -> i32 { x + y }
-
+        fn op(
+            &self,
+            x: i32,
+            y: i32,
+        ) -> i32 {
+            x + y
+        }
         fn e(&self) -> i32 { 0 }
     }
     use super::*;

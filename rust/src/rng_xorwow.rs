@@ -3,10 +3,12 @@ pub struct Xorwow {
     counter: u32,
 }
 impl Xorwow {
-    pub fn new(seeds: [u32; 5], counter: u32) -> Self {
+    pub fn new(
+        seeds: [u32; 5],
+        counter: u32,
+    ) -> Self {
         Self { seeds, counter }
     }
-
     pub fn next(&mut self) -> u32 {
         let [mut x, y, z, w, v] = self.seeds;
         x ^= x >> 2;

@@ -19,8 +19,9 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        assert_eq!(factorize_factorial(10), [
-            2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 5, 5, 7
-        ]);
+        assert_eq!(
+            factorize_factorial(10),
+            [2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 5, 5, 7]
+        );
     }
 }

@@ -20,11 +20,14 @@ impl EnumerateRangePrimes {
             less_than,
         }
     }
-
     /// find prime numbers in [lo, hi).
     /// time: O((hi - lo)\log{\log{less_than}})
     /// space: O(hi - lo)
-    pub fn enumerate(&self, mut lo: u64, hi: u64) -> Vec<u64> {
+    pub fn enumerate(
+        &self,
+        mut lo: u64,
+        hi: u64,
+    ) -> Vec<u64> {
         assert!(lo <= hi && hi <= self.less_than);
         if hi <= 2 {
             return vec![];
@@ -63,7 +66,11 @@ impl EnumerateRangePrimes {
         }
         a.extend(is_prime.into_iter().enumerate().filter_map(
             |(i, is_prime)| {
-                if is_prime { Some(lo + (i << 1) as u64) } else { None }
+                if is_prime {
+                    Some(lo + (i << 1) as u64)
+                } else {
+                    None
+                }
             },
         ));
         a
@@ -72,14 +79,17 @@ impl EnumerateRangePrimes {
 #[test]
 fn test() {
     let cases = vec![
-        ((100, 500), vec![
-            101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163,
-            167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233,
-            239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311,
-            313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389,
-            397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463,
-            467, 479, 487, 491, 499,
-        ]),
+        (
+            (100, 500),
+            vec![
+                101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157,
+                163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227,
+                229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283,
+                293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367,
+                373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439,
+                443, 449, 457, 461, 463, 467, 479, 487, 491, 499,
+            ],
+        ),
         ((0, 10), vec![2, 3, 5, 7]),
     ];
     let f = EnumerateRangePrimes::new(1 << 10);

@@ -1,4 +1,7 @@
-pub fn euler_tour_edges(g: &[Vec<usize>], root: usize) -> Vec<isize> {
+pub fn euler_tour_edges(
+    g: &[Vec<usize>],
+    root: usize,
+) -> Vec<isize> {
     let n = g.len();
     let mut tour = vec![0; n << 1];
     let mut st = vec![root as isize];

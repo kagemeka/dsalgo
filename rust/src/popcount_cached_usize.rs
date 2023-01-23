@@ -2,8 +2,10 @@ use std::collections::HashMap;
 pub struct Popcount(HashMap<usize, usize>);
 impl Popcount {
     pub fn new() -> Self { Self(HashMap::new()) }
-
-    pub fn calc(&mut self, n: usize) -> usize {
+    pub fn calc(
+        &mut self,
+        n: usize,
+    ) -> usize {
         if let Some(&c) = self.0.get(&n) {
             c
         } else {

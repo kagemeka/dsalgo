@@ -1,6 +1,9 @@
 use std::ops::*;
 
-use crate::{accumulate_iterator::accumulate, factorial::factorial};
+use crate::{
+    accumulate_iterator::accumulate,
+    factorial::factorial,
+};
 pub fn inverse_factorial_table<T>(size: usize) -> Vec<T>
 where
     T: Mul<Output = T> + Div<Output = T> + From<u64> + Clone,
@@ -32,11 +35,14 @@ mod tests {
             .into_iter()
             .map(|x| x.value())
             .collect::<Vec<u32>>();
-        assert_eq!(res, [
-            1, 1, 500000004, 166666668, 41666667, 808333339, 301388891,
-            900198419, 487524805, 831947206, 283194722, 571199524, 380933296,
-            490841026, 320774361, 821384963, 738836565, 514049213, 639669405,
-            402087866
-        ],);
+        assert_eq!(
+            res,
+            [
+                1, 1, 500000004, 166666668, 41666667, 808333339, 301388891,
+                900198419, 487524805, 831947206, 283194722, 571199524,
+                380933296, 490841026, 320774361, 821384963, 738836565,
+                514049213, 639669405, 402087866
+            ],
+        );
     }
 }

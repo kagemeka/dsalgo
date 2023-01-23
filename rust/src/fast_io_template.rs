@@ -2,7 +2,8 @@
 //! template main function.
 #![allow(unused_imports)]
 pub use crate::{
-    io_locked_stdin_reader::*, io_locked_stdout_buffered_writer::*,
+    io_locked_stdin_reader::*,
+    io_locked_stdout_buffered_writer::*,
 };
 // fn main() -> Result<(), Box<dyn std::error::Error>> {
 //     use std::io::Write;

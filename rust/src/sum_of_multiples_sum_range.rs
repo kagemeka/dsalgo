@@ -5,7 +5,11 @@ use crate::{
 /// \sum_{i=lo}^{hi}{\sum_{i|j, j <= limit}{j}}
 /// sqrt split teqnique
 /// O(\sqrt{n})
-pub fn sum_of_multiples_sum_range(limit: u64, lo: u64, mut hi: u64) -> u64 {
+pub fn sum_of_multiples_sum_range(
+    limit: u64,
+    lo: u64,
+    mut hi: u64,
+) -> u64 {
     if limit < hi {
         hi = limit;
     }

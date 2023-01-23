@@ -1,4 +1,10 @@
-pub fn reset_lsb(n: u64) -> u64 { if n == 0 { 0 } else { n & (n - 1) } }
+pub fn reset_lsb(n: u64) -> u64 {
+    if n == 0 {
+        0
+    } else {
+        n & (n - 1)
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;

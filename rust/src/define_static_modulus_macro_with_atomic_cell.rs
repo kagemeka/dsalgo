@@ -24,12 +24,10 @@ macro_rules! define_static_mod {
         }
         impl<Id> Get for $name<Id> {
             type T = $uint;
-
             fn get() -> Self::T { Self::cell().load($atomic_ordering_load) }
         }
         impl<Id> Set for $name<Id> {
             type T = $uint;
-
             fn set(value: Self::T) {
                 Self::cell().store(value, $atomic_ordering_store);
             }
@@ -46,7 +44,10 @@ macro_rules! define_static_mod {
         );
     };
 }
-use std::sync::atomic::{AtomicU32, AtomicU64};
+use std::sync::atomic::{
+    AtomicU32,
+    AtomicU64,
+};
 define_static_mod!(ModU32, u32, AtomicU32);
 define_static_mod!(ModU64, u64, AtomicU64);
 #[cfg(test)]

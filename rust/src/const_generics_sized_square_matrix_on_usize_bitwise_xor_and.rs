@@ -6,16 +6,27 @@ impl<const N: usize> Matrix<N> {
 }
 impl<const N: usize> Index<usize> for Matrix<N> {
     type Output = [usize; N];
-
-    fn index(&self, i: usize) -> &Self::Output { &self.0[i] }
+    fn index(
+        &self,
+        i: usize,
+    ) -> &Self::Output {
+        &self.0[i]
+    }
 }
 impl<const N: usize> IndexMut<usize> for Matrix<N> {
-    fn index_mut(&mut self, i: usize) -> &mut Self::Output { &mut self.0[i] }
+    fn index_mut(
+        &mut self,
+        i: usize,
+    ) -> &mut Self::Output {
+        &mut self.0[i]
+    }
 }
 impl<const N: usize> Add for Matrix<N> {
     type Output = Self;
-
-    fn add(mut self, rhs: Self) -> Self::Output {
+    fn add(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         for i in 0..N {
             for j in 0..N {
                 self[i][j] ^= rhs[i][j];
@@ -25,12 +36,19 @@ impl<const N: usize> Add for Matrix<N> {
     }
 }
 impl<const N: usize> AddAssign for Matrix<N> {
-    fn add_assign(&mut self, rhs: Self) { *self = *self + rhs; }
+    fn add_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = *self + rhs;
+    }
 }
 impl<const N: usize> Mul for Matrix<N> {
     type Output = Self;
-
-    fn mul(self, rhs: Self) -> Self::Output {
+    fn mul(
+        self,
+        rhs: Self,
+    ) -> Self::Output {
         let mut a: Self = 0.into();
         for i in 0..N {
             for k in 0..N {
@@ -43,7 +61,12 @@ impl<const N: usize> Mul for Matrix<N> {
     }
 }
 impl<const N: usize> MulAssign for Matrix<N> {
-    fn mul_assign(&mut self, rhs: Self) { *self = *self * rhs; }
+    fn mul_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = *self * rhs;
+    }
 }
 impl<const N: usize> From<i32> for Matrix<N> {
     fn from(x: i32) -> Self {

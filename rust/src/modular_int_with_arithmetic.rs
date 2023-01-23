@@ -15,7 +15,10 @@ where
     M: Arithmetic<T = T>,
     M::T: std::fmt::Display,
 {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(
+        &self,
+        f: &mut std::fmt::Formatter<'_>,
+    ) -> std::fmt::Result {
         write!(f, "{}", self.value)
     }
 }
@@ -42,7 +45,6 @@ where
 {
     // TODO: make const
     pub fn value(&self) -> M::T { self.value }
-
     // pub fn new(value: M::T) -> Self { Self { value } }
     pub fn modulus() -> M::T { M::modulus() }
 }
@@ -52,8 +54,10 @@ where
     T: Copy,
 {
     type Output = Self;
-
-    fn add(mut self, rhs: Self) -> Self::Output {
+    fn add(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         self.value = M::add(self.value, rhs.value);
         self
     }
@@ -63,7 +67,12 @@ where
     M: Arithmetic<T = T> + Copy,
     T: Copy,
 {
-    fn add_assign(&mut self, rhs: Self) { *self = *self + rhs; }
+    fn add_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = *self + rhs;
+    }
 }
 impl<T, M> std::ops::Sub for Modint<T, M>
 where
@@ -71,8 +80,10 @@ where
     T: Copy,
 {
     type Output = Self;
-
-    fn sub(mut self, rhs: Self) -> Self::Output {
+    fn sub(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         self.value = M::sub(self.value, rhs.value);
         self
     }
@@ -82,7 +93,12 @@ where
     M: Arithmetic<T = T> + Copy,
     T: Copy,
 {
-    fn sub_assign(&mut self, rhs: Self) { *self = *self - rhs; }
+    fn sub_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = *self - rhs;
+    }
 }
 impl<T, M> std::ops::Neg for Modint<T, M>
 where
@@ -90,7 +106,6 @@ where
     T: Copy,
 {
     type Output = Self;
-
     fn neg(mut self) -> Self::Output {
         self.value = M::neg(self.value);
         self
@@ -102,8 +117,10 @@ where
     T: Copy,
 {
     type Output = Self;
-
-    fn mul(mut self, rhs: Self) -> Self::Output {
+    fn mul(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         self.value = M::mul(self.value, rhs.value);
         self
     }
@@ -113,7 +130,12 @@ where
     M: Arithmetic<T = T> + Copy,
     T: Copy,
 {
-    fn mul_assign(&mut self, rhs: Self) { *self = *self * rhs; }
+    fn mul_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = *self * rhs;
+    }
 }
 impl<T, M> std::ops::Div for Modint<T, M>
 where
@@ -121,8 +143,10 @@ where
     T: Copy,
 {
     type Output = Self;
-
-    fn div(mut self, rhs: Self) -> Self::Output {
+    fn div(
+        mut self,
+        rhs: Self,
+    ) -> Self::Output {
         self.value = M::div(self.value, rhs.value);
         self
     }
@@ -132,7 +156,12 @@ where
     M: Arithmetic<T = T> + Copy,
     T: Copy,
 {
-    fn div_assign(&mut self, rhs: Self) { *self = *self / rhs; }
+    fn div_assign(
+        &mut self,
+        rhs: Self,
+    ) {
+        *self = *self / rhs;
+    }
 }
 impl<T, M> Modint<T, M>
 where
@@ -230,22 +259,41 @@ where
     M: Arithmetic<T = u64>,
     Self: Clone,
 {
-    pub fn pow(self, exponent: u64) -> Self { self.pow_monoid(exponent) }
+    pub fn pow(
+        self,
+        exponent: u64,
+    ) -> Self {
+        self.pow_monoid(exponent)
+    }
 }
 impl<M> Modint<u32, M>
 where
     M: Arithmetic<T = u32>,
     Self: Clone,
 {
-    pub fn pow(self, exponent: u64) -> Self { self.pow_monoid(exponent) }
+    pub fn pow(
+        self,
+        exponent: u64,
+    ) -> Self {
+        self.pow_monoid(exponent)
+    }
 }
-use crate::{binary_function::itself::*, group_theory_id::*, ops::MulInv};
+use crate::{
+    binary_function::itself::*,
+    group_theory_id::*,
+    ops::MulInv,
+};
 impl<T, M> BinaryOp<Multiplicative> for Modint<T, M>
 where
     M: Arithmetic<T = T>,
     T: Copy,
 {
-    fn op(lhs: Self, rhs: Self) -> Self { lhs * rhs }
+    fn op(
+        lhs: Self,
+        rhs: Self,
+    ) -> Self {
+        lhs * rhs
+    }
 }
 impl<M> Identity<Multiplicative> for Modint<u64, M>
 where
@@ -268,7 +316,6 @@ where
     M: Arithmetic<T = u64> + Copy,
 {
     type Output = Self;
-
     fn mul_inv(self) -> Self::Output { self.inv() }
 }
 impl<M> MulInv for Modint<u32, M>
@@ -276,7 +323,6 @@ where
     M: Arithmetic<T = u32> + Copy,
 {
     type Output = Self;
-
     fn mul_inv(self) -> Self::Output { self.inv() }
 }
 // TODO:

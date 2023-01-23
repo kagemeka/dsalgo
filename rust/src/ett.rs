@@ -6,7 +6,10 @@ use crate::{
 /// Undirected Tree Edges.
 pub type E = [(usize, usize)];
 /// from edges, root
-pub fn tour_edges(e: &E, r: usize) -> Vec<isize> {
+pub fn tour_edges(
+    e: &E,
+    r: usize,
+) -> Vec<isize> {
     let g = tree_edges_to_graph(e);
     let n = g.len();
     let mut p = vec![None; n]; // parent
@@ -31,7 +34,10 @@ pub fn tour_edges(e: &E, r: usize) -> Vec<isize> {
 }
 // TODO: recurse
 // pub fn tour_edges_recurse(e: &E, r: usize) -> Vec<isize> {}
-pub fn tour_nodes(e: &E, r: usize) -> Vec<usize> {
+pub fn tour_nodes(
+    e: &E,
+    r: usize,
+) -> Vec<usize> {
     let p = tree_parents(e, r);
     tour_edges(e, r)
         .iter()
@@ -44,10 +50,7 @@ pub fn tour_nodes(e: &E, r: usize) -> Vec<usize> {
 pub fn last_positions(tour_nodes: &[usize]) -> Vec<usize> {
     let n = tour_nodes.iter().max().unwrap() + 1;
     let mut pos = vec![None; n];
-    tour_nodes
-        .iter()
-        .enumerate()
-        .for_each(|(i, &u)| pos[u] = Some(i));
+    tour_nodes.iter().enumerate().for_each(|(i, &u)| pos[u] = Some(i));
     pos.iter().map(|&p| p.unwrap()).collect()
 }
 pub fn first_positions(tour_nodes: &[usize]) -> Vec<usize> {

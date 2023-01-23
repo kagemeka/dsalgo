@@ -10,15 +10,20 @@ impl<T> Node<T> {
     pub fn new(value: T) -> Box<Self> {
         Box::new(Self { left: None, right: None, height: 1, size: 1, value })
     }
-
     pub(crate) fn height(node: Option<&Box<Self>>) -> usize {
-        if let Some(node) = node { node.height } else { 0 }
+        if let Some(node) = node {
+            node.height
+        } else {
+            0
+        }
     }
-
     pub(crate) fn size(node: Option<&Box<Self>>) -> usize {
-        if let Some(node) = node { node.size } else { 0 }
+        if let Some(node) = node {
+            node.size
+        } else {
+            0
+        }
     }
-
     pub(crate) fn balance(node: Option<&Box<Self>>) -> isize {
         if let Some(node) = node {
             Self::height(node.right.as_ref()) as isize
@@ -27,7 +32,6 @@ impl<T> Node<T> {
             0
         }
     }
-
     pub(crate) fn update(root: &mut Box<Self>) {
         let hl = Self::height(root.left.as_ref());
         let hr = Self::height(root.right.as_ref());
@@ -36,7 +40,6 @@ impl<T> Node<T> {
         let sr = Self::size(root.right.as_ref());
         root.size = sl + sr + 1;
     }
-
     pub(crate) fn rotate_left(mut root: Box<Self>) -> Box<Self> {
         let mut new_root = root.right.take().unwrap();
         root.right = new_root.left.take();
@@ -45,7 +48,6 @@ impl<T> Node<T> {
         Self::update(&mut new_root);
         new_root
     }
-
     pub(crate) fn rotate_right(mut root: Box<Self>) -> Box<Self> {
         let mut new_root = root.left.take().unwrap();
         root.left = new_root.right.take();
@@ -54,7 +56,6 @@ impl<T> Node<T> {
         Self::update(&mut new_root);
         new_root
     }
-
     pub(crate) fn rebalance(mut root: Box<Self>) -> Box<Self> {
         Self::update(&mut root);
         let b = Self::balance(Some(&root));
@@ -72,9 +73,8 @@ impl<T> Node<T> {
         }
         root
     }
-
     pub(crate) fn pop_last(
-        mut root: Box<Self>,
+        mut root: Box<Self>
     ) -> (Box<Self>, Option<Box<Self>>) {
         if root.right.is_none() {
             let new_root = root.left.take();
@@ -84,9 +84,9 @@ impl<T> Node<T> {
         root.right = new_right;
         (max_node, Some(Self::rebalance(root)))
     }
-
     pub fn merge(
-        left: Option<Box<Self>>, right: Option<Box<Self>>,
+        left: Option<Box<Self>>,
+        right: Option<Box<Self>>,
     ) -> Option<Box<Self>> {
         if left.is_none() {
             return right;
@@ -96,9 +96,9 @@ impl<T> Node<T> {
         root.right = right;
         Some(Self::rebalance(root))
     }
-
     pub fn split(
-        root: Option<Box<Self>>, i: usize,
+        root: Option<Box<Self>>,
+        i: usize,
     ) -> (Option<Box<Self>>, Option<Box<Self>>) {
         assert!(i <= Self::size(root.as_ref()));
         if root.is_none() {
@@ -118,27 +118,33 @@ impl<T> Node<T> {
             (Some(Self::rebalance(root)), right)
         }
     }
-
     pub fn insert(
-        root: Option<Box<Self>>, i: usize, node: Option<Box<Self>>,
+        root: Option<Box<Self>>,
+        i: usize,
+        node: Option<Box<Self>>,
     ) -> Option<Box<Self>> {
         let (left, right) = Self::split(root, i);
         Self::merge(Self::merge(left, node), right)
     }
-
     pub fn remove_range(
-        root: Option<Box<Self>>, l: usize, r: usize,
+        root: Option<Box<Self>>,
+        l: usize,
+        r: usize,
     ) -> Option<Box<Self>> {
         let (left, right) = Self::split(root, l);
         let (_, right) = Self::split(right, r - l);
         Self::merge(left, right)
     }
-
-    pub fn remove(root: Option<Box<Self>>, i: usize) -> Option<Box<Self>> {
+    pub fn remove(
+        root: Option<Box<Self>>,
+        i: usize,
+    ) -> Option<Box<Self>> {
         Self::remove_range(root, i, i + 1)
     }
-
-    pub fn kth_node(root: &Box<Self>, k: usize) -> &Box<Self> {
+    pub fn kth_node(
+        root: &Box<Self>,
+        k: usize,
+    ) -> &Box<Self> {
         assert!(k < root.size);
         let lsize = Self::size(root.left.as_ref());
         if k < lsize {
@@ -149,8 +155,10 @@ impl<T> Node<T> {
             root
         }
     }
-
-    pub fn binary_search<F>(f: F, root: Option<&Box<Self>>) -> usize
+    pub fn binary_search<F>(
+        f: F,
+        root: Option<&Box<Self>>,
+    ) -> usize
     where
         F: Fn(&T) -> bool,
     {
@@ -165,10 +173,12 @@ impl<T> Node<T> {
             offset + Self::binary_search(f, root.right.as_ref())
         }
     }
-
     pub fn iter<'a>(&'a self) -> std::vec::IntoIter<&'a T> {
         let mut inorder = vec![];
-        fn dfs<'b, T>(res: &mut Vec<&'b T>, node: &'b Node<T>) {
+        fn dfs<'b, T>(
+            res: &mut Vec<&'b T>,
+            node: &'b Node<T>,
+        ) {
             if let Some(left) = node.left.as_ref() {
                 dfs(res, left);
             }
@@ -184,10 +194,12 @@ impl<T> Node<T> {
 impl<T> IntoIterator for Node<T> {
     type IntoIter = std::vec::IntoIter<Self::Item>;
     type Item = T;
-
     fn into_iter(self) -> Self::IntoIter {
         let mut inorder = vec![];
-        fn dfs<T>(res: &mut Vec<T>, mut node: Node<T>) {
+        fn dfs<T>(
+            res: &mut Vec<T>,
+            mut node: Node<T>,
+        ) {
             if let Some(left) = node.left.take() {
                 dfs(res, *left);
             }

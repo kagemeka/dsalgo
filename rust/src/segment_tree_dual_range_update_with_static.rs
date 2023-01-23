@@ -4,10 +4,17 @@ use crate::segment_tree_dual_with_static_monoid::*;
 pub struct Update<T>(PhantomData<T>);
 impl<T> Monoid for Update<T> {
     type T = Option<T>;
-
     fn e() -> Self::T { None }
-
-    fn op(l: Self::T, r: Self::T) -> Self::T { if r.is_none() { l } else { r } }
+    fn op(
+        l: Self::T,
+        r: Self::T,
+    ) -> Self::T {
+        if r.is_none() {
+            l
+        } else {
+            r
+        }
+    }
 }
 #[cfg(test)]
 mod tests {

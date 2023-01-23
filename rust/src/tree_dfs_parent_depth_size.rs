@@ -1,13 +1,17 @@
 pub fn tree_dfs(
-    g: &[Vec<usize>], root: usize,
+    g: &[Vec<usize>],
+    root: usize,
 ) -> (Vec<usize>, Vec<usize>, Vec<usize>) {
     let n = g.len();
     let mut size = vec![1; n];
     let mut parent = vec![n; n];
     let mut depth = vec![0; n];
     fn dfs(
-        g: &[Vec<usize>], parent: &mut [usize], depth: &mut [usize],
-        size: &mut [usize], u: usize,
+        g: &[Vec<usize>],
+        parent: &mut [usize],
+        depth: &mut [usize],
+        size: &mut [usize],
+        u: usize,
     ) {
         let d = depth[u] + 1;
         for &v in g[u].iter() {

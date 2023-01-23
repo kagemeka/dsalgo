@@ -3,7 +3,9 @@ pub fn enumerate_cycles(f: &[usize]) -> Vec<Vec<usize>> {
     let n = f.len();
     let mut state = vec![0; n];
     fn dfs(
-        f: &[usize], cycles: &mut Vec<Vec<usize>>, state: &mut Vec<usize>,
+        f: &[usize],
+        cycles: &mut Vec<Vec<usize>>,
+        state: &mut Vec<usize>,
         u: usize,
     ) {
         if state[u] == 1 {

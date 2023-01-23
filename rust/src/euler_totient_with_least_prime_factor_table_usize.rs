@@ -2,8 +2,10 @@ use crate::sieve_of_eratosthenes_least_prime_factor_table_usize::*;
 pub struct EulerTotient(Vec<usize>);
 impl EulerTotient {
     pub fn new(less_than: usize) -> Self { Self(least_prime_factor(less_than)) }
-
-    pub fn phi(&self, mut n: usize) -> usize {
+    pub fn phi(
+        &self,
+        mut n: usize,
+    ) -> usize {
         let mut phi = n;
         while n > 1 {
             let p = self.0[n];

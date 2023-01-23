@@ -1,5 +1,6 @@
 pub fn z_algorithm_findall<T: PartialEq + Clone>(
-    a: &[T], pattern: &[T],
+    a: &[T],
+    pattern: &[T],
 ) -> Vec<usize> {
     use crate::z_algorithm::z_algorithm;
     let mut s = pattern.to_vec();

@@ -5,18 +5,25 @@ pub struct Segtree {
 }
 impl Segtree {
     fn n(&self) -> usize { self.node.len() >> 1 }
-
-    fn merge(&mut self, i: usize) {
+    fn merge(
+        &mut self,
+        i: usize,
+    ) {
         self.node[i] = self.node[i << 1].min(self.node[i << 1 | 1]);
     }
-
-    pub fn new(inf: i64, size: usize) -> Self {
+    pub fn new(
+        inf: i64,
+        size: usize,
+    ) -> Self {
         assert!(size > 0);
         let node = vec![inf; size.next_power_of_two() << 1];
         Self { inf, size, node }
     }
-
-    pub fn set(&mut self, mut i: usize, x: i64) {
+    pub fn set(
+        &mut self,
+        mut i: usize,
+        x: i64,
+    ) {
         assert!(i < self.size);
         i += self.n();
         self.node[i] = x;
@@ -25,8 +32,11 @@ impl Segtree {
             self.merge(i);
         }
     }
-
-    pub fn fold(&self, mut l: usize, mut r: usize) -> i64 {
+    pub fn fold(
+        &self,
+        mut l: usize,
+        mut r: usize,
+    ) -> i64 {
         assert!(l <= r && r <= self.size);
         let mut vl = self.inf;
         let mut vr = self.inf;
@@ -51,8 +61,12 @@ impl Segtree {
 use std::ops::*;
 impl Index<usize> for Segtree {
     type Output = i64;
-
-    fn index(&self, i: usize) -> &Self::Output { &self.node[i + self.n()] }
+    fn index(
+        &self,
+        i: usize,
+    ) -> &Self::Output {
+        &self.node[i + self.n()]
+    }
 }
 #[cfg(test)]
 mod tests {

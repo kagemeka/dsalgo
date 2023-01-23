@@ -5,11 +5,8 @@ pub struct Stack<T> {
 }
 impl<T> Stack<T> {
     pub fn new() -> Self { Self { top: None, size: 0 } }
-
     pub fn size(&self) -> usize { self.size }
-
     pub fn is_empty(&self) -> bool { self.size == 0 }
-
     pub fn top(&self) -> Option<&T> {
         if self.size == 0 {
             None
@@ -17,14 +14,15 @@ impl<T> Stack<T> {
             Some(&self.top.as_ref().unwrap().value)
         }
     }
-
-    pub fn push(&mut self, x: T) {
+    pub fn push(
+        &mut self,
+        x: T,
+    ) {
         let mut x = Node::new(x);
         x.next = self.top.take();
         self.top = Some(x);
         self.size += 1;
     }
-
     pub fn pop(&mut self) -> Option<T>
     where
         T: Clone + Copy,

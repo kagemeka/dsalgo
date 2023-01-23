@@ -1,7 +1,8 @@
 use crate::undirected_lowlink::undirected_lowlink;
 /// return vertex ids.
 pub fn find_articulation_points_lowlink(
-    v_size: usize, undirected_edges: &[(usize, usize)],
+    v_size: usize,
+    undirected_edges: &[(usize, usize)],
 ) -> Vec<usize> {
     let mut articulation_points = Vec::new();
     let lowlink = undirected_lowlink(v_size, undirected_edges);
@@ -14,8 +15,12 @@ pub fn find_articulation_points_lowlink(
         g[v].push(u);
     }
     fn find(
-        g: &[Vec<usize>], order: &[usize], low: &[usize],
-        points: &mut Vec<usize>, visited: &mut Vec<bool>, u: usize,
+        g: &[Vec<usize>],
+        order: &[usize],
+        low: &[usize],
+        points: &mut Vec<usize>,
+        visited: &mut Vec<bool>,
+        u: usize,
         parent: usize,
     ) {
         let n = g.len();

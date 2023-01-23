@@ -13,8 +13,9 @@ mod tests {
     #[test]
     fn test() {
         let labels = vec![0, 2, 1, 0];
-        assert_eq!(labels_to_groups(&labels), vec![vec![0, 3], vec![2], vec![
-            1
-        ]]);
+        assert_eq!(
+            labels_to_groups(&labels),
+            vec![vec![0, 3], vec![2], vec![1]]
+        );
     }
 }

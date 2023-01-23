@@ -8,8 +8,11 @@ impl TreePath {
         let (parent, depth) = bfs(g, 0);
         Self { parent, depth }
     }
-
-    pub fn get(&self, mut u: usize, mut v: usize) -> Vec<usize> {
+    pub fn get(
+        &self,
+        mut u: usize,
+        mut v: usize,
+    ) -> Vec<usize> {
         let mut l = vec![];
         let mut r = vec![];
         while u != v {

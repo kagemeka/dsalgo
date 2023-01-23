@@ -3,5 +3,8 @@
 /// if R does not have Order property.
 pub trait GCD {
     type T;
-    fn gcd(_: Self::T, _: Self::T) -> Self::T;
+    fn gcd(
+        _: Self::T,
+        _: Self::T,
+    ) -> Self::T;
 }

@@ -18,10 +18,13 @@ impl GetNodesInRectangle {
         }
         Self { x_list, y_list }
     }
-
     /// x0 <= x < x1, y0 <= y < y1
     pub fn enumerate_nodes(
-        &self, x0: i64, y0: i64, x1: i64, y1: i64,
+        &self,
+        x0: i64,
+        y0: i64,
+        x1: i64,
+        y1: i64,
     ) -> Vec<usize> {
         let i0 = lower_bound(&self.x_list, &x0);
         let i1 = lower_bound(&self.x_list, &x1);

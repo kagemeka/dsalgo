@@ -1,9 +1,14 @@
-pub fn dfs_tree(g: &[Vec<usize>], root: usize) -> Vec<(usize, usize)> {
+pub fn dfs_tree(
+    g: &[Vec<usize>],
+    root: usize,
+) -> Vec<(usize, usize)> {
     let n = g.len();
     let mut visited = vec![false; n];
     let mut used = Vec::with_capacity(n - 1);
     fn dfs(
-        g: &[Vec<usize>], visited: &mut [bool], used: &mut Vec<(usize, usize)>,
+        g: &[Vec<usize>],
+        visited: &mut [bool],
+        used: &mut Vec<(usize, usize)>,
         u: usize,
     ) {
         visited[u] = true;

@@ -1,5 +1,7 @@
 pub fn dense_graph_from_edges<T: Clone>(
-    inf: T, n: usize, edges: Vec<(usize, usize, T)>,
+    inf: T,
+    n: usize,
+    edges: Vec<(usize, usize, T)>,
 ) -> Vec<Vec<T>> {
     let mut g = vec![vec![inf; n]; n];
     for (u, v, w) in edges.into_iter() {

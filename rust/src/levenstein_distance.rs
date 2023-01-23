@@ -1,4 +1,7 @@
-pub fn levenstein_distance<T: PartialEq>(a: &[T], b: &[T]) -> usize {
+pub fn levenstein_distance<T: PartialEq>(
+    a: &[T],
+    b: &[T],
+) -> usize {
     let n: usize = a.len();
     let m: usize = b.len();
     let mut dist = vec![vec![n + m; m + 1]; n + 1];

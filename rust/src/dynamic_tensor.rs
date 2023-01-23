@@ -5,9 +5,7 @@ pub struct DynamicTensor<T> {
 }
 impl<T> DynamicTensor<T> {
     pub fn shape(&self) -> &[usize] { &self.shape }
-
     pub(crate) fn dim(&self) -> usize { self.shape.len() }
-
     pub(crate) fn strides(&self) -> Vec<usize> {
         let mut strides: Vec<usize> = self.shape.clone();
         let d = self.dim();
@@ -19,7 +17,6 @@ impl<T> DynamicTensor<T> {
         }
         strides
     }
-
     pub(crate) fn compute_size(shape: &[usize]) -> usize {
         let mut size = 1;
         for &dim in shape {
@@ -27,7 +24,6 @@ impl<T> DynamicTensor<T> {
         }
         size
     }
-
     pub fn size(&self) -> usize { self.data.len() }
 }
 impl<T: Default> DynamicTensor<T> {
@@ -40,7 +36,10 @@ impl<T: Default> DynamicTensor<T> {
     }
 }
 impl<T> DynamicTensor<T> {
-    fn flatten_index(&self, index: &[usize]) -> usize {
+    fn flatten_index(
+        &self,
+        index: &[usize],
+    ) -> usize {
         let mut idx = 0;
         let strides = self.strides();
         assert_eq!(index.len(), self.dim());
@@ -52,13 +51,18 @@ impl<T> DynamicTensor<T> {
 }
 impl<T> std::ops::Index<&[usize]> for DynamicTensor<T> {
     type Output = T;
-
-    fn index(&self, index: &[usize]) -> &Self::Output {
+    fn index(
+        &self,
+        index: &[usize],
+    ) -> &Self::Output {
         &self.data[self.flatten_index(index)]
     }
 }
 impl<T> std::ops::IndexMut<&[usize]> for DynamicTensor<T> {
-    fn index_mut(&mut self, index: &[usize]) -> &mut Self::Output {
+    fn index_mut(
+        &mut self,
+        index: &[usize],
+    ) -> &mut Self::Output {
         let idx = self.flatten_index(index);
         &mut self.data[idx]
     }

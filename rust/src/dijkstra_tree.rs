@@ -1,12 +1,20 @@
 use crate::{
     dijkstra_arborescence::dijkstra_arborescense,
     dijkstra_sparse_queue::DijkstraSparseQueue,
-    graph::edge::{From, Reversed, To, ToDirected, Weight},
+    graph::edge::{
+        From,
+        Reversed,
+        To,
+        ToDirected,
+        Weight,
+    },
     graphops::edges_to_directed,
 };
 /// return edge ids
 pub fn dijkstra_tree<E1, E2, Q>(
-    v_size: usize, undirected_edges: &[E1], root: usize,
+    v_size: usize,
+    undirected_edges: &[E1],
+    root: usize,
 ) -> Vec<usize>
 where
     E1: From<V = usize> + To<V = usize> + Clone + ToDirected<E = E2>,

@@ -12,9 +12,13 @@ mod tests {
     #[test]
     fn test() {
         let is_prime = is_prime(20);
-        assert_eq!(is_prime, vec![
-            false, false, true, true, false, true, false, true, false, false,
-            false, true, false, true, false, false, false, true, false, true
-        ],);
+        assert_eq!(
+            is_prime,
+            vec![
+                false, false, true, true, false, true, false, true, false,
+                false, false, true, false, true, false, false, false, true,
+                false, true
+            ],
+        );
     }
 }

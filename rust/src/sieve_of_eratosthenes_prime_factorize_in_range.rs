@@ -6,7 +6,10 @@ use crate::{
     sieve_of_eratosthenes_enumerate_primes_usize::enumerate_primes,
 };
 /// lo <= hi < 10^14, hi - lo < 10^7
-pub fn factorize(lo: usize, hi: usize) -> Vec<(usize, usize)> {
+pub fn factorize(
+    lo: usize,
+    hi: usize,
+) -> Vec<(usize, usize)> {
     let mut v: Vec<_> = (lo..hi).collect();
     let mut factors = vec![];
     for p in enumerate_primes(isqrt(hi) + 1) {

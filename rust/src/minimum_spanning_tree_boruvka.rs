@@ -1,7 +1,8 @@
 use crate::connected_components_dsu::connected_components;
 /// O(E\log{V})
 pub fn mst_boruvka(
-    v_size: usize, undirected_edges: &[(usize, usize, i64)],
+    v_size: usize,
+    undirected_edges: &[(usize, usize, i64)],
 ) -> Vec<usize> {
     let m = undirected_edges.len();
     let mut is_added = vec![false; m];

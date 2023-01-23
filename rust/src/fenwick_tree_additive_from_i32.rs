@@ -2,16 +2,17 @@ use std::ops::*;
 pub struct Fenwick<T>(Vec<T>);
 impl<T> Fenwick<T> {
     pub fn size(&self) -> usize { self.0.len() - 1 }
-
     pub fn new(size: usize) -> Self
     where
         T: From<i32>,
     {
         Self((0..size + 1).map(|_| 0.into()).collect())
     }
-
-    pub fn operate(&mut self, mut i: usize, x: T)
-    where
+    pub fn operate(
+        &mut self,
+        mut i: usize,
+        x: T,
+    ) where
         T: AddAssign + Clone,
     {
         i += 1;
@@ -20,8 +21,10 @@ impl<T> Fenwick<T> {
             i += 1 << i.trailing_zeros();
         }
     }
-
-    pub fn fold_lt(&self, mut i: usize) -> T
+    pub fn fold_lt(
+        &self,
+        mut i: usize,
+    ) -> T
     where
         T: From<i32> + AddAssign + Clone,
     {
@@ -32,8 +35,10 @@ impl<T> Fenwick<T> {
         }
         v
     }
-
-    pub fn max_right<F: Fn(&T) -> bool>(&self, f: F) -> usize
+    pub fn max_right<F: Fn(&T) -> bool>(
+        &self,
+        f: F,
+    ) -> usize
     where
         T: From<i32> + Add<Output = T> + Clone,
     {

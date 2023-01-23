@@ -1,7 +1,8 @@
 //! find a farthest node from any node in O(1)
 //! a farthest node from each node is one of the tree diameter terminals.
 use crate::{
-    tree_bfs_parent_depth::bfs, tree_diameter_path_unweighted::diameter_path,
+    tree_bfs_parent_depth::bfs,
+    tree_diameter_path_unweighted::diameter_path,
 };
 pub struct FarthestNode {
     u: usize,
@@ -17,11 +18,17 @@ impl FarthestNode {
         let v = *path.last().unwrap();
         Self { u, v, dep_u: bfs(&g, u).1, dep_v: bfs(&g, v).1 }
     }
-
-    pub fn get(&self, u: usize) -> (usize, usize) {
+    pub fn get(
+        &self,
+        u: usize,
+    ) -> (usize, usize) {
         let d0 = self.dep_u[u];
         let d1 = self.dep_v[u];
-        if d0 >= d1 { (self.u, d0) } else { (self.v, d1) }
+        if d0 >= d1 {
+            (self.u, d0)
+        } else {
+            (self.v, d1)
+        }
     }
 }
 #[cfg(test)]

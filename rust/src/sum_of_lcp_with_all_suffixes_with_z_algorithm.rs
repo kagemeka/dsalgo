@@ -1,4 +1,7 @@
-pub fn sum_of_lcp<T: PartialEq + Clone>(a: &[T], pattern: &[T]) -> usize {
+pub fn sum_of_lcp<T: PartialEq + Clone>(
+    a: &[T],
+    pattern: &[T],
+) -> usize {
     use crate::z_algorithm::z_algorithm;
     let mut s = pattern.to_vec();
     let n = s.len();

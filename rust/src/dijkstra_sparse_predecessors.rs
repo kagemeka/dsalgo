@@ -1,11 +1,15 @@
 use crate::{
     dijkstra_sparse_queue::DijkstraSparseQueue,
     general_dijkstra_sparse::general_dijkstra_sparse,
-    graph::edge::{To, Weight},
+    graph::edge::{
+        To,
+        Weight,
+    },
 };
 /// if 0-cost edges are included, result does not always become a DAG.
 pub fn dijkstra_sparse_predecessors<E, Q>(
-    sparse_graph: &[Vec<E>], src: usize,
+    sparse_graph: &[Vec<E>],
+    src: usize,
 ) -> Vec<Vec<usize>>
 where
     E: To<V = usize> + Weight<u64>,

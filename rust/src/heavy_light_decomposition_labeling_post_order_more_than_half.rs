@@ -1,8 +1,15 @@
 /// labeling in postorder
-pub fn hld(g: &[Vec<usize>], root: usize) -> Vec<usize> {
+pub fn hld(
+    g: &[Vec<usize>],
+    root: usize,
+) -> Vec<usize> {
     fn dfs(
-        g: &[Vec<usize>], size: &mut [usize], label: &mut [usize],
-        l: &mut usize, u: usize, p: usize,
+        g: &[Vec<usize>],
+        size: &mut [usize],
+        label: &mut [usize],
+        l: &mut usize,
+        u: usize,
+        p: usize,
     ) {
         let n = g.len();
         for &v in g[u].iter() {

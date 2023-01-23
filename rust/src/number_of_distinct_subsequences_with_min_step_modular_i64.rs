@@ -1,5 +1,7 @@
 pub fn number_of_subsequences<T: std::hash::Hash + Eq>(
-    modulus: i64, a: &[T], min_step: usize,
+    modulus: i64,
+    a: &[T],
+    min_step: usize,
 ) -> i64 {
     let n: usize = a.len();
     let mut dp = vec![0; n + 1];

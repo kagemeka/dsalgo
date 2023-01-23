@@ -1,4 +1,7 @@
-pub fn next_subset_bits(s: usize, t: usize) -> usize {
+pub fn next_subset_bits(
+    s: usize,
+    t: usize,
+) -> usize {
     assert!(t > 0);
     (t - 1) & s
 }

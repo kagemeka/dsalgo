@@ -9,7 +9,10 @@ pub struct PrimeGenerator {
 }
 impl PrimeGenerator {
     /// [lo, hi)
-    pub fn new(mut lo: u64, mut hi: u64) -> Self {
+    pub fn new(
+        mut lo: u64,
+        mut hi: u64,
+    ) -> Self {
         if lo < 2 {
             lo = 2;
         }
@@ -17,7 +20,8 @@ impl PrimeGenerator {
             hi = 2;
         }
         let mut ranges = vec![];
-        let size = (isqrt(hi) as usize) << 3; // 2 ~ 4
+        let size = (isqrt(hi) as usize) << 3;
+        // 2 ~ 4
         // because range sieve has only odd numbers internally,
         // the size is sqrt / 2.
         // so we can check more than twice the range at once.
@@ -34,7 +38,6 @@ impl PrimeGenerator {
 }
 impl Iterator for PrimeGenerator {
     type Item = u64;
-
     fn next(&mut self) -> Option<Self::Item> {
         if let Some(p) = self.it.next() {
             return Some(p);

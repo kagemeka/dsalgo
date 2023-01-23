@@ -1,10 +1,16 @@
 use crate::{
     dijkstra_sparse_queue::DijkstraSparseQueue,
-    graph::edge::{To, Weight},
+    graph::edge::{
+        To,
+        Weight,
+    },
 };
 // TODO: generalized dijkstra -> rename as extended dijkstra
 pub fn general_dijkstra_sparse<E, T, F, Q>(
-    sparse_graph: &[Vec<E>], callback: &F, mut data: T, src: usize,
+    sparse_graph: &[Vec<E>],
+    callback: &F,
+    mut data: T,
+    src: usize,
 ) -> (Vec<Option<u64>>, T)
 where
     E: To<V = usize> + Weight<u64>,

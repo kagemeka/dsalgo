@@ -1,4 +1,9 @@
-pub fn bit_mask(l: usize, r: usize) -> usize { (1 << (r - l)) - 1 << l }
+pub fn bit_mask(
+    l: usize,
+    r: usize,
+) -> usize {
+    (1 << (r - l)) - 1 << l
+}
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -1,6 +1,8 @@
 use crate::tree_edges_to_graph::tree_edges_to_graph;
 pub fn tree_dfs<T, F>(
-    tree_edges: &[(usize, usize)], root: usize, default_data: Vec<T>,
+    tree_edges: &[(usize, usize)],
+    root: usize,
+    default_data: Vec<T>,
     mut assign: F,
 ) -> Vec<T>
 where

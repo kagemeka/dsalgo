@@ -5,7 +5,10 @@ pub struct FunctionalGraphKthFrom {
     pub cycle_start_idx: usize,
 }
 impl FunctionalGraphKthFrom {
-    pub fn new(f: &[usize], src: usize) -> Self {
+    pub fn new(
+        f: &[usize],
+        src: usize,
+    ) -> Self {
         let n = f.len();
         let mut path = vec![];
         let mut order = vec![n; n];
@@ -25,8 +28,10 @@ impl FunctionalGraphKthFrom {
             j += 1;
         }
     }
-
-    pub fn get(&self, mut k: usize) -> usize {
+    pub fn get(
+        &self,
+        mut k: usize,
+    ) -> usize {
         let s = self.cycle_start_idx;
         if k >= s {
             k = (k - s) % self.cycle_size + s;

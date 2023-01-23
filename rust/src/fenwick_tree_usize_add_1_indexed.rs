@@ -1,18 +1,22 @@
 pub struct Fenwick(Vec<usize>);
 impl Fenwick {
     pub fn new(size: usize) -> Self { Self(vec![0; size + 1]) }
-
     pub fn size(&self) -> usize { self.0.len() - 1 }
-
-    pub fn add(&mut self, mut i: usize, x: usize) {
+    pub fn add(
+        &mut self,
+        mut i: usize,
+        x: usize,
+    ) {
         i += 1;
         while i <= self.size() {
             self.0[i] += x;
             i += 1 << i.trailing_zeros();
         }
     }
-
-    pub fn get(&self, mut i: usize) -> usize {
+    pub fn get(
+        &self,
+        mut i: usize,
+    ) -> usize {
         let mut v = 0;
         while i > 0 {
             v += self.0[i];

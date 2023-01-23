@@ -2,10 +2,11 @@ use std::collections::VecDeque;
 pub struct BFS01Queue<T>(VecDeque<T>);
 impl<T: Ord> BFS01Queue<T> {
     pub fn new() -> Self { Self(VecDeque::new()) }
-
     pub fn size(&self) -> usize { self.0.len() }
-
-    pub fn push(&mut self, x: T) {
+    pub fn push(
+        &mut self,
+        x: T,
+    ) {
         if self.size() == 0 || &x <= self.0.front().unwrap() {
             self.0.push_front(x);
         } else if &x >= self.0.back().unwrap() {
@@ -14,7 +15,6 @@ impl<T: Ord> BFS01Queue<T> {
             panic!();
         }
     }
-
     pub fn pop(&mut self) -> Option<T> { self.0.pop_front() }
 }
 #[cfg(test)]

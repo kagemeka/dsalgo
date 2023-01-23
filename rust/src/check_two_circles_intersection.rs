@@ -1,6 +1,11 @@
 use crate::dist_2d_to_the_power_of_2::dist2;
 pub fn check_intersect(
-    x0: i64, y0: i64, r0: i64, x1: i64, y1: i64, r1: i64,
+    x0: i64,
+    y0: i64,
+    r0: i64,
+    x1: i64,
+    y1: i64,
+    r1: i64,
 ) -> bool {
     let d2 = dist2(x0, y0, x1, y1);
     d2 <= (r0 + r1).pow(2) && d2 >= (r0 - r1).pow(2)

@@ -1,11 +1,18 @@
-use crate::{binary_function::*, group_theory_id::*};
+use crate::{
+    binary_function::*,
+    group_theory_id::*,
+};
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct GroupApprox<S, I>(std::marker::PhantomData<(S, I)>);
 /// ((usize, usize), min)
 impl BinaryOp for GroupApprox<(usize, usize), Min> {
     type S = (usize, usize);
-
-    fn op(lhs: Self::S, rhs: Self::S) -> Self::S { lhs.min(rhs) }
+    fn op(
+        lhs: Self::S,
+        rhs: Self::S,
+    ) -> Self::S {
+        lhs.min(rhs)
+    }
 }
 impl Idempotence for GroupApprox<(usize, usize), Min> {}
 impl Commutative for GroupApprox<(usize, usize), Min> {}
@@ -16,8 +23,12 @@ impl Identity for GroupApprox<(usize, usize), Min> {
 /// (usize, min)
 impl BinaryOp for GroupApprox<usize, Min> {
     type S = usize;
-
-    fn op(lhs: usize, rhs: usize) -> usize { lhs.min(rhs) }
+    fn op(
+        lhs: usize,
+        rhs: usize,
+    ) -> usize {
+        lhs.min(rhs)
+    }
 }
 impl Idempotence for GroupApprox<usize, Min> {}
 impl Commutative for GroupApprox<usize, Min> {}
@@ -28,8 +39,12 @@ impl Identity for GroupApprox<usize, Min> {
 /// (usize, +)
 impl BinaryOp for GroupApprox<usize, Additive> {
     type S = usize;
-
-    fn op(lhs: usize, rhs: usize) -> usize { lhs + rhs }
+    fn op(
+        lhs: usize,
+        rhs: usize,
+    ) -> usize {
+        lhs + rhs
+    }
 }
 impl Associative for GroupApprox<usize, Additive> {}
 impl Commutative for GroupApprox<usize, Additive> {}
@@ -39,8 +54,12 @@ impl Identity for GroupApprox<usize, Additive> {
 /// (i32, +)
 impl BinaryOp for GroupApprox<i32, Additive> {
     type S = i32;
-
-    fn op(lhs: i32, rhs: i32) -> i32 { lhs + rhs }
+    fn op(
+        lhs: i32,
+        rhs: i32,
+    ) -> i32 {
+        lhs + rhs
+    }
 }
 impl Associative for GroupApprox<i32, Additive> {}
 impl Commutative for GroupApprox<i32, Additive> {}
@@ -53,8 +72,12 @@ impl Inverse for GroupApprox<i32, Additive> {
 /// (u64, +)
 impl BinaryOp for GroupApprox<u64, Additive> {
     type S = u64;
-
-    fn op(lhs: Self::S, rhs: Self::S) -> Self::S { lhs + rhs }
+    fn op(
+        lhs: Self::S,
+        rhs: Self::S,
+    ) -> Self::S {
+        lhs + rhs
+    }
 }
 impl Commutative for GroupApprox<u64, Additive> {}
 impl Associative for GroupApprox<u64, Additive> {}
@@ -64,8 +87,12 @@ impl Identity for GroupApprox<u64, Additive> {
 /// (i64, +)
 impl BinaryOp for GroupApprox<i64, Additive> {
     type S = i64;
-
-    fn op(lhs: Self::S, rhs: Self::S) -> Self::S { lhs + rhs }
+    fn op(
+        lhs: Self::S,
+        rhs: Self::S,
+    ) -> Self::S {
+        lhs + rhs
+    }
 }
 impl Commutative for GroupApprox<i64, Additive> {}
 impl Associative for GroupApprox<i64, Additive> {}
@@ -78,8 +105,12 @@ impl Inverse for GroupApprox<i64, Additive> {
 /// (u64, min)
 impl BinaryOp for GroupApprox<u64, Min> {
     type S = u64;
-
-    fn op(lhs: Self::S, rhs: Self::S) -> Self::S { lhs.min(rhs) }
+    fn op(
+        lhs: Self::S,
+        rhs: Self::S,
+    ) -> Self::S {
+        lhs.min(rhs)
+    }
 }
 impl Idempotence for GroupApprox<u64, Min> {}
 impl Commutative for GroupApprox<u64, Min> {}

@@ -7,18 +7,26 @@ impl<T> Segtree<T> {
     fn n(&self) -> usize { self.node.len() >> 1 }
 }
 impl<T: Ord + Clone> Segtree<T> {
-    fn update(&mut self, i: usize) {
+    fn update(
+        &mut self,
+        i: usize,
+    ) {
         self.node[i] =
             self.node[i << 1].clone().min(self.node[i << 1 | 1].clone());
     }
-
-    pub fn new(inf: T, size: usize) -> Self {
+    pub fn new(
+        inf: T,
+        size: usize,
+    ) -> Self {
         assert!(size > 0);
         let node = vec![inf.clone(); size.next_power_of_two() << 1];
         Self { inf, size, node }
     }
-
-    pub fn set(&mut self, mut i: usize, x: T) {
+    pub fn set(
+        &mut self,
+        mut i: usize,
+        x: T,
+    ) {
         assert!(i < self.size);
         i += self.n();
         self.node[i] = x;
@@ -27,8 +35,11 @@ impl<T: Ord + Clone> Segtree<T> {
             self.update(i);
         }
     }
-
-    pub fn fold(&self, mut l: usize, mut r: usize) -> T {
+    pub fn fold(
+        &self,
+        mut l: usize,
+        mut r: usize,
+    ) -> T {
         assert!(l <= r && r <= self.size);
         let mut vl = self.inf.clone();
         let mut vr = self.inf.clone();
@@ -53,8 +64,12 @@ impl<T: Ord + Clone> Segtree<T> {
 use std::ops::*;
 impl<T> Index<usize> for Segtree<T> {
     type Output = T;
-
-    fn index(&self, i: usize) -> &Self::Output { &self.node[i + self.n()] }
+    fn index(
+        &self,
+        i: usize,
+    ) -> &Self::Output {
+        &self.node[i + self.n()]
+    }
 }
 #[cfg(test)]
 mod tests {

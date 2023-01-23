@@ -7,13 +7,16 @@ impl<T> DynMod<T> {
 }
 impl<T: Copy> Get for DynMod<T> {
     type T = T;
-
     fn get(&self) -> Self::T { self.0 }
 }
 impl<T> Set for DynMod<T> {
     type T = T;
-
-    fn set(&mut self, value: Self::T) { self.0 = value }
+    fn set(
+        &mut self,
+        value: Self::T,
+    ) {
+        self.0 = value
+    }
 }
 #[cfg(test)]
 mod tests {

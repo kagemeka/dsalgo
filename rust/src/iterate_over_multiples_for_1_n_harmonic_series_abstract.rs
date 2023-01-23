@@ -1,5 +1,7 @@
-pub fn iter_over_multiples<F>(n: usize, mut f: F)
-where
+pub fn iter_over_multiples<F>(
+    n: usize,
+    mut f: F,
+) where
     F: FnMut(usize, usize),
 {
     for i in 1..n {
@@ -22,8 +24,12 @@ mod tests {
                 is_prime[j] = false;
             }
         });
-        assert_eq!(is_prime, vec![
-            false, false, true, true, false, true, false, true, false, false
-        ]);
+        assert_eq!(
+            is_prime,
+            vec![
+                false, false, true, true, false, true, false, true, false,
+                false
+            ]
+        );
     }
 }

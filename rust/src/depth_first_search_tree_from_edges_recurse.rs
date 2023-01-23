@@ -1,10 +1,16 @@
 use crate::adjacency_list_graph_with_edge_id_from_edges::*;
-pub fn dfs_tree(n: usize, edges: &[(usize, usize)], root: usize) -> Vec<bool> {
+pub fn dfs_tree(
+    n: usize,
+    edges: &[(usize, usize)],
+    root: usize,
+) -> Vec<bool> {
     let m = edges.len();
     let mut used = vec![false; m];
     let mut visited = vec![false; m];
     fn dfs(
-        g: &[Vec<(usize, usize)>], visited: &mut [bool], used: &mut [bool],
+        g: &[Vec<(usize, usize)>],
+        visited: &mut [bool],
+        used: &mut [bool],
         u: usize,
     ) {
         visited[u] = true;
@@ -26,20 +32,24 @@ mod tests {
     #[test]
     fn test() {
         let cases = vec![
-            ((4, vec![(0, 1), (0, 3), (1, 2), (1, 3), (2, 3)]), vec![
-                true, false, true, false, true,
-            ]),
             (
-                (6, vec![
-                    (0, 1),
-                    (0, 3),
-                    (0, 4),
-                    (0, 5),
-                    (1, 3),
-                    (1, 5),
-                    (2, 3),
-                    (2, 4),
-                ]),
+                (4, vec![(0, 1), (0, 3), (1, 2), (1, 3), (2, 3)]),
+                vec![true, false, true, false, true],
+            ),
+            (
+                (
+                    6,
+                    vec![
+                        (0, 1),
+                        (0, 3),
+                        (0, 4),
+                        (0, 5),
+                        (1, 3),
+                        (1, 5),
+                        (2, 3),
+                        (2, 4),
+                    ],
+                ),
                 vec![true, false, false, false, true, true, true, true],
             ),
         ];

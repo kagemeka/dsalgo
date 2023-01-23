@@ -1,6 +1,9 @@
 pub trait Monoid {
     type T;
-    fn op(l: Self::T, r: Self::T) -> Self::T;
+    fn op(
+        l: Self::T,
+        r: Self::T,
+    ) -> Self::T;
     fn e() -> Self::T;
 }
 pub struct Fenwick<G: Monoid>(pub(crate) Vec<G::T>);
@@ -9,10 +12,12 @@ where
     G::T: Clone,
 {
     pub fn size(&self) -> usize { self.0.len() - 1 }
-
     pub fn new(size: usize) -> Self { Self(vec![G::e(); size + 1]) }
-
-    pub fn operate(&mut self, mut i: usize, x: G::T) {
+    pub fn operate(
+        &mut self,
+        mut i: usize,
+        x: G::T,
+    ) {
         let n = self.size();
         assert!(i < n);
         i += 1;
@@ -21,8 +26,10 @@ where
             i += 1 << i.trailing_zeros();
         }
     }
-
-    pub fn fold_lt(&self, mut i: usize) -> G::T {
+    pub fn fold_lt(
+        &self,
+        mut i: usize,
+    ) -> G::T {
         assert!(i <= self.size());
         let mut v = G::e();
         while i > 0 {
@@ -31,8 +38,10 @@ where
         }
         v
     }
-
-    pub fn max_right<F: Fn(&G::T) -> bool>(&self, is_ok: F) -> usize {
+    pub fn max_right<F: Fn(&G::T) -> bool>(
+        &self,
+        is_ok: F,
+    ) -> usize {
         let n = self.size();
         let mut v = G::e();
         let mut i = 0;
@@ -79,10 +88,13 @@ mod tests {
         struct G;
         impl Monoid for G {
             type T = i32;
-
             fn e() -> Self::T { 0 }
-
-            fn op(l: Self::T, r: Self::T) -> Self::T { l + r }
+            fn op(
+                l: Self::T,
+                r: Self::T,
+            ) -> Self::T {
+                l + r
+            }
         }
         let a = vec![0, 1, 0, 0];
         let n = a.len();

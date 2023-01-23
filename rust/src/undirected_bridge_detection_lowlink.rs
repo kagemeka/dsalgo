@@ -1,7 +1,8 @@
 use crate::undirected_lowlink::undirected_lowlink;
 /// return edge ids.
 pub fn find_bridges_lowlink(
-    v_size: usize, undirected_edges: &[(usize, usize)],
+    v_size: usize,
+    undirected_edges: &[(usize, usize)],
 ) -> Vec<usize> {
     let lowlink = undirected_lowlink(v_size, undirected_edges);
     let order = lowlink.orders;

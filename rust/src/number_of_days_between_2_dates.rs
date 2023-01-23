@@ -1,6 +1,11 @@
 use crate::fairfield_ad_day_formula::ad_day;
 pub fn number_of_days(
-    y0: usize, m0: usize, d0: usize, y1: usize, m1: usize, d1: usize,
+    y0: usize,
+    m0: usize,
+    d0: usize,
+    y1: usize,
+    m1: usize,
+    d1: usize,
 ) -> usize {
     ad_day(y1, m1, d1) - ad_day(y0, m0, d0)
 }

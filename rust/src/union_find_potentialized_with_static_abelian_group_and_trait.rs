@@ -1,4 +1,7 @@
-use crate::{algebraic_structure::*, union_find_traits::*};
+use crate::{
+    algebraic_structure::*,
+    union_find_traits::*,
+};
 pub struct PotentialUF<G: AbelianGroup> {
     a: Vec<isize>, // neg-size or parent
     rp: Vec<G::S>, // root: identity, other: relative potential from parent
@@ -15,22 +18,26 @@ where
     pub fn new(size: usize) -> Self {
         Self { a: vec![-1; size], rp: (0..size).map(|_| G::e()).collect() }
     }
-
     /// relative potential from the root.
-    fn h(&mut self, u: usize) -> G::S {
+    fn h(
+        &mut self,
+        u: usize,
+    ) -> G::S {
         self.root(u);
         self.rp[u].clone()
     }
-
     /// potential v against u.
-    pub fn diff(&mut self, u: usize, v: usize) -> Result<G::S, &'static str> {
+    pub fn diff(
+        &mut self,
+        u: usize,
+        v: usize,
+    ) -> Result<G::S, &'static str> {
         if !self.same(u, v) {
             Err("different components")
         } else {
             Ok(G::op(G::inv(self.h(u)), self.h(v)))
         }
     }
-
     pub fn unite(
         &mut self,
         mut u: usize,
@@ -60,7 +67,10 @@ where
     G: AbelianGroup,
     G::S: Clone,
 {
-    fn root(&mut self, u: usize) -> usize {
+    fn root(
+        &mut self,
+        u: usize,
+    ) -> usize {
         if self.a[u] < 0 {
             return u;
         }
@@ -75,7 +85,10 @@ where
     G: AbelianGroup,
     G::S: Clone,
 {
-    fn size_of(&mut self, u: usize) -> usize
+    fn size_of(
+        &mut self,
+        u: usize,
+    ) -> usize
     where
         G::S: Clone,
     {
@@ -88,7 +101,10 @@ mod tests {
     use super::*;
     #[test]
     fn test_potential_uf() {
-        use crate::{algebraic_structure_impl::*, group_theory_id::Additive};
+        use crate::{
+            algebraic_structure_impl::*,
+            group_theory_id::Additive,
+        };
         let mut uf = PotentialUF::<GroupApprox<i32, Additive>>::new(6);
         assert_eq!(uf.size_of(0), 1);
         assert!(uf.diff(0, 5).is_err());

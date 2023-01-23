@@ -1,9 +1,14 @@
 use crate::strongly_connected_components_topological_sort::toposort;
 pub fn scc(g: &[Vec<usize>]) -> Vec<usize> {
     fn labeling(
-        g: &[Vec<usize>], preorder: &mut Vec<usize>,
-        low_order: &mut Vec<usize>, order: &mut [usize], labels: &mut [usize],
-        ord: &mut usize, label: &mut usize, u: usize,
+        g: &[Vec<usize>],
+        preorder: &mut Vec<usize>,
+        low_order: &mut Vec<usize>,
+        order: &mut [usize],
+        labels: &mut [usize],
+        ord: &mut usize,
+        label: &mut usize,
+        u: usize,
     ) {
         order[u] = *ord;
         *ord += 1;
@@ -39,8 +44,14 @@ pub fn scc(g: &[Vec<usize>]) -> Vec<usize> {
     for i in 0..n {
         if order[i] == n {
             labeling(
-                &g, &mut preorder, &mut low_order, &mut order, &mut labels,
-                &mut ord, &mut label, i,
+                &g,
+                &mut preorder,
+                &mut low_order,
+                &mut order,
+                &mut labels,
+                &mut ord,
+                &mut label,
+                i,
             );
         }
     }

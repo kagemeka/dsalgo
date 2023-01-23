@@ -12,9 +12,12 @@ impl RangeFactorize {
     pub fn new(limit: usize) -> Self {
         Self { primes: enumerate_primes(isqrt(limit) + 1) }
     }
-
     /// lo <= hi <= limit, hi - lo < 10^7
-    pub fn factorize(&self, lo: usize, hi: usize) -> Vec<Vec<(usize, usize)>> {
+    pub fn factorize(
+        &self,
+        lo: usize,
+        hi: usize,
+    ) -> Vec<Vec<(usize, usize)>> {
         let mut v: Vec<_> = (lo..hi).collect();
         let n = hi - lo;
         let mut factors = vec![vec![]; n];
@@ -43,14 +46,17 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        let cases = vec![((2, 8), vec![
-            vec![(2, 1)],
-            vec![(3, 1)],
-            vec![(2, 2)],
-            vec![(5, 1)],
-            vec![(2, 1), (3, 1)],
-            vec![(7, 1)],
-        ])];
+        let cases = vec![(
+            (2, 8),
+            vec![
+                vec![(2, 1)],
+                vec![(3, 1)],
+                vec![(2, 2)],
+                vec![(5, 1)],
+                vec![(2, 1), (3, 1)],
+                vec![(7, 1)],
+            ],
+        )];
         let f = RangeFactorize::new(100);
         for ((lo, hi), ans) in cases {
             assert_eq!(f.factorize(lo, hi), ans);

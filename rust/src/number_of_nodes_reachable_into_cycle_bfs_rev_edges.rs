@@ -35,10 +35,10 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        let cases =
-            vec![(vec![vec![1], vec![2], vec![3], vec![1, 4], vec![]], vec![
-                true, true, true, true, false,
-            ])];
+        let cases = vec![(
+            vec![vec![1], vec![2], vec![3], vec![1, 4], vec![]],
+            vec![true, true, true, true, false],
+        )];
         for (g, ans) in cases {
             assert_eq!(check_into_cycle(&g), ans);
         }

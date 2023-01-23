@@ -1,4 +1,8 @@
-pub fn sum_arithmetic_progression(a: i64, b: i64, count: u64) -> i64 {
+pub fn sum_arithmetic_progression(
+    a: i64,
+    b: i64,
+    count: u64,
+) -> i64 {
     assert!(count > 0);
     if count == 1 {
         assert!(a == b);

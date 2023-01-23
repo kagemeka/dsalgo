@@ -1,8 +1,12 @@
 pub fn ford_fulkerson(
-    size_a: usize, size_b: usize, g: &[(usize, usize)],
+    size_a: usize,
+    size_b: usize,
+    g: &[(usize, usize)],
 ) -> Vec<Option<usize>> {
     fn dfs(
-        g: &[Vec<usize>], pair: &mut [Option<usize>], visited: &mut [bool],
+        g: &[Vec<usize>],
+        pair: &mut [Option<usize>],
+        visited: &mut [bool],
         u: usize,
     ) -> bool {
         visited[u] = true;
@@ -34,7 +38,9 @@ pub fn ford_fulkerson(
     pair.into_iter().take(size_a).collect()
 }
 pub fn hopcroft_karp(
-    size_a: usize, size_b: usize, g: &[(usize, usize)],
+    size_a: usize,
+    size_b: usize,
+    g: &[(usize, usize)],
 ) -> Vec<Option<usize>> {
     let bfs = |g: &[Vec<usize>],
                matched: &[bool],
@@ -63,8 +69,12 @@ pub fn hopcroft_karp(
         level
     };
     fn dfs(
-        g: &[Vec<usize>], level: &[usize], it: &mut [usize],
-        pair_a: &mut [Option<usize>], matched: &mut [bool], u: usize,
+        g: &[Vec<usize>],
+        level: &[usize],
+        it: &mut [usize],
+        pair_a: &mut [Option<usize>],
+        matched: &mut [bool],
+        u: usize,
     ) -> bool {
         for (i, &v) in g[u].iter().enumerate().skip(it[u]) {
             it[u] = i + 1;

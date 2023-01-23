@@ -1,6 +1,9 @@
 use std::{
     cell::RefCell,
-    rc::{Rc, Weak},
+    rc::{
+        Rc,
+        Weak,
+    },
 };
 
 use crate::new_rc_refcell::new_rc_refcell;
@@ -13,18 +16,22 @@ impl<T> Node<T> {
     pub(crate) fn new(value: T) -> Self {
         Self { value, from: Vec::new(), to: Vec::new() }
     }
-
     pub fn new_rc_refcell(value: T) -> Rc<RefCell<Self>> {
         new_rc_refcell(Self::new(value))
     }
-
-    pub fn connect(lhs: &Rc<RefCell<Self>>, rhs: &Rc<RefCell<Self>>) {
+    pub fn connect(
+        lhs: &Rc<RefCell<Self>>,
+        rhs: &Rc<RefCell<Self>>,
+    ) {
         lhs.borrow_mut().to.push(rhs.clone());
         rhs.borrow_mut().from.push(Rc::downgrade(lhs));
     }
 }
 impl<T: std::fmt::Debug> std::fmt::Debug for Node<T> {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+    fn fmt(
+        &self,
+        f: &mut std::fmt::Formatter,
+    ) -> std::fmt::Result {
         write!(
             f,
             r#"Node {{

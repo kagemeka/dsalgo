@@ -1,7 +1,8 @@
 pub mod dijkstra_sparse_from_potential {
     //! consider shortest path problem as a linear programming.
     pub fn dijkstra(
-        mut g: Vec<Vec<(usize, u64)>>, initial_potential: Vec<u64>,
+        mut g: Vec<Vec<(usize, u64)>>,
+        initial_potential: Vec<u64>,
     ) -> Vec<u64> {
         use crate::dijkstra_sparse::dijkstra as f;
         let n = g.len();

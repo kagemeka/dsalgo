@@ -1,4 +1,7 @@
-use crate::{const_modulus_trait::Modulus, static_modulus_trait::*};
+use crate::{
+    const_modulus_trait::Modulus,
+    static_modulus_trait::*,
+};
 // depends on impl_static_modulus_get_for_const_modulus
 macro_rules! define_const_mod {
     ($name:ident, $uint:ty) => {
@@ -6,7 +9,6 @@ macro_rules! define_const_mod {
         pub struct $name<const MOD: $uint>;
         impl<const MOD: $uint> Modulus for $name<MOD> {
             type T = $uint;
-
             const MOD: $uint = MOD;
         }
     };

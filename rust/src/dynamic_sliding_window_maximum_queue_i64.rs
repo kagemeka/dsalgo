@@ -7,14 +7,14 @@ impl SWAGQueue {
     pub fn new() -> Self {
         Self { st_r: vec![], vr: std::i64::MIN, st_l: vec![std::i64::MIN] }
     }
-
     pub fn size(&self) -> usize { self.st_r.len() + self.st_l.len() - 1 }
-
-    pub fn push(&mut self, x: i64) {
+    pub fn push(
+        &mut self,
+        x: i64,
+    ) {
         self.vr = self.vr.max(x);
         self.st_r.push(x);
     }
-
     pub fn pop(&mut self) {
         if self.st_l.len() > 1 {
             self.st_l.pop();
@@ -27,7 +27,6 @@ impl SWAGQueue {
         self.vr = std::i64::MIN;
         self.st_l.pop();
     }
-
     pub fn fold(&self) -> i64 { self.vr.max(*self.st_l.last().unwrap()) }
 }
 #[cfg(test)]

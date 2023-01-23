@@ -1,7 +1,10 @@
 //! sparse table
 use std::iter::FromIterator;
 
-use crate::{algebraic_structure::*, binary_function::*};
+use crate::{
+    algebraic_structure::*,
+    binary_function::*,
+};
 pub struct SparseTable<G: Semigroup> {
     node: Vec<Vec<G::S>>,
 }
@@ -45,10 +48,12 @@ where
     pub fn new(slice: &[G::S]) -> Self {
         Self::from_iter(slice.iter().cloned())
     }
-
     pub fn size(&self) -> usize { self.node[0].len() }
-
-    pub fn reduce(&self, l: usize, r: usize) -> G::S {
+    pub fn reduce(
+        &self,
+        l: usize,
+        r: usize,
+    ) -> G::S {
         assert!(l < r && r <= self.size());
         if r - l == 1 {
             return self.node[0][l].clone();
@@ -57,15 +62,23 @@ where
         G::op(self.node[i][l].clone(), self.node[i][r - (1 << i)].clone())
     }
 }
-use crate::{algebraic_structure_impl::*, query::RangeGetQuery};
+use crate::{
+    algebraic_structure_impl::*,
+    query::RangeGetQuery,
+};
 impl<S, I> RangeGetQuery<I> for SparseTable<GroupApprox<S, I>>
 where
     GroupApprox<S, I>: Semigroup<S = S> + Idempotence + Commutative,
     S: Clone,
 {
     type T = S;
-
-    fn get_range(&mut self, l: usize, r: usize) -> Self::T { self.reduce(l, r) }
+    fn get_range(
+        &mut self,
+        l: usize,
+        r: usize,
+    ) -> Self::T {
+        self.reduce(l, r)
+    }
 }
 use crate::bit_length_with_count_leading_zeros_u64::bit_length;
 pub struct DisjointSparseTable<G: Semigroup> {
@@ -112,11 +125,13 @@ where
     pub fn new(slice: &[G::S]) -> Self {
         Self::from_iter(slice.iter().cloned())
     }
-
     pub fn size(&self) -> usize { self.node[0].len() }
-
     /// [l, r)
-    pub fn reduce(&self, l: usize, mut r: usize) -> G::S {
+    pub fn reduce(
+        &self,
+        l: usize,
+        mut r: usize,
+    ) -> G::S {
         assert!(l < r && r <= self.size());
         r -= 1; // internally, consider [l, r]
         if l == r {
@@ -147,8 +162,13 @@ where
     S: Clone,
 {
     type T = S;
-
-    fn get_range(&mut self, l: usize, r: usize) -> Self::T { self.reduce(l, r) }
+    fn get_range(
+        &mut self,
+        l: usize,
+        r: usize,
+    ) -> Self::T {
+        self.reduce(l, r)
+    }
 }
 // TODO:
 // reference

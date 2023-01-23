@@ -1,6 +1,7 @@
 use std::ops::*;
 pub fn mobius_divisors<T: Clone, F: Fn(T, T) -> T>(
-    op: F, mut f: Vec<T>,
+    op: F,
+    mut f: Vec<T>,
 ) -> Vec<T> {
     let n = f.len();
     for i in 1..n {

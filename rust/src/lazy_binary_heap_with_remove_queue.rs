@@ -7,11 +7,18 @@ impl<T: Ord> LazyBinaryHeap<T> {
     pub fn new() -> Self {
         Self { que: BinaryHeap::new(), remove_que: BinaryHeap::new() }
     }
-
-    pub fn insert(&mut self, x: T) { self.que.push(x); }
-
-    pub fn remove(&mut self, x: T) { self.remove_que.push(x); }
-
+    pub fn insert(
+        &mut self,
+        x: T,
+    ) {
+        self.que.push(x);
+    }
+    pub fn remove(
+        &mut self,
+        x: T,
+    ) {
+        self.remove_que.push(x);
+    }
     fn lazy_discard_false_peek(&mut self) {
         while let Some(x) = self.que.peek() {
             while let Some(y) = self.remove_que.peek() {
@@ -31,7 +38,6 @@ impl<T: Ord> LazyBinaryHeap<T> {
             }
         }
     }
-
     pub fn peek(&mut self) -> Option<&T> {
         self.lazy_discard_false_peek();
         self.que.peek()

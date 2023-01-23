@@ -1,4 +1,8 @@
-pub fn sum_of_xor(modulus: usize, a: &[usize], max_bit: usize) -> usize {
+pub fn sum_of_xor(
+    modulus: usize,
+    a: &[usize],
+    max_bit: usize,
+) -> usize {
     let n = a.len();
     let mut s = 0;
     for i in 0..max_bit {

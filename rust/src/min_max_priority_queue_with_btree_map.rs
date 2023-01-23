@@ -5,19 +5,26 @@ pub struct MinMaxQueue<T> {
 }
 impl<T: Ord> MinMaxQueue<T> {
     pub fn new() -> Self { Self { map: BTreeMap::new(), size: 0 } }
-
     pub fn size(&self) -> usize { self.size }
-
-    pub fn count(&self, x: &T) -> usize {
+    pub fn count(
+        &self,
+        x: &T,
+    ) -> usize {
         *self.map.get(x).or_else(|| Some(&0)).unwrap()
     }
-
-    pub fn insert(&mut self, x: T, count: usize) {
+    pub fn insert(
+        &mut self,
+        x: T,
+        count: usize,
+    ) {
         *self.map.entry(x).or_insert(0) += count;
         self.size += count;
     }
-
-    pub fn remove(&mut self, x: &T, count: usize) {
+    pub fn remove(
+        &mut self,
+        x: &T,
+        count: usize,
+    ) {
         let c = self.map.get_mut(x).unwrap();
         *c -= count;
         if *c == 0 {
@@ -25,7 +32,6 @@ impl<T: Ord> MinMaxQueue<T> {
         }
         self.size -= count;
     }
-
     pub fn min(&self) -> Option<&T> {
         if let Some((x, _)) = self.map.iter().next() {
             Some(x)
@@ -33,7 +39,6 @@ impl<T: Ord> MinMaxQueue<T> {
             None
         }
     }
-
     pub fn max(&self) -> Option<&T> {
         if let Some((x, _)) = self.map.iter().next_back() {
             Some(x)

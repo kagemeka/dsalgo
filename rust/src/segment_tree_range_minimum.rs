@@ -5,10 +5,14 @@ impl<T> RangeMinimum<T> {
 }
 impl<T: Ord + Clone> Monoid for RangeMinimum<T> {
     type T = T;
-
     fn e(&self) -> Self::T { self.0.clone() }
-
-    fn op(&self, l: Self::T, r: Self::T) -> Self::T { l.min(r) }
+    fn op(
+        &self,
+        l: Self::T,
+        r: Self::T,
+    ) -> Self::T {
+        l.min(r)
+    }
 }
 #[cfg(test)]
 mod tests {
@@ -16,13 +20,16 @@ mod tests {
     #[test]
     fn test() {
         // ref: https://atcoder.jp/contests/practice2/tasks/practice2_j
-        let cases = vec![(vec![1, 2, 3, 2, 1], vec![
-            ((2, 1, 5), 3),
-            ((3, 2, 3), 3),
-            ((1, 3, 1), -1),
-            ((2, 2, 4), 2),
-            ((3, 1, 3), 6),
-        ])];
+        let cases = vec![(
+            vec![1, 2, 3, 2, 1],
+            vec![
+                ((2, 1, 5), 3),
+                ((3, 2, 3), 3),
+                ((1, 3, 1), -1),
+                ((2, 2, 4), 2),
+                ((3, 1, 3), 6),
+            ],
+        )];
         for (a, q) in cases {
             let n = a.len();
             let mut seg = SegmentTree::new(RangeMinimum::new(1 << 30), n);

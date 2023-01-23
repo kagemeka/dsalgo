@@ -1,4 +1,7 @@
-pub fn lcp_array(a: &[usize], sa: &[usize]) -> Vec<usize> {
+pub fn lcp_array(
+    a: &[usize],
+    sa: &[usize],
+) -> Vec<usize> {
     let n = a.len();
     assert!(n > 0 && sa.len() == n);
     let mut rank = vec![0; n];

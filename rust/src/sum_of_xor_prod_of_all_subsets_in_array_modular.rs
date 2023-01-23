@@ -1,5 +1,8 @@
 use std::ops::*;
-pub fn sum_xor_for_all_subsets<T>(modulus: T, a: &[T]) -> T
+pub fn sum_xor_for_all_subsets<T>(
+    modulus: T,
+    a: &[T],
+) -> T
 where
     T: Copy
         + Mul<Output = T>

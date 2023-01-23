@@ -40,7 +40,8 @@ pub mod test {
         }
         pub fn is_p(n: u64) -> bool {
             use crate::{
-                montgomery_modular_multiplication_64::*, power::pow_semigroup,
+                montgomery_modular_multiplication_64::*,
+                power::pow_semigroup,
             };
             if let Some(bl) = super::trivial_primality(n) {
                 return bl;
@@ -83,9 +84,13 @@ pub mod test {
     pub mod solovay_strassen {
         //! solovay strassen's test
         use crate::{
-            euler_criterion::try_euler_criterion, jacobi_symbol::jacobi_symbol,
+            euler_criterion::try_euler_criterion,
+            jacobi_symbol::jacobi_symbol,
         };
-        pub fn is_p(b: &[u64], n: u64) -> bool {
+        pub fn is_p(
+            b: &[u64],
+            n: u64,
+        ) -> bool {
             if let Some(bl) = super::trivial_primality(n) {
                 return bl;
             }
@@ -109,7 +114,10 @@ pub mod test {
         }
         #[test]
         fn test() {
-            use super::{rng_bases, test_cases::*};
+            use super::{
+                rng_bases,
+                test_cases::*,
+            };
             let bases = rng_bases(20);
             for x in P.into_iter() {
                 assert!(is_p(&bases, *x));
@@ -129,7 +137,10 @@ pub mod test {
             montgomery_modular_multiplication_64::MontgomeryMultiplication64,
             power::pow_semigroup,
         };
-        pub fn is_p(b: &[u64], n: u64) -> bool {
+        pub fn is_p(
+            b: &[u64],
+            n: u64,
+        ) -> bool {
             if let Some(bl) = super::trivial_primality(n) {
                 return bl;
             }
@@ -142,7 +153,10 @@ pub mod test {
         }
         #[test]
         fn test() {
-            use super::{rng_bases, test_cases::*};
+            use super::{
+                rng_bases,
+                test_cases::*,
+            };
             let bases = rng_bases(30);
             for x in P.into_iter() {
                 assert!(is_p(&bases, *x));

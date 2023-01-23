@@ -1,5 +1,8 @@
 //! bfs from multiple nodes in the same bfs. O(N + M)
-pub fn bfs_reachable(g: &[Vec<usize>], sources: &[usize]) -> Vec<bool> {
+pub fn bfs_reachable(
+    g: &[Vec<usize>],
+    sources: &[usize],
+) -> Vec<bool> {
     let n = g.len();
     let mut reachable = vec![false; n];
     let mut que = std::collections::VecDeque::new();
@@ -34,8 +37,9 @@ mod tests {
             vec![4],
         ];
         let sources = vec![1, 6, 7];
-        assert_eq!(bfs_reachable(&g, &sources), [
-            true, true, false, false, true, true, true, true
-        ]);
+        assert_eq!(
+            bfs_reachable(&g, &sources),
+            [true, true, false, false, true, true, true, true]
+        );
     }
 }

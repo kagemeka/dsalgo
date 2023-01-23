@@ -3,7 +3,8 @@ use crate::{
     montgomery_modular_multiplication_64::MontgomeryMultiplication64,
 };
 pub fn find_divisor_pollard_rho_repeat(
-    n: u64, epochs: u8,
+    n: u64,
+    epochs: u8,
 ) -> Result<u64, &'static str> {
     let multiplier = MontgomeryMultiplication64::new(n);
     for c in 1..=epochs {

@@ -1,6 +1,9 @@
 use crate::extended_euclidean_gcd_i64_recurse::extgcd;
 pub fn crt(
-    mut m0: usize, mut r0: usize, mut m1: usize, mut r1: usize,
+    mut m0: usize,
+    mut r0: usize,
+    mut m1: usize,
+    mut r1: usize,
 ) -> Option<(usize, usize)> {
     use std::mem::swap;
     assert!(m0 > 0 && m1 > 0);

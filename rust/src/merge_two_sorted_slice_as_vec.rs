@@ -1,4 +1,7 @@
-pub fn merge_sorted<T: Ord + Clone>(a: &[T], b: &[T]) -> Vec<T> {
+pub fn merge_sorted<T: Ord + Clone>(
+    a: &[T],
+    b: &[T],
+) -> Vec<T> {
     let n = a.len();
     let m = b.len();
     let mut i = 0;
@@ -22,9 +25,10 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        let cases = vec![((vec![2, 4, 6], vec![1, 3, 3, 7]), vec![
-            1, 2, 3, 3, 4, 6, 7,
-        ])];
+        let cases = vec![(
+            (vec![2, 4, 6], vec![1, 3, 3, 7]),
+            vec![1, 2, 3, 3, 4, 6, 7],
+        )];
         for ((a, b), ans) in cases {
             assert_eq!(merge_sorted(&a, &b), ans);
         }

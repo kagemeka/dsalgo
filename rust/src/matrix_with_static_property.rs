@@ -1,4 +1,7 @@
-use std::{marker::PhantomData, ops::*};
+use std::{
+    marker::PhantomData,
+    ops::*,
+};
 
 use crate::static_matrix_property_trait::Shape;
 #[derive(Debug, Clone, Eq, PartialEq)]
@@ -14,11 +17,20 @@ impl<T: Clone + Default, P: Shape> Default for Matrix<T, P> {
 }
 impl<T, P> Index<usize> for Matrix<T, P> {
     type Output = [T];
-
-    fn index(&self, i: usize) -> &Self::Output { &self.0[i] }
+    fn index(
+        &self,
+        i: usize,
+    ) -> &Self::Output {
+        &self.0[i]
+    }
 }
 impl<T, P> IndexMut<usize> for Matrix<T, P> {
-    fn index_mut(&mut self, i: usize) -> &mut Self::Output { &mut self.0[i] }
+    fn index_mut(
+        &mut self,
+        i: usize,
+    ) -> &mut Self::Output {
+        &mut self.0[i]
+    }
 }
 impl<T, P: Shape> From<Vec<Vec<T>>> for Matrix<T, P> {
     fn from(data: Vec<Vec<T>>) -> Self {

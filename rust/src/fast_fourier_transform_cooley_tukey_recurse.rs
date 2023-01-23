@@ -4,7 +4,10 @@
 use std::f64::consts::*;
 
 use crate::complex_number_f64::*;
-fn fft_core(mut a: Vec<Complex>, zeta_sign: f64) -> Vec<Complex> {
+fn fft_core(
+    mut a: Vec<Complex>,
+    zeta_sign: f64,
+) -> Vec<Complex> {
     let n = a.len();
     assert_eq!(n.count_ones(), 1);
     if n == 1 {
@@ -23,11 +26,17 @@ fn fft_core(mut a: Vec<Complex>, zeta_sign: f64) -> Vec<Complex> {
     }
     a
 }
-pub fn fft(mut a: Vec<Complex>, bit_len: usize) -> Vec<Complex> {
+pub fn fft(
+    mut a: Vec<Complex>,
+    bit_len: usize,
+) -> Vec<Complex> {
     a.resize(1 << bit_len, Complex::zero());
     fft_core(a, -1.0)
 }
-pub fn ifft(mut a: Vec<Complex>, bit_len: usize) -> Vec<Complex> {
+pub fn ifft(
+    mut a: Vec<Complex>,
+    bit_len: usize,
+) -> Vec<Complex> {
     a.resize(1 << bit_len, Complex::zero());
     a = fft_core(a, 1.0);
     let n = a.len() as f64;
@@ -41,9 +50,10 @@ mod tests {
     use super::*;
     #[test]
     fn test_atc001_fft_c_convolution() {
-        let cases = vec![(vec![(1, 1), (2, 2), (3, 4), (4, 8)], vec![
-            0, 1, 4, 11, 26, 36, 40, 32,
-        ])];
+        let cases = vec![(
+            vec![(1, 1), (2, 2), (3, 4), (4, 8)],
+            vec![0, 1, 4, 11, 26, 36, 40, 32],
+        )];
         for (ab, ans) in cases {
             let n = ab.len();
             let dft_len = (n << 1) + 1;

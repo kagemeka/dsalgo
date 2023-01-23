@@ -1,4 +1,7 @@
-pub fn tribonacci(size: usize, modulus: usize) -> Vec<usize> {
+pub fn tribonacci(
+    size: usize,
+    modulus: usize,
+) -> Vec<usize> {
     let mut t = vec![0; size];
     t[2] = 1;
     for i in 3..size {

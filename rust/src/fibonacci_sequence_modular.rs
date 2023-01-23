@@ -1,4 +1,7 @@
-pub fn fibonacci(size: usize, modulus: usize) -> Vec<usize> {
+pub fn fibonacci(
+    size: usize,
+    modulus: usize,
+) -> Vec<usize> {
     let mut t = vec![0; size];
     t[1] = 1;
     for i in 2..size {

@@ -1,6 +1,7 @@
 /// O(V^2)
 pub fn dijkstra_dense(
-    dense_graph: &[Vec<Option<u64>>], src: usize,
+    dense_graph: &[Vec<Option<u64>>],
+    src: usize,
 ) -> Vec<Option<u64>> {
     let g = dense_graph;
     let n = g.len();

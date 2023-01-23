@@ -1,6 +1,10 @@
 use crate::bit_length_with_count_leading_zeros_u64::bit_length;
 pub fn next_power_of_2(n: u64) -> u64 {
-    if n == 0 { 1 } else { 1 << bit_length(n - 1) }
+    if n == 0 {
+        1
+    } else {
+        1 << bit_length(n - 1)
+    }
 }
 #[cfg(test)]
 mod tests {

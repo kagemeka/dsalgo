@@ -10,22 +10,30 @@ type ON<T> = Option<N<T>>;
 type ORN<'a, T> = Option<&'a N<T>>;
 impl<T> Node<T> {
     pub fn new(v: T) -> N<T> { Box::new(Self { c: [None, None], size: 1, v }) }
-
     pub(crate) fn size(root: ORN<T>) -> usize {
-        if let Some(root) = root { root.size } else { 0 }
+        if let Some(root) = root {
+            root.size
+        } else {
+            0
+        }
     }
-
-    fn c_size(&self, i: usize) -> usize { Self::size(self.c[i].as_ref()) }
-
+    fn c_size(
+        &self,
+        i: usize,
+    ) -> usize {
+        Self::size(self.c[i].as_ref())
+    }
     fn update(&mut self) {
         self.size = 1;
         for c in self.c.iter() {
             self.size += Self::size(c.as_ref());
         }
     }
-
     // i = 0 -> up left, 1 -> up right
-    fn rotate_up(mut root: N<T>, i: usize) -> N<T> {
+    fn rotate_up(
+        mut root: N<T>,
+        i: usize,
+    ) -> N<T> {
         debug_assert!(i == 0 || i == 1);
         let mut c = root.c[i].take().unwrap();
         root.c[i] = c.c[i ^ 1].take();
@@ -34,9 +42,11 @@ impl<T> Node<T> {
         c.update();
         c
     }
-
     // which direction kth node exist?
-    fn state(&self, k: usize) -> usize {
+    fn state(
+        &self,
+        k: usize,
+    ) -> usize {
         let lsize = self.c_size(0);
         if k < lsize {
             0
@@ -46,8 +56,10 @@ impl<T> Node<T> {
             2 // itself
         }
     }
-
-    pub fn splay(mut root: N<T>, mut k: usize) -> N<T> {
+    pub fn splay(
+        mut root: N<T>,
+        mut k: usize,
+    ) -> N<T> {
         assert!(k < root.size);
         let s = root.state(k);
         if s == 2 {
@@ -72,8 +84,10 @@ impl<T> Node<T> {
         }
         Self::rotate_up(root, s)
     }
-
-    pub fn merge(l: ON<T>, r: ON<T>) -> ON<T> {
+    pub fn merge(
+        l: ON<T>,
+        r: ON<T>,
+    ) -> ON<T> {
         if r.is_none() {
             return l;
         }
@@ -83,8 +97,10 @@ impl<T> Node<T> {
         r.update();
         Some(r)
     }
-
-    pub fn split(root: ON<T>, i: usize) -> (ON<T>, ON<T>) {
+    pub fn split(
+        root: ON<T>,
+        i: usize,
+    ) -> (ON<T>, ON<T>) {
         let size = Self::size(root.as_ref());
         assert!(i <= size);
         if i == size {
@@ -96,20 +112,27 @@ impl<T> Node<T> {
         root.update();
         (l, Some(root))
     }
-
-    pub fn insert(root: ON<T>, i: usize, node: ON<T>) -> ON<T> {
+    pub fn insert(
+        root: ON<T>,
+        i: usize,
+        node: ON<T>,
+    ) -> ON<T> {
         assert!(i <= Self::size(root.as_ref()));
         let (l, r) = Self::split(root, i);
         Self::merge(Self::merge(l, node), r)
     }
-
-    pub fn pop(mut root: N<T>, i: usize) -> (N<T>, ON<T>) {
+    pub fn pop(
+        mut root: N<T>,
+        i: usize,
+    ) -> (N<T>, ON<T>) {
         root = Self::splay(root, i);
         let c = Self::merge(root.c[0].take(), root.c[1].take());
         (root, c)
     }
-
-    pub fn binary_search<F>(f: F, root: ORN<T>) -> usize
+    pub fn binary_search<F>(
+        f: F,
+        root: ORN<T>,
+    ) -> usize
     where
         F: Fn(&T) -> bool,
     {

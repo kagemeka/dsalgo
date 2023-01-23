@@ -1,5 +1,9 @@
 pub fn reset_lsb(n: u64) -> u64 {
-    if n == 0 { 0 } else { n & !(1 << n.trailing_zeros()) }
+    if n == 0 {
+        0
+    } else {
+        n & !(1 << n.trailing_zeros())
+    }
 }
 #[cfg(test)]
 mod tests {

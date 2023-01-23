@@ -1,4 +1,7 @@
-pub fn extgcd(mut a: i64, mut b: i64) -> (i64, i64, i64) {
+pub fn extgcd(
+    mut a: i64,
+    mut b: i64,
+) -> (i64, i64, i64) {
     use std::mem::swap;
     let (mut x00, mut x01, mut x10, mut x11) = (1, 0, 0, 1);
     while b != 0 {
@@ -13,7 +16,11 @@ pub fn extgcd(mut a: i64, mut b: i64) -> (i64, i64, i64) {
         // (x00, x01) = (x01, x00 - q * x01);
         // (x10, x11) = (x11, x10 - q * x11);
     }
-    if a >= 0 { (a, x00, x10) } else { (-a, -x00, -x10) }
+    if a >= 0 {
+        (a, x00, x10)
+    } else {
+        (-a, -x00, -x10)
+    }
 }
 #[cfg(test)]
 mod tests {

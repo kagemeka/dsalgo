@@ -2,7 +2,9 @@ pub mod max {
     //! maximum flow problem
     /// O(V^2 + VE^2)
     pub fn edmonds_karp(
-        g: &Vec<Vec<(usize, u64)>>, src: usize, sink: usize,
+        g: &Vec<Vec<(usize, u64)>>,
+        src: usize,
+        sink: usize,
     ) -> u64 {
         let n = g.len();
         let mut rf = vec![vec![0; n]; n];
@@ -20,7 +22,9 @@ pub mod max {
             }
         }
         fn find_path(
-            rf: &Vec<Vec<u64>>, g: &mut Vec<Vec<usize>>, src: usize,
+            rf: &Vec<Vec<u64>>,
+            g: &mut Vec<Vec<usize>>,
+            src: usize,
             sink: usize,
         ) -> Vec<usize> {
             let n = g.len();
@@ -47,7 +51,9 @@ pub mod max {
             path
         }
         fn augment_flow(
-            rf: &mut Vec<Vec<u64>>, g: &mut Vec<Vec<usize>>, path: &Vec<usize>,
+            rf: &mut Vec<Vec<u64>>,
+            g: &mut Vec<Vec<usize>>,
+            path: &Vec<usize>,
         ) -> u64 {
             let mut flow = std::u64::MAX;
             for i in 0..path.len() - 1 {
@@ -77,7 +83,9 @@ pub mod max {
     }
     /// O(V^2 + Ef)
     pub fn ford_fulkerson(
-        g: &Vec<Vec<(usize, u64)>>, src: usize, sink: usize,
+        g: &Vec<Vec<(usize, u64)>>,
+        src: usize,
+        sink: usize,
     ) -> u64 {
         let n = g.len();
         let mut rf = vec![vec![0; n]; n];
@@ -95,8 +103,12 @@ pub mod max {
             }
         }
         fn augment_flow(
-            sink: usize, rf: &mut Vec<Vec<u64>>, g: &mut Vec<Vec<usize>>,
-            visited: &mut Vec<bool>, u: usize, flow_in: u64,
+            sink: usize,
+            rf: &mut Vec<Vec<u64>>,
+            g: &mut Vec<Vec<usize>>,
+            visited: &mut Vec<bool>,
+            u: usize,
+            flow_in: u64,
         ) -> u64 {
             visited[u] = true;
             if u == sink {
@@ -153,7 +165,11 @@ pub mod max {
         flow
     }
     /// O(V^2E)
-    pub fn dinic(g: &Vec<Vec<(usize, u64)>>, src: usize, sink: usize) -> u64 {
+    pub fn dinic(
+        g: &Vec<Vec<(usize, u64)>>,
+        src: usize,
+        sink: usize,
+    ) -> u64 {
         let n = g.len();
         let mut rf = vec![vec![0; n]; n];
         for u in 0..n {
@@ -186,8 +202,12 @@ pub mod max {
             level
         };
         fn flow_to_sink(
-            sink: usize, rf: &mut Vec<Vec<u64>>, g: &mut Vec<Vec<usize>>,
-            level: &Vec<usize>, u: usize, mut flow_in: u64,
+            sink: usize,
+            rf: &mut Vec<Vec<u64>>,
+            g: &mut Vec<Vec<usize>>,
+            level: &Vec<usize>,
+            u: usize,
+            mut flow_in: u64,
         ) -> u64 {
             if u == sink {
                 return flow_in;

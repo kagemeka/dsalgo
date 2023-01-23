@@ -1,4 +1,7 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::{
+    HashMap,
+    HashSet,
+};
 
 use crate::rng_static_xorshift64::*;
 /// pseudo random hash function: xorshift64
@@ -6,8 +9,10 @@ use crate::rng_static_xorshift64::*;
 pub struct PrefixSetHash<T>(HashMap<T, u64>);
 impl<T: Clone + std::hash::Hash + Eq> PrefixSetHash<T> {
     pub fn new() -> Self { Self(HashMap::new()) }
-
-    pub fn calc(&mut self, a: &[T]) -> Vec<u64> {
+    pub fn calc(
+        &mut self,
+        a: &[T],
+    ) -> Vec<u64> {
         let mut s = HashSet::new();
         let mut b: Vec<_> = a
             .iter()

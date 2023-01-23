@@ -6,7 +6,10 @@ impl NonDAGError {
     fn new() -> Self { Self { msg: "Given graph is not DAG." } }
 }
 impl std::fmt::Display for NonDAGError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+    fn fmt(
+        &self,
+        f: &mut std::fmt::Formatter,
+    ) -> std::fmt::Result {
         write!(f, "{}", self.msg)
     }
 }
@@ -15,7 +18,9 @@ impl std::error::Error for NonDAGError {
 }
 pub fn with_dfs(g: &Vec<Vec<usize>>) -> Result<Vec<usize>, NonDAGError> {
     fn dfs(
-        g: &Vec<Vec<usize>>, state: &mut Vec<u8>, result: &mut Vec<usize>,
+        g: &Vec<Vec<usize>>,
+        state: &mut Vec<u8>,
+        result: &mut Vec<usize>,
         u: usize,
     ) -> Result<(), NonDAGError> {
         if state[u] == 1 {

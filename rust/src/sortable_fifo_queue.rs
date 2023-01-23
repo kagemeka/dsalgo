@@ -1,6 +1,9 @@
 use std::{
     cmp::Reverse,
-    collections::{BinaryHeap, VecDeque},
+    collections::{
+        BinaryHeap,
+        VecDeque,
+    },
 };
 pub struct SortableQueue<T> {
     que: VecDeque<T>,
@@ -10,17 +13,18 @@ impl<T: Ord> SortableQueue<T> {
     pub fn new() -> Self {
         Self { que: VecDeque::new(), hq: BinaryHeap::new() }
     }
-
     pub fn size(&self) -> usize { self.que.len() + self.hq.len() }
-
-    pub fn push(&mut self, x: T) { self.que.push_back(x); }
-
+    pub fn push(
+        &mut self,
+        x: T,
+    ) {
+        self.que.push_back(x);
+    }
     pub fn sort(&mut self) {
         while let Some(x) = self.que.pop_front() {
             self.hq.push(Reverse(x));
         }
     }
-
     pub fn pop(&mut self) -> Option<T> {
         if self.size() == 0 {
             return None;

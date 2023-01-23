@@ -1,4 +1,8 @@
-pub fn pow(modulus: i64, mut x: i64, n: i64) -> i64 {
+pub fn pow(
+    modulus: i64,
+    mut x: i64,
+    n: i64,
+) -> i64 {
     x %= modulus;
     if n == 0 {
         return 1;

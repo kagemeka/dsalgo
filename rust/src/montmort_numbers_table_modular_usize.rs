@@ -1,4 +1,7 @@
-pub fn montmort_numbers(m: usize, size: usize) -> Vec<usize> {
+pub fn montmort_numbers(
+    m: usize,
+    size: usize,
+) -> Vec<usize> {
     let mut a = vec![0; size];
     a[0] = 1;
     for i in 2..size {

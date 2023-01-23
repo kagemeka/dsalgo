@@ -19,7 +19,6 @@ impl<'a> SCC<'a> {
         }
         toposort(scc.labels)
     }
-
     fn new(g: &'a [Vec<usize>]) -> Self {
         let n = g.len();
         Self {
@@ -32,8 +31,10 @@ impl<'a> SCC<'a> {
             label: 0,
         }
     }
-
-    fn labeling(&mut self, u: usize) {
+    fn labeling(
+        &mut self,
+        u: usize,
+    ) {
         self.order[u] = self.ord;
         self.ord += 1;
         self.preorder.push(u);

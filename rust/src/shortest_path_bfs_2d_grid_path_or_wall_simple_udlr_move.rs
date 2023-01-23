@@ -1,5 +1,8 @@
 pub fn bfs_grid(
-    inf: u32, is_path: &[Vec<bool>], sy: usize, sx: usize,
+    inf: u32,
+    is_path: &[Vec<bool>],
+    sy: usize,
+    sx: usize,
 ) -> Vec<Vec<u32>> {
     let h = is_path.len();
     let w = is_path[0].len();

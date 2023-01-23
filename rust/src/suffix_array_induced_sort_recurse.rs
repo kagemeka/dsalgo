@@ -61,10 +61,8 @@ pub fn sa_is(mut a: Vec<usize>) -> Vec<usize> {
         sa
     };
     let l = lms.len();
-    let lms_idx = induce(&lms)
-        .into_iter()
-        .filter(|&i| is_lms[i])
-        .collect::<Vec<_>>();
+    let lms_idx =
+        induce(&lms).into_iter().filter(|&i| is_lms[i]).collect::<Vec<_>>();
     let mut rank = vec![n; n];
     let mut r = 0;
     rank[n - 1] = r;
@@ -108,12 +106,14 @@ mod tests {
     #[test]
     fn suffix_array() {
         let cases = vec![
-            (vec![1, 1, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 2, 2, 0, 0], vec![
-                15, 14, 10, 6, 2, 11, 7, 3, 1, 0, 13, 12, 9, 5, 8, 4,
-            ]),
-            (vec![1, 0, 3, 3, 0, 3, 3, 0, 2, 2, 0], vec![
-                10, 7, 4, 1, 0, 9, 8, 6, 3, 5, 2,
-            ]),
+            (
+                vec![1, 1, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 2, 2, 0, 0],
+                vec![15, 14, 10, 6, 2, 11, 7, 3, 1, 0, 13, 12, 9, 5, 8, 4],
+            ),
+            (
+                vec![1, 0, 3, 3, 0, 3, 3, 0, 2, 2, 0],
+                vec![10, 7, 4, 1, 0, 9, 8, 6, 3, 5, 2],
+            ),
         ];
         for (s, ans) in cases {
             assert_eq!(sa_is(s), ans);

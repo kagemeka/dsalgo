@@ -1,8 +1,12 @@
-use crate::{union_find_low_memory_with_trait::*, union_find_traits::*};
+use crate::{
+    union_find_low_memory_with_trait::*,
+    union_find_traits::*,
+};
 // TODO: make edge type generic.
 /// O(E\log{E})
 pub fn mst_kruskcal(
-    v_size: usize, undirected_edges: Vec<(usize, usize, i64)>,
+    v_size: usize,
+    undirected_edges: Vec<(usize, usize, i64)>,
 ) -> Vec<usize> {
     let mut uf = UnionFind::new(v_size);
     let mut edges: Vec<(usize, (usize, usize, i64))> =

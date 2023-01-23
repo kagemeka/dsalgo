@@ -15,7 +15,9 @@ pub struct Options {
 }
 impl Options {
     pub fn new(
-        tol: Option<f64>, rtol: Option<f64>, max_iter: Option<u8>,
+        tol: Option<f64>,
+        rtol: Option<f64>,
+        max_iter: Option<u8>,
     ) -> Self {
         Self { tol, rtol, max_iter }
     }
@@ -25,7 +27,10 @@ impl Options {
 /// x0 := initial guess
 /// Err(x) if not terminated in max iterations.
 pub fn root<F, D>(
-    f: &F, fp: &D, x0: f64, opts: Option<Options>,
+    f: &F,
+    fp: &D,
+    x0: f64,
+    opts: Option<Options>,
 ) -> Result<f64, f64>
 where
     F: Fn(f64) -> f64,

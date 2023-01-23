@@ -1,8 +1,11 @@
 /// edges are directed.
 /// similar to bellman ford.
 /// but epochs must be specified by user.
-pub fn bellman_ford_strict<F>(edges: &[(usize, usize)], mut f: F, epochs: usize)
-where
+pub fn bellman_ford_strict<F>(
+    edges: &[(usize, usize)],
+    mut f: F,
+    epochs: usize,
+) where
     F: FnMut(usize, usize),
 {
     for _ in 0..epochs {
@@ -19,33 +22,43 @@ mod tests {
         let cases = vec![
             ((4, 4, 4, 1, 3, 2, vec![(1, 2), (2, 3), (3, 4), (1, 4)]), 4),
             (
-                (6, 5, 10, 1, 2, 3, vec![
-                    (2, 3),
-                    (2, 4),
-                    (4, 6),
-                    (3, 6),
-                    (1, 5),
-                ]),
+                (
+                    6,
+                    5,
+                    10,
+                    1,
+                    2,
+                    3,
+                    vec![(2, 3), (2, 4), (4, 6), (3, 6), (1, 5)],
+                ),
                 0,
             ),
             (
-                (10, 15, 20, 4, 4, 6, vec![
-                    (2, 6),
-                    (2, 7),
-                    (5, 7),
-                    (4, 5),
-                    (2, 4),
-                    (3, 7),
-                    (1, 7),
-                    (1, 4),
-                    (2, 9),
-                    (5, 10),
-                    (1, 3),
-                    (7, 8),
-                    (7, 9),
-                    (1, 6),
-                    (1, 2),
-                ]),
+                (
+                    10,
+                    15,
+                    20,
+                    4,
+                    4,
+                    6,
+                    vec![
+                        (2, 6),
+                        (2, 7),
+                        (5, 7),
+                        (4, 5),
+                        (2, 4),
+                        (3, 7),
+                        (1, 7),
+                        (1, 4),
+                        (2, 9),
+                        (5, 10),
+                        (1, 3),
+                        (7, 8),
+                        (7, 9),
+                        (1, 6),
+                        (1, 2),
+                    ],
+                ),
                 952504739,
             ),
         ];

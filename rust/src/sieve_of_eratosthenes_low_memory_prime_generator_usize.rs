@@ -11,7 +11,10 @@ pub struct PrimeGenerator {
 }
 impl PrimeGenerator {
     /// lo <= hi < 10^14
-    pub fn new(lo: usize, hi: usize) -> Self {
+    pub fn new(
+        lo: usize,
+        hi: usize,
+    ) -> Self {
         let chunk_size = isqrt(hi) << 3;
         Self {
             it: vec![].into_iter(),
@@ -24,7 +27,6 @@ impl PrimeGenerator {
 }
 impl Iterator for PrimeGenerator {
     type Item = usize;
-
     fn next(&mut self) -> Option<Self::Item> {
         if let Some(p) = self.it.next() {
             return Some(p);

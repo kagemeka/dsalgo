@@ -2,23 +2,31 @@
 pub struct Matrix<T>(Vec<T>, (usize, usize));
 impl<T> std::ops::Index<(usize, usize)> for Matrix<T> {
     type Output = T;
-
-    fn index(&self, index: (usize, usize)) -> &Self::Output {
+    fn index(
+        &self,
+        index: (usize, usize),
+    ) -> &Self::Output {
         let w = self.shape().1;
         &self.0[index.0 * w + index.1]
     }
 }
 impl<T> std::ops::IndexMut<(usize, usize)> for Matrix<T> {
-    fn index_mut(&mut self, index: (usize, usize)) -> &mut Self::Output {
+    fn index_mut(
+        &mut self,
+        index: (usize, usize),
+    ) -> &mut Self::Output {
         let w = self.shape().1;
         &mut self.0[index.0 * w + index.1]
     }
 }
 impl<T: Clone> Matrix<T> {
-    pub fn new(h: usize, w: usize, fill_value: T) -> Matrix<T> {
+    pub fn new(
+        h: usize,
+        w: usize,
+        fill_value: T,
+    ) -> Matrix<T> {
         Matrix(vec![fill_value; h * w], (h, w))
     }
-
     pub fn to_2d_vec(&self) -> Vec<Vec<T>> {
         let w = self.shape().1;
         self.0.chunks(w).map(|x| x.to_vec()).collect()
@@ -28,7 +36,10 @@ impl<T> Matrix<T> {
     pub fn shape(&self) -> (usize, usize) { self.1 }
 }
 impl<T: std::fmt::Debug> std::fmt::Display for Matrix<T> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(
+        &self,
+        f: &mut std::fmt::Formatter<'_>,
+    ) -> std::fmt::Result {
         let format_str = self
             .0
             .iter()

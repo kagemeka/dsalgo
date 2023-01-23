@@ -1,11 +1,11 @@
 pub struct BinaryMinHeap<T>(Vec<T>);
 impl<T> BinaryMinHeap<T> {
     pub fn new() -> Self { Self(vec![]) }
-
     pub fn size(&self) -> usize { self.0.len() }
-
-    pub fn push(&mut self, x: T)
-    where
+    pub fn push(
+        &mut self,
+        x: T,
+    ) where
         T: PartialOrd,
     {
         let mut i = self.size();
@@ -19,9 +19,7 @@ impl<T> BinaryMinHeap<T> {
             i = j;
         }
     }
-
     pub fn top(&self) -> &T { &self.0[0] }
-
     pub fn pop(&mut self) -> Option<T>
     where
         T: PartialOrd,
