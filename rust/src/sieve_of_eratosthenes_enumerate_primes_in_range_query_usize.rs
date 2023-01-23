@@ -1,31 +1,42 @@
 //! example
 //! enumerate(10, 20)
 //! = [11, 13, 17, 19]
+
 use crate::{
     integer_square_root_with_binary_search_usize::isqrt,
     sieve_of_eratosthenes_enumerate_primes_usize::enumerate_primes,
 };
+
 pub struct EnumerateRangePrimes(Vec<usize>);
+
 impl EnumerateRangePrimes {
     /// limit < 10^14
+
     pub fn new(limit: usize) -> Self {
         Self(enumerate_primes(isqrt(limit) + 1))
     }
+
     /// lo <= hi <= limit, hi - lo < 10^7
+
     pub fn enumerate(
         &self,
         mut lo: usize,
         mut hi: usize,
     ) -> Vec<usize> {
         lo = lo.max(2);
+
         hi = hi.max(2);
+
         let n = hi - lo;
+
         let mut is_prime = vec![true; n];
+
         for &p in self.0.iter() {
             for i in ((p * p).max((lo + p - 1) / p * p)..hi).step_by(p) {
                 is_prime[i - lo] = false;
             }
         }
+
         is_prime
             .into_iter()
             .enumerate()
@@ -33,7 +44,9 @@ impl EnumerateRangePrimes {
             .collect()
     }
 }
+
 #[test]
+
 fn test() {
     let cases = vec![
         (
@@ -49,7 +62,9 @@ fn test() {
         ),
         ((0, 10), vec![2, 3, 5, 7]),
     ];
+
     let f = EnumerateRangePrimes::new(1 << 10);
+
     for ((lo, hi), ans) in cases {
         assert_eq!(f.enumerate(lo, hi), ans);
     }

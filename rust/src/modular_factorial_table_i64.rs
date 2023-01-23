@@ -1,19 +1,29 @@
 use crate::modular_cumprod_i64::*;
+
 pub fn factorial(
     m: i64,
     size: usize,
 ) -> Vec<i64> {
     let mut a: Vec<_> = (0..size as i64).collect();
+
     a[0] = 1;
+
     cumprod(m, a)
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         let m = 1_000_000_007;
+
         let fact = factorial(m, 20);
+
         assert_eq!(
             fact,
             [

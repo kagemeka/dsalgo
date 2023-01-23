@@ -3,6 +3,7 @@ pub struct RngLinearCongruentialGenerator {
     a: u128,
     b: u128,
 }
+
 impl RngLinearCongruentialGenerator {
     pub fn new(
         modulus: u64,
@@ -10,8 +11,10 @@ impl RngLinearCongruentialGenerator {
         b: u64,
     ) -> Self {
         assert!(0 < a && a < modulus && b < modulus);
+
         Self { m: modulus as u128, a: a as u128, b: b as u128 }
     }
+
     pub fn next(
         &mut self,
         x: u64,
@@ -19,10 +22,12 @@ impl RngLinearCongruentialGenerator {
         ((self.a * x as u128 + self.b) % self.m) as u64
     }
 }
+
 pub struct RngLCGCell {
     lcg: RngLinearCongruentialGenerator,
     x: u64,
 }
+
 impl RngLCGCell {
     pub fn new(
         lcg: RngLinearCongruentialGenerator,
@@ -30,14 +35,20 @@ impl RngLCGCell {
     ) -> Self {
         Self { lcg, x: x0 }
     }
+
     pub fn next(&mut self) -> u64 {
         self.x = self.lcg.next(self.x);
+
         self.x
     }
 }
+
 // TODO:
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

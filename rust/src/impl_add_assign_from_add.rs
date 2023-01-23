@@ -1,4 +1,5 @@
 #[macro_export]
+
 macro_rules! impl_add_assign_from_add {
     ($type:ty) => {
         impl<T> AddAssign<T> for $type
@@ -15,15 +16,23 @@ macro_rules! impl_add_assign_from_add {
         }
     };
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {
         use std::ops::*;
+
         #[derive(Clone)]
+
         struct A(usize);
+
         impl Add for A {
             type Output = Self;
+
             fn add(
                 self,
                 rhs: Self,
@@ -31,6 +40,7 @@ mod tests {
                 Self(self.0 + rhs.0)
             }
         }
+
         impl_add_assign_from_add!(A);
     }
 }

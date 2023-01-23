@@ -1,27 +1,40 @@
 pub fn prime_factorize(size: usize) -> Vec<Vec<(usize, usize)>> {
     let mut factors = vec![vec![]; size];
+
     let mut v: Vec<_> = (0..size).collect();
+
     for i in 2..size {
         if !factors[i].is_empty() {
             continue;
         }
+
         for j in (i..size).step_by(i) {
             let mut e = 0;
+
             while v[j] % i == 0 {
                 e += 1;
+
                 v[j] /= i;
             }
+
             factors[j].push((i, e));
         }
     }
+
     factors
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         let a = prime_factorize(20);
+
         dbg!(
             a,
             vec![

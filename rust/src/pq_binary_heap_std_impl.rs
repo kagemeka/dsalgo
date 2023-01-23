@@ -3,10 +3,12 @@ use crate::priority_queue::{
     Pop,
     Push,
 };
+
 impl<T: std::cmp::Ord> Push
     for std::collections::BinaryHeap<std::cmp::Reverse<T>>
 {
     type T = T;
+
     fn push(
         &mut self,
         x: Self::T,
@@ -14,10 +16,12 @@ impl<T: std::cmp::Ord> Push
         Self::push(self, std::cmp::Reverse(x));
     }
 }
+
 impl<T: std::cmp::Ord> Pop
     for std::collections::BinaryHeap<std::cmp::Reverse<T>>
 {
     type T = T;
+
     fn pop(&mut self) -> Option<Self::T> {
         if let Some(std::cmp::Reverse(x)) = Self::pop(self) {
             Some(x)
@@ -26,6 +30,7 @@ impl<T: std::cmp::Ord> Pop
         }
     }
 }
+
 impl<T: std::cmp::Ord> MinimumQueue
     for std::collections::BinaryHeap<std::cmp::Reverse<T>>
 {

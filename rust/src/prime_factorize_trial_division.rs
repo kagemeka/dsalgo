@@ -1,35 +1,50 @@
 pub fn prime_factorize(mut n: u64) -> Vec<(u64, u8)> {
     assert!(n > 0);
+
     let mut factors = vec![];
+
     for i in 2..n {
         if i * i > n {
             break;
         }
+
         if n % i != 0 {
             continue;
         }
+
         let mut e = 0;
+
         while n % i == 0 {
             e += 1;
+
             n /= i;
         }
+
         factors.push((i, e));
     }
+
     if n != 1 {
         factors.push((n, 1));
     }
+
     factors
 }
+
 // TODO
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {
         use super::*;
+
         assert_eq!(
             prime_factorize(9999999999999),
             [(3, 2), (53, 1), (79, 1), (265371653, 1)],
         );
+
         assert_eq!(
             prime_factorize(9316358251200),
             [

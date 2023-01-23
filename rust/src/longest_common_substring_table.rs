@@ -3,8 +3,11 @@ pub fn longest_common_substring<T: Eq>(
     b: &[T],
 ) -> Vec<Vec<usize>> {
     let n = a.len();
+
     let m = b.len();
+
     let mut dp = vec![vec![0; m + 1]; n + 1];
+
     for i in 0..n {
         for j in 0..m {
             if a[i] == b[j] {
@@ -12,12 +15,18 @@ pub fn longest_common_substring<T: Eq>(
             }
         }
     }
+
     dp
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         let cases = vec![
             ("xy", vec![vec![0, 0, 0], vec![0, 1, 0], vec![0, 0, 2]]),
@@ -52,9 +61,12 @@ mod tests {
                 ],
             ),
         ];
+
         for (s, ans) in cases {
             let s = s.as_bytes();
+
             let dp = longest_common_substring(s, s);
+
             assert_eq!(dp, ans);
         }
     }

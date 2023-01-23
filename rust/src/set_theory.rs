@@ -7,8 +7,12 @@ pub trait Mapping<S, F> {
         element: &S,
     ) -> S;
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

@@ -3,16 +3,22 @@ pub fn log(
     x: u64,
 ) -> u8 {
     assert!(base >= 2);
+
     if x >= base {
         1 + log(base, x / base)
     } else {
         0
     }
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         for b in 2u64..1000 {
             for x in 1u64..10000 {

@@ -8,10 +8,15 @@ pub fn gcd(
         gcd(b, a % b)
     }
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         let cases = [
             ((100, -3), 1),
@@ -23,6 +28,7 @@ mod tests {
             ((0, 4), 4),
             ((9, 6), 3),
         ];
+
         for ((a, b), ans) in cases {
             assert_eq!(gcd(a, b), ans);
         }

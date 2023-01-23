@@ -1,5 +1,6 @@
 /// reference
 /// - https://oeis.org/A006880
+
 pub const PRIME_PI_POWER_OF_10: &'static [u128] = &[
     0,
     4,

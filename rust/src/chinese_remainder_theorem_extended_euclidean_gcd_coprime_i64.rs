@@ -1,4 +1,5 @@
 use crate::chinese_remainder_theorem_extended_euclidean_gcd_safe_i64::*;
+
 pub fn crt_coprime(
     m0: i64,
     r0: i64,

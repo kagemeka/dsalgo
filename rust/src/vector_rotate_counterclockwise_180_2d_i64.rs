@@ -4,8 +4,12 @@ pub fn rot180(
 ) -> (i64, i64) {
     (-x, -y)
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

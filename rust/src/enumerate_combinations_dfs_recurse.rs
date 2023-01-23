@@ -3,7 +3,9 @@ pub fn combinations(
     k: usize,
 ) -> Vec<Vec<usize>> {
     assert!(k <= n);
+
     let mut res = vec![];
+
     fn dfs(
         n: usize,
         k: usize,
@@ -11,26 +13,40 @@ pub fn combinations(
         a: &mut Vec<usize>,
     ) {
         let m = a.len();
+
         if m == k {
             res.push(a.to_vec());
+
             return;
         }
+
         let lo = if m == 0 { 0 } else { a[m - 1] + 1 };
+
         for x in lo..n {
             a.push(x);
+
             dfs(n, k, res, a);
+
             a.pop();
         }
     }
+
     dfs(n, k, &mut res, &mut vec![]);
+
     res
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         let res = combinations(5, 3);
+
         assert_eq!(
             res,
             [

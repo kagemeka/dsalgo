@@ -2,6 +2,7 @@ use crate::{
     algebraic_structure::*,
     power_group::pow_group,
 };
+
 pub trait PowGroup: Group
 where
     Self::S: Clone,
@@ -13,4 +14,5 @@ where
         pow_group(&Self::op, &Self::e, &Self::inv, x, exp)
     }
 }
+
 impl<T: Group> PowGroup for T where T::S: Clone {}

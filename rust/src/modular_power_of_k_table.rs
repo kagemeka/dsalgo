@@ -1,4 +1,5 @@
 use std::ops::*;
+
 pub fn power_of_k<T>(
     modulus: T,
     k: T,
@@ -8,18 +9,27 @@ where
     T: Copy + Mul<Output = T> + From<u32> + Rem<Output = T>,
 {
     let mut a: Vec<T> = vec![1.into(); size];
+
     for i in 0..size - 1 {
         a[i + 1] = k * a[i] % modulus;
     }
+
     a
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         const MOD: i64 = 1_000_000_007;
+
         let pow_8 = power_of_k(MOD, 8, 20);
+
         assert_eq!(
             pow_8,
             [

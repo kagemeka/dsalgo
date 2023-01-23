@@ -1,4 +1,5 @@
 use crate::power_semigroup::pow_semigroup;
+
 pub fn pow_monoid<F, E, X>(
     f: F,
     e: &E,

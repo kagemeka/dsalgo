@@ -10,10 +10,15 @@ where
 {
     inv(p, n + 1) * choose(p, n << 1, n)
 }
+
 // TODO:
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() { let p = 1_000_000_007; }
 }

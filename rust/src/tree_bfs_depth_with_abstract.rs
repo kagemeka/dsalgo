@@ -1,4 +1,5 @@
 use crate::tree_bfs_abstract::tree_bfs;
+
 pub fn tree_depths(
     tree_edges: &[(usize, usize)],
     root: usize,
@@ -12,8 +13,12 @@ pub fn tree_depths(
         },
     )
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

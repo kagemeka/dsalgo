@@ -6,10 +6,15 @@ pub fn chebychev_dist(
 ) -> i64 {
     (x1 - x0).abs().max((y1 - y0).abs())
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         assert_eq!(chebychev_dist(-1, 3, 5, 0), 6);
     }

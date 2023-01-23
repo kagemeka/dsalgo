@@ -2,6 +2,7 @@ use crate::{
     int_kth_root_binary_search::int_kth_root_binary_search,
     int_kth_root_linear::int_kth_root_linear,
 };
+
 pub fn int_kth_root_fast(
     n: u64,
     k: u8,
@@ -12,9 +13,13 @@ pub fn int_kth_root_fast(
         int_kth_root_binary_search(n, k)
     }
 }
+
 // TODO:
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

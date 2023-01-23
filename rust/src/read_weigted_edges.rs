@@ -1,4 +1,5 @@
 use crate::io_read_stdin_direct::*;
+
 pub fn read_weighted_edges<T: std::str::FromStr>(
     m: usize,
     offset: usize,

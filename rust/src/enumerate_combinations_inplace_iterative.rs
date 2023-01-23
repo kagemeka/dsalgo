@@ -3,32 +3,47 @@ pub fn combinations(
     k: usize,
 ) -> Vec<Vec<usize>> {
     assert!(k <= n);
+
     let mut res = vec![];
+
     let mut a: Vec<_> = (0..k).collect();
+
     loop {
         res.push(a.clone());
+
         let mut i = k;
+
         for j in (0..k).rev() {
             if a[j] != j + n - k {
                 i = j;
+
                 break;
             }
         }
+
         if i == k {
             return res;
         }
+
         a[i] += 1;
+
         for j in i + 1..k {
             a[j] = a[j - 1] + 1;
         }
     }
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         let res = combinations(5, 3);
+
         assert_eq!(
             res,
             [

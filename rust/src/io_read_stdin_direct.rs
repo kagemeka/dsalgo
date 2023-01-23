@@ -1,5 +1,6 @@
 pub fn read<T: std::str::FromStr>() -> T {
     use std::io::Read;
+
     std::io::stdin()
         .lock()
         .by_ref()
@@ -12,8 +13,12 @@ pub fn read<T: std::str::FromStr>() -> T {
         .ok()
         .unwrap()
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

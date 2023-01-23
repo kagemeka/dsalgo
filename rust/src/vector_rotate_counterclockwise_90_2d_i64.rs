@@ -4,8 +4,12 @@ pub fn rot90(
 ) -> (i64, i64) {
     (-y, x)
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

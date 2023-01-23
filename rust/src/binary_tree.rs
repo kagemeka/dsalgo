@@ -10,20 +10,28 @@ use crate::{
         ParentMut,
     },
 };
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {
         use super::*;
+
         #[derive(Clone, Debug)]
+
         struct Node<T> {
             data: T,
             left: Option<Box<Self>>,
             right: Option<Box<Self>>,
         }
+
         struct Tree<V> {
             root: Option<V>,
         }
+
         impl<V> From<Option<Box<V>>> for Tree<V> {
             fn from(root: Option<Box<V>>) -> Self {
                 if let Some(root) = root {
@@ -33,9 +41,11 @@ mod tests {
                 }
             }
         }
+
         impl<T> Node<T> {
             fn new(data: T) -> Self { Node { data, left: None, right: None } }
         }
+
         impl<T> Size for Option<Node<T>>
         where
             T: Size,
@@ -47,6 +57,7 @@ mod tests {
                 }
             }
         }
+
         impl<T: Size> Split<usize> for Option<Node<T>> {
             // pseudo
             fn split(
@@ -54,9 +65,11 @@ mod tests {
                 index: usize,
             ) -> (Self, Self) {
                 assert!(index <= self.size());
+
                 (None, None)
             }
         }
+
         impl<T> Join for Option<Node<T>> {
             // pseudo
             fn join(
@@ -66,29 +79,39 @@ mod tests {
                 None
             }
         }
+
         impl<T> Pop for Tree<T>
         where
             Option<T>: Split<usize> + Join + Size,
         {
             type Data = T;
+
             fn pop(
                 &mut self,
                 index: usize,
             ) -> Self::Data {
                 assert!(self.root.is_some());
+
                 let size = self.root.size();
+
                 assert!(size > 0 && index < size);
+
                 let (lhs, rhs) = self.root.take().split(index);
+
                 let (popped, rhs) = rhs.split(1);
+
                 self.root = lhs.join(rhs);
+
                 popped.unwrap()
             }
         }
+
         impl<T> Insert for Tree<T>
         where
             Option<T>: Split<usize> + Join + Size,
         {
             type Data = T;
+
             fn insert(
                 &mut self,
                 index: usize,
@@ -99,6 +122,7 @@ mod tests {
         }
     }
 }
+
 // pub struct BinaryTree<K, V> {
 //     key: K,
 //     value: V,

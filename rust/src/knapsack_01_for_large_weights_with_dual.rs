@@ -1,4 +1,5 @@
 use crate::knapsack_01_dual_table_with_inf::knapsack_dual;
+
 pub fn knapsack(
     inf: usize,
     vw: &[(usize, usize)],

@@ -1,22 +1,31 @@
 pub fn enumerate_primes(less_than: usize) -> Vec<usize> {
     let n = less_than;
+
     let mut primes = Vec::with_capacity(n >> 4);
+
     if n > 2 {
         primes.push(2);
     }
+
     let mut is_prime = vec![true; n >> 1];
+
     for i in (3..n).step_by(2) {
         if !is_prime[i >> 1] {
             continue;
         }
+
         primes.push(i);
+
         for j in (i * i..n).step_by(i << 1) {
             is_prime[j >> 1] = false;
         }
     }
+
     primes
 }
+
 #[test]
+
 fn test() {
     assert_eq!(
         enumerate_primes(50),

@@ -4,6 +4,7 @@ use crate::{
     choose::Choose,
     combination_from_u64::Combination,
 };
+
 impl<T> Choose<T> for Combination<T>
 where
     T: Mul<Output = T> + From<u64> + Clone,

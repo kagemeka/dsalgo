@@ -3,24 +3,37 @@ use crate::{
     modular_factorial_table_usize::*,
     modular_power_for_prime_usize_recurse::*,
 };
+
 pub fn inverse_factorial(
     p: usize,
     size: usize,
 ) -> Vec<usize> {
     assert!(size <= p);
+
     let mut a: Vec<_> = (1..size + 1).rev().collect();
+
     a[0] = pow(p, *factorial(p, size).last().unwrap(), -1);
+
     a = cumprod(p, a);
+
     a.reverse();
+
     a
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         let m = 1_000_000_007;
+
         let ifact = inverse_factorial(m, 20);
+
         assert_eq!(
             ifact,
             [

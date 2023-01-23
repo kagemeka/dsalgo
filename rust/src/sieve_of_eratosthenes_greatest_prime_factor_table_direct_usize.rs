@@ -1,19 +1,27 @@
 pub fn greatest_prime_factor(size: usize) -> Vec<usize> {
     let mut gpf: Vec<usize> = vec![0; size];
+
     for i in 2..size {
         if gpf[i] != 0 {
             continue;
         }
+
         for j in (i..size).step_by(i) {
             gpf[j] = i;
         }
     }
+
     gpf
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         assert_eq!(
             greatest_prime_factor(20),

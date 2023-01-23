@@ -2,7 +2,9 @@ use crate::{
     adjacency_list_graph_from_edges::*,
     read_edges::read_edges,
 };
+
 /// read adjacency list
+
 pub fn read_graph(
     n: usize,
     m: usize,

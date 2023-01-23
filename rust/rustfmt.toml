@@ -1,5 +1,4 @@
 # https://rust-lang.github.io/rustfmt
-blank_lines_upper_bound = 0
 condense_wildcard_suffixes = true
 doc_comment_code_block_width = 80
 error_on_line_overflow = true

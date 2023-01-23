@@ -4,10 +4,13 @@ pub trait Root {
         u: usize,
     ) -> usize;
 }
+
 #[allow(private_in_public)]
+
 pub trait Size {
     fn size(&self) -> usize;
 }
+
 pub trait Unite {
     fn unite(
         &mut self,
@@ -15,13 +18,16 @@ pub trait Unite {
         v: usize,
     );
 }
+
 /// size of the component containing the node
+
 pub trait SizeOf {
     fn size_of(
         &mut self,
         u: usize,
     ) -> usize;
 }
+
 pub trait Same {
     fn same(
         &mut self,
@@ -29,6 +35,7 @@ pub trait Same {
         v: usize,
     ) -> bool;
 }
+
 impl<U: Root> Same for U {
     fn same(
         &mut self,
@@ -38,23 +45,33 @@ impl<U: Root> Same for U {
         self.root(u) == self.root(v)
     }
 }
+
 pub trait Labels {
     fn labels(&mut self) -> Vec<usize>;
 }
+
 impl<U: Root + Size> Labels for U {
     /// same label -> same component.
+
     fn labels(&mut self) -> Vec<usize> {
         let n = self.size();
+
         let mut lb = vec![n; n];
+
         let mut l = 0;
+
         for i in 0..n {
             let r = self.root(i);
+
             if lb[r] == n {
                 lb[r] = l;
+
                 l += 1;
             }
+
             lb[i] = lb[r];
         }
+
         lb
     }
 }

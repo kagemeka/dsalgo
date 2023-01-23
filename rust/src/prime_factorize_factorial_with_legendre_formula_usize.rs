@@ -2,16 +2,22 @@ use crate::{
     legendre_formula_u64::legendre,
     sieve_of_eratosthenes_enumerate_primes_u32::enumerate_primes,
 };
+
 pub fn factorize_factorial(n: usize) -> Vec<(usize, usize)> {
     enumerate_primes(n as u32 + 1)
         .into_iter()
         .map(|p| (p as usize, legendre(n as u64, p as u64) as usize))
         .collect()
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         assert_eq!(
             factorize_factorial(100),

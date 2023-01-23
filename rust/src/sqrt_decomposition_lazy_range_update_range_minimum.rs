@@ -1,11 +1,16 @@
 use crate::sqrt_decomposition_lazy_with_instance_homomorphism::*;
+
 pub struct RangeUpdateRangeMinimum<T>(T);
+
 impl<T> RangeUpdateRangeMinimum<T> {
     pub fn new(inf: T) -> Self { Self(inf) }
 }
+
 impl<T: Ord + Clone> Ops for RangeUpdateRangeMinimum<T> {
     type F = Option<T>;
+
     type S = T;
+
     fn op(
         &self,
         a: Self::S,
@@ -13,7 +18,9 @@ impl<T: Ord + Clone> Ops for RangeUpdateRangeMinimum<T> {
     ) -> Self::S {
         a.min(b)
     }
+
     fn e(&self) -> Self::S { self.0.clone() }
+
     fn compose(
         &self,
         f: Self::F,
@@ -25,7 +32,9 @@ impl<T: Ord + Clone> Ops for RangeUpdateRangeMinimum<T> {
             g
         }
     }
+
     fn id(&self) -> Self::F { None }
+
     fn map(
         &self,
         f: Self::F,
@@ -38,8 +47,12 @@ impl<T: Ord + Clone> Ops for RangeUpdateRangeMinimum<T> {
         }
     }
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

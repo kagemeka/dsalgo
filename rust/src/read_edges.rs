@@ -1,4 +1,5 @@
 use crate::io_read_stdin_direct::read;
+
 pub fn read_edges(
     m: usize,
     offset: usize,

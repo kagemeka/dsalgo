@@ -1,4 +1,5 @@
 use crate::accumulate_iterator::accumulate;
+
 pub fn factorial_table<T>(size: usize) -> Vec<T>
 where
     T: std::ops::Mul<Output = T> + From<u64> + Clone,
@@ -6,25 +7,37 @@ where
     if size == 0 {
         return vec![];
     }
+
     let mut v = (0..size as u64).map(|i| i.into()).collect::<Vec<T>>();
+
     v[0] = 1.into();
+
     let op = |a: T, b: T| -> T { a * b };
+
     accumulate(&op, v.into_iter()).collect()
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         use crate::{
             default_static_modular_arithmetic::Modular1_000_000_007,
             modular_int_with_arithmetic::Modint,
         };
+
         type Mint = Modint<u32, Modular1_000_000_007>;
+
         let res = factorial_table::<Mint>(20)
             .into_iter()
             .map(|x| x.value())
             .collect::<Vec<u32>>();
+
         assert_eq!(
             res,
             [

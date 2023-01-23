@@ -6,6 +6,7 @@ where
     T: std::str::FromStr,
 {
     use std::io::Read;
+
     reader
         .by_ref()
         .bytes()
@@ -15,8 +16,12 @@ where
         .collect::<String>()
         .parse::<T>()
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

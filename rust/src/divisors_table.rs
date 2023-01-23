@@ -1,19 +1,28 @@
 /// divisors[0] := []
+
 pub fn divisors_table(size: usize) -> Vec<Vec<usize>> {
     let mut divisors = vec![vec![]; size];
+
     for i in 1..size {
         for j in (i..size).step_by(i) {
             divisors[j].push(i);
         }
     }
+
     divisors
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         let divs = divisors_table(10);
+
         assert_eq!(
             divs,
             [

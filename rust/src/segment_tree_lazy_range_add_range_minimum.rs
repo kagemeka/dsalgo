@@ -1,7 +1,9 @@
 use std::ops::*;
 
 use crate::segment_tree_lazy_with_instance_homomorphism::*;
+
 pub struct RangeAddRangeMinimum<T>(T, T);
+
 impl<T> RangeAddRangeMinimum<T> {
     pub fn new(
         inf: T,
@@ -10,12 +12,15 @@ impl<T> RangeAddRangeMinimum<T> {
         Self(inf, zero)
     }
 }
+
 impl<T> Ops for RangeAddRangeMinimum<T>
 where
     T: Ord + Clone + Add<Output = T>,
 {
     type F = T;
+
     type S = T;
+
     fn op(
         &self,
         a: Self::S,
@@ -23,7 +28,9 @@ where
     ) -> Self::S {
         a.min(b)
     }
+
     fn e(&self) -> Self::S { self.0.clone() }
+
     fn compose(
         &self,
         f: Self::F,
@@ -31,7 +38,9 @@ where
     ) -> Self::F {
         f + g
     }
+
     fn id(&self) -> Self::F { self.1.clone() }
+
     fn map(
         &self,
         f: Self::F,
@@ -44,8 +53,12 @@ where
         }
     }
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

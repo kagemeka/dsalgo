@@ -2,6 +2,7 @@ use crate::{
     algebraic_structure::*,
     power_semigroup::pow_semigroup,
 };
+
 pub trait PowSemigroup: Semigroup
 where
     Self::S: Clone,
@@ -13,4 +14,5 @@ where
         pow_semigroup(&Self::op, x, exp)
     }
 }
+
 impl<T: Semigroup> PowSemigroup for T where T::S: Clone {}

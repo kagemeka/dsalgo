@@ -1,25 +1,36 @@
 use crate::lowest_common_ancestor_with_binary_lifting::LCA;
+
 /// distance query on tree with LCA binary lifting
 /// unweighted.
+
 pub struct TreeDist {
     lca: LCA,
 }
+
 impl TreeDist {
     pub fn new(g: &[Vec<usize>]) -> Self { Self { lca: LCA::new(g, 0) } }
+
     pub fn get(
         &self,
         u: usize,
         v: usize,
     ) -> usize {
         let d = &self.lca.depth;
+
         let lca = self.lca.get(u, v);
+
         d[u] + d[v] - 2 * d[lca]
     }
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test_atcoder_abc014_d() {
         let cases = vec![
             (
@@ -41,19 +52,29 @@ mod tests {
                 ],
             ),
         ];
+
         for (edges, queries) in cases {
             let n = edges.len() + 1;
+
             let mut g = vec![vec![]; n];
+
             for (mut u, mut v) in edges {
                 u -= 1;
+
                 v -= 1;
+
                 g[u].push(v);
+
                 g[v].push(u);
             }
+
             let dist = TreeDist::new(&g);
+
             for ((mut u, mut v), ans) in queries {
                 u -= 1;
+
                 v -= 1;
+
                 assert_eq!(dist.get(u, v) + 1, ans);
             }
         }

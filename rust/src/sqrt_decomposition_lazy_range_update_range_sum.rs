@@ -1,16 +1,21 @@
 use std::ops::*;
 
 use crate::sqrt_decomposition_lazy_with_instance_homomorphism::*;
+
 pub struct RangeUpdateRangeSum<T>(T);
+
 impl<T> RangeUpdateRangeSum<T> {
     pub fn new(zero: T) -> Self { Self(zero) }
 }
+
 impl<T> Ops for RangeUpdateRangeSum<T>
 where
     T: Ord + Clone + Add<Output = T> + Mul<Output = T>,
 {
     type F = Option<T>;
+
     type S = (T, T);
+
     fn op(
         &self,
         a: Self::S,
@@ -18,7 +23,9 @@ where
     ) -> Self::S {
         (a.0 + b.0, a.1 + b.1)
     }
+
     fn e(&self) -> Self::S { (self.0.clone(), self.0.clone()) }
+
     fn compose(
         &self,
         f: Self::F,
@@ -30,7 +37,9 @@ where
             g
         }
     }
+
     fn id(&self) -> Self::F { None }
+
     fn map(
         &self,
         f: Self::F,
@@ -43,8 +52,12 @@ where
         }
     }
 }
+
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

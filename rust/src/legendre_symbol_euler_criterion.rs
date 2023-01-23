@@ -1,6 +1,8 @@
 use crate::euler_criterion::euler_criterion;
+
 /// prime modulus p and 0 <= a < p
 /// if 0 < a, it's trivial gcd(a, p) = 1.
+
 pub fn legendre_symbol_euler_criterion(
     p: u64,
     a: u64,
@@ -14,9 +16,13 @@ pub fn legendre_symbol_euler_criterion(
         },
     }
 }
+
 // TODO:
 #[cfg(test)]
+
 mod tests {
+
     #[test]
+
     fn test() {}
 }

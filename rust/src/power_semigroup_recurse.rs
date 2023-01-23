@@ -8,13 +8,18 @@ where
     X: Clone,
 {
     assert!(exp > 0);
+
     if exp == 1 {
         return x;
     }
+
     let mut y = pow_semigroup_recurse(&f, x.clone(), exp >> 1);
+
     y = f(y.clone(), y);
+
     if exp & 1 == 1 {
         y = f(y, x);
     }
+
     y
 }

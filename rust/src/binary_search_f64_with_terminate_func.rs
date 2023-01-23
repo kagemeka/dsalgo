@@ -13,19 +13,27 @@ where
         if is_done(ng, ok) {
             break;
         }
+
         let x = (ng + ok) / 2.;
+
         if is_ok(x) {
             ok = x;
         } else {
             ng = x;
         }
     }
+
     ok
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         assert_eq!(
             binary_search(
@@ -37,6 +45,7 @@ mod tests {
             ),
             31.640625,
         );
+
         assert_eq!(
             binary_search(
                 |x| x * x <= 1000.,

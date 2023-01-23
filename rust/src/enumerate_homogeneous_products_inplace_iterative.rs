@@ -3,32 +3,47 @@ pub fn homogeneous_products(
     k: usize,
 ) -> Vec<Vec<usize>> {
     assert!(n > 0);
+
     let mut res = vec![];
+
     let mut a: Vec<_> = vec![0; k];
+
     loop {
         res.push(a.clone());
+
         let mut i = k;
+
         for j in (0..k).rev() {
             if a[j] != n - 1 {
                 i = j;
+
                 break;
             }
         }
+
         if i == k {
             return res;
         }
+
         a[i] += 1;
+
         for j in i + 1..k {
             a[j] = a[j - 1];
         }
     }
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         let res = homogeneous_products(5, 3);
+
         assert_eq!(
             res,
             [

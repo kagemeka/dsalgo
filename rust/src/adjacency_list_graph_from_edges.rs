@@ -4,11 +4,14 @@ pub fn graph_from_edges(
     directed: bool,
 ) -> Vec<Vec<usize>> {
     let mut g = vec![vec![]; n];
+
     for &(u, v) in edges {
         g[u].push(v);
+
         if !directed {
             g[v].push(u);
         }
     }
+
     g
 }

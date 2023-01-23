@@ -1,17 +1,25 @@
 use crate::sieve_of_eratosthenes_least_prime_factor_table_usize_optim2::*;
+
 pub fn greatest_prime_factor(size: usize) -> Vec<usize> {
     let mut gpf: Vec<usize> = least_prime_factor(size);
+
     for i in 2..size {
         if gpf[i] != i {
             gpf[i] = gpf[i / gpf[i]];
         }
     }
+
     gpf
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test() {
         assert_eq!(
             greatest_prime_factor(20),

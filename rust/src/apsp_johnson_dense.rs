@@ -3,13 +3,17 @@ use crate::{
     negative_cycle::NegativeCycleError,
     shortest_path_potential::shortest_path_potential,
 };
+
 /// O(V^3)
 /// all pairs shortest path
+
 pub fn johnson_dense(
     dense_graph: &[Vec<Option<i64>>]
 ) -> Result<Vec<Vec<Option<i64>>>, NegativeCycleError> {
     let n = dense_graph.len();
+
     let mut edges = vec![];
+
     for i in 0..n {
         for j in 0..n {
             if let Some(w) = dense_graph[i][j] {
@@ -17,7 +21,9 @@ pub fn johnson_dense(
             }
         }
     }
+
     let p = shortest_path_potential(n, edges)?;
+
     let g = dense_graph
         .into_iter()
         .enumerate()
@@ -34,22 +40,31 @@ pub fn johnson_dense(
                 .collect::<Vec<_>>()
         })
         .collect::<Vec<_>>();
+
     let mut results = vec![];
+
     for i in 0..n {
         let dist = dijkstra_dense(&g, i)
             .into_iter()
             .enumerate()
             .map(|(j, d)| d.map(|x| x as i64 + p[j] - p[i]))
             .collect();
+
         results.push(dist);
     }
+
     Ok(results)
 }
+
 // TODO
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     #[test]
+
     fn test_positive() {
         let g = vec![
             vec![None, Some(1), Some(5), None],
@@ -57,6 +72,7 @@ mod tests {
             vec![None, None, None, Some(1)],
             vec![None, None, Some(7), None],
         ];
+
         assert_eq!(
             johnson_dense(&g),
             Ok(vec![
@@ -67,7 +83,9 @@ mod tests {
             ]),
         )
     }
+
     #[test]
+
     fn test_negative() {
         let g = vec![
             vec![None, Some(1), Some(-5), None],
@@ -75,6 +93,7 @@ mod tests {
             vec![None, None, None, Some(1)],
             vec![None, None, Some(7), None],
         ];
+
         assert_eq!(
             johnson_dense(&g),
             Ok(vec![
@@ -85,7 +104,9 @@ mod tests {
             ]),
         )
     }
+
     #[test]
+
     fn test_negative_cycle() {
         let g = vec![
             vec![None, Some(1), Some(5), None],
@@ -93,6 +114,7 @@ mod tests {
             vec![None, None, None, Some(1)],
             vec![None, None, Some(-7), None],
         ];
+
         assert_eq!(johnson_dense(&g), Err(NegativeCycleError::new()),)
     }
 }

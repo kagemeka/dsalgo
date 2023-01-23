@@ -1,6 +1,7 @@
 use std::ops::*;
 
 use crate::greatest_common_divisor_euclidean::gcd;
+
 pub fn gcd_signed<T>(
     a: T,
     b: T,
@@ -9,14 +10,20 @@ where
     T: Default + PartialEq + Copy + RemAssign + PartialOrd + Neg<Output = T>,
 {
     let mut g = gcd(a, b);
+
     if g < T::default() {
         g = -g;
     }
+
     g
 }
+
 #[cfg(test)]
+
 mod tests {
+
     use super::*;
+
     const CASES: &[(&[i32], i32)] = &[
         (&[], 0),
         (&[0], 0),
@@ -30,6 +37,7 @@ mod tests {
         (&[10, 5], 5),
         (&[0, 10], 10),
     ];
+
     fn test_wrapper<F>(
         gcd: &F,
         a: i32,
@@ -39,17 +47,22 @@ mod tests {
         F: Fn(i32, i32) -> i32,
     {
         let mut g = gcd(a, b);
+
         if g < 0 {
             g = -g;
         }
+
         assert_eq!(g, expected);
     }
+
     #[test]
+
     fn test() {
         for &(v, ans) in CASES {
             if v.len() != 2 {
                 continue;
             }
+
             test_wrapper(&gcd, v[0], v[1], ans);
         }
     }
