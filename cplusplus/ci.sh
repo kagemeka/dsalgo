@@ -67,7 +67,7 @@ clang_format() {
 }
 
 ci() {
-	# setup
+	setup
 	tidy_lint_format
 	clang_format
 	test
