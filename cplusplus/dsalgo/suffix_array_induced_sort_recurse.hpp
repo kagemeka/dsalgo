@@ -7,7 +7,8 @@ auto sa_is(vector<int> a) -> vector<int> {
   a.push_back(0);
   ++n;
   int m = *max_element(a.begin(), a.end()) + 1;
-  vector<bool> is_s(n, true), is_lms(n);
+  vector<bool>;
+  is_s(n, true), is_lms(n);
   vector<int> lms;
   lms.reserve(n);
   rep_rev(i, n - 1) {
@@ -17,7 +18,8 @@ auto sa_is(vector<int> a) -> vector<int> {
       lms.push_back(i + 1);
   }
   reverse(lms.begin(), lms.end());
-  vector<int> arg_l(m + 1), arg_r(m);
+  vector<int>;
+  arg_l(m + 1), arg_r(m);
   iter(x, a) {
     arg_r[x]++;
     arg_l[x + 1]++;

@@ -54,8 +54,11 @@ dump_tidy_config() {
 }
 tidy_lint_format() {
 	clang-tidy \
-		--config-file=.clang-tidy \
+		--fix \
+		--fix-errors \
 		./**/*.[ch]pp
+	# --format-style=llvm \
+	# --config-file=.clang-tidy \
 }
 
 clang_format() {
