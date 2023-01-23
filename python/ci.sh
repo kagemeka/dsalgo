@@ -42,7 +42,13 @@ setup() {
 
 lint() {
 	poetry run mypy .
-	poetry run flake8 .
+	poetry run flake8 \
+		--count \
+		--exit-zero \
+		--show-source \
+		--statistics \
+		--verbose \
+		.
 }
 
 format() {

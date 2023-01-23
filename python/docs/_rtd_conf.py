@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import typing
 
 # https://sphinx-rtd-theme.readthedocs.io/en/stable/configuring.html
 html_theme_options: dict[str, str | bool | int] = {

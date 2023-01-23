@@ -2,7 +2,6 @@
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-# POETRY ------------------------------------------------------------------------------
 [tool.poetry]
 authors = ["kagemeka <kagemeka1@gmail.com>"]
 classifiers = [
@@ -12,7 +11,6 @@ classifiers = [
 ]
 description = "A package for datastructures and algorithms."
 documentation = "https://dsalgo.readthedocs.io"
-# exclude = ["**/tests/", "**/*_test.py", "**/test_*.py", "**/_test_*.py"]
 homepage = "https://kagemeka.github.io/dsalgo"
 include = []
 keywords = ["algorithm", "datastructure"]
@@ -59,126 +57,40 @@ scipy = "^1"
 
 [tool.poetry.dev-dependencies]
 # PyYAML = "^"
-# autopep8 = "^"
-# bandit = "^"
 black = "^22"
-# blacken-docs = "^"
 flake8 = "^6"
 isort = "^5"
 mypy = "^0"
-# pre-commit = "^"
-# pycodestyle = "^"
-# pydocstyle = "^"
-# pylint = "^2"
-# pyproject-flake8 = "^"
 pytest = "^7"
 # pytest-asyncio = "^"
 # toml = "^"
-# types-PyYAML = "^"
-# types-requests = "^"
-# types-setuptools = "^"
-# types-toml = "^"
 
-# FORMATTING ------------------------------------------------------------------------------
 [tool.black]
-# github: https://github.com/psf/black
-# docs: https://black.readthedocs.io/en/stable/
-# compatible configurations: https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html
+# https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html#command-line-options
+# https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html
+# poetry run black --help
 line-length = 79
 target-version = ["py38", "py39", "py310", "py311"]
-verbose = false
 
-[tool.autopep8]
-# github: https://github.com/hhatto/autopep8
-# aggressive = 3
-# ignore = "E501,W6"   # or ["E501", "W6"]
-# in-place = true
-# max_line_length = 79
-# recursive = true
-
-[tool.isort]
-# github: https://github.com/PyCQA/isort
-# docs: https://pycqa.github.io/isort/
-# config files -> https://pycqa.github.io/isort/docs/configuration/config_files.html
-# options: https://pycqa.github.io/isort/docs/configuration/options.html
-profile = "black"
-# profiles: https://pycqa.github.io/isort/docs/configuration/profiles.html
-# line_length = 79
-
-# LINTING ------------------------------------------------------------------------------
 [tool.flake8]
-# github: https://github.com/PyCQA/flake8
-# docs: https://flake8.pycqa.org/en/latest/
-# options: https://flake8.pycqa.org/en/latest/user/options.html
-count = 'true'
-exclude = []
-exit_zero = 'true'
-# ignore = 'E203,W503'
+# https://flake8.pycqa.org/en/latest/user/options.html
+# poetry run flake8 --help
 max_complexity = 20
-max_line_length = 79
-show_source = 'true'
-statistics = 'true'
-verbose = 'true'
-
-[tool.pycodestyle]
-ignore = "E203"
+# ignore = 'E203,W503'
 
 [tool.mypy]
-# github: https://github.com/python/mypy
-# docs: https://mypy.readthedocs.io/en/stable/
-# options: https://mypy.readthedocs.io/en/stable/config_file.html
-allow_untyped_globals = false
-color_output = true
-disallow_any_decorated = false
-disallow_any_explicit = true
-disallow_any_generics = true
-disallow_any_unimported = true
+# https://mypy.readthedocs.io/en/stable/config_file.html
 disallow_incomplete_defs = true
-disallow_subclassing_any = true
-disallow_untyped_calls = true
-disallow_untyped_decorators = false
 disallow_untyped_defs = true
-error_summary = true
-exclude = []
-follow_imports = 'normal'
 ignore_missing_imports = true
-no_implicit_optional = true
-no_implicit_reexport = true
-no_strict_optional = false
-# plugins = "numpy.typing.mypy_plugin"
-pretty = true
-python_version = "3.11"
 show_absolute_path = true
-show_column_numbers = true
-show_error_codes = true
 strict = true
-strict_equality = true
-strict_optional = true
-warn_no_return = true
 warn_return_any = true
-warn_unused_ignores = true
+# plugins = "numpy.typing.mypy_plugin"
 
-[tool.pyre]
-# github: https://github.com/facebook/pyre-check
-# docs: https://pyre-check.org/
 
-# TESTING ------------------------------------------------------------------------------
 [tool.pytest.ini_options]
-# github: https://github.com/pytest-dev/pytest
-# docs: https://docs.pytest.org
-# cache_dir = "/tmp/.pytest_cache"
-# testpaths = [
-#   "tests/",
-#   "src/dsalgo/",
-# ]
-# verbose=true
-# asyncio_mode="strict"
+# https://docs.pytest.org
 python_files = ["*.py"]
 python_classes = ["Test*", "_Test*"]
 python_functions = ["test", "_test", "_test_*", "test_*"]
-
-ignore = "src/dsalgo_numba.py,src/dsalgo_numpy"
-
-[tool.tox]
-# github: https://github.com/tox-dev/tox
-# docs: https://tox.wiki/en/latest/

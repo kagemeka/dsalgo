@@ -5,12 +5,12 @@ categories = ["algorithms", "data-structures"]
 description = "A package for Datastructures and Algorithms."
 documentation = "https://docs.rs/dsalgo"
 edition = "2021"
-homepage = "https://kagemeka.github.io/dsalgo/src/rust"
+homepage = "https://kagemeka.github.io/dsalgo/rust"
 keywords = ["algorithms", "data-structures"]
 license-file = "../LICENSE"
 name = "dsalgo"
 readme = "README.md"
-repository = "https://github.com/kagemeka/dsalgo/tree/main/src/rust"
+repository = "https://github.com/kagemeka/dsalgo/tree/main/rust"
 rust-version = "1.68.0"
 version = "0.3.7"
 # workspace = "."
@@ -21,5 +21,3 @@ include = []
 [dependencies]
 lazy_static = "1.4.0"
 rand = "0.8.5"
-# [workspace]
-# members = ["dsalgo_light"]
