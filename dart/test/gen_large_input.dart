@@ -7,9 +7,7 @@ void main() async {
     '1234567890\n',
   );
   var s = ls.join();
-  final filename = (
-    '../data/large_input.txt'
-  );
+  final filename = ('../data/large_input.txt');
   var file = await File(
     filename,
   ).writeAsString(s);

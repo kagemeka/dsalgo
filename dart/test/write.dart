@@ -7,9 +7,7 @@ void main() {
   write(s);
   write.iter(a);
   write.iterln(a);
-
 }
-
 
 class WriteStdout {
   void call(Object x) {

@@ -62,6 +62,12 @@ setup() {
 
 ci() {
 	setup
+
+	dart --enable-analytics
+	dart format --fix -l 80 .
+	dart fix --apply
+	dart analyze
+
 }
 
 ci

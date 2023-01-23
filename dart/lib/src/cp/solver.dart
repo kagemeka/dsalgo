@@ -3,8 +3,6 @@ abstract class Solver {
   void solve() {}
 }
 
-
-
 mixin Run<T extends Solver> {
   void call() {
     var sol = this as T;

@@ -1,21 +1,12 @@
-import
-'./abstract_algebra.dart';
-
+import './abstract_algebra.dart';
 
 /* cut below */
 
-
-
 class Modular
-with
-Power<Modular>,
-Division<Modular>,
-Subtraction<Modular>
-implements
-Field<Modular> {
+    with Power<Modular>, Division<Modular>, Subtraction<Modular>
+    implements Field<Modular> {
   int value = 0;
   final int mod;
-
 
   Modular(
     this.value,
@@ -24,9 +15,7 @@ Field<Modular> {
     value %= mod;
   }
 
-
   Modular.define(this.mod);
-
 
   Modular call(
     int value,
@@ -34,7 +23,7 @@ Field<Modular> {
     return Modular(value, mod);
   }
 
-
+  @override
   Modular operator +(
     final Modular other,
   ) {
@@ -44,13 +33,12 @@ Field<Modular> {
     );
   }
 
-
-  Modular addIdentity()
-  {
+  @override
+  Modular addIdentity() {
     return Modular(0, mod);
   }
 
-
+  @override
   Modular operator -() {
     return Modular(
       -value,
@@ -58,7 +46,7 @@ Field<Modular> {
     );
   }
 
-
+  @override
   Modular operator *(
     Modular other,
   ) {
@@ -68,45 +56,35 @@ Field<Modular> {
     );
   }
 
-
+  @override
   Modular mulIdentity() {
     return Modular(1, mod);
   }
 
-
+  @override
   Modular inv() {
-    return this.pow(mod - 2);
+    return pow(mod - 2);
   }
 
-
+  @override
   String toString() {
-    return '${value}';
+    return '$value';
   }
 
-
-  List<Modular> factorial()
-  {
+  List<Modular> factorial() {
     int n = value;
     List<Modular> a = [
       Modular(1, mod),
-      for (
-        int i = 1; i < n; i++
-      ) Modular(i, mod)
+      for (int i = 1; i < n; i++) Modular(i, mod)
     ];
     a = a.cumprod();
     return a;
   }
 
-
-  List<Modular> invFactorial()
-  {
+  List<Modular> invFactorial() {
     int n = value;
-    var fac = this.factorial();
-    List<Modular> a = [
-      for (
-        int i = n; i > 0; i--
-      ) Modular(i, mod)
-    ];
+    var fac = factorial();
+    List<Modular> a = [for (int i = n; i > 0; i--) Modular(i, mod)];
     a[0] = fac[n - 1].inv();
     a = a.cumprod();
     a = a.reversed.toList();

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-void main()  {
+void main() {
   var lines = <String>[];
   while (true) {
     var line = stdin.readLineSync();

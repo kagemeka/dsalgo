@@ -13,35 +13,25 @@ void main() async {
   // }
 }
 
-
-
 class ReadStdinAsync {
   List<String> _a = [];
   int _i = 0;
 
-
   Stream<String> _stream() =>
-    stdin
-    .transform(utf8.decoder)
-    .transform(LineSplitter());
-
+      stdin.transform(utf8.decoder).transform(LineSplitter());
 
   void _store(String line) {
-    _a[_i] = line; _i++;
+    _a[_i] = line;
+    _i++;
   }
-
 
   String call() => _a[_i++];
 
-
   int i() => int.parse(this());
 
-
-  Future<void> prepare(
-    {
-      int max = 1 << 16,
-    }
-  ) async {
+  Future<void> prepare({
+    int max = 1 << 16,
+  }) async {
     _a = List.filled(max, '');
     _stream().listen(_store);
     int x = 1 << 20;
@@ -51,9 +41,12 @@ class ReadStdinAsync {
       milliseconds: x,
     );
     await Future.delayed(t);
-    _a = _a.join(
-      ' ',
-    ).trim().split(' ');
+    _a = _a
+        .join(
+          ' ',
+        )
+        .trim()
+        .split(' ');
     _i = 0;
   }
 }

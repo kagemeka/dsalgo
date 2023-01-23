@@ -3,24 +3,20 @@ import 'read_stdin_async.dart';
 
 // cut below
 
-
-class Problem
-with Run<Problem>
-implements Solver {
+class Problem with Run<Problem> implements Solver {
   var read = ReadStdinAsync();
 
+  @override
   void prepare() async {
     await read.prepare();
     print(read());
   }
 
-  void solve() {
-  }
+  @override
+  void solve() {}
 }
 
-
-
 void main() async {
-  var p = new Problem();
+  var p = Problem();
   p();
 }
