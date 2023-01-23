@@ -1,10 +1,10 @@
 name: dsalgo
 description: A package for datastructures and algorithms.
-version: 1.0.0
+version: 0.0.1
 homepage: https://github.com/kagemeka/dsalgo/dart
 
 environment:
-  sdk: '>=2.18.7 <3.0.0'
+  sdk: ">=2.18.7 <3.0.0"
 
 # dependencies:
 #   path: ^1.8.0
