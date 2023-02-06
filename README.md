@@ -29,7 +29,7 @@ docker compose up -d
 enter in the container
 
 ```sh
-./ci.sh 
+./ci.sh
 ```
 
 ## VSCode Extensions
