@@ -1,2 +1,0 @@
-// TODO
-pub trait PruferGroup {}

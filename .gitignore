@@ -1,13 +1,2 @@
-# editor configs
-.vscode
-.idea
-
-.*
-.*_cache
-/build
-/bin
-/pkg
-!.devcontainer.json
-!/.github
-!.vscode
+/tmp
 !.gitkeep

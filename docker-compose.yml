@@ -1,11 +1,7 @@
-version: '3.9'
-
 services:
   main:
-    image: ubuntu:latest
-    restart: on-failure
-    privileged: true # for swift
+    image: python:latest
     tty: true
     volumes:
       - .:/root/dsalgo
-      - ~/.gitconfig:/etc/gitconfig
+    working_dir: /root/dsalgo
