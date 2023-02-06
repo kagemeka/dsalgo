@@ -1,3 +1,0 @@
-//! compute Li(x)
-
-// TODO:
